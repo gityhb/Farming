@@ -1,0 +1,72 @@
+.product_detail {
+    width: 100%;
+    display: inline-block;
+}
+.product_detail .left_area {
+    display: inline-block;
+}
+.product_detail .right_area {
+    display: inline-block;
+    margin-left: 30px;
+}
+
+.right_area .pd_name {
+    font-size: 35px;
+    font-weight: 700;
+}
+.right_area .pd_name p {
+    margin: 10px 0;
+}
+
+.right_area div span {
+    line-height: 50px;
+    font-size: 23px;
+}
+
+.right_area .pd_star img {
+    width: 32px;
+    height: 32px;
+}
+
+.right_area .pd_star span {
+    color: #FFAE00;
+    font-size: 25px;
+}
+.right_area .pd_value span {
+    font-weight: 700;
+}
+
+.right_area .pd_value .pd_price {
+    font-size: 35px;
+}
+
+.right_area .pd_value .pd_rate {
+    color: #FFAE00;
+
+}
+
+.total_purchase {
+    float: right;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.purchase_btn button{
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.purchase_btn #basket_btn {
+    border: 2px solid #FFDC41;
+    background: #fff;
+}
+
+.purchase_btn #buy_btn {
+    border: 2px solid #FFDC41;
+    background: #FFDC41;
+    color: #fff;
+}

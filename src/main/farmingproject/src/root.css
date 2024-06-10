@@ -1,0 +1,35 @@
+#contents {
+    margin: 0 auto;
+    width: 1020px;
+    height: 100vh;
+}
+
+/*검색창*/
+#search_box {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 7px 20px;
+    width: fit-content;
+    border: 2px solid #FFD000;
+    border-radius: 20px;
+    float: right;
+}
+
+#search_box #search_query {
+    width: 430px;
+    height: 25px;
+    border: none;
+    font-size: 15px;
+}
+#search_query:focus {
+    outline: none;
+}
+
+#search_box #search_btn {
+    border: none;
+    background: none;
+    vertical-align: middle;
+}
+#search_box #search_btn img {
+    width: 20px;
+}
