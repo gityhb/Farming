@@ -1,31 +1,107 @@
-import {useEffect, useState} from "react";
-import axios from "axios";
-import Farmer_market_info from "./farmer_market_info";
-import {Route, Routes} from 'react-router-dom';
+// import {useEffect, useState} from "react";
+// import axios from "axios";
+// import Farmer_market_info from "./farmer_market_info";
+// import Header from './components/Header';
+// import Footer from "./components/Footer";
+// import FarmerJob from "./farmer_job";
+// import FarmerJobInfo from "./farmer_job_info";
+// import FarmerJobApply from "./farmer_job_apply";
+// import Main from "./main";
+// import Category from './Category';
+//
+// import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+//
+// function App() {
+//   // const [hello, setHello] = useState('');
+//   //
+//   // useEffect(() => {
+//   //   axios.get('/api/test')
+//   //       .then((res) => {
+//   //         setHello(res.data);
+//   //       })
+//   // }, []);
+//   // return (
+//   //     <div className="App">
+//   //       백엔드 데이터 : {hello}
+//   //     </div>
+//   // );
+//
+//
+//     // return (
+//     //     <div>
+//     //         <Routes>
+//     //             <Route path={'/farmer_market_info'} element={<Farmer_market_info/>} />
+//     //         </Routes>
+//     //     </div>
+//     // );
+//
+//     const location = useLocation();
+//     const hideHeaderFooter = location.pathname === '/farmer_job_apply';
+//
+//     return (
+//         <div>
+//             {!hideHeaderFooter && <Header />}
+//             <Routes>
+//                 <Route path="/main" element={<Main />} />
+//                 <Route path="/category" element={<Category />} />
+//                 <Route path="/farmer_job" element={<FarmerJob />} />
+//                 <Route path="/farmer_job_info" element={<FarmerJobInfo />} />
+//                 <Route path="/farmer_job_apply" element={<FarmerJobApply />} />
+//             </Routes>
+//             {!hideHeaderFooter && <Footer />}
+//         </div>
+//     );
+//
+//
+// }
+// function AppWrapper() {
+//     return (
+//         <Router>
+//             <App />
+//         </Router>
+//     );
+// }
+//
+// export default AppWrapper;
+//
+// // export default App;
+
+
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from "./components/Footer";
+import FarmerJob from "./farmer_job";
+import FarmerJobInfo from "./farmer_job_info";
+import FarmerJobApply from "./farmer_job_apply";
+import Main from './main';
+import Category from './Category';
 
 function App() {
-  // const [hello, setHello] = useState('');
-  //
-  // useEffect(() => {
-  //   axios.get('/api/test')
-  //       .then((res) => {
-  //         setHello(res.data);
-  //       })
-  // }, []);
-  // return (
-  //     <div className="App">
-  //       백엔드 데이터 : {hello}
-  //     </div>
-  // );
-
+    const location = useLocation();
+    const hideHeaderFooter = location.pathname === '/farmer_job_apply';
 
     return (
         <div>
+            {!hideHeaderFooter && <Header />}
             <Routes>
-                <Route path={'/farmer_market_info'} element={<Farmer_market_info/>} />
+                <Route path="/main" element={<Main />} />
+                <Route path="/category" element={<Category />} />
+                <Route path="/farmer_job" element={<FarmerJob />} />
+                <Route path="/farmer_job_info" element={<FarmerJobInfo />} />
+                <Route path="/farmer_job_apply" element={<FarmerJobApply />} />
             </Routes>
+            {!hideHeaderFooter && <Footer />}
         </div>
     );
 }
 
-export default App;
+function AppWrapper() {
+    return (
+        <Router>
+            <App />
+        </Router>
+    );
+}
+
+export default AppWrapper;

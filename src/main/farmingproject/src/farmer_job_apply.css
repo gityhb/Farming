@@ -1,0 +1,19 @@
+.apply_content{
+    width:700px ;
+    height: 800px;
+}
+
+.apply_header{
+    width: 700px;
+    height: 100px;
+    background-color: #FFF0AD;
+    text-align: center;
+}
+
+.apply_main{
+    text-align: center;
+}
+
+.main_name{
+    font-weight: bold;
+}

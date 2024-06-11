@@ -7,12 +7,19 @@ import Main from "./main";
 import Farmer_market from "./farmer_market";
 import Farmer_market_info from "./farmer_market_info";
 import {BrowserRouter} from "react-router-dom";
+import Login from "./login";
+import Consumer_join from "./consumer_join";
+import Seller_join from "./seller_join";
+import Farmer_job from "./farmer_job";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <Farmer_market_info />
-  </BrowserRouter>
+  // <BrowserRouter>
+  //   <Farmer_job />
+  // </BrowserRouter>
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

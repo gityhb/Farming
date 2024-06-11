@@ -1,0 +1,84 @@
+.farmergic_info_main{
+    width: 1020px;
+    background-color: #ffffff;
+    margin: 0 auto;
+}
+
+.farmergic_info_title{
+    font-size: 36px;
+    font-weight: bold;
+    padding: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+.farmergic_info_seller {
+    display: flex;
+    height: 170px;
+    background-color: #FFF0AD;
+    margin-bottom: 40px;
+}
+
+.farmergic_info_detail{
+    background-color: rgba(229, 229, 229, 0.31);
+    height: 540px;
+    margin-bottom: 40px;
+}
+
+.farmergic_info_map{
+    height: 320px;
+    margin-bottom: 40px;
+}
+
+.farmer_info_btn{
+    background-color: #FFEA8D;
+    height: 85px;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size:32px;
+    margin-bottom: 30px;
+}
+
+.farmer_info_btn_text{
+    padding-top: 20px;
+}
+
+.farmergic_info_seller img{
+    margin-left:30px;
+    border-radius: 90px;
+}
+
+.farmergic_info_seller_text{
+    font-size:25px;
+    margin-top:30px;
+    margin-left: 100px;
+
+}
+
+.farmergic_info_detail_item{
+    margin-left: 10px;
+}
+
+.farmergic_info_detail_item_1{
+    font-weight: bold;
+    font-size: 36px;
+    margin-left: 30px;
+    margin-top:20px ;
+}
+
+.farmergic_info_detail_item{
+    display: flex;
+}
+
+
+.farmergic_info_detail_title{
+    font-size: 24px;
+    font-weight: bold;
+    color: #898989 ;
+    margin: 20px 20px;
+}
+.farmergic_info_datail_text{
+    font-size: 24px;
+    margin: 20px 20px;
+}
