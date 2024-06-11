@@ -8,7 +8,7 @@ import Farmer_market from "./farmer_market";
 import Farmer_market_info from "./farmer_market_info";
 import {BrowserRouter} from "react-router-dom";
 import Login from "./login";
-import Consumer_join from "./consumer_join";
+import Join_consumer from "./join_consumer";
 import Seller_join from "./seller_join";
 import Farmer_job from "./farmer_job";
 

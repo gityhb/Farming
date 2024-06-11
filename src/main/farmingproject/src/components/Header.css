@@ -1,16 +1,19 @@
-.header {
+.header_container {
+    width:1440px;
+    height: 100px;
     position: relative;
     display:flex;
-    padding:10px 20px;
-    border-bottom: 1px solid #BEBEBE;
     align-items: center;
+    margin: 0 auto;
 }
+
 .logo{
-    font-size: 1.7em;
+    font-size: 30px;
     font-weight: bold;
     text-decoration: none;
     color:#000000;
-    flex-shrink: 0;
+    margin-left: 30px;
+
 }
 
 .nav_container{
@@ -21,18 +24,36 @@
 }
 
 .nav_links{
+    font-size: 20px;
     list-style: none;
     display: flex;
     gap:30px; /*리스트 사이 간격*/
 
 }
 
-.user_links{
+/*.user_links{
+    font-size: 20px;
     list-style: none;
     display:flex;
     gap:20px;
-    margin-left:250px;
+    margin-left:40px;
+}*/
+.user_links {
+    font-size: 20px;
+    list-style: none;
+    margin-left: 100px;
+    padding: 0;
 }
+
+.user_links li {
+    display: inline-block;
+    margin-right: 20px; /* 간격을 위해 오른쪽 마진 사용 */
+}
+
+.user_links li:last-child {
+    margin-right: 0; /* 마지막 항목의 오른쪽 마진 제거 */
+}
+
 
 .nav_links a,.user_links a{
     color:#000000;
@@ -67,7 +88,7 @@
 }
 
 .category_group
- {
+{
     display: inline-block;
     vertical-align: top;
     margin-right: 0px;
@@ -85,4 +106,11 @@
 
 .farmermarket_group a{
     margin-left: 320px;
+}
+
+.header_line{
+    height: 1px; /* 선의 높이 */
+    background-color: #CCCCCC;
+
+
 }

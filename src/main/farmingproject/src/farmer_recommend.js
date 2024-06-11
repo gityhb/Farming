@@ -1,6 +1,7 @@
 import './shopping_basket.css';
-import './farmer_recommend.css'
-import React, { useState } from "react";
+import './farmer_recommend.css';
+import './root.css';
+import React, { useState, useEffect } from "react";
 
 const formatDate = () => {
     const date = new Date();
@@ -18,6 +19,31 @@ const formatDate = () => {
     const formattedDay = day.replace('.', ''); // 마지막 마침표 제거
 
     return `${year}.${month}.${formattedDay} (${dayOfWeek})`;
+};
+
+const CountdownTimer = () => {
+    const [timeLeft, setTimeLeft] = useState(6800); // 2시간 = 7200초
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    const hours = Math.floor(timeLeft / 3600);
+    const minutes = Math.floor((timeLeft % 3600) / 60);
+    const seconds = timeLeft % 60;
+
+    const formatTime = (num) => String(num).padStart(2, '0');
+
+    return (
+        <div id="today_time_sale_countdown">
+            <p id="sale_countdown_text1">세일 종료까지</p>
+            <p id="sale_countdown_text2">{`${formatTime(hours)}시간 ${formatTime(minutes)}분 ${formatTime(seconds)}초`}</p>
+        </div>
+    );
 };
 
 function Farmer_recommend() {
@@ -40,51 +66,61 @@ function Farmer_recommend() {
     const todayDate = formatDate();
 
     return (
-        <div id="main">
-            <div id="search">
-                <input id="recommend_search" placeholder="검색어를 입력하세요." />
-                <button type="button" id="search_btn">
-                    <img src="img/search.png" alt="검색" />
-                </button>
-            </div>
-            <div id="today_recommend_5">
-                <img id="recommend_text_png" src="img/recommend_top5_text.png" alt="top5_text" />
-                <div id="today_recommend_5_list">
-                    {items.map((item) => (
-                        <div key={item.id} id="today_recommend_5_product">
-                            <img src={item.marketImg} alt="상품 사진" />
-                            <p id="recommend_product_name">{item.name}</p>
-                            <div id="recommend_product_sale">
-                                <span id="recommend_product_sale_percent">{item.salepercent}%</span>
-                                <span id="recommend_product_sale_price">{item.price}원</span>
-                            </div>
-                            <button type="button" id="recommend_buy">
-                                구매하러 가기
-                            </button>
+        <div id="body">
+            <div id={'farmer_recommend_page'}>
+                <div id={'contents'}>
+                    {/*검색창*/}
+                    <div id={'search_box'}>
+                        <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
+                        <button id={'search_btn'}><img src="res/search.png" alt={"search_btn"}/></button>
+                    </div>
+                    {/*오늘의 추천 TOP 5*/}
+                    <div id="today_recommend_5">
+                        <div className={'recommend_title'}>
+                            <h1>오늘의 추천 TOP 5</h1>
                         </div>
-                    ))}
-                </div>
-            </div>
+                        <div id="today_recommend_5_list" className={'recommend_list'}>
+                            {items.map((item) => (
+                                <div key={item.id} className={'recommend_product'}>
+                                    <img src={item.marketImg} alt="상품 사진" />
+                                    <p className="recommend_product_name">{item.name}</p>
+                                    <div className="recommend_product_sale">
+                                        <span className="recommend_product_sale_percent">{item.salepercent}%</span>
 
-            <div id="today_time_sale">
-                <img id="recommend_text_png" src="img/recommend_sale_text.png" alt="top5_text" />
-                <span id="recommend_today_date">{todayDate}</span>
-                <div id="today_time_sale_list">
-                    <div id="today_time_sale_countdown"></div>
-                    {timeSaleItems.map((item) => (
-                        <div key={item.id} id="today_recommend_5_product">
-                            <img src={item.marketImg} alt="상품 사진" />
-                            <p id="recommend_product_name">{item.name}</p>
-                            <div id="recommend_product_sale">
-                                <span id="recommend_product_sale_percent">{item.salepercent}%</span>
-                                <span id="recommend_product_sale_price">{item.price}원</span>
-                            </div>
-                            <button type="button" id="recommend_buy">
-                                구매하러 가기
-                            </button>
+                                        <span className="recommend_product_sale_price">{item.price}원</span>
+                                    </div>
+                                    <button type="button" className="recommend_buy">
+                                        구매하러 가기
+                                    </button>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                    <br />
+                    </div>
+                    {/*오늘의 특가 타임 세일*/}
+                    <div id="today_time_sale">
+                        <div className={'recommend_title'}>
+                            <h1>오늘의 특가 타임 세일</h1>
+                        </div>
+                        <span id="recommend_today_date">{todayDate}</span>
+                        <div id="today_time_sale_list"  className={'recommend_list'}>
+                            {/*카운트다운*/}
+                            <CountdownTimer />
+                            {timeSaleItems.map((item) => (
+                                <div key={item.id} className={'recommend_product'}>
+                                    <img src={item.marketImg} alt="상품 사진"/>
+                                    <p className="recommend_product_name">{item.name}</p>
+                                    <div className="recommend_product_sale">
+                                        <span className="recommend_product_sale_percent">{item.salepercent}%</span>
+                                        <span className="recommend_product_sale_price">{item.price}원</span>
+                                    </div>
+                                    <button type="button" className="recommend_buy">
+                                        구매하러 가기
+                                    </button>
+                                </div>
+                            ))}
+                            <br/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

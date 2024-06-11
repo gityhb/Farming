@@ -76,6 +76,12 @@ import FarmerJobInfo from "./farmer_job_info";
 import FarmerJobApply from "./farmer_job_apply";
 import Main from './main';
 import Category from './Category';
+import Farmer_market from "./farmer_market";
+import Farmer_recommend from "./farmer_recommend";
+import Login from "./login";
+import Shopping_Basket from "./shopping_basket";
+import Farmer_market_info from "./farmer_market_info";
+import Join_consumer from "./join_consumer";
 
 function App() {
     const location = useLocation();
@@ -88,8 +94,16 @@ function App() {
                 <Route path="/main" element={<Main />} />
                 <Route path="/category" element={<Category />} />
                 <Route path="/farmer_job" element={<FarmerJob />} />
+                <Route path="/farmer_recommend" element={<Farmer_recommend />} />
+                <Route path="/farmer_market" element={<Farmer_market />} />
+                <Route path="/farmer_market_info" element={<Farmer_market_info />} />
                 <Route path="/farmer_job_info" element={<FarmerJobInfo />} />
                 <Route path="/farmer_job_apply" element={<FarmerJobApply />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/join_consumer" element={<Join_consumer />} />
+                <Route path="/shopping_basket" element={<Shopping_Basket />} />
+
+
             </Routes>
             {!hideHeaderFooter && <Footer />}
         </div>

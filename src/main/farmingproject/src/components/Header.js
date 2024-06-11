@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import './Header.css';
 import {useLocation} from "react-router-dom";
+import './Header.css';
+
 
 function Header() {
     const[isCategoryDropdownOpen,setCategoryDropdownOpen]=useState(false); //카테고리 드롭다운 메뉴
@@ -25,7 +26,10 @@ function Header() {
 
     return (
         <header className="header">
-            <a href="/main" className="logo">Farming 파밍</a>
+            <div>
+                <a href="/main" className="logo">Farming 파밍</a>
+            </div>
+            <div>
             <nav className="nav_container">
                 <ul className="nav_links">
                     <li
@@ -59,7 +63,7 @@ function Header() {
                         onMouseEnter={handleMarketMouseEnter}
                         onMouseLeave={handleMarketMouseLeave}
                     >
-                        <a href="/farmermarket" className={location.pathname === '/farmermarket' ? 'active' : ''}>농부마켓</a>
+                        <a href="/farmer_market" className={location.pathname === '/farmer_market' ? 'active' : ''}>농부마켓</a>
                         {isMarketDropdownOpen &&(
                             <ul className="dropdown">
                                 <div className="farmermarket_group" >
@@ -69,17 +73,18 @@ function Header() {
                             </ul>
                         )}
                     </li>
-                    <li><a href="/farmerrecommendation" className={location.pathname === '/farmerrecommendation'?'active':''}>농부추천</a></li>
+                    <li><a href="/farmer_recommend" className={location.pathname === '/farmer_recommend'?'active':''}>농부추천</a></li>
                     <li><a href="/auction" className={location.pathname==='/auction'?'active':''}>청과경매</a></li>
                     <li><a href="/farmer_job" className={location.pathname==='/farmer_job'?'active':''}>파머직</a></li>
                     <li><a href="/service" className={location.pathname==='/service'?'active':''}>고객센터</a></li>
                 </ul>
                 <ul className="user_links">
-                    <li><a href="/cart" className={location.pathname==='/cart'?'active':''}>장바구니</a></li>
+                    <li><a href="/shopping_basket" className={location.pathname==='/shopping_basket'?'active':''}>장바구니</a></li>
                     <li><a href="/profile" className={location.pathname==='/profile'?'active':''}>마이페이지</a></li>
                     <li><a href="/login" className={location.pathname==='/login'?'active':''}>로그인</a></li>
                 </ul>
             </nav>
+            </div>
         </header>
     );
 }

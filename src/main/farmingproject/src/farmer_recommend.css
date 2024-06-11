@@ -1,109 +1,61 @@
-
-#search {
-    width: 600px;
-    height: 43px;
-    position: relative;
-    align-items: center;
-    border: 1px solid #FFD000; /* 연노랑색 테두리 */
-    border-radius: 18px; /* 둥근 테두리 */
-    background-color: #fff;
-    margin-left: 210px;
-    margin-top: 30px;
+/*오늘의 추천, 타임 특가 세일 중복 부분*/
+.recommend_title h1 {
+    font-size: 35px;
 }
 
-#recommend_search {
-    border: none;
-    outline: none;
-    margin-top: 4px;
-    margin-left: 4px;
-    padding: 10px 12px;
-    border-radius: 25px; /* 둥근 테두리 */
-    background-color: #fff;
-    width: 380px; /* 검색창 너비 조절 */
-}
-
-#search_btn {
-    background: none;
-    border: none;
-    position: absolute;
-    right: 5px;
-    cursor: pointer;
-    padding-top: 8px;
-    margin-right: 7px;
-    margin-top: 3px;
-}
-
-#search_btn img {
-    width: 20px;
-    height: 20px;
-}
-
-#today_recommend_5 {
-    position: relative;
-    margin-top: 60px;
-}
-
-#recommend_text_png{
-    margin-left: 14px;
-}
-
-
-#today_recommend_5_list {
+.recommend_list {
+    padding: 20px 0;
     display: flex; /* Flexbox 사용 */
     justify-content: center; /* 가로 정중앙 배치 */
     align-items: center; /* 세로 정중앙 배치 (필요 시) */
-    width: 1000px;
-    height: 305px;
+    width: 1020px;
+    height: fit-content;
     background: #FFF0AD;
-    margin-left: 10px;
     border-radius: 10px;
-    margin-top: 10px;
+    flex-wrap : wrap;
 }
 
-#today_recommend_5_product {
+.recommend_product {
+    padding: 15px 0;
     width: 180px;
-    height: 270px;
+    height: fit-content;
     background: white;
     border-radius: 20px;
     margin: 0 8px;
-    text-align: center; /* 내용 중앙 정렬 */
+    text-align: center;
 }
 
-#today_recommend_5_product img {
+.recommend_product img {
     width: 140px;
     height: 140px;
-    margin-top: 18px;
 }
 
-#recommend_product_name {
+.recommend_product_name {
     font-weight: 800;
     font-size: 20px;
     margin-top: 10px;
 }
 
-#recommend_product_sale {
-    margin-top: 8px;
-    float: right;
-    margin-top: -14px;
+.recommend_product_sale {
     margin-right: 15px;
+    float: right;
 }
 
-#recommend_product_sale_percent {
+.recommend_product_sale_percent {
     color: #FFA200;
     font-size: 20px;
     font-weight: 800;
 }
 
-#recommend_product_sale_price {
+.recommend_product_sale_price {
     font-size: 20px;
     font-weight: 800;
     margin-left: 8px;
 }
 
-#recommend_buy {
+.recommend_buy {
     font-size: 13px;
     border: none;
-    outline: none;
     background: none;
     margin-top: 6px;
     cursor: pointer;
@@ -111,34 +63,45 @@
     margin-right: 15px;
 }
 
-#recommend_buy:hover {
+.recommend_buy:hover {
     background: #FFA200;
     color: white;
     border-radius: 5px;
 }
 
+/*오늘의 추천 TOP 5*/
+#today_recommend_5 {
+    display: inline-block;
+}
+
+/*오늘의 특가 타임 세일*/
 #today_time_sale{
     margin-top: 100px;
 }
 
-#today_time_sale_list{
-    display: flex; /* Flexbox 사용 */
-    justify-content: center; /* 가로 정중앙 배치 */
-    align-items: center; /* 세로 정중앙 배치 (필요 시) */
-    width: 1000px;
-    height: 400px;
-    background: #FFF0AD;
-    margin-left: 10px;
-    border-radius: 10px;
-    margin-top: 10px;
-}
-#today_time_sale_countdown{
-    background: #FFA200;
-}
-#recommend_today_date{
+#today_time_sale #recommend_today_date {
+    padding-top: 45px;
+    padding-right: 10px;
     font-size: 27px;
     float: right;
-    margin-right: 18px;
     color: #4d4d4d;
-    margin-top: 5px;
 }
+
+#today_time_sale #today_time_sale_list #today_time_sale_countdown{
+    margin: 0 285px 30px 285px;
+    padding: 30px 0;
+    width: 450px;
+    height:160px;
+    background: #FFF9E4;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#today_time_sale #today_time_sale_list #today_time_sale_countdown #sale_countdown_text1{
+    font-size: 25px;
+}
+
+#today_time_sale #today_time_sale_list #today_time_sale_countdown #sale_countdown_text2{
+    font-size: 40px;
+}
+

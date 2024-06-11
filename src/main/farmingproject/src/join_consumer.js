@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import './consumer_join.css';
+import './join_consumer.css';
 
-function Consumer_join() {
+function Join_consumer() {
     const [step, setStep] = useState(1);
     const [terms, setTerms] = useState({
         all: false,
@@ -653,4 +653,4 @@ function Consumer_join() {
     );
 }
 
-export default Consumer_join;
+export default Join_consumer;

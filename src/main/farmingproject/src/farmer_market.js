@@ -1,9 +1,16 @@
 import {useState, useEffect} from "react";
 import {Link, Route} from 'react-router-dom';
-import  './farmer_market.css';
+import {  useNavigate } from 'react-router-dom';
 import './root.css';
+import  './farmer_market.css';
 
 function Farmer_market() {
+    const navigate=useNavigate();
+
+    const handleClick=()=>{
+        navigate('/farmer_market_info');
+    };
+
     return (
         <div id={'body'}>
             <div id={'market_farmer_page'}>
@@ -32,13 +39,11 @@ function Farmer_market() {
                         {/*첫번째 줄*/}
                         <ul className={'pd_list'}>
                             <li>
-                                <div className={'pd_info'}>
-                                    <Link to='/farmer_market_info'>
-                                        <img src={'res/products/premium_watermelon.png'}/>
+                                <div className={'pd_info'}  onClick={handleClick}>
+                                        <img src={'res/products/premium_watermelon.png'} style={{width: '190px', height: '190px'}}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
-                                    </Link>
                                     <p className={'pd_price'}>
                                         <span className={'pr_per'}>27% </span>
                                         <span className={'pr_num'}>18,900</span>원
@@ -445,7 +450,7 @@ function Farmer_market() {
                         </ul>
                     </div>
                     <div id={'page_list'}>
-                        <a ><span className={'page_num'}>1</span></a>
+                        <span className={'page_num'}><a>1</a></span>
                     </div>
                 </div>
             </div>
