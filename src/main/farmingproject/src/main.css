@@ -4,8 +4,9 @@
 
 /*메인 슬라이드 외부*/
 #main_slide {
-    padding: 65px 0;
-    width: 1200px;
+    margin: 0 auto;
+    padding: 65px;
+    width: 1400px;
     text-align: center;
 }
 

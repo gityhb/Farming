@@ -123,7 +123,7 @@ function Join_consumer() {
     };
 
     return (
-        <div class="container">
+        <div class="container" className={'page'}>
             <h1>회원가입</h1>
             <div class="form_step_group">
                 <div class={`form-step ${step === 1 ? "active" : ""}`}>

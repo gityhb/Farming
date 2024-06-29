@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+.page {
+    min-width: fit-content;
+}
+
 #contents {
     margin: 0 auto;
     width: 1020px;
@@ -15,21 +19,22 @@
     padding: 7px 20px;
     width: fit-content;
     border: 2px solid #FFD000;
-    border-radius: 20px;
+    border-radius: 15px;
     float: right;
 }
 
 #search_box #search_query {
     width: 450px;
-    height: 30px;
+    height: 20px;
     border: none;
-    font-size: 16px;
+    font-size: 14px;
 }
 #search_query:focus {
     outline: none;
 }
 
 #search_box #search_btn {
+    padding: 0;
     border: none;
     background: none;
     vertical-align: middle;

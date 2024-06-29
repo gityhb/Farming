@@ -1,0 +1,86 @@
+#nav_container {
+    margin: 0 auto;
+    width: 1500px;
+    display:flex;
+    align-items: center;
+    position: relative;
+}
+
+#nav_container #logo{
+    padding-left: 20px;
+    font-size: 27px;
+    font-weight: bold;
+}
+
+#nav_container #logo a {
+    text-decoration: none;
+    color:#000000;
+
+}
+
+#nav_container #nav_links{
+    margin-left: auto;
+    padding-right: 20px;
+    font-size: 17px;
+    list-style: none;
+    display: flex;
+    gap:50px; /*리스트 사이 간격*/
+
+}
+
+/*.user_links li:last-child {*/
+/*    margin-right: 0; !* 마지막 항목의 오른쪽 마진 제거 *!*/
+/*}*/
+
+
+#nav_container #nav_links a{
+    color:#000000;
+    text-decoration: none;
+}
+
+#nav_container #nav_links a.active{
+    font-weight: bold;
+}
+
+#nav_container #nav_links a:hover{
+    font-weight: bold;
+}
+
+#nav_container #nav_links li .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%; /* 헤더와 동일한 너비로 드롭다운*/
+    height: 300px;
+    background-color: white;
+    border: 0.5px solid #ccc;
+    border-right: none;
+    border-left: none;
+    z-index: 1000; /*드롭다운이 다른 콘텐츠 위에 올라가도록 보장 */
+    padding: 10px; /* Optional: adds padding inside the dropdown */
+}
+
+/*드롭다운메뉴*/
+.dropdown div li {
+    list-style-type: none; /* Remove bullet points */
+    padding: 8px;
+}
+
+.dropdown .category_group {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 0px;
+}
+
+.dropdown .category_group:first-child li:first-child a,
+.dropdown .category_group:last-child li:first-child a {
+    font-weight: bold; /* 채소와 과일 항목을 볼드체로 설정 */
+}
+
+.dropdown .category_group a{
+    margin-left: 210px;
+}
+
+.dropdown .farmer_market_group a{
+    margin-left: 320px;
+}

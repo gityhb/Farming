@@ -1,6 +1,6 @@
 import './shopping_basket.css';
 import './farmer_recommend.css';
-import './root.css';
+import './common/root.css';
 import React, { useState, useEffect } from "react";
 
 const formatDate = () => {
@@ -67,7 +67,7 @@ function Farmer_recommend() {
 
     return (
         <div id="body">
-            <div id={'farmer_recommend_page'}>
+            <div id={'farmer_recommend_page'} className={'page'}>
                 <div id={'contents'}>
                     {/*검색창*/}
                     <div id={'search_box'}>

@@ -69,8 +69,8 @@
 
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from "./components/Footer";
+import Header from './common/Header';
+import Footer from "./common/Footer";
 import FarmerJob from "./farmer_job";
 import FarmerJobInfo from "./farmer_job_info";
 import FarmerJobApply from "./farmer_job_apply";

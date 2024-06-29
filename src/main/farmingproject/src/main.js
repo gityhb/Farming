@@ -50,7 +50,7 @@ function Main() {
 
     return (
         <div id={'body'}>
-            <div id={'main_page'}>
+            <div id={'main_page'} className={'page'}>
                 <div id={'main_slide'}>
                     <div id={'arrowL'}>
                         <button onClick={prevSlide}><img src="res/arrowL.png" alt="previous"/></button>

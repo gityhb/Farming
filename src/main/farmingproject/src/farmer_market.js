@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import {Link, Route} from 'react-router-dom';
 import {  useNavigate } from 'react-router-dom';
-import './root.css';
+import './common/root.css';
 import  './farmer_market.css';
 
 function Farmer_market() {
@@ -13,7 +13,7 @@ function Farmer_market() {
 
     return (
         <div id={'body'}>
-            <div id={'market_farmer_page'}>
+            <div id={'farmer_market_page'} className={'page'}>
                 <div id={'contents'}>
                     <div id={'search_box'}>
                         <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
@@ -39,15 +39,17 @@ function Farmer_market() {
                         {/*첫번째 줄*/}
                         <ul className={'pd_list'}>
                             <li>
-                                <div className={'pd_info'}  onClick={handleClick}>
+                                <div className={'pd_info'} onClick={handleClick}>
+                                    <a href={'/'}>
                                         <img src={'res/products/premium_watermelon.png'} style={{width: '190px', height: '190px'}}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
+                                    </a>
+                                        <p className={'pd_price'}>
+                                            <span className={'pr_per'}>27% </span>
+                                            <span className={'pr_num'}>18,900</span>원
+                                        </p>
                                 </div>
                             </li>
                             <li>

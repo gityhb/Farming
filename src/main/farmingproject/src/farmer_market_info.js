@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import  './farmer_market_info.css';
-import './root.css';
+import './common/root.css';
 
 function Farmer_market_info() {
 
@@ -9,7 +9,7 @@ function Farmer_market_info() {
 
     return (
         <div id={'body'}>
-            <div id={'market_farmer_info_page'}>
+            <div id={'market_farmer_info_page'} className={'page'}>
                 <div id={'contents'}>
                     <div id={'search_box'}>
                         <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
