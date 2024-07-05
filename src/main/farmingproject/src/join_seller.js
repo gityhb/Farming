@@ -1,9 +1,11 @@
-import {useState, useEffect} from "react";
-import {Link} from "react-router-dom";
-import './join_consumer.css';
+import {useEffect, useState} from "react";
+import './join_seller.css';
 import './common/root.css';
+import {Link} from "react-router-dom";
 
-function Join_consumer() {
+function Join_seller() {
+    const [existingIds, setExistingIds] = useState(["user1", "user2", "user3"]); // 아이디 중복확인 버튼 실행 확인을 위한 임시데이터
+    const [idCheckMessage, setIdCheckMessage] = useState("");
     const [step, setStep] = useState(1);
     const [terms, setTerms] = useState({
         all: false,
@@ -17,16 +19,16 @@ function Join_consumer() {
         id: "",
         password: "",
         confirmPassword: "",
-        name: "",
-        phone: "",
+        representativeName: "",
+        businessNumber: "",
+        storeName: "",
+        representativePhone: "",
+        contactPhone: "",
         email: "",
-        address: ""
+        businessAddress: "",
     });
-    const [existingIds, setExistingIds] = useState(["user1", "user2", "user3"]); // 아이디 중복확인 버튼 실행 확인을 위한 임시데이터
-    const [idCheckMessage, setIdCheckMessage] = useState("");
 
     useEffect(() => {
-        // Initialize terms state on component mount
         setTerms({
             all: false,
             service: false,
@@ -57,20 +59,32 @@ function Join_consumer() {
             alert("비밀번호가 일치하지 않습니다.\n다시 입력해 주세요");
             return;
         }
-        if (!form.name) {
-            alert("이름을 입력하세요");
+        if (!form.representativeName) {
+            alert("대표자 이름을 입력하세요");
             return;
         }
-        if (!form.phone) {
-            alert("전화번호를 입력하세요");
+        if (!form.businessNumber) {
+            alert("사업자 번호를 입력하세요");
+            return;
+        }
+        if (!form.storeName) {
+            alert("가게 이름을 입력하세요");
+            return;
+        }
+        if (!form.representativePhone) {
+            alert("대표자 전화번호를 입력하세요");
+            return;
+        }
+        if (!form.contactPhone) {
+            alert("대표 전화번호를 입력하세요");
             return;
         }
         if (!form.email) {
-            alert("이메일을 입력하세요");
+            alert("이메일 입력하세요");
             return;
         }
-        if (!form.address) {
-            alert("주소를 입력하세요");
+        if (!form.businessAddress) {
+            alert("사업장 주소를 입력하세요");
             return;
         }
 
@@ -79,7 +93,7 @@ function Join_consumer() {
 
     const handleTermsChange = (name) => {
         setTerms(prevTerms => {
-            const updatedTerms = {...prevTerms, [name]: !prevTerms[name]};
+            const updatedTerms = { ...prevTerms, [name]: !prevTerms[name] };
 
             if (name === 'all') {
                 const allChecked = !prevTerms.all;
@@ -95,7 +109,7 @@ function Join_consumer() {
     };
 
     const handleInputChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setForm(prevForm => ({
             ...prevForm,
             [name]: value
@@ -109,31 +123,31 @@ function Join_consumer() {
             setIdCheckMessage("아이디가 중복됩니다.");
         } else {
             setIdCheckMessage("사용 가능한 아이디입니다.");
-        }
-    };
+        }    };
 
     const resetForm = () => {
         setForm({
             id: "",
             password: "",
             confirmPassword: "",
-            name: "",
-            phone: "",
+            representativeName: "",
+            businessNumber: "",
+            storeName: "",
+            representativePhone: "",
+            contactPhone: "",
             email: "",
-            address: ""
+            businessAddress: ""
         });
     };
 
-
-
     return (
         <div id={'body'}>
-            <div id={'join_consumer_page'} className={'page'}>
+            <div id={'join_seller_page'} className={'page'}>
                 <div id={'contents'}>
-                    <div id={'join_consumer_title'}>
+                    <div id={'join_seller_title'}>
                         <h1>회원가입</h1>
                     </div>
-                    <div id="join_consumer_form_step_group">
+                    <div id="join_seller_form_step_group">
                         <div className={`form_step ${step === 1 ? "active" : ""}`}>
                             <span className="step_number">①</span>
                             <span>약관동의</span>
@@ -730,102 +744,77 @@ function Join_consumer() {
                             </form>
                         </div>
                     )}
-
-                    {step === 2 && (
-                        <div id="join_consumer_form">
-                            <form onSubmit={handleSubmitForm}>
-                                <div id="join_consumer_form_group">
-                                    <div className="form_group">
-                                        <label>아이디</label>
-                                        <input
-                                            type="text"
-                                            name="id"
-                                            value={form.id}
-                                            onChange={handleInputChange}
-                                            placeholder="아이디를 입력하세요"
-                                        />
-                                        <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인
-                                        </button>
-                                        <div className="id_dupli_check">
-                                            {idCheckMessage && <p className="id_dupli_check_message">{idCheckMessage}</p>}
-                                        </div>
-                                    </div>
-                                    <div className="form_group">
-                                        <label>비밀번호</label>
-                                        <input
-                                            type="password"
-                                            name="password"
-                                            value={form.password}
-                                            onChange={handleInputChange}
-                                            placeholder="비밀번호를 입력하세요"
-                                        />
-                                    </div>
-                                    <div className="form_group">
-                                        <label>비밀번호 확인</label>
-                                        <input
-                                            type="password"
-                                            name="confirmPassword"
-                                            value={form.confirmPassword}
-                                            onChange={handleInputChange}
-                                            placeholder="비밀번호를 입력하세요"
-                                        />
-                                    </div>
-                                    <div className="form_group">
-                                        <label>이름</label>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            value={form.name}
-                                            onChange={handleInputChange}
-                                            placeholder="이름을 입력하세요"
-                                        />
-                                    </div>
-                                    <div className="form_group">
-                                        <label>전화번호</label>
-                                        <input
-                                            type="text"
-                                            name="phone"
-                                            value={form.phone}
-                                            onChange={handleInputChange}
-                                            placeholder="전화번호를 입력하세요"
-                                        />
-                                    </div>
-                                    <div className="form_group">
-                                        <label>이메일</label>
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            value={form.email}
-                                            onChange={handleInputChange}
-                                            placeholder="이메일을 입력하세요"
-                                        />
-                                    </div>
-                                    <div className="form_group">
-                                        <label>주소</label>
-                                        <input
-                                            type="text"
-                                            name="address"
-                                            value={form.address}
-                                            onChange={handleInputChange}
-                                            placeholder="주소를 입력하세요"
-                                        />
-                                    </div>
-                                </div>
-                                <button type="submit" className="submit_btn">가입하기</button>
-                            </form>
-                        </div>
-                    )}
-
-                    {step === 3 && (
-                        <div id="completion_message">
-                            <h1>회원가입이 완료되었습니다!</h1>
-                            <Link to={"/main"}><button className="main_btn">메인으로 이동</button></Link>
-                        </div>
-                    )}
+            {step === 2 && (
+                <div id="join_seller_form">
+                <form onSubmit={handleSubmitForm}>
+            <div id="join_seller_form_group">
+                <div className="form_group">
+                    <label>아이디</label>
+                    <input type="text" name="id" value={form.id} onChange={handleInputChange} placeholder="아이디를 입력하세요"/>
+                    <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인</button>
+                    <div className="id_dupli_check">
+                    {idCheckMessage && <p className="id_dupli_check_message">{idCheckMessage}</p>}
+                    </div>
                 </div>
+                <div className="form_group">
+                    <label>비밀번호</label>
+                    <input type="password" name="password" value={form.password} onChange={handleInputChange}
+                           placeholder="비밀번호를 입력하세요"/>
+                </div>
+                <div className="form_group">
+                    <label>비밀번호 확인</label>
+                    <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleInputChange}
+                           placeholder="비밀번호를 입력하세요"/>
+                </div>
+                <div className="form_group">
+                    <label>대표자 이름</label>
+                    <input type="text" name="representativeName" value={form.representativeName} onChange={handleInputChange}
+                           placeholder="대표자 이름을 입력하세요"/>
+                </div>
+                <div className="form_group">
+                    <label>사업자 번호</label>
+                    <input type="text" name="businessNumber" value={form.businessNumber} onChange={handleInputChange}
+                           placeholder="사업자 번호를 입력하세요"/>
+                </div>
+                <div className="form_group">
+                    <label>가게 이름</label>
+                    <input type="text" name="storeName" value={form.storeName} onChange={handleInputChange}
+                           placeholder="파밍에서 사용할 가게 이름을 입력하세요"/>
+                </div>
+                <div className="form_group">
+                    <label>대표자 전화번호</label>
+                    <input type="text" name="representativePhone" value={form.representativePhone} onChange={handleInputChange} placeholder="사업자 전화번호를 입력하세요"/>
+                </div>
+                <div className="form_group">
+                    <label>대표 전화번호</label>
+                    <input type="text" name="contactPhone" value={form.contactPhone} onChange={handleInputChange}
+                           placeholder="대표 전화번호를 입력하세요"/>
+                </div>
+                <div className="form_group">
+                    <label>이메일</label>
+                    <input type="email" name="email" value={form.email} onChange={handleInputChange}
+                           placeholder="이메일을 입력하세요"/>
+                </div>
+                <div className="form_group">
+                    <label>사업장 주소</label>
+                    <input type="text" name="businessAddress" value={form.businessAddress} onChange={handleInputChange}
+                           placeholder="사업장 주소를 입력하세요"/>
+                </div>
+            </div>
+            <button type="submit" className="submit_btn">회원가입</button>
+        </form>
+                </div>
+            )}
+            {step === 3 && (
+                <div id="completion_message">
+                    <h1>회원가입이 완료되었습니다!</h1>
+                    <Link to={"/main"}><button className="main_btn">메인으로 이동</button></Link>
+                </div>
+            )}
+</div>
             </div>
         </div>
     );
 }
 
-export default Join_consumer;
+export default Join_seller;

@@ -23,9 +23,9 @@ class SlideController {
 	public List<Slide> getSlides() {
 		return List.of(
 				new Slide( "FARMING 파밍", "2024.04.30(TUES)", "저희는 직거래 국내산 농산물만 취급합니다.\n" +
-						"신선하고 다양한 농산물을 만나보세요!", "res/main1.png"),
-				new Slide("특가 타임 세일", "2024.04.30(TUES)", "16:00 - 17:00","res/main2.png"),
-				new Slide("", "", "","res/main3.png")
+						"신선하고 다양한 농산물을 만나보세요!", "img/main/main1.png"),
+				new Slide("특가 타임 세일", "2024.04.30(TUES)", "16:00 - 17:00","img/main/main2.png"),
+				new Slide("", "", "","img/main/main3.png")
 		);
 	}
 

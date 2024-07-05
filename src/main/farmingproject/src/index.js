@@ -9,7 +9,7 @@ import Farmer_market_info from "./farmer_market_info";
 import {BrowserRouter} from "react-router-dom";
 import Login from "./login";
 import Join_consumer from "./join_consumer";
-import Seller_join from "./seller_join";
+import Join_seller from "./join_seller";
 import Farmer_job from "./farmer_job";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

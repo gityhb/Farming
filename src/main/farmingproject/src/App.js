@@ -82,6 +82,7 @@ import Login from "./login";
 import Shopping_Basket from "./shopping_basket";
 import Farmer_market_info from "./farmer_market_info";
 import Join_consumer from "./join_consumer";
+import Join_seller from "./join_seller";
 
 function App() {
     const location = useLocation();
@@ -101,6 +102,7 @@ function App() {
                 <Route path="/farmer_job_apply" element={<FarmerJobApply />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/join_consumer" element={<Join_consumer />} />
+                <Route path="/join_seller" element={<Join_seller />} />
                 <Route path="/shopping_basket" element={<Shopping_Basket />} />
 
 

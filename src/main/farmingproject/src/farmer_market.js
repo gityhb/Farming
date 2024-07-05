@@ -1,15 +1,9 @@
 import {useState, useEffect} from "react";
 import {Link, Route} from 'react-router-dom';
-import {  useNavigate } from 'react-router-dom';
 import './common/root.css';
-import  './farmer_market.css';
+import './farmer_market.css';
 
 function Farmer_market() {
-    const navigate=useNavigate();
-
-    const handleClick=()=>{
-        navigate('/farmer_market_info');
-    };
 
     return (
         <div id={'body'}>
@@ -17,7 +11,7 @@ function Farmer_market() {
                 <div id={'contents'}>
                     <div id={'search_box'}>
                         <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
-                        <button id={'search_btn'}><img src="res/search.png" alt={"search_btn"}/> </button>
+                        <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/> </button>
                     </div>
                     <div id={'align_box'}>
                         <div id={'category_box'}>
@@ -39,13 +33,13 @@ function Farmer_market() {
                         {/*첫번째 줄*/}
                         <ul className={'pd_list'}>
                             <li>
-                                <div className={'pd_info'} onClick={handleClick}>
-                                    <a href={'/'}>
-                                        <img src={'res/products/premium_watermelon.png'} style={{width: '190px', height: '190px'}}/>
+                                <div className={'pd_info'}>
+                                    <Link to={"/farmer_market_info"}>
+                                        <img src={'img/watermelon.png'} style={{width: '190px', height: '190px'}}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
-                                    </a>
+                                    </Link>
                                         <p className={'pd_price'}>
                                             <span className={'pr_per'}>27% </span>
                                             <span className={'pr_num'}>18,900</span>원
@@ -55,7 +49,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/premium_watermelon.png'}/>
+                                        <img src={'img/watermelon.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -69,7 +63,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/premium_watermelon.png'}/>
+                                        <img src={'img/watermelon.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -83,7 +77,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/premium_watermelon.png'}/>
+                                        <img src={'img/watermelon.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -100,7 +94,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/strawberry.png'}/>
+                                        <img src={'img/zucchini_2.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -114,7 +108,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/strawberry.png'}/>
+                                        <img src={'img/zucchini_2.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -128,7 +122,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/strawberry.png'}/>
+                                        <img src={'img/zucchini_2.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -142,7 +136,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/strawberry.png'}/>
+                                        <img src={'img/zucchini_2.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -159,7 +153,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/aralia.png'}/>
+                                        <img src={'img/aralia.png'}/>
                                         <p className={'pd_name'}>
                                             순창 두릅
                                         </p>
@@ -173,7 +167,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/aralia.png'}/>
+                                        <img src={'img/aralia.png'}/>
                                         <p className={'pd_name'}>
                                             순창 두릅
                                         </p>
@@ -187,7 +181,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/aralia.png'}/>
+                                        <img src={'img/aralia.png'}/>
                                         <p className={'pd_name'}>
                                             순창 두릅
                                         </p>
@@ -201,7 +195,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/aralia.png'}/>
+                                        <img src={'img/aralia.png'}/>
                                         <p className={'pd_name'}>
                                             순창 두릅
                                         </p>
@@ -218,7 +212,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/strawberry.png'}/>
+                                        <img src={'img/strawberry_3.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -232,7 +226,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/strawberry.png'}/>
+                                        <img src={'img/strawberry_3.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -246,7 +240,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/strawberry.png'}/>
+                                        <img src={'img/strawberry_3.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -260,7 +254,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/strawberry.png'}/>
+                                        <img src={'img/strawberry_3.png'}/>
                                         <p className={'pd_name'}>
                                             프리미엄 고당도 수박
                                         </p>
@@ -277,7 +271,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/cucumber.png'}/>
+                                        <img src={'img/cucumber.png'}/>
                                         <p className={'pd_name'}>
                                             오이지오이 10kg
                                         </p>
@@ -291,7 +285,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/cucumber.png'}/>
+                                        <img src={'img/cucumber.png'}/>
                                         <p className={'pd_name'}>
                                             오이지오이 10kg
                                         </p>
@@ -305,7 +299,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/cucumber.png'}/>
+                                        <img src={'img/cucumber.png'}/>
                                         <p className={'pd_name'}>
                                             오이지오이 10kg
                                         </p>
@@ -319,7 +313,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/cucumber.png'}/>
+                                        <img src={'img/cucumber.png'}/>
                                         <p className={'pd_name'}>
                                             오이지오이 10kg
                                         </p>
@@ -336,7 +330,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/snow_white_strawberry.png'}/>
+                                        <img src={'img/snow_white_strawberry.png'}/>
                                         <p className={'pd_name'}>
                                             백설향 딸기
                                         </p>
@@ -350,7 +344,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/snow_white_strawberry.png'}/>
+                                        <img src={'img/snow_white_strawberry.png'}/>
                                         <p className={'pd_name'}>
                                             백설향 딸기
                                         </p>
@@ -364,7 +358,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/snow_white_strawberry.png'}/>
+                                        <img src={'img/snow_white_strawberry.png'}/>
                                         <p className={'pd_name'}>
                                             백설향 딸기
                                         </p>
@@ -378,7 +372,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/snow_white_strawberry.png'}/>
+                                        <img src={'img/snow_white_strawberry.png'}/>
                                         <p className={'pd_name'}>
                                             백설향 딸기
                                         </p>
@@ -395,7 +389,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/zucchini.png'}/>
+                                        <img src={'img/zucchini_2.png'}/>
                                         <p className={'pd_name'}>
                                             국내산 애호박 5개
                                         </p>
@@ -409,7 +403,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/zucchini.png'}/>
+                                        <img src={'img/zucchini_2.png'}/>
                                         <p className={'pd_name'}>
                                             국내산 애호박 5개
                                         </p>
@@ -423,7 +417,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/zucchini.png'}/>
+                                        <img src={'img/zucchini_2.png'}/>
                                         <p className={'pd_name'}>
                                             국내산 애호박 5개
                                         </p>
@@ -437,7 +431,7 @@ function Farmer_market() {
                             <li>
                                 <div className={'pd_info'}>
                                     <a href={'/'}>
-                                        <img src={'res/products/zucchini.png'}/>
+                                        <img src={'img/zucchini_2.png'}/>
                                         <p className={'pd_name'}>
                                             국내산 애호박 5개
                                         </p>

@@ -1,14 +1,32 @@
-.farmergic_menu {
-    width: 100%;
+#farmer_job_page #contents {
+    padding-top: 0;
+}
+
+#farmergic_menu {
     height: 230px;
     background-color: #FFF0AD;
 }
 
-.farmergic_menu_text {
-    text-align: center;
+#farmergic_menu_text {
     padding: 30px;
+    text-align: center;
     font-weight: bold;
-    font-size: 32px;
+    font-size: 30px;
+}
+
+#farmergic_menu_button {
+    text-align: center;
+}
+
+#farmergic_menu_button button {
+    margin: 10px;
+    width: 150px;
+    height: 60px;
+    font-size: 20px;
+    font-weight: bold;
+    background: #fff;
+    border: none;
+    border-radius: 15px;
 }
 
 .farmergic_main_container {
@@ -17,7 +35,6 @@
 }
 
 .farmergic_main {
-    width: 1020px;
     min-height: 360px; /* 최소 높이 설정 */
     display: flex;
     flex-wrap: wrap; /* 한 줄에 두 개씩 배치 */

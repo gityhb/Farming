@@ -7,6 +7,7 @@
     float: left;
 }
 .product_detail .right_area {
+    width: 500px;
     height: 440px;
     float: right;
 }
@@ -16,7 +17,7 @@
 
 /*상품명*/
 .right_area .pd_name {
-    font-size: 35px;
+    font-size: 30px;
     font-weight: 700;
 }
 .right_area .pd_name p {
@@ -24,9 +25,12 @@
 }
 
 /*좋아요버튼*/
+.right_area .pd_like {
+    margin-left: auto;
+}
+
 .right_area .pd_like img {
-    margin: 13px 0;
-    margin-left: 10px;
+    margin: 8px 0;
     width: 45px;
 }
 
@@ -37,7 +41,7 @@
 }
 
 .right_area .pd_value .pd_price {
-    font-size: 35px;
+    font-size: 30px;
 }
 
 .right_area .pd_value .pd_rate {
@@ -47,18 +51,19 @@
 
 /*별점*/
 .right_area .pd_star img {
-    width: 32px;
-    height: 32px;
+    width: 20px;
+    height: 20px;
 }
 
 .right_area .pd_star span {
     color: #FFAE00;
-    font-size: 25px;
+    font-size: 18px;
+    font-weight: 700;
 }
 
 .right_area div span {
-    line-height: 50px;
-    font-size: 23px;
+    line-height: 40px;
+    font-size: 18px;
 }
 
 .right_area .purchase_cnt {
@@ -66,10 +71,10 @@
 }
 
 /* 구매 수량 테투리 만들기*/
-.right_area .purchase_cnt table, tr, td {
-    border: 2px solid #ACACAC;
+.right_area .purchase_cnt table,.right_area .purchase_cnt table tr, .right_area .purchase_cnt table tr td {
+    border: 1.5px solid #ACACAC;
     border-collapse: collapse;
-    height: 45px;
+    height: 40px;
 }
 
 .right_area .purchase_cnt table {
@@ -83,17 +88,17 @@
 
 .right_area .purchase_cnt table tr td button {
     padding: 3px;
-    width: 45px;
+    width: 38px;
     border: none;
     background: none;
-    font-size: 35px;
-    color: #ACACAC;
+    font-size: 30px;
+    color: #BEBEBE;
 }
 
 .right_area .purchase_cnt table tr td input {
     padding: 3px;
-    width: 45px;
-    height: 39px;
+    width: 38px;
+    height: 37px;
     border: none;
     background: none;
     font-size: 25px;
@@ -111,7 +116,7 @@
     margin: 10px;
     padding: 15px;
     border-radius: 10px;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 700;
 }
 
@@ -135,14 +140,14 @@
 }
 
 .product_detail_more_area .product_detail_tab li {
-    padding: 15px 15px;
+    padding: 12px 15px;
     width: 219px;
     display: inline-block;
-    border: 3px solid #b9b9b9;
-    font-size: 22px;
+    border: 2px solid #BEBEBE;
+    font-size: 19px;
     text-align: center;
     cursor: pointer;
-    background: #b9b9b9;
+    background: #BEBEBE;
     color: #fff;
 }
 
@@ -154,7 +159,7 @@
 .product_detail_more_area .product_detail_info_area {
     padding: 10px;
     width: 96.8%;
-    border: 3px solid #b9b9b9;
+    border: 2px solid #BEBEBE;
     border-top: none;
 }
 

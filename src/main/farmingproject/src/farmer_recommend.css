@@ -79,8 +79,12 @@
     margin-top: 100px;
 }
 
+#recommend_title_sale h1 {
+    position: relative;
+    top: 35px;
+}
+
 #today_time_sale #recommend_today_date {
-    padding-top: 45px;
     padding-right: 10px;
     font-size: 27px;
     float: right;

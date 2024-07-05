@@ -53,7 +53,7 @@ function Main() {
             <div id={'main_page'} className={'page'}>
                 <div id={'main_slide'}>
                     <div id={'arrowL'}>
-                        <button onClick={prevSlide}><img src="res/arrowL.png" alt="previous"/></button>
+                        <button onClick={prevSlide}><img src="img/etc/arrowL.png" alt="previous"/></button>
                     </div>
                     <div id={'slides'}>
                         <div id={'slides_text'}>
@@ -69,7 +69,7 @@ function Main() {
                         </div>
                     </div>
                     <div id={'arrowR'}>
-                        <button onClick={nextSlide}><img src="res/arrowR.png" alt="next"/></button>
+                        <button onClick={nextSlide}><img src="img/etc/arrowR.png" alt="next"/></button>
                     </div>
                 </div>
             </div>

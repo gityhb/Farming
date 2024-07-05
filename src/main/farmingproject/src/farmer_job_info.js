@@ -1,6 +1,6 @@
 import React from "react";
 import './farmer_job_info.css';
-import MapComponent from './MapComponent';
+import MapComponent from './component/MapComponent';
 
 
 function FarmerJobInfo() {

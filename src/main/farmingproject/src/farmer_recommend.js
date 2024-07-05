@@ -48,7 +48,7 @@ const CountdownTimer = () => {
 
 function Farmer_recommend() {
     const [items, setItems] = useState([
-        { id: 1, name: "맛난 딸기", salepercent: 45, price: 1000, marketImg: "img/strawberry.png"},
+        { id: 1, name: "맛난 딸기", salepercent: 45, price: 1000, marketImg: "img/strawberry_3.png"},
         { id: 2, name: "국내산 토마토", salepercent: 20, price: 2000, marketImg: "img/tomato.png"},
         { id: 3, name: "국내산 사과", salepercent: 30, price: 3000, marketImg: "img/apple.png"},
         { id: 4, name: "아보카도", salepercent: 25, price: 1000, marketImg: "img/avocado.png"},
@@ -56,10 +56,10 @@ function Farmer_recommend() {
     ]);
 
     const [timeSaleItems, setTimeSaleItems] = useState([
-        { id: 6, name: "고창 수박", salepercent: 50, price: 15000, marketImg: "img/watermelon.png" },
+        { id: 6, name: "고창 수박", salepercent: 50, price: 15000, marketImg: "img/watermelon_2.png" },
         { id: 7, name: "부드러운 바나나", salepercent: 35, price: 3000, marketImg: "img/banana.png" },
         { id: 8, name: "제주도 귤", salepercent: 40, price: 4000, marketImg: "img/mandarin.png" },
-        { id: 9, name: "인큐 애호박", salepercent: 20, price: 2500, marketImg: "img/zucchini.png" },
+        { id: 9, name: "인큐 애호박", salepercent: 20, price: 2500, marketImg: "img/zucchini_2.png" },
         { id: 10, name: "사파이어 포도", salepercent: 15, price: 4500, marketImg: "img/sapphire_grapes.png" },
     ]);
 
@@ -72,7 +72,7 @@ function Farmer_recommend() {
                     {/*검색창*/}
                     <div id={'search_box'}>
                         <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
-                        <button id={'search_btn'}><img src="res/search.png" alt={"search_btn"}/></button>
+                        <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/></button>
                     </div>
                     {/*오늘의 추천 TOP 5*/}
                     <div id="today_recommend_5">
@@ -98,7 +98,7 @@ function Farmer_recommend() {
                     </div>
                     {/*오늘의 특가 타임 세일*/}
                     <div id="today_time_sale">
-                        <div className={'recommend_title'}>
+                        <div className={'recommend_title'} id={'recommend_title_sale'}>
                             <h1>오늘의 특가 타임 세일</h1>
                         </div>
                         <span id="recommend_today_date">{todayDate}</span>
