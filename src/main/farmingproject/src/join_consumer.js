@@ -18,6 +18,7 @@ function Join_consumer() {
         password: "",
         confirmPassword: "",
         name: "",
+        nickname:"",
         phone: "",
         email: "",
         address: ""
@@ -59,6 +60,10 @@ function Join_consumer() {
         }
         if (!form.name) {
             alert("이름을 입력하세요");
+            return;
+        }
+        if (!form.nickname) {
+            alert("닉네임을 입력하세요");
             return;
         }
         if (!form.phone) {
@@ -118,6 +123,7 @@ function Join_consumer() {
             password: "",
             confirmPassword: "",
             name: "",
+            nickname:"",
             phone: "",
             email: "",
             address: ""
@@ -778,6 +784,16 @@ function Join_consumer() {
                                             value={form.name}
                                             onChange={handleInputChange}
                                             placeholder="이름을 입력하세요"
+                                        />
+                                    </div>
+                                    <div className="form_group">
+                                        <label>닉네임</label>
+                                        <input
+                                            type="text"
+                                            name="nickname"
+                                            value={form.nickname}
+                                            onChange={handleInputChange}
+                                            placeholder="닉네임을 입력하세요"
                                         />
                                     </div>
                                     <div className="form_group">

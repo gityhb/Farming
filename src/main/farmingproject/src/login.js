@@ -7,7 +7,7 @@ function Login() {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/join_seller');
+        navigate('/join_consumer');
     };
 
     const [activeTab, setActiveTab] = useState("consumer");
