@@ -23,7 +23,18 @@ function Payment() {
                     <table id="t_address_info">
                         <tr>
                             <td className="address_tbl_title">배송지</td>
-                            <td className="address_tbl_info">기존배송지/신규배송지</td>
+                            <td className="address_tbl_info">
+                                <form id="address_info_form">
+                                    <label>
+                                        <input type="radio" id="old_add" name="address" value="old_add" defaultChecked/>
+                                            기존배송지
+                                    </label>
+                                    <label>
+                                        <input type="radio" id="new_add" name="address" value="new_add"/>
+                                            신규배송지
+                                    </label>
+                                </form>
+                            </td>
                         </tr>
                         <tr>
                             <td className="address_tbl_title">이름/연락처</td>
@@ -35,7 +46,16 @@ function Payment() {
                         </tr>
                         <tr>
                             <td className="address_tbl_title">배송 요청사항</td>
-                            <td className="address_tbl_info">뭘 요청할래?</td>
+                            <td className="address_tbl_info">
+                                <select id="delivery-notes" class="delivery-notes">
+                                    <option value="delivery-notes1" selected>요청사항 없음</option>
+                                    <option value="delivery-notes2">문 앞에 놔주세요</option>
+                                    <option value="delivery-notes3">도착 전 전화주세요</option>
+                                    <option value="delivery-notes4">경비실에 놔주세요</option>
+                                    <option value="delivery-notes5">벨 눌러주세요</option>
+                                    <option value="delivery-notes6">직접 입력</option>
+                                </select>
+                            </td>
                         </tr>
                     </table>
 
@@ -75,7 +95,7 @@ function Payment() {
                         </tr>
                         <tr>
                             <td className="address_tbl_title">적립금 사용</td>
-                            <td className="address_tbl_info">3000원 이상 보유시 사용가능</td>
+                            <td className="address_tbl_info" style={{ color: '#ababab' }}>3000원 이상 보유시 사용가능 (보유 적립금 116원)</td>
                         </tr>
                         <tr>
                             <td className="address_tbl_title">배송비</td>
@@ -86,21 +106,63 @@ function Payment() {
 
                     {/* 결제창 결제수단선택 */}
                     <div className="payment_title">결제수단 선택</div>
-                    <div id="rdo_pay_select">신용카드? 페이코?</div>
+                    <div id="rdo_pay_select">
+                        <form id="payment_type_form">
+                            <label>
+                                <input type="radio" id="card" name="payment_type" value="card" defaultChecked/>
+                                신용카드
+                            </label>
+                            <label>
+                                <input type="radio" id="payco" name="payment_type" value="payco"/>
+                                페이코
+                            </label>
+                            <label>
+                                <input type="radio" id="kakaopay" name="payment_type" value="kakaopay"/>
+                                카카오페이
+                            </label>
+                            <label>
+                                <input type="radio" id="naverpay" name="payment_type" value="naverpay"/>
+                                네이버페이
+                            </label>
+                            <label>
+                                <input type="radio" id="account" name="payment_type" value="account"/>
+                                계좌이체
+                            </label>
+                        </form>
+                    </div>
                     <table id="t_payment_select">
                         <tr>
                             <td className="payselect_tbl_title">카드 종류</td>
-                            <td className="address_tbl_info">카드 종류 선택해라</td>
+                            <td className="address_tbl_info">
+                                <select id="card_type" class="delivery-notes">
+                                    <option value="card_type0" selected>카드를 선택해주세요</option>
+                                    <option value="card_type1">KB국민카드</option>
+                                    <option value="card_type2">농협카드</option>
+                                    <option value="card_type3">현대카드</option>
+                                    <option value="card_type4">우리카드</option>
+                                    <option value="card_type5">삼성카드</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td className="payselect_tbl_title">할부 종류</td>
-                            <td className="address_tbl_info">일시불? 할부?</td>
+                            <td className="address_tbl_info">
+                                <select id="card_month" class="delivery-notes">
+                                    <option value="card_month0" selected>일시불</option>
+                                    <option value="card_month1">1개월</option>
+                                    <option value="card_month2">2개월</option>
+                                    <option value="card_month3">3개월</option>
+                                    <option value="card_month4">4개월</option>
+                                    <option value="card_month5">5개월</option>
+                                    <option value="card_month6">6개월</option>
+                                </select>
+                            </td>
                         </tr>
                     </table>
 
 
                     {/* 결제창 결제정보 */}
-                    <div className="payment_title"> 결제정보 </div>
+                    <div className="payment_title"> 결제정보</div>
                     <table id="t_payment_info">
                         <tr className={"payment_info_title"}>
                             <th>

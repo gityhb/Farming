@@ -24,6 +24,19 @@
     padding: 18px;
 }
 
+#address_info_form label{
+    margin-right: 30px;
+}
+
+
+.delivery-notes{ /*select 공통 css*/
+    width:300px;
+    padding: 8px;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+
 /* 상품 정보 테이블 css */
 
 #t_product_info{
@@ -97,7 +110,9 @@
     padding: 0px 10px;
 }
 
-
+#payment_type_form label{
+    margin: 0 15px;
+}
 
 /* 결제하기 버튼*/
 
