@@ -751,7 +751,7 @@ function Join_consumer() {
 
                     {step === 2 && (
                         <div id="join_consumer_form">
-                            <form onSubmit={handleSubmitForm}>
+                            <form onSubmit={handleSubmitForm} action={"@{/user}"} method={"POST"}>
                                 <div id="join_consumer_form_group">
                                     <div className="form_group">
                                         <label>아이디</label>

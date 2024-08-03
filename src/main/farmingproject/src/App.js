@@ -81,8 +81,12 @@ import Farmer_recommend from "./farmer_recommend";
 import Login from "./login";
 import Shopping_Basket from "./shopping_basket";
 import Farmer_market_info from "./farmer_market_info";
+
 import Join_consumer from "./join_consumer";
 import Join_seller from "./join_seller";
+import Join from "./join";
+
+import Farmer_product_apply from "./farmer_product_apply";
 
 function App() {
     const location = useLocation();
@@ -92,7 +96,7 @@ function App() {
         <div>
             {!hideHeaderFooter && <Header />}
             <Routes>
-                <Route path="/main" element={<Main />} />
+                <Route path="/" element={<Main />} />
                 <Route path="/category" element={<Category />} />
                 <Route path="/farmer_job" element={<FarmerJob />} />
                 <Route path="/farmer_recommend" element={<Farmer_recommend />} />
@@ -101,9 +105,11 @@ function App() {
                 <Route path="/farmer_job_info" element={<FarmerJobInfo />} />
                 <Route path="/farmer_job_apply" element={<FarmerJobApply />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/join" element={<Join />} />
                 <Route path="/join_consumer" element={<Join_consumer />} />
                 <Route path="/join_seller" element={<Join_seller />} />
                 <Route path="/shopping_basket" element={<Shopping_Basket />} />
+                <Route path="/farmer_product_apply" element={<Farmer_product_apply/>} />
 
 
             </Routes>
