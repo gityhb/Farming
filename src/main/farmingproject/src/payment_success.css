@@ -1,0 +1,25 @@
+.payment_success{
+    text-align: center;
+    align-items: center;
+    padding: 170px 0;
+}
+
+.payment_success img{
+    width: 80px;
+}
+
+#payment_success_txt{
+    font-size: 30px;
+    font-weight: 800;
+}
+
+#payment_success_Btn{
+    margin: 120px auto;
+    padding-top: 12px;
+    background-color: #FFEA8D;
+    width: 220px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 5px;
+}
