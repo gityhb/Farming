@@ -70,7 +70,7 @@ function Header() {
                     <li><a href="/farmer_job" className={location.pathname === '/farmer_job' ? 'active' : ''}>파머직</a></li>
                     <li><a href="/service" className={location.pathname === '/service' ? 'active' : ''}>고객센터</a></li>
                     <li><a href="/shopping_basket" className={location.pathname === '/shopping_basket' ? 'active' : ''}>장바구니</a></li>
-                    <li><a href="/profile" className={location.pathname === '/profile' ? 'active' : ''}>마이페이지</a></li>
+                    <li><a href="/mypage" className={location.pathname === '/mypage' ? 'active' : ''}>마이페이지</a></li>
                     <li><a href="/login" className={location.pathname === '/login' ? 'active' : ''}>로그인</a></li>
                 </ul>
             </nav>

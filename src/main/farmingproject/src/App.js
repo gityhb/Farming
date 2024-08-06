@@ -83,6 +83,9 @@ import Shopping_Basket from "./shopping_basket";
 import Farmer_market_info from "./farmer_market_info";
 import Join_consumer from "./join_consumer";
 import Join_seller from "./join_seller";
+import MyPage from "./mypage";
+import Auction from "./auction";
+import AuctionDetail from "./auction_detail";
 
 function App() {
     const location = useLocation();
@@ -104,6 +107,10 @@ function App() {
                 <Route path="/join_consumer" element={<Join_consumer />} />
                 <Route path="/join_seller" element={<Join_seller />} />
                 <Route path="/shopping_basket" element={<Shopping_Basket />} />
+                <Route path="/mypage" element={<MyPage />} />
+                <Route path="/auction" element={<Auction/>} />
+                <Route path="/auction_detail" element={<AuctionDetail/>} />
+
 
 
             </Routes>
