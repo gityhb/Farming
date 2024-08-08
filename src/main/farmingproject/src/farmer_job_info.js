@@ -1,9 +1,21 @@
-import React from "react";
+import React,{useState} from "react";
 import './farmer_job_info.css';
 import MapComponent from './component/MapComponent';
+import Modal from './component/Modal';
+import FarmerJobApply from './farmer_job_apply';
 
 
 function FarmerJobInfo() {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
     return (
         <div className="farmergic_info_main">
             <div className="farmergic_info_main_img">
@@ -46,11 +58,13 @@ function FarmerJobInfo() {
             <div className="farmergic_info_map">
                 <MapComponent/>
             </div>
-            <div className="farmer_info_btn">
-                <div className="farmer_info_btn_text">
-                    지원하기
-                </div>
-            </div>
+
+            <button className="farmer_info_btn" onClick={handleOpenModal}>
+             지원하기
+            </button>
+            <Modal show={showModal} handleClose={handleCloseModal}>
+                <FarmerJobApply />
+            </Modal>
         </div>
     );
 }

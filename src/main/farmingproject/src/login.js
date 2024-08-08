@@ -1,10 +1,14 @@
 import {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import "./common/root.css";
 import "./login.css";
 
 function Login() {
     const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/join_consumer');
+    };
 
     const [activeTab, setActiveTab] = useState("consumer");
     const [userid, setUserid] = useState("");
@@ -70,7 +74,7 @@ function Login() {
                     </div>
                     <div id={'login_form'}>
                     {activeTab === "consumer" ? (
-                        <form onSubmit={handleLogin} action={"/login"} method={"POST"}>
+                        <form onSubmit={handleLogin}>
                             <div className="input_group">
                                 <label>아이디</label>
                                 <input
@@ -134,8 +138,8 @@ function Login() {
                         </form>
                     )}
                     </div>
-                    <div id="login_links">
-                        <Link to={'/join'}>회원가입</Link>
+                    <div id="login_links" onClick={handleClick}>
+                        <a href="#">회원가입</a>
                         <span className="separator">|</span>
                         <a href="#">아이디 찾기</a>
                         <span className="separator">|</span>

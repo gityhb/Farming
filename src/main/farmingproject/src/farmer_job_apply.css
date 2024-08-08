@@ -1,19 +1,65 @@
-.apply_content{
-    width:700px ;
-    height: 800px;
-}
-
 .apply_header{
-    width: 700px;
     height: 100px;
-    background-color: #FFF0AD;
+    background-color:#FFF0AD ;
     text-align: center;
-}
-
-.apply_main{
-    text-align: center;
-}
-
-.main_name{
+    font-size:32px;
     font-weight: bold;
+    line-height: 100px;
+    margin-bottom: 30px;
+}
+
+.apply_main {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.apply_main label {
+    font-weight: bold;
+    font-size: 24px;
+    margin-left: 30px;
+}
+.apply_main input[type="number"],
+.apply_main input[type="text"] {
+    width: 400px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-left: 55px;
+}
+
+.apply_main input[type="tel"] {
+    width: 400px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.apply_main textarea{
+    width: 500px;
+    height: 200px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-left: 30px;
+    margin-top: 10px;
+
+ }
+
+.apply_main textarea {
+    resize: none;
+}
+
+.apply_button{
+    width:500px;
+    height: 50px;
+    background-color:#FFF0AD;
+    border-radius: 10px;
+    margin-top: 50px;
+    margin-left:40px;
+    font-size:24px;
 }

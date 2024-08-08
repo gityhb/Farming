@@ -5,7 +5,7 @@ function FarmerJobApply() {
     return (
         <div className="apply_content">
             <div className="apply_header">
-                <h2>지원하기</h2>
+                지원하기
             </div>
             <div className="apply_main">
                 <div className="main_name">
@@ -25,14 +25,13 @@ function FarmerJobApply() {
                     <input type="text" id="address" name="address"/>
                 </div>
                 <div className="main_detail">
-                    <label htmlFor="detail">지원동기:</label>
+                    <label htmlFor="detail">자기소개 및 지원동기</label>
                     <textarea id="detail" name="detail" rows="4"/>
                 </div>
             </div>
-            <div className="apply_button">
-                <button>취소</button>
-                <button>등록</button>
-            </div>
+            <button className="apply_button">
+                등록
+            </button>
         </div>
     );
 }
