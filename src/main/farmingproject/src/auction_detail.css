@@ -1,0 +1,112 @@
+.auction_detail_text{
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+.auction_detail_container{
+    display: flex;
+}
+
+.auction_detail_container img{
+    width: 270px;
+    height: 250px;
+    margin-right: 60px;
+}
+
+.auction_detail_item .item_title{
+    font-size:36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.auction_detail_item .item_origin, .item_delivery{
+    font-size: 20px;
+    padding: 10px;
+}
+
+.auction_detail_item .item_minbid{
+    display: flex;
+    margin-left: 300px;
+    margin-top: 100px;
+    margin-bottom: 30px;
+}
+
+.auction_detail_item .item_minbid .minbid_title{
+    font-size: 24px;
+    margin-top: 10px;
+
+}
+
+.auction_detail_item .item_minbid .minbid_amount{
+    font-size: 36px;
+    font-weight: bold;
+    margin-left:20px;
+}
+
+.auction_detail_separator {
+    height: 1px; /* 선의 높이 */
+    background-color: #717171; /* 선의 색상 */
+    margin: 20px 0; /* 선 위아래 여백 조정 */
+}
+
+.auction_amount{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.auction_amount .auction_amount_input{
+    width: 365px;
+    height: 130px;
+    border: 2px solid #808080;
+    border-radius: 3px;
+
+}
+
+.auction_amount .auction_amount_input .auction_time{
+    background-color:#FFF0AD;
+    border-top-left-radius: 3px; /* 왼쪽 위 모서리 */
+    border-top-right-radius: 3px; /* 오른쪽 위 모서리 */
+    color:#FF0000;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.auction_amount .auction_amount_input .auction_amount_text{
+    font-size:24px;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top:30px;
+}
+
+.auction_amount .auction_amount_btn{
+    width:170px;
+    height:75px;
+    background-color:#FFD000;
+    color: white;
+    font-size: 27px;
+    text-align: center;
+    line-height: 75px;
+    border-radius: 10px;
+    margin-left: 50px;
+    margin-top: 55px;
+}
+
+.auction_input_container{
+    display: flex;
+}
+
+.auction_amount_input_field{
+    margin-top: 10px;
+    margin-left: 30px;
+    width: 250px;
+    border:none;
+}
+
+.auction_amount .auction_amount_input .auction_amount_input_field::placeholder {
+    text-align: center; /* placeholder 텍스트 가운데 정렬 */
+}
+

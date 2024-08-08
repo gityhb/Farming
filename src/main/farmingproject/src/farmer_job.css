@@ -18,7 +18,7 @@
     text-align: center;
 }
 
-#farmergic_menu_button button {
+#farmergic_menu_button .farmergic_menu_button_1, .farmergic_menu_button_2 {
     margin: 10px;
     width: 150px;
     height: 60px;
@@ -27,11 +27,16 @@
     background: #fff;
     border: none;
     border-radius: 15px;
+    text-align: center;
 }
 
 .farmergic_main_container {
     display: flex;
     justify-content: center; /* 수평 가운데 정렬 */
+}
+.farmergic_main_container a{
+    text-decoration: none;
+    color: black;
 }
 
 .farmergic_main {
@@ -40,6 +45,7 @@
     flex-wrap: wrap; /* 한 줄에 두 개씩 배치 */
     justify-content: space-between;
     padding: 20px; /* 내용물이 많아질 때 높이가 늘어나도록 여백 추가 */
+    text-decoration: none;
 }
 
 

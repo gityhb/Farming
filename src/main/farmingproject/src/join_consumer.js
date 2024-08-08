@@ -25,8 +25,6 @@ function Join_consumer() {
     });
     const [existingIds, setExistingIds] = useState(["user1", "user2", "user3"]); // 아이디 중복확인 버튼 실행 확인을 위한 임시데이터
     const [idCheckMessage, setIdCheckMessage] = useState("");
-    const [nicknameCheckMessage, setNicknameCheckMessage] = useState("");
-
 
     useEffect(() => {
         // Initialize terms state on component mount
@@ -118,16 +116,6 @@ function Join_consumer() {
             setIdCheckMessage("사용 가능한 아이디입니다.");
         }
     };
-    const checkNickname = () => {
-        if (!form.nickname || form.nickname.trim() === "") {
-            setNicknameCheckMessage("닉네임을 입력해 주세요.");
-        } else if (existingIds.includes(form.nickname)) {
-            setNicknameCheckMessage("닉네임이 중복됩니다.");
-        } else {
-            setNicknameCheckMessage("사용 가능한 닉네임입니다.");
-        }
-    };
-
 
     const resetForm = () => {
         setForm({
@@ -807,12 +795,6 @@ function Join_consumer() {
                                             onChange={handleInputChange}
                                             placeholder="닉네임을 입력하세요"
                                         />
-                                        <button type="button" className="dupli_check_btn" onClick={checkNickname}>중복확인
-                                        </button>
-                                        <div className="id_dupli_check">
-                                            {nicknameCheckMessage &&
-                                                <p className="id_dupli_check_message">{nicknameCheckMessage}</p>}
-                                        </div>
                                     </div>
                                     <div className="form_group">
                                         <label>전화번호</label>
