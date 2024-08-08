@@ -27,7 +27,7 @@ function Header() {
         <header id="header">
             <nav id="nav_container">
                 <span id="logo">
-                    <a href="/main">Farming 파밍</a>
+                    <a href="/">Farming 파밍</a>
                 </span>
                 <ul id="nav_links">
                     <li onMouseEnter={handleCategoryMouseEnter} onMouseLeave={handleCategoryMouseLeave}>
