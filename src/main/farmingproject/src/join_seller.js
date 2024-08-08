@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import './join_seller.css';
 import './common/root.css';
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 function Join_seller() {
     const [existingIds, setExistingIds] = useState(["user1", "user2", "user3"]); // 아이디 중복확인 버튼 실행 확인을 위한 임시데이터
@@ -91,6 +92,7 @@ function Join_seller() {
         setStep(step + 1);
     };
 
+    // step1의 체크박스
     const handleTermsChange = (name) => {
         setTerms(prevTerms => {
             const updatedTerms = { ...prevTerms, [name]: !prevTerms[name] };
@@ -125,20 +127,26 @@ function Join_seller() {
             setIdCheckMessage("사용 가능한 아이디입니다.");
         }    };
 
-    const resetForm = () => {
-        setForm({
-            id: "",
-            password: "",
-            confirmPassword: "",
-            representativeName: "",
-            businessNumber: "",
-            storeName: "",
-            representativePhone: "",
-            contactPhone: "",
-            email: "",
-            businessAddress: ""
-        });
-    };
+
+
+    // const handleSubmit = async (event) => {
+    //     event.preventDefault();
+    //
+    //     const formData = new FormData(event.target);
+    //     const userData = Object.fromEntries(formData.entries());
+    //     userData.authority = 2; // 판매자 권한
+    //
+    //     try {
+    //         const response = await axios.post('/api/user', userData);
+    //         if (response.status === 200) {
+    //
+    //             setStep(3);
+    //         }
+    //     } catch (error) {
+    //         console.error("회원가입 중 오류 발생:", error);
+    //     }
+    // };
+
 
     return (
         <div id={'body'}>
@@ -744,74 +752,94 @@ function Join_seller() {
                             </form>
                         </div>
                     )}
-            {step === 2 && (
-                <div id="join_seller_form">
-                <form onSubmit={handleSubmitForm}>
-            <div id="join_seller_form_group">
-                <div className="form_group">
-                    <label>아이디</label>
-                    <input type="text" name="id" value={form.id} onChange={handleInputChange} placeholder="아이디를 입력하세요"/>
-                    <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인</button>
-                    <div className="id_dupli_check">
-                    {idCheckMessage && <p className="id_dupli_check_message">{idCheckMessage}</p>}
-                    </div>
+                    {step === 2 && (
+                        <div id="join_seller_form">
+                            <form action={"/api/user"} method="POST">
+                                <div id="join_seller_form_group">
+                                    <div className="form_group">
+                                        <label>아이디</label>
+                                        <input type="text"
+                                               name="userId"
+                                               placeholder="아이디를 입력하세요"/>
+                                        <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인</button>
+                                        <div className="id_dupli_check">
+                                            {idCheckMessage && <p className="id_dupli_check_message">{idCheckMessage}</p>}
+                                        </div>
+                                    </div>
+                                    <div className="form_group">
+                                        <label>비밀번호</label>
+                                        <input type="password"
+                                               name="password"
+                                               placeholder="비밀번호를 입력하세요"/>
+                                    </div>
+                                    <div className="form_group">
+                                        <label>비밀번호 확인</label>
+                                        <input type="password"
+                                               name="confirmPassword"
+                                               placeholder="비밀번호를 입력하세요"/>
+                                    </div>
+                                    <div className="form_group">
+                                        <label>대표자 이름</label>
+                                        <input type="text"
+                                               name="name"
+                                               placeholder="대표자 이름을 입력하세요"/>
+                                    </div>
+                                    <div className="form_group">
+                                        <label>사업자 번호</label>
+                                        <input type="text"
+                                               name="businessNumber"
+                                               placeholder="사업자 번호를 입력하세요"/>
+                                    </div>
+                                    <div className="form_group">
+                                        <label>가게 이름</label>
+                                        <input type="text"
+                                               name="storeName"
+                                               placeholder="파밍에서 사용할 가게 이름을 입력하세요"/>
+                                    </div>
+                                    <div className="form_group">
+                                        <label>대표자 전화번호</label>
+                                        <input type="tel"
+                                               maxLength={11}
+                                               name="phoneNumber"
+                                               placeholder="사업자 전화번호를 입력하세요"/>
+                                    </div>
+                                    <div className="form_group">
+                                        <label>매장 전화번호</label>
+                                        <input type="tel"
+                                               maxLength={11}
+                                               name="storePhoneNumber"
+                                               placeholder="대표 전화번호를 입력하세요"/>
+                                    </div>
+                                    <div className="form_group">
+                                        <label>이메일</label>
+                                        <input type="email"
+                                               name="email"
+                                               placeholder="이메일을 입력하세요"/>
+                                    </div>
+                                    <div className="form_group">
+                                        <label>사업장 주소</label>
+                                        <input type="text"
+                                               name="address"
+                                               placeholder="사업장 주소를 입력하세요"/>
+                                    </div>
+                                    <div>
+                                        <input type={"hidden"}
+                                               name={"authority"}
+                                               value={2}
+                                        />
+                                    </div>
+                                </div>
+                                <button type="submit" className="submit_btn">회원가입</button>
+                            </form>
+                        </div>
+                    )}
+                    {step === 3 && (
+                        <div id="completion_message">
+                            <h1>회원가입이 완료되었습니다!</h1>
+                            <Link to={"/"}><button className="main_btn">메인으로 이동</button></Link>
+                        </div>
+                    )}
                 </div>
-                <div className="form_group">
-                    <label>비밀번호</label>
-                    <input type="password" name="password" value={form.password} onChange={handleInputChange}
-                           placeholder="비밀번호를 입력하세요"/>
-                </div>
-                <div className="form_group">
-                    <label>비밀번호 확인</label>
-                    <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleInputChange}
-                           placeholder="비밀번호를 입력하세요"/>
-                </div>
-                <div className="form_group">
-                    <label>대표자 이름</label>
-                    <input type="text" name="representativeName" value={form.representativeName} onChange={handleInputChange}
-                           placeholder="대표자 이름을 입력하세요"/>
-                </div>
-                <div className="form_group">
-                    <label>사업자 번호</label>
-                    <input type="text" name="businessNumber" value={form.businessNumber} onChange={handleInputChange}
-                           placeholder="사업자 번호를 입력하세요"/>
-                </div>
-                <div className="form_group">
-                    <label>가게 이름</label>
-                    <input type="text" name="storeName" value={form.storeName} onChange={handleInputChange}
-                           placeholder="파밍에서 사용할 가게 이름을 입력하세요"/>
-                </div>
-                <div className="form_group">
-                    <label>대표자 전화번호</label>
-                    <input type="text" name="representativePhone" value={form.representativePhone} onChange={handleInputChange} placeholder="사업자 전화번호를 입력하세요"/>
-                </div>
-                <div className="form_group">
-                    <label>대표 전화번호</label>
-                    <input type="text" name="contactPhone" value={form.contactPhone} onChange={handleInputChange}
-                           placeholder="대표 전화번호를 입력하세요"/>
-                </div>
-                <div className="form_group">
-                    <label>이메일</label>
-                    <input type="email" name="email" value={form.email} onChange={handleInputChange}
-                           placeholder="이메일을 입력하세요"/>
-                </div>
-                <div className="form_group">
-                    <label>사업장 주소</label>
-                    <input type="text" name="businessAddress" value={form.businessAddress} onChange={handleInputChange}
-                           placeholder="사업장 주소를 입력하세요"/>
-                </div>
-            </div>
-            <button type="submit" className="submit_btn">회원가입</button>
-        </form>
-                </div>
-            )}
-            {step === 3 && (
-                <div id="completion_message">
-                    <h1>회원가입이 완료되었습니다!</h1>
-                    <Link to={"/main"}><button className="main_btn">메인으로 이동</button></Link>
-                </div>
-            )}
-</div>
             </div>
         </div>
     );

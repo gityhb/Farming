@@ -83,6 +83,10 @@ import Shopping_Basket from "./shopping_basket";
 import Farmer_market_info from "./farmer_market_info";
 import Join_consumer from "./join_consumer";
 import Join_seller from "./join_seller";
+import MyPage from "./mypage";
+import Mypage_seller from "./mypage_seller";
+import AuctionDetail from "./auction_detail";
+import Auction from "./auction";
 
 function App() {
     const location = useLocation();
@@ -92,7 +96,7 @@ function App() {
         <div>
             {!hideHeaderFooter && <Header />}
             <Routes>
-                <Route path="/main" element={<Main />} />
+                <Route path="/" element={<Main />} />
                 <Route path="/category" element={<Category />} />
                 <Route path="/farmer_job" element={<FarmerJob />} />
                 <Route path="/farmer_recommend" element={<Farmer_recommend />} />

@@ -1,13 +1,15 @@
 package com.farming.farmingproject.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -76,8 +78,8 @@ public class User implements UserDetails {  // UserDetails를 상속받아 인�
         this.email = email;
         this.address = address;
         this.authority = authority;
-        this.createdDate = new java.sql.Timestamp(System.currentTimeMillis());  // 현재 시간 설정
-        this.modifiedDate = new java.sql.Timestamp(System.currentTimeMillis());  // 현재 시간 설정
+        this.createdDate = new Timestamp(System.currentTimeMillis());  // 현재 시간 설정
+        this.modifiedDate = new Timestamp(System.currentTimeMillis());  // 현재 시간 설정
     }
 
     @Override   // 권한 반환

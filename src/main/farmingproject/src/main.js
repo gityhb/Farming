@@ -1,8 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import {useEffect, useRef, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import './main.css';
-import axios from 'axios';
+import axios from "axios";
 
 function Main() {
+
+
     const [slides, setSlides] = useState([]);
     const [currentSlide, setCurrentSlide] = useState(0);
     // 3초마다 슬라이드 이동하게 하는 변수
@@ -48,6 +51,8 @@ function Main() {
         return <div>Loading...</div>;
     }
 
+
+
     return (
         <div id={'body'}>
             <div id={'main_page'} className={'page'}>
@@ -57,15 +62,15 @@ function Main() {
                     </div>
                     <div id={'slides'}>
                         <div id={'slides_text'}>
-                        <p id={'content1'}>{slides[currentSlide].content1}</p>
-                        <p id={'title'}>{slides[currentSlide].title}</p>
-                        <p id={'content2'}>{slides[currentSlide].content2}</p>
+                            <p id={'content1'}>{slides[currentSlide].content1}</p>
+                            <p id={'title'}>{slides[currentSlide].title}</p>
+                            <p id={'content2'}>{slides[currentSlide].content2}</p>
                         </div>
                         <div id={'slides_img'}>
-                        {slides[currentSlide].imageUrl && (
-                            <img src={slides[currentSlide].imageUrl} alt={slides[currentSlide].title}
-                                 style={{width: '960px', height: '710px'}}/>
-                        )}
+                            {slides[currentSlide].imageUrl && (
+                                <img src={slides[currentSlide].imageUrl} alt={slides[currentSlide].title}
+                                     style={{width: '960px', height: '710px'}}/>
+                            )}
                         </div>
                     </div>
                     <div id={'arrowR'}>
@@ -75,6 +80,25 @@ function Main() {
             </div>
         </div>
     );
+
+
+    // return(
+    //     <div>
+    //         메인화면입니다.
+    //         {user ? (
+    //             <div>
+    //                 <p>안녕하세요, {user.email}님!</p>
+    //                 <button onClick={handleClick}>로그아웃</button>
+    //             </div>
+    //         ) : (
+    //             <div>
+    //                 <p>로그인 후 이용 가능합니다.</p>
+    //                 <Link to={'/login'}><div>로그인하기</div></Link>
+    //             </div>
+    //         )}
+    //     </div>
+    //
+    // );
 }
 
 export default Main;
