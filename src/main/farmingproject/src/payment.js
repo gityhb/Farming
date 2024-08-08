@@ -61,9 +61,9 @@ function Payment() {
             {
                 pg: "html5_inicis",
                 pay_method: "card",
-                merchant_uid: "1234578",
-                name: "당근 10kg",
-                amount: 200,
+                merchant_uid: "123", //주문번호
+                name: "프리미엄 고당도 꿀수박 1.35KG",
+                amount: 1, //가격
                 buyer_email: "gildong@gmail.com",
                 buyer_name: "홍길동",
                 buyer_tel: "010-4242-4242",
