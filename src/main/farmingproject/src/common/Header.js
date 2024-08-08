@@ -1,11 +1,46 @@
-import React, { useState } from 'react';
-import {useLocation} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {useLocation, Link, useNavigate} from "react-router-dom";
 import './Header.css';
+import axios from "axios";
 
 function Header() {
+    // 회원가입 및 로그인 관련 (먼저 실행해주어야 함, 실행 순서 중요!)
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // 로그인된 사용자 정보를 API에서 가져옴
+        axios.get('http://localhost:8080/api/user', { withCredentials: true })
+            .then(response => {
+                setUser(response.data);
+            })
+            .catch(error => {
+                if (error.response && error.response.status === 401) {
+                    // 사용자 정보가 없는 경우
+                    setUser(null);
+                } else {
+                    console.error("There was an error fetching the user data!", error);
+                }
+            });
+    }, []);
+
+    const handleClick = async () => {
+        try {
+            // 서버에 로그아웃 요청을 보냄
+            await axios.post('http://localhost:8080/api/logout', {}, { withCredentials: true });
+
+            // 세션 쿠키 삭제
+            document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+
+            // 서버에서 처리된 리디렉션을 반영하기 위해 페이지 새로 고침
+            window.location.reload();
+        } catch (error) {
+            console.error("There was an error logging out!", error);
+        }
+    };
+
     const[isCategoryDropdownOpen,setCategoryDropdownOpen]=useState(false); //카테고리 드롭다운 메뉴
     const [isMarketDropdownOpen,setMarketDropdownOpen]=useState(false); //농부마켓 드롭다운 메뉴
-    const location = useLocation(); //현재 url을 확인하고 해당 경로와 일치하는 링크에 대해 bold처리
 
     const handleCategoryMouseEnter=()=>{
         setCategoryDropdownOpen(true);
@@ -27,11 +62,57 @@ function Header() {
         <header id="header">
             <nav id="nav_container">
                 <span id="logo">
-                    <a href="/main">Farming 파밍</a>
+                    <Link to={"/"}>Farming 파밍</Link>
                 </span>
-                <ul id="nav_links">
+                {user ? (
+                    <ul id="nav_links">
+                        <li onMouseEnter={handleCategoryMouseEnter} onMouseLeave={handleCategoryMouseLeave}>
+                            <ul><Link to={"/..."}>카테고리</Link></ul>
+                            {isCategoryDropdownOpen && (
+                                <ul className="dropdown">
+                                    <div className="category_group">
+                                        <li><a href="/category/vegetables">채소</a></li>
+                                        <li><a href="/category/vegetables/1">배추/무/파</a></li>
+                                        <li><a href="/category/vegetables/2">고추/마늘/양파/생강</a></li>
+                                        <li><a href="/category/vegetables/3">고구마/감자/밥/옥수수</a></li>
+                                        <li><a href="/category/vegetables/4">쌈채소/깻잎</a></li>
+                                        <li><a href="/category/vegetables/5">나물</a></li>
+                                        <li><a href="/category/vegetables/6">기타</a></li>
+                                    </div>
+                                    <div className="category_group">
+                                        <li><a href="/category/fruits">과일</a></li>
+                                        <li><a href="/category/fruits/1">사과/배/감</a></li>
+                                        <li><a href="/category/fruits/2">딸기/포도/블루베리</a></li>
+                                        <li><a href="/category/fruits/3">오렌지/자몽/레몬</a></li>
+                                        <li><a href="/category/fruits/4">참외/복숭아</a></li>
+                                        <li><a href="/category/fruits/5">기타</a></li>
+                                    </div>
+                                </ul>
+                            )}
+                        </li>
+                        <li onMouseEnter={handleMarketMouseEnter} onMouseLeave={handleMarketMouseLeave}>
+                            <Link to={"/farmer_market"}>농부마켓</Link>
+                            {isMarketDropdownOpen && (
+                                <ul className="dropdown">
+                                    <div className="farmer_market_group">
+                                        <li><Link to={"/farmer_market"}>1인 가구 마켓</Link></li>
+                                        <li><Link to={"/farmer_market"}>일반 마켓</Link></li>
+                                    </div>
+                                </ul>
+                            )}
+                        </li>
+                        <li><Link to={"/farmer_recommend"}>농부추천</Link></li>
+                        <li><Link to={"/..."}>청과경매</Link></li>
+                        <li><Link to={"/farmer_job"}>파머직</Link></li>
+                        <li><Link to={"/..."}>고객센터</Link></li>
+                        <li><Link to={"/shopping_basket"}>장바구니</Link></li>
+                        <li><Link to={"/..."}>마이페이지</Link></li>
+                        <li><Link to={"/..."}>{user.name}님</Link></li>
+                        <li><Link to={"/"} onClick={handleClick}>로그아웃</Link></li>
+                    </ul>
+                ) : (<ul id="nav_links">
                     <li onMouseEnter={handleCategoryMouseEnter} onMouseLeave={handleCategoryMouseLeave}>
-                        <a href="/category" className={location.pathname.startsWith('/category') ? 'active' : ''}>카테고리</a>
+                        <ul><Link to={"/..."}>카테고리</Link></ul>
                         {isCategoryDropdownOpen && (
                             <ul className="dropdown">
                                 <div className="category_group">
@@ -55,24 +136,25 @@ function Header() {
                         )}
                     </li>
                     <li onMouseEnter={handleMarketMouseEnter} onMouseLeave={handleMarketMouseLeave}>
-                        <a href="/farmer_market" className={location.pathname === '/farmer_market' ? 'active' : ''}>농부마켓</a>
+                        <Link to={"/farmer_market"}>농부마켓</Link>
                         {isMarketDropdownOpen && (
                             <ul className="dropdown">
                                 <div className="farmer_market_group">
-                                    <li><a href="/farmermarket/single">1인 가구 마켓</a></li>
-                                    <li><a href="/farmermarket/general">일반 마켓</a></li>
+                                    <li><Link to={"/farmer_market"}>1인 가구 마켓</Link></li>
+                                    <li><Link to={"/farmer_market"}>일반 마켓</Link></li>
                                 </div>
                             </ul>
                         )}
                     </li>
-                    <li><a href="/farmer_recommend" className={location.pathname === '/farmer_recommend' ? 'active' : ''}>농부추천</a></li>
-                    <li><a href="/auction" className={location.pathname === '/auction' ? 'active' : ''}>청과경매</a></li>
-                    <li><a href="/farmer_job" className={location.pathname === '/farmer_job' ? 'active' : ''}>파머직</a></li>
-                    <li><a href="/service" className={location.pathname === '/service' ? 'active' : ''}>고객센터</a></li>
-                    <li><a href="/shopping_basket" className={location.pathname === '/shopping_basket' ? 'active' : ''}>장바구니</a></li>
-                    <li><a href="/profile" className={location.pathname === '/profile' ? 'active' : ''}>마이페이지</a></li>
-                    <li><a href="/login" className={location.pathname === '/login' ? 'active' : ''}>로그인</a></li>
-                </ul>
+                    <li><Link to={"/farmer_recommend"}>농부추천</Link></li>
+                    <li><Link to={"/..."}>청과경매</Link></li>
+                    <li><Link to={"/farmer_job"}>파머직</Link></li>
+                    <li><Link to={"/..."}>고객센터</Link></li>
+                    <li><Link to={"/shopping_basket"}>장바구니</Link></li>
+                    <li><Link to={"/..."}>마이페이지</Link></li>
+                    <li><Link to={"/login"}>로그인</Link></li>
+                </ul>)}
+
             </nav>
         </header>
     );
