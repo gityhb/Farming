@@ -55,6 +55,7 @@
     padding: 6px 4px;
     text-align: center;
     border-radius:3px;
+    cursor: pointer;
 }
 
 .new_addr,
