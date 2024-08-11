@@ -88,6 +88,7 @@ import Mypage_seller from "./mypage_seller";
 import AuctionDetail from "./auction_detail";
 import Auction from "./auction";
 import Join from "./join";
+import Payment from "./payment";
 
 function App() {
     const location = useLocation();
@@ -114,6 +115,7 @@ function App() {
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/auction" element={<Auction/>} />
                 <Route path="/auction_detail" element={<AuctionDetail/>} />
+                <Route path="/payment" element={<Payment />} />
 
 
 
