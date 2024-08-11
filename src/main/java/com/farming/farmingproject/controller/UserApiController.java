@@ -23,11 +23,27 @@ import org.springframework.web.bind.annotation.*;
 public class UserApiController {
     private final UserService userService;
 
-    @PostMapping("/user")
-    public String signup(AddUserRequest request) {
-        userService.save(request);  // 회원 가입 메서드 호출
+    // 판매자 회원가입
+    @PostMapping("/join_seller")
+    public String signupSeller(AddUserRequest request) {
+        request.setAuthority(2);
+        userService.save(request);  // 판매자 권한 2 설정
         return "redirect:http://localhost:3000/login";   // 회원 가입이 완료된 이후에 로그인 페이지로 이동
     }
+
+    // 소비자 회원가입
+    @PostMapping("/join_consumer")
+    public String signupConsumer(AddUserRequest request) {
+        request.setAuthority(1);
+        userService.save(request);  // 소비자 권한 1 설정
+        return "redirect:http://localhost:3000/login";   // 회원 가입이 완료된 이후에 로그인 페이지로 이동
+    }
+
+//    @PostMapping("/user")
+//    public String signup(AddUserRequest request) {
+//        userService.save(request);  // 회원 가입 메서드 호출
+//        return "redirect:http://localhost:3000/login";   // 회원 가입이 완료된 이후에 로그인 페이지로 이동
+//    }
 
     // 사용자 정보 조회
     @GetMapping("/user")

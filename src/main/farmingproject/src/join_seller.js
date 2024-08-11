@@ -754,7 +754,7 @@ function Join_seller() {
                     )}
                     {step === 2 && (
                         <div id="join_seller_form">
-                            <form action={"/api/user"} method="POST">
+                            <form action={"/api/join_seller"} method="POST">
                                 <div id="join_seller_form_group">
                                     <div className="form_group">
                                         <label>아이디</label>
@@ -822,12 +822,12 @@ function Join_seller() {
                                                name="address"
                                                placeholder="사업장 주소를 입력하세요"/>
                                     </div>
-                                    <div>
-                                        <input type={"hidden"}
-                                               name={"authority"}
-                                               value={2}
-                                        />
-                                    </div>
+                                    {/*<div>*/}
+                                    {/*    <input type={"hidden"}*/}
+                                    {/*           name={"authority"}*/}
+                                    {/*           value={2}*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
                                 </div>
                                 <button type="submit" className="submit_btn">회원가입</button>
                             </form>

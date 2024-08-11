@@ -87,6 +87,7 @@ import MyPage from "./mypage";
 import Mypage_seller from "./mypage_seller";
 import AuctionDetail from "./auction_detail";
 import Auction from "./auction";
+import Join from "./join";
 
 function App() {
     const location = useLocation();
@@ -105,6 +106,7 @@ function App() {
                 <Route path="/farmer_job_info" element={<FarmerJobInfo />} />
                 <Route path="/farmer_job_apply" element={<FarmerJobApply />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/join" element={<Join />} />
                 <Route path="/join_consumer" element={<Join_consumer />} />
                 <Route path="/join_seller" element={<Join_seller />} />
                 <Route path="/mypage_seller" element={<Mypage_seller />} />
