@@ -13,7 +13,7 @@
 /*장바구니 테이블*/
 #basket_table {
     height: 650px;
-    background: #E5E5E5;
+    background-color: #ebebeb;
     margin: 0 auto;
 }
 
@@ -24,10 +24,15 @@
     table-layout: fixed; /* 테이블 너비를 고정 */
 }
 
+#basket_table #basket_table_list td:nth-child(1){
+    width: 100px;
+}
+
+
 /*테이블 테두리*/
 #basket_table #basket_table_list thead tr th{
-    border-top: 7px solid #FFF0AD;
-    border-bottom: 1px solid #BEBEBE;
+    border-top: 1px solid black;
+    border-bottom: 2px solid black;
     font-size: 18px;
 }
 
@@ -85,7 +90,7 @@
 
 /*수량*/
 #basket_table #basket_table_list tbody tr #basket_list_quantity_td{
-    width:200px; /* 너비 조정 */
+    width:100px; /* 너비 조정 */
 }
 
 #basket_list_quantity_td #basket_list_quantity {
@@ -118,10 +123,17 @@
 /*가격*/
 #basket_table #basket_table_list tbody tr #quantity_total_price_td{
     width: 150px;
+    font-size: 22px;
 }
 
 /*총 결제금액*/
+
+#total_sum_price{
+    display: flex;
+}
+
 #basket_table #total_sum_price {
+    position: relative;
     padding-right: 40px;
     font-size: 30px;
     float: right;
@@ -130,9 +142,11 @@
 }
 
 #total_sum_price #sum_title {
+    width: 180px;
     position: absolute;
-    right: 450px;
+    right: 1px;
     font-weight: bold;
+    margin-right: 200px;
 }
 
 /*주문버튼*/

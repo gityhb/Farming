@@ -7,33 +7,33 @@ function Shopping_Basket() {
     const [items, setItems] = useState([
         {
             id: 1,
-            quantity: 0,
-            totalAmount: 0,
+            quantity: 1,
+            totalAmount: 1000,
             name: "국내산 오이(아삭아삭)",
             marketName: "햇살농장",
             price: 1000,
             marketImg: "img/main_human.png",
-            checked: false
+            checked: true
         },
         {
             id: 2,
-            quantity: 0,
-            totalAmount: 0,
+            quantity: 1,
+            totalAmount: 2000,
             name: "국내산 토마토",
             marketName: "청정농원",
             price: 2000,
             marketImg: "img/carrot.png",
-            checked: false
+            checked: true
         },
         {
             id: 3,
-            quantity: 0,
-            totalAmount: 0,
+            quantity: 1,
+            totalAmount: 3000,
             name: "국내산 사과",
             marketName: "과일의왕",
             price: 3000,
             marketImg: "img/food1.png",
-            checked: false
+            checked: true
         },
     ]);
 

@@ -87,6 +87,8 @@ import MyPage from "./mypage";
 import Mypage_seller from "./mypage_seller";
 import AuctionDetail from "./auction_detail";
 import Auction from "./auction";
+import Payment from "./payment";
+import Payment_success from "./payment_success";
 
 function App() {
     const location = useLocation();
@@ -112,7 +114,8 @@ function App() {
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/auction" element={<Auction/>} />
                 <Route path="/auction_detail" element={<AuctionDetail/>} />
-
+                <Route path="/payment" element={<Payment/>} />
+                <Route path="/payment_success" element={<Payment_success/>} />
 
 
             </Routes>

@@ -124,8 +124,13 @@ function Payment() {
                             <td className="address_tbl_title">주소</td>
                             <td className="new_address_tbl_info">
                                 우편번호
-                                <input value={inputUser.userZipcode || ''} readOnly placeholder="우편번호"
-                                       className="new_zipcode"/>
+                                <div id="zipcode">
+                                    <input value={inputUser.userZipcode || ''} readOnly placeholder="우편번호"
+                                           className="new_zipcode"/>
+                                    <div id="zipcode_Btn" onClick={new_addr}>
+                                        우편번호 찾기
+                                    </div>
+                                </div>
                                 주소
                                 <input value={inputUser.userAddr || ''} readOnly placeholder="도로명 주소"
                                        className="new_addr"/>
