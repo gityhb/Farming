@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import './join_seller.css';
 import './common/root.css';
-import {Link} from "react-router-dom";
+import {Form, Link} from "react-router-dom";
 import axios from "axios";
 
 function Join_seller() {
@@ -17,17 +17,22 @@ function Join_seller() {
         event: false
     });
     const [form, setForm] = useState({
-        id: "",
+        userId: "",
         password: "",
         confirmPassword: "",
-        representativeName: "",
-        businessNumber: "",
+        name: "",
         storeName: "",
-        representativePhone: "",
-        contactPhone: "",
+        businessNumber: "",
+        phoneNumber: "",
+        storePhoneNumber: "",
         email: "",
-        businessAddress: "",
+        address: "",
     });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setForm({ ...form, [name]: value });
+    };
 
     useEffect(() => {
         setTerms({
@@ -46,9 +51,20 @@ function Join_seller() {
         }
     };
 
-    const handleSubmitForm = (event) => {
-        event.preventDefault();
-        if (!form.id) {
+    // const handleInputChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setForm(prevForm => ({
+    //         ...prevForm, // 이전 상태를 복사
+    //         [name]: value // 변경된 필드만 업데이트
+    //     }));
+    // };
+
+    const handleSubmitForm = async (e) => {
+        e.preventDefault();
+
+        // const formData = new FormData(e.target);
+
+        if (!form.userId) {
             alert("아이디를 입력하세요");
             return;
         }
@@ -60,36 +76,82 @@ function Join_seller() {
             alert("비밀번호가 일치하지 않습니다.\n다시 입력해 주세요");
             return;
         }
-        if (!form.representativeName) {
-            alert("대표자 이름을 입력하세요");
-            return;
-        }
-        if (!form.businessNumber) {
-            alert("사업자 번호를 입력하세요");
+        if (!form.name) {
+            alert("이름을 입력하세요");
             return;
         }
         if (!form.storeName) {
             alert("가게 이름을 입력하세요");
             return;
         }
-        if (!form.representativePhone) {
-            alert("대표자 전화번호를 입력하세요");
+        if (!form.businessNumber) {
+            alert("사업자 번호를 입력하세요");
             return;
         }
-        if (!form.contactPhone) {
-            alert("대표 전화번호를 입력하세요");
+        if (!form.phoneNumber) {
+            alert("휴대폰 번호를 입력하세요");
+            return;
+        }
+        if (!form.storePhoneNumber) {
+            alert("가게 전화번호를 입력하세요");
             return;
         }
         if (!form.email) {
-            alert("이메일 입력하세요");
+            alert("이메일 주소를 입력하세요");
             return;
         }
-        if (!form.businessAddress) {
-            alert("사업장 주소를 입력하세요");
+        if (!form.address) {
+            alert("가게 주소를 입력하세요");
             return;
         }
 
-        setStep(step + 1);
+        try {
+            const response = await fetch('/api/join_seller', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(form),
+            });
+
+            if (response.ok) {
+                // 회원가입 성공 -> step 3으로 이동
+                setStep(3);
+            } else {
+                // 실패 처리 (에러 메시지 표시 등)
+                const errorData = await response.json();
+                console.error('회원가입 실패:', errorData);
+            }
+        } catch (error) {
+            console.error('회원가입 중 오류 발생:', error);
+        }
+
+        // try {
+        //     // 서버에 폼 데이터 제출
+        //     const response = await fetch('http://localhost:8080/api/join_seller', {
+        //         method: 'POST',
+        //
+        //         body: JSON.stringify(formData) // 폼 데이터를  전송
+        //     });
+        //
+        //     if (!response.ok) {
+        //         throw new Error('서버와의 통신에 실패했습니다.');
+        //     }
+        //
+        //     const result = await response.json();
+        //
+        //     if (result.success) {
+        //         // 폼 제출 성공 시 step을 3으로 변경
+        //         setStep(3);
+        //     } else {
+        //         alert('회원가입에 실패했습니다.');
+        //     }
+        // } catch (error) {
+        //     console.error('오류:', error);
+        //     alert('서버와의 통신에 실패했습니다.');
+        // }
+
+
     };
 
     // step1의 체크박스
@@ -110,13 +172,7 @@ function Join_seller() {
         });
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setForm(prevForm => ({
-            ...prevForm,
-            [name]: value
-        }));
-    };
+
 
     const checkId = () => {
         if (!form.id || form.id.trim() === "") {
@@ -144,6 +200,32 @@ function Join_seller() {
     //         }
     //     } catch (error) {
     //         console.error("회원가입 중 오류 발생:", error);
+    //     }
+    // };
+
+    // const [idCheckMessage, setIdCheckMessage] = useState('');
+
+
+    // const handleSubmit = async (event) => {
+    //     event.preventDefault(); // 페이지 리로드 방지
+    //
+    //     const formData = new FormData(event.target);
+    //
+    //     try {
+    //         const response = await fetch('http://localhost:8080/api/join_seller', {
+    //             method: 'POST',
+    //             body: formData,
+    //         });
+    //
+    //         if (response.ok) {
+    //             // 회원가입 성공 시 step을 3으로 설정
+    //             setStep(3);
+    //         } else {
+    //             // 에러 처리 (예: 잘못된 입력 처리)
+    //             console.error('회원가입 실패');
+    //         }
+    //     } catch (error) {
+    //         console.error('서버와의 통신에 실패했습니다:', error);
     //     }
     // };
 
@@ -754,80 +836,96 @@ function Join_seller() {
                     )}
                     {step === 2 && (
                         <div id="join_seller_form">
-                            <form action={"/api/join_seller"} method="POST">
+                            <form onSubmit={handleSubmitForm}>
                                 <div id="join_seller_form_group">
                                     <div className="form_group">
                                         <label>아이디</label>
                                         <input type="text"
                                                name="userId"
+                                               value={form.userId}
+                                               onChange={handleInputChange}
                                                placeholder="아이디를 입력하세요"/>
-                                        <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인</button>
+                                        <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인
+                                        </button>
                                         <div className="id_dupli_check">
-                                            {idCheckMessage && <p className="id_dupli_check_message">{idCheckMessage}</p>}
+                                            {idCheckMessage &&
+                                                <p className="id_dupli_check_message">{idCheckMessage}</p>}
                                         </div>
                                     </div>
                                     <div className="form_group">
                                         <label>비밀번호</label>
                                         <input type="password"
                                                name="password"
+                                               value={form.password}
+                                               onChange={handleInputChange}
                                                placeholder="비밀번호를 입력하세요"/>
                                     </div>
                                     <div className="form_group">
                                         <label>비밀번호 확인</label>
                                         <input type="password"
                                                name="confirmPassword"
-                                               placeholder="비밀번호를 입력하세요"/>
+                                               value={form.confirmPassword}
+                                               onChange={handleInputChange}
+                                               placeholder="비밀번호를 재입력하세요"/>
                                     </div>
                                     <div className="form_group">
-                                        <label>대표자 이름</label>
+                                        <label>이름</label>
                                         <input type="text"
                                                name="name"
-                                               placeholder="대표자 이름을 입력하세요"/>
-                                    </div>
-                                    <div className="form_group">
-                                        <label>사업자 번호</label>
-                                        <input type="text"
-                                               name="businessNumber"
-                                               placeholder="사업자 번호를 입력하세요"/>
+                                               value={form.name}
+                                               onChange={handleInputChange}
+                                               placeholder="이름을 입력하세요"/>
                                     </div>
                                     <div className="form_group">
                                         <label>가게 이름</label>
                                         <input type="text"
                                                name="storeName"
+                                               value={form.storeName}
+                                               onChange={handleInputChange}
                                                placeholder="파밍에서 사용할 가게 이름을 입력하세요"/>
                                     </div>
                                     <div className="form_group">
-                                        <label>대표자 전화번호</label>
+                                        <label>사업자 번호</label>
+                                        <input type="text"
+                                               name="businessNumber"
+                                               value={form.businessNumber}
+                                               onChange={handleInputChange}
+                                               placeholder="사업자 번호를 입력하세요"/>
+                                    </div>
+                                    <div className="form_group">
+                                        <label>전화번호</label>
                                         <input type="tel"
                                                maxLength={11}
                                                name="phoneNumber"
-                                               placeholder="사업자 전화번호를 입력하세요"/>
+                                               value={form.phoneNumber}
+                                               onChange={handleInputChange}
+                                               placeholder="휴대폰 번호를 입력하세요 ('-'제외 11자리 입력)"/>
                                     </div>
                                     <div className="form_group">
-                                        <label>매장 전화번호</label>
+                                        <label>가게 전화번호</label>
                                         <input type="tel"
                                                maxLength={11}
                                                name="storePhoneNumber"
-                                               placeholder="대표 전화번호를 입력하세요"/>
+                                               value={form.storePhoneNumber}
+                                               onChange={handleInputChange}
+                                               placeholder="가게 전화번호를 입력하세요 ('-'제외)"/>
                                     </div>
                                     <div className="form_group">
-                                        <label>이메일</label>
+                                        <label>이메일 주소</label>
                                         <input type="email"
                                                name="email"
-                                               placeholder="이메일을 입력하세요"/>
+                                               value={form.email}
+                                               onChange={handleInputChange}
+                                               placeholder="이메일 주소를 입력하세요"/>
                                     </div>
                                     <div className="form_group">
-                                        <label>사업장 주소</label>
+                                        <label>가게 주소</label>
                                         <input type="text"
                                                name="address"
-                                               placeholder="사업장 주소를 입력하세요"/>
+                                               value={form.address}
+                                               onChange={handleInputChange}
+                                               placeholder="가게 주소를 입력하세요"/>
                                     </div>
-                                    {/*<div>*/}
-                                    {/*    <input type={"hidden"}*/}
-                                    {/*           name={"authority"}*/}
-                                    {/*           value={2}*/}
-                                    {/*    />*/}
-                                    {/*</div>*/}
                                 </div>
                                 <button type="submit" className="submit_btn">회원가입</button>
                             </form>

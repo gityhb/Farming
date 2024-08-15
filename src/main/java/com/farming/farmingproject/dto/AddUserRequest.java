@@ -11,9 +11,9 @@ public class AddUserRequest {
     private String name;
     private String nickname;
     private String storeName;
-    private Integer businessNumber;
-    private Integer phoneNumber;
-    private Integer storePhoneNumber;
+    private String businessNumber;
+    private String phoneNumber;
+    private String storePhoneNumber;
     private String email;
     private String address;
     private int authority;
