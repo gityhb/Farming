@@ -90,6 +90,8 @@ import Auction from "./auction";
 import Payment from "./payment";
 import Payment_success from "./payment_success";
 import Join from "./join";
+import Order_detail from "./order_detail";
+import Customer_service_FAQ from "./customer_service_FAQ";
 
 function App() {
     const location = useLocation();
@@ -118,7 +120,8 @@ function App() {
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/auction" element={<Auction/>} />
                 <Route path="/auction_detail" element={<AuctionDetail/>} />
-
+                <Route path="/order_detail" element={<Order_detail/>} />
+                <Route path="/customer_service_FAQ" element={<Customer_service_FAQ/>} />
 
 
             </Routes>
