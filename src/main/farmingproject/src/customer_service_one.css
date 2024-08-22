@@ -1,0 +1,43 @@
+/* FAQ css에서 모두 관리 */
+
+
+.Customer_service_top_o_date{
+    margin-left: 630px;
+    margin-right: 37px;
+}
+
+.Customer_service_inner_o_date{
+    margin-left: -105px;
+}
+
+.Customer_service_inner_title{
+    width: 690px;
+}
+
+.Customer_service_inner_answer{
+    margin-left: 50px;
+}
+
+.Customer_service_div{
+    margin-bottom: 30px;
+}
+
+.one_add_Btn{
+    margin-right: 30px;
+    float: right;
+    padding: 3px;
+    background-color: #FFD000;
+    width: 110px;
+    color: white;
+    border-radius: 6px;
+    height: 40px;
+    font-size: 16px;
+    font-weight: 800;
+    text-align: center;
+    line-height: 40px;
+}
+
+
+.pagenation{
+    margin-top: 160px;
+}
