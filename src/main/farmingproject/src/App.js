@@ -87,6 +87,8 @@ import MyPage from "./mypage";
 import Mypage_seller from "./mypage_seller";
 import AuctionDetail from "./auction_detail";
 import Auction from "./auction";
+import Farmer_market_seller from "./farmer_market_seller";
+import Farmer_market_info_seller from "./farmer_market_info_seller";
 
 function App() {
     const location = useLocation();
@@ -112,6 +114,8 @@ function App() {
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/auction" element={<Auction/>} />
                 <Route path="/auction_detail" element={<AuctionDetail/>} />
+                <Route path="/farmer_market_seller" element={<Farmer_market_seller/>} />
+                <Route path="/farmer_market_info_seller" element={<Farmer_market_info_seller/>} />
 
 
 
