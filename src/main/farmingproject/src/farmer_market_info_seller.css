@@ -1,0 +1,217 @@
+.product_detail {
+    width: 100%;
+    display: inline-block;
+}
+.product_detail .left_area {
+    height: 440px;
+    float: left;
+}
+.product_detail .right_area {
+    width: 500px;
+    height: 440px;
+    float: right;
+}
+.right_area .pd_title {
+    display: flex;
+}
+
+/*상품명*/
+.right_area .pd_name {
+    font-size: 30px;
+    font-weight: 700;
+}
+.right_area .pd_name p {
+    margin: 10px 0;
+}
+
+/*상품 가격*/
+.right_area .pd_value span {
+    font-weight: 700;
+}
+
+.right_area .pd_value .pd_price {
+    font-size: 30px;
+}
+
+.right_area .pd_value .pd_rate {
+    color: #FFAE00;
+
+}
+
+/*별점*/
+.right_area .pd_star img {
+    width: 20px;
+    height: 20px;
+}
+
+.right_area .pd_star span {
+    color: #FFAE00;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.right_area div span {
+    line-height: 40px;
+    font-size: 18px;
+}
+
+.right_area .purchase_cnt {
+    display: flex;
+}
+
+.product_detail_more_area .product_detail_tab {
+    margin: 0;
+    margin-top: 30px;
+    padding: 0;
+    display: flex;
+    list-style-type: none;
+    border: 2px solid #BEBEBE;
+}
+
+.product_detail_more_area .product_detail_tab li {
+    flex: 1;
+    padding: 12px 15px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 19px;
+    background: #BEBEBE;
+    color: #fff;
+}
+
+.product_detail_more_area .product_detail_tab li.active {
+    background: #fff;
+    color: #000;
+}
+
+.product_detail_more_area .product_detail_info_area {
+    padding: 10px;
+    width: 97.7%;
+    border: 2px solid #BEBEBE;
+    border-top: none;
+}
+
+.product_detail_info_area .product_detail_info .info_title {
+    margin: 0;
+    padding: 50px 0;
+    font-size: 45px;
+    text-align: center;
+}
+
+.product_detail_info_area .product_detail_info .info_sub_title {
+    font-size: 35px;
+}
+
+
+.product_detail_info_area .product_detail_info p {
+    font-size: 28px;
+}
+
+.product_detail_info_area .product_detail_info img {
+    width: 100%;
+}
+
+
+.table_container {
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+thead{
+    border: 1px solid #BEBEBE;
+
+}
+
+thead th {
+    margin-bottom: 15px;
+    padding: 12px;
+    text-align: center;
+    font-weight: normal;
+}
+
+tbody{
+    border: 1px solid #BEBEBE;
+}
+
+tbody td {
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.container {
+    margin: 13% auto;
+    width: 420px;
+    background-color: #FFFFFF;
+    padding-bottom: 20px;
+}
+
+.header {
+    padding: 20px;
+    background-color: #FFF0AD;
+}
+
+h2 {
+    font-size: 16px;
+    margin: 0;
+    color: #333;
+
+}
+
+textarea {
+    width: 80%;
+    height: 150px;
+    padding: 10px;
+    margin-left: 40px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    resize: none;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+textarea::placeholder {
+    color: #bbb;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+button {
+    width: 80px;
+    padding: 10px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background-color: #F0F0F0;
+    color: #000000;
+}
+
+.submit-button {
+    background-color: #FFE680;
+    color: #000000;
+}
