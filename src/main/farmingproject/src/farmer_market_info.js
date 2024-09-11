@@ -7,6 +7,17 @@ function Farmer_market_info() {
     const [product, setProduct] = useState(null);
     const [activeTab, setActiveTab] = useState('pdinfo');
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleViewResume = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+
     return (
         <div id={'body'}>
             <div id={'market_farmer_info_page'} className={'page'}>
@@ -115,18 +126,271 @@ function Farmer_market_info() {
                             )}
                             {activeTab === 'reviewinfo' && (
                                 <div className={'product_detail_info'}>
-                                    <img src={'img/etc/review_img.png'}/>
+                                    <div className="product_review">
+                                        <div className="profile_card">
+                                            <div className="profile_img">
+                                                <img src="img/farmer_profile.png" />
+                                            </div>
+
+                                            <div className="profile_info">
+                                                <p className="profile_name">김흥만</p>
+                                                <p className="profile_followers">관심 고객수 : 156 명</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="rating_summary">
+                                        <div className="rating_stars">
+                                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                                        </div>
+                                        <p className="rating_score_primary">5/</p>
+                                        <p className="rating_score_secondary">5 (79)</p>
+                                    </div>
+
+                                    <div className="rating_container">
+                                        <div className="rating_row">
+                                            <span className="rating_label">맛</span>
+                                            <span className="rating_text">맛있어요</span>
+                                            <div className="rating_bar">
+                                                <div className="rating_fill fill_82"></div>
+                                            </div>
+                                            <span className="rating_percent">82%</span>
+                                        </div>
+                                        <div className="rating_row">
+                                            <span className="rating_label">신선도</span>
+                                            <span className="rating_text">신선해요</span>
+                                            <div className="rating_bar">
+                                                <div className="rating_fill fill_73"></div>
+                                            </div>
+                                            <span className="rating_percent">73%</span>
+                                        </div>
+                                        <div className="rating_row">
+                                            <span className="rating_label">포장</span>
+                                            <span className="rating_text">꼼꼼해요</span>
+                                            <div className="rating_bar">
+                                                <div className="rating_fill fill_79"></div>
+                                            </div>
+                                            <span className="rating_percent">79%</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="review_section">
+                                        <div className="review_header">
+                                            <h2>리뷰 <span>(79건)</span></h2>
+                                            <div className="review_ranking_options">
+                                                <span>랭킹순</span> | <span>최신순</span> | <span>평점 높은순</span> | <span>평점 낮은순</span>
+                                            </div>
+                                        </div>
+                                        <div className="review_body">
+                                            <div className="review_content">
+                                                <div className="review_star">
+                                                    ★★★★★
+                                                </div>
+                                                <div className="review_info">
+                                                    <span className="review_user">jiwon</span>
+                                                    <span className="review_date">24.05.07 | 신고</span>
+                                                    <p className="review_text">
+                                                        <span className="review_title">맛</span> <span
+                                                        className="review_detail">맛있어요</span>
+                                                        <span className="review_title">신선도</span> <span
+                                                        className="review_detail">신선해요</span>
+                                                        <span className="review_title">포장</span> <span
+                                                        className="review_detail">꼼꼼해요</span><br/>
+                                                        <span className="review_text_detail">꼼꼼하게 포장 잘 되어서 오고 당도가 엄청 높아요! 매우 만족합니다.</span>
+                                                    </p>
+                                                </div>
+                                                <div className="seller_reply">
+                                                    <div className="seller_reply_header">
+                                                        <span className="seller_reply_user">판매자</span>
+                                                        <span className="seller_reply_date">24.05.08 | 신고</span>
+                                                    </div>
+                                                    <span className="seller_reply_detail">주문해주셔서 감사합니다! 또 이용해주세요.</span>
+                                                </div>
+                                            </div>
+                                            <div className="review_image_container">
+                                                <div className="review_image">
+                                                    <img src="img/review_img1.png"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="review_body">
+                                            <div className="review_content">
+                                                <div className="review_star">
+                                                    ★★★★★
+                                                </div>
+                                                <div className="review_info">
+                                                    <span className="review_user">hb</span>
+                                                    <span className="review_date">24.05.07 | 신고</span>
+                                                    <p className="review_text">
+                                                        <span className="review_title">맛</span> <span
+                                                        className="review_detail">맛있어요</span>
+                                                        <span className="review_title">신선도</span> <span
+                                                        className="review_detail">신선해요</span>
+                                                        <span className="review_title">포장</span> <span
+                                                        className="review_detail">꼼꼼해요</span><br/>
+                                                        <span className="review_text_detail">꼼꼼하게 포장 잘 되어서 오고 당도가 엄청 높아요! 매우 만족합니다.</span>
+                                                    </p>
+                                                </div>
+                                                <div className="seller_reply">
+                                                    <div className="seller_reply_header">
+                                                        <span className="seller_reply_user">판매자</span>
+                                                        <span className="seller_reply_date">24.05.08 | 신고</span>
+                                                    </div>
+                                                    <span className="seller_reply_detail">주문해주셔서 감사합니다! 또 이용해주세요.</span>
+                                                </div>
+                                            </div>
+                                            <div className="review_image_container">
+                                                <div className="review_image">
+                                                    <img src="img/review_img2.png"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
+
                             {activeTab === 'questioninfo' && (
                                 <div className={'product_detail_info'}>
-                                    <img src={'img/etc/question_img.png'}/>
+                                    <div className="notice">
+                                        <ul>
+                                            <li>구매한 상품의 취소 / 반품은 구매내역 신청에서 가능합니다.</li>
+                                            <li>상품 문의 및 리뷰를 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
+                                            <li>가격, 판매자, 교환/환불 및 배송 등 해당 상품 자체와 관련 없는 문의는 고객센터 문의하기를 이용해 주세요.</li>
+                                            <li>“해당 상품 자체”와 관계없는 글, 양도, 광고성, 욕설, 비방, 도배 등의 글은 예고없이 삭제조치가 취해질 수 있습니다.
+                                            </li>
+                                            <li>공개 게시판이므로 전화번호, 메일 주소 등 고객님의 개인정보는 절대 남기지 말아주세요.</li>
+                                        </ul>
+                                    </div>
+                                    <div className="inquiry_container">
+                                        <span className="inquiry_text">구매하시려는 상품에 대해 궁금한 점이 있는 경우 문의해주세요.</span>
+                                        <button className="inquiry_button" onClick={handleViewResume}>문의하기</button>
+                                    </div>
+
+                                    <div className="table_container">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>Q / A</th>
+                                                <th>작성자</th>
+                                                <th>문의 내용</th>
+                                                <th>작성일</th>
+                                                <th>답변 상태</th>
+                                            </tr>
+                                            </thead>
+                                            <br/>
+                                            <tbody>
+                                            <tr>
+                                                <td>Q</td>
+                                                <td>PEPSI</td>
+                                                <td>업소용인가요?</td>
+                                                <td>24.05.05</td>
+                                                <td>답변 대기</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Q</td>
+                                                <td>jiwon</td>
+                                                <td>배송료는 개당 붙는건가요?</td>
+                                                <td>24.05.03</td>
+                                                <td>답변 완료</td>
+                                            </tr>
+                                            <tr>
+                                                <td>↳ A</td>
+                                                <td>판매자</td>
+                                                <td>안녕하세요 고객님. 배송비는 한건에 한번 발생합니다.</td>
+                                                <td>24.05.03</td>
+                                                <td>답변 완료</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Q</td>
+                                                <td>jiwon</td>
+                                                <td>배송료는 개당 붙는건가요?</td>
+                                                <td>24.05.03</td>
+                                                <td>답변 완료</td>
+                                            </tr>
+                                            <tr>
+                                                <td>↳ A</td>
+                                                <td>판매자</td>
+                                                <td>안녕하세요 고객님. 배송비는 한건에 한번 발생합니다.</td>
+                                                <td>24.05.03</td>
+                                                <td>답변 완료</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {isModalOpen && (
+                                        <div className="modal">
+                                            <div className="container">
+                                                <div className="header">
+                                                    <h2>상품 문의 답변</h2>
+                                                </div>
+                                                <textarea placeholder="문의하실 내용을 입력하세요"></textarea>
+                                                <div className="response_message">
+                                                    <span>문의하신 내용에 대한 답변은 해당 상품의 상세페이지에서 확인하실 수 있습니다.</span>
+                                                </div>
+                                                <div className="button_container">
+                                                <button className="cancel_button" onClick={closeModal}>취소</button>
+                                                    <button className="submit_button">등록</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
+
                             {activeTab === 'deliveryinfo' && (
                                 <div className={'product_detail_info'}>
-                                    <img src={'img/etc/delivery_img.png'}/>
+                                    <div className="exchange_info">
+                                        <h3>교환 / 반품 정보</h3>
+                                        <div className="exchange_info_line"/>
+                                        <ul>
+                                            <li><span>반품배송비 (편도) :</span> 3,000원 (최초 배송비 미포함시 6,000원 부과)</li>
+                                            <li><span>교환배송비 (왕복) :</span> 6,000원</li>
+                                            <li>단, 교환 / 반품 배송은 상품 및 교환 / 반품 사유에 따라 변동될 수 있으므로 교환/반품 신청 화면 확인 부탁드립니다.
+                                            </li>
+                                        </ul>
+
+                                        <h3>교환 / 반품 사유에 따른 요청 가능 기간</h3>
+                                        <div className="exchange_info_line"/>
+                                        <ul>
+                                            <li>구매자 단순 변심 : 상품 수령 후 7일 이내 (구매자 반품 배송비 부담)</li>
+                                            <li>표시/광고와 상이, 계약 내용과 다르게 이행된 경우 : 상품 수령 후 3개월 이내 혹은 표시/광고와 다름을 안 날로부터 30일
+                                                이내 (판매자 반품 배송비 부담)
+                                            </li>
+                                        </ul>
+
+                                        <h3>교환 / 반품 불가능 경우</h3>
+                                        <div className="exchange_info_line"/>
+                                        <ul>
+                                            <li>교환 / 반품 요청이 기간이 지난 경우</li>
+                                            <li>소비자의 책임 있는 사유로 상품 등이 분실/파손/훼손된 경우 (단, 확인을 위한 포장 훼손 제외)</li>
+                                            <li>소비자의 사용 / 소비에 의해 상품 등의 가치가 현저히 감소한 경우</li>
+                                            <li>시간의 경과에 의해 재판매가 곤란할 정도로 상품 등의 가치가 현저히 감소한 경우</li>
+                                        </ul>
+
+                                        <h3>거래 조건에 대한 정보</h3>
+                                        <div className="exchange_info_line"/>
+                                        <ul>
+                                            <li>‘전자상거래 등에서의 소비자보호에 관한 법률’이 정하는 바에 따라 소비자의 청약 철회 후 판매자가 재화 등을 반환 받은 날로부터
+                                                3영업일 이내에 지급받은 대금의 환급을 명령할 수 있으며, 소비자는 청약철회 등에 따른 상품 반품 및 환불에 소요되는 비용을
+                                                부담해야 합니다.
+                                            </li>
+                                            <li>소화물 택배의 배송은 발송일로부터 1~2영업일이 소요되나, 지역/대행 화물/설치 예약/배송지 제한 등의 특이사항에 따라 배송
+                                                기간은 달라질 수 있습니다.
+                                            </li>
+                                        </ul>
+
+                                        <h3>주의사항</h3>
+                                        <div className="exchange_info_line"/>
+                                        <ul>
+                                            <li>전자상거래 등에서 소비자보호법에 관한 법률에 의거하여 미성년자가 물품을 구매하는 경우, 법정대리인이 동의하지 않으면 미성년자 본인
+                                                및 법정대리인이 구매를 취소할 수 있습니다.
+                                            </li>
+                                            <li>결제 시 유의사항을 반드시 확인해주시기 바랍니다. 구입한 상품과 상이한 상품을 받는 등 불가피한 상황이 발생할 수 있으며, 이로
+                                                인해 발생하는 책임을 지지 않습니다.
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
+
                             )}
                         </div>
                     </div>
