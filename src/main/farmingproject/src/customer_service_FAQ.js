@@ -41,24 +41,24 @@ function Customer_service_FAQ() {
                             <div className={'Customer_service_top_title'}>제목</div>
                         </div>
 
-                        {/*<div className={'Customer_service_inner'}>*/}
-                        {/*    <div className={'Customer_service_inner_num'}>03</div>*/}
-                        {/*    <div className={'Customer_service_inner_title'}>언제 배송이 시작되나요?</div>*/}
-                        {/*</div>*/}
-                        {/*<div className={'Customer_service_inner'}>*/}
-                        {/*    <div className={'Customer_service_inner_num'}>02</div>*/}
-                        {/*    <div className={'Customer_service_inner_title'}>배송 시작 후 배송 완료까지 몇일 소요되나요?</div>*/}
-                        {/*</div>*/}
-                        {/*<div className={'Customer_service_inner'}>*/}
-                        {/*    <div className={'Customer_service_inner_num'}>01</div>*/}
-                        {/*    <div className={'Customer_service_inner_title'}>환불 및 교환 방법이 궁금해요.</div>*/}
-                        {/*</div>*/}
-                        {fitems.map((item) => (
-                            <div className={'Customer_service_inner'}>
-                                <div className={'Customer_service_inner_num'}>{item.fnum}</div>
-                                <div className={'Customer_service_inner_title'}>{item.ftitle}</div>
-                            </div>
-                        ))}
+                        <div className={'Customer_service_inner'}>
+                            <div className={'Customer_service_inner_num'}>03</div>
+                            <div className={'Customer_service_inner_title'}>언제 배송이 시작되나요?</div>
+                        </div>
+                        <div className={'Customer_service_inner'}>
+                            <div className={'Customer_service_inner_num'}>02</div>
+                            <div className={'Customer_service_inner_title'}>배송 시작 후 배송 완료까지 몇일 소요되나요?</div>
+                        </div>
+                        <div className={'Customer_service_inner'}>
+                            <div className={'Customer_service_inner_num'}>01</div>
+                            <div className={'Customer_service_inner_title'}>환불 및 교환 방법이 궁금해요.</div>
+                        </div>
+                        {/*{fitems.map((item) => (*/}
+                        {/*    <div className={'Customer_service_inner'}>*/}
+                        {/*        <div className={'Customer_service_inner_num'}>{item.fnum}</div>*/}
+                        {/*        <div className={'Customer_service_inner_title'}>{item.ftitle}</div>*/}
+                        {/*    </div>*/}
+                        {/*))}*/}
                     </div>
 
                     <div className={'pagenation'}>1</div>
