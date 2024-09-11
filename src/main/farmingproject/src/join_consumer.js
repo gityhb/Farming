@@ -4,6 +4,8 @@ import './join_consumer.css';
 import './common/root.css';
 
 function Join_consumer() {
+    const [idCheckMessage, setIdCheckMessage] = useState("");
+    const [isIdDuplicate, setIsIdDuplicate] = useState(false);
     const [step, setStep] = useState(1);
     const [terms, setTerms] = useState({
         all: false,
@@ -23,8 +25,6 @@ function Join_consumer() {
         email: "",
         address: ""
     });
-    const [existingIds, setExistingIds] = useState(["user1", "user2", "user3"]); // 아이디 중복확인 버튼 실행 확인을 위한 임시데이터
-    const [idCheckMessage, setIdCheckMessage] = useState("");
     const [nicknameCheckMessage, setNicknameCheckMessage] = useState("");
 
 
@@ -48,6 +48,12 @@ function Join_consumer() {
 
     const handleSubmitForm = (event) => {
         event.preventDefault();
+
+        if (isIdDuplicate) {
+            alert("이미 사용 중인 아이디입니다. 다른 아이디를 사용하세요.");
+            return;
+        }
+
         if (!form.id) {
             alert("아이디를 입력하세요");
             return;
@@ -109,40 +115,34 @@ function Join_consumer() {
         }));
     };
 
-    const checkId = () => {
-        if (!form.id || form.id.trim() === "") {
-            setIdCheckMessage("아이디를 입력해 주세요.");
-        } else if (existingIds.includes(form.id)) {
-            setIdCheckMessage("아이디가 중복됩니다.");
-        } else {
-            setIdCheckMessage("사용 가능한 아이디입니다.");
+    const checkId = async () => {
+        try {
+            const response = await fetch(`/api/check_user_id?userId=${form.userId}`);
+            const data = await response.json();
+
+            if (data.isDuplicate) {
+                setIdCheckMessage("이미 사용 중인 아이디입니다.");
+                setIsIdDuplicate(true);
+            } else {
+                setIdCheckMessage("사용 가능한 아이디입니다.");
+                setIsIdDuplicate(false);
+            }
+        } catch (error) {
+            console.error("아이디 중복 확인 오류:", error);
+            setIdCheckMessage("중복 확인 중 오류가 발생했습니다.");
         }
     };
-    const checkNickname = () => {
-        if (!form.nickname || form.nickname.trim() === "") {
-            setNicknameCheckMessage("닉네임을 입력해 주세요.");
-        } else if (existingIds.includes(form.nickname)) {
-            setNicknameCheckMessage("닉네임이 중복됩니다.");
-        } else {
-            setNicknameCheckMessage("사용 가능한 닉네임입니다.");
-        }
-    };
 
 
-    const resetForm = () => {
-        setForm({
-            id: "",
-            password: "",
-            confirmPassword: "",
-            name: "",
-            nickname:"",
-            phone: "",
-            email: "",
-            address: ""
-        });
-    };
-
-
+    // const checkNickname = () => {
+    //     if (!form.nickname || form.nickname.trim() === "") {
+    //         setNicknameCheckMessage("닉네임을 입력해 주세요.");
+    //     } else if (existingIds.includes(form.nickname)) {
+    //         setNicknameCheckMessage("닉네임이 중복됩니다.");
+    //     } else {
+    //         setNicknameCheckMessage("사용 가능한 닉네임입니다.");
+    //     }
+    // };
 
     return (
         <div id={'body'}>
@@ -807,8 +807,7 @@ function Join_consumer() {
                                             onChange={handleInputChange}
                                             placeholder="닉네임을 입력하세요"
                                         />
-                                        <button type="button" className="dupli_check_btn" onClick={checkNickname}>중복확인
-                                        </button>
+                                        {/*<button type="button" className="dupli_check_btn" onClick={checkNickname}>중복확인</button>*/}
                                         <div className="id_dupli_check">
                                             {nicknameCheckMessage &&
                                                 <p className="id_dupli_check_message">{nicknameCheckMessage}</p>}

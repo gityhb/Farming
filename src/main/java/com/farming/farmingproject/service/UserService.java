@@ -4,13 +4,16 @@ import com.farming.farmingproject.domain.User;
 import com.farming.farmingproject.dto.AddUserRequest;
 import com.farming.farmingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
+    @Autowired
     private final UserRepository userRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Long save(AddUserRequest dto) {
@@ -34,5 +37,10 @@ public class UserService {
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with userId: " + userId));
+    }
+
+    // 아이디 중복 여부를 확인하는 메서드
+    public boolean checkUserIdDuplicate(String userId) {
+        return userRepository.findByUserId(userId).isPresent();  // userId 존재 여부 반환
     }
 }

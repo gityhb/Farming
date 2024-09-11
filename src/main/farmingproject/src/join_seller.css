@@ -86,7 +86,7 @@
 #join_seller_form form #join_seller_form_group .form_group {
     display: flex;
     align-items: center;
-    margin-bottom: 35px;
+    margin-bottom: 10px;
     position: relative;
 }
 
@@ -127,6 +127,14 @@
     left: 120px;
     color: red;
     font-size: 12px;
+}
+
+.error_message {
+    height: 13px;
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-left: 125px;
 }
 
 

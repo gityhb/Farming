@@ -4,9 +4,11 @@ import com.farming.farmingproject.domain.User;
 import com.farming.farmingproject.domain.UserResponse;
 import com.farming.farmingproject.dto.AddUserRequest;
 import com.farming.farmingproject.service.UserService;
+import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +26,35 @@ import java.util.Map;
 @Controller
 @RequestMapping("/api")
 public class UserApiController {
+    @Autowired
     private final UserService userService;
+
+    // 회원가입 아이디 중복여부
+    @GetMapping("/check_user_id")
+    @PermitAll // 이 메서드는 인증 없이 접근 가능
+    public ResponseEntity<Map<String, Boolean>> checkUserId(@RequestParam String userId) {
+        boolean isDuplicate = userService.checkUserIdDuplicate(userId);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isDuplicate", isDuplicate);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 소비자 회원가입
+    @PostMapping("/join_consumer")
+    public ResponseEntity<Map<String, String>> signupConsumer(@RequestBody AddUserRequest request) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            request.setAuthority(1);  // 소비자 권한 설정
+            userService.save(request);
+            response.put("message", "회원가입 성공");
+            return ResponseEntity.ok(response);  // 성공 응답
+        } catch (Exception e) {
+            response.put("message", "회원가입 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
     // 판매자 회원가입
 //    @PostMapping("/join_seller")
@@ -32,28 +62,6 @@ public class UserApiController {
 //        request.setAuthority(2);
 //        userService.save(request);  // 판매자 권한 2 설정
 //        return "redirect:http://localhost:3000/login";   // 회원 가입이 완료된 이후에 로그인 페이지로 이동
-//    }
-
-//    @PostMapping("/join_seller")
-//    public ResponseEntity<Void> signupSeller(@RequestBody AddUserRequest request) {
-//        try {
-//            request.setAuthority(2);
-//            userService.save(request);  // 판매자 권한 2 설정
-//            return ResponseEntity.ok().build();  // 성공 시 200 OK 응답
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();  // 오류 시 500 Internal Server Error 응답
-//        }
-//    }
-
-//    @PostMapping("/join_seller")
-//    public ResponseEntity<String> signupSeller(@RequestBody AddUserRequest request) {
-//        try {
-//            request.setAuthority(2);  // 판매자 권한 설정
-//            userService.save(request);
-//            return ResponseEntity.ok("회원가입 성공");  // 성공 응답
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원가입 실패");
-//        }
 //    }
 
     @PostMapping("/join_seller")
@@ -68,14 +76,6 @@ public class UserApiController {
             response.put("message", "회원가입 실패");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-    }
-
-    // 소비자 회원가입
-    @PostMapping("/join_consumer")
-    public String signupConsumer(AddUserRequest request) {
-        request.setAuthority(1);
-        userService.save(request);  // 소비자 권한 1 설정
-        return "redirect:http://localhost:3000/login";   // 회원 가입이 완료된 이후에 로그인 페이지로 이동
     }
 
 //    @PostMapping("/user")
@@ -93,7 +93,7 @@ public class UserApiController {
 
         // UserDetails에서 아이디를 추출하여 사용자 정보를 조회
         User user = userService.findByUserId(userDetails.getUsername());
-        UserResponse response = new UserResponse(user.getUserId(), user.getName());
+        UserResponse response = new UserResponse(user.getUserId(), user.getName(), user.getAuthority());
         return ResponseEntity.ok(response);
 
     }

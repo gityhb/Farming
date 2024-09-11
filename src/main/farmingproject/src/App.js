@@ -90,6 +90,8 @@ import Auction from "./auction";
 import Payment from "./payment";
 import Payment_success from "./payment_success";
 import Join from "./join";
+import Farmer_product_apply from "./farmer_product_apply";
+import {UserProvider} from "./common/userContext";
 
 function App() {
     const location = useLocation();
@@ -97,6 +99,7 @@ function App() {
 
     return (
         <div>
+            <UserProvider>
             {!hideHeaderFooter && <Header />}
             <Routes>
                 <Route path="/" element={<Main />} />
@@ -105,6 +108,7 @@ function App() {
                 <Route path="/farmer_recommend" element={<Farmer_recommend />} />
                 <Route path="/farmer_market" element={<Farmer_market />} />
                 <Route path="/farmer_market_info" element={<Farmer_market_info />} />
+                <Route path="/farmer_product_apply" element={<Farmer_product_apply />} />
                 <Route path="/farmer_job_info" element={<FarmerJobInfo />} />
                 <Route path="/farmer_job_apply" element={<FarmerJobApply />} />
                 <Route path="/login" element={<Login />} />
@@ -123,6 +127,7 @@ function App() {
 
             </Routes>
             {!hideHeaderFooter && <Footer />}
+            </UserProvider>
         </div>
     );
 }

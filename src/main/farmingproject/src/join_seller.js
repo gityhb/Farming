@@ -1,12 +1,11 @@
 import {useEffect, useState} from "react";
 import './join_seller.css';
 import './common/root.css';
-import {Form, Link} from "react-router-dom";
-import axios from "axios";
+import {Link} from "react-router-dom";
 
 function Join_seller() {
-    const [existingIds, setExistingIds] = useState(["user1", "user2", "user3"]); // 아이디 중복확인 버튼 실행 확인을 위한 임시데이터
     const [idCheckMessage, setIdCheckMessage] = useState("");
+    const [isIdDuplicate, setIsIdDuplicate] = useState(false);
     const [step, setStep] = useState(1);
     const [terms, setTerms] = useState({
         all: false,
@@ -45,66 +44,146 @@ function Join_seller() {
         });
     }, []);
 
+    // step1의 체크박스
+    const handleTermsChange = (name) => {
+        setTerms(prevTerms => {
+            const updatedTerms = { ...prevTerms, [name]: !prevTerms[name] };
+
+            if (name === 'all') {
+                const allChecked = !prevTerms.all;
+                for (let key in updatedTerms) {
+                    updatedTerms[key] = allChecked;
+                }
+            } else {
+                updatedTerms.all = Object.values(updatedTerms).every(v => v);
+            }
+
+            return updatedTerms;
+        });
+    };
+
+    // 아이디 중복 확인 함수
+    const checkId = async () => {
+        if (!form.userId) {
+            document.getElementById("userIdError").textContent = "아이디를 입력하세요";
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/check_user_id?userId=${form.userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                if (result.isDuplicate) {
+                    document.getElementById("userIdError").textContent = "이미 존재하는 아이디입니다";
+                    setIsIdDuplicate(true);
+                } else {
+                    document.getElementById("userIdError").textContent = "사용 가능한 아이디입니다";
+                    setIsIdDuplicate(false);
+                }
+            } else {
+                document.getElementById("userIdError").textContent = "아이디 중복 확인에 실패하였습니다";
+            }
+        } catch (error) {
+            console.error("아이디 중복 확인 오류:", error);
+            document.getElementById("userIdError").textContent = "아이디 중복 확인 중 오류가 발생하였습니다";
+        }
+    };
+
     const handleNextStep = () => {
         if (step === 1 && terms.service && terms.privacy) {
             setStep(step + 1);
         }
     };
 
-    // const handleInputChange = (event) => {
-    //     const { name, value } = event.target;
-    //     setForm(prevForm => ({
-    //         ...prevForm, // 이전 상태를 복사
-    //         [name]: value // 변경된 필드만 업데이트
-    //     }));
-    // };
 
-    const handleSubmitForm = async (e) => {
-        e.preventDefault();
+    const handleSubmitForm = (event) => {
+        event.preventDefault();
+        let isValid = true;
 
-        // const formData = new FormData(e.target);
+        // 초기화: 모든 에러 메시지 초기화
+        document.getElementById("userIdError").textContent = "";
+        document.getElementById("passwordError").textContent = "";
+        document.getElementById("confirmPasswordError").textContent = "";
+        document.getElementById("nameError").textContent = "";
+        document.getElementById("storeNameError").textContent = "";
+        document.getElementById("businessNumberError").textContent = "";
+        document.getElementById("phoneNumberError").textContent = "";
+        document.getElementById("storePhoneNumberError").textContent = "";
+        document.getElementById("emailError").textContent = "";
+        document.getElementById("addressError").textContent = "";
+
+        if (isIdDuplicate) {
+            alert("이미 사용 중인 아이디입니다. 다른 아이디를 사용하세요.");
+            return;
+        }
 
         if (!form.userId) {
-            alert("아이디를 입력하세요");
-            return;
+            document.getElementById("userIdError").textContent = "아이디를 입력하세요";
+            isValid = false;
         }
         if (!form.password) {
-            alert("비밀번호를 입력하세요");
-            return;
+            document.getElementById("passwordError").textContent = "비밀번호를 입력하세요";
+            isValid = false;
         }
-        if (form.password !== form.confirmPassword) {
-            alert("비밀번호가 일치하지 않습니다.\n다시 입력해 주세요");
-            return;
+        if (!form.confirmPassword) {
+            document.getElementById("confirmPasswordError").textContent = "비밀번호를 재입력하세요";
+            isValid = false;
         }
-        if (!form.name) {
-            alert("이름을 입력하세요");
-            return;
-        }
-        if (!form.storeName) {
-            alert("가게 이름을 입력하세요");
-            return;
-        }
-        if (!form.businessNumber) {
-            alert("사업자 번호를 입력하세요");
-            return;
-        }
-        if (!form.phoneNumber) {
-            alert("휴대폰 번호를 입력하세요");
-            return;
-        }
-        if (!form.storePhoneNumber) {
-            alert("가게 전화번호를 입력하세요");
-            return;
-        }
-        if (!form.email) {
-            alert("이메일 주소를 입력하세요");
-            return;
-        }
-        if (!form.address) {
-            alert("가게 주소를 입력하세요");
-            return;
+        else {
+            if (form.password !== form.confirmPassword) {
+                document.getElementById("confirmPasswordError").textContent = "비밀번호가 일치하지 않습니다";
+                isValid = false;
+            }
         }
 
+        if (!form.name) {
+            document.getElementById("nameError").textContent = "이름을 입력하세요";
+            isValid = false;
+        }
+
+        if (!form.storeName) {
+            document.getElementById("storeNameError").textContent = "가게 이름을 입력하세요";
+            isValid = false;
+        }
+
+        if (!form.businessNumber) {
+            document.getElementById("businessNumberError").textContent = "사업자 번호를 입력하세요";
+            isValid = false;
+        }
+
+        if (!form.phoneNumber) {
+            document.getElementById("phoneNumberError").textContent = "휴대폰 번호를 입력하세요";
+            isValid = false;
+        }
+
+        if (!form.storePhoneNumber) {
+            document.getElementById("storePhoneNumberError").textContent = "가게 번호를 입력하세요";
+            isValid = false;
+        }
+
+        if (!form.email) {
+            document.getElementById("emailError").textContent = "이메일 주소를 입력하세요";
+            isValid = false;
+        }
+
+        if (!form.address) {
+            document.getElementById("addressError").textContent = "가게 주소를 입력하세요";
+            isValid = false;
+        }
+
+        // 모든 필드가 유효한 경우에만 제출
+        if (isValid) {
+            submitForm(); // 실제 제출 함수 호출
+        }
+    };
+
+    const submitForm = async () => {
         try {
             const response = await fetch('/api/join_seller', {
                 method: 'POST',
@@ -125,110 +204,7 @@ function Join_seller() {
         } catch (error) {
             console.error('회원가입 중 오류 발생:', error);
         }
-
-        // try {
-        //     // 서버에 폼 데이터 제출
-        //     const response = await fetch('http://localhost:8080/api/join_seller', {
-        //         method: 'POST',
-        //
-        //         body: JSON.stringify(formData) // 폼 데이터를  전송
-        //     });
-        //
-        //     if (!response.ok) {
-        //         throw new Error('서버와의 통신에 실패했습니다.');
-        //     }
-        //
-        //     const result = await response.json();
-        //
-        //     if (result.success) {
-        //         // 폼 제출 성공 시 step을 3으로 변경
-        //         setStep(3);
-        //     } else {
-        //         alert('회원가입에 실패했습니다.');
-        //     }
-        // } catch (error) {
-        //     console.error('오류:', error);
-        //     alert('서버와의 통신에 실패했습니다.');
-        // }
-
-
     };
-
-    // step1의 체크박스
-    const handleTermsChange = (name) => {
-        setTerms(prevTerms => {
-            const updatedTerms = { ...prevTerms, [name]: !prevTerms[name] };
-
-            if (name === 'all') {
-                const allChecked = !prevTerms.all;
-                for (let key in updatedTerms) {
-                    updatedTerms[key] = allChecked;
-                }
-            } else {
-                updatedTerms.all = Object.values(updatedTerms).every(v => v);
-            }
-
-            return updatedTerms;
-        });
-    };
-
-
-
-    const checkId = () => {
-        if (!form.id || form.id.trim() === "") {
-            setIdCheckMessage("아이디를 입력해 주세요.");
-        } else if (existingIds.includes(form.id)) {
-            setIdCheckMessage("아이디가 중복됩니다.");
-        } else {
-            setIdCheckMessage("사용 가능한 아이디입니다.");
-        }    };
-
-
-
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //
-    //     const formData = new FormData(event.target);
-    //     const userData = Object.fromEntries(formData.entries());
-    //     userData.authority = 2; // 판매자 권한
-    //
-    //     try {
-    //         const response = await axios.post('/api/user', userData);
-    //         if (response.status === 200) {
-    //
-    //             setStep(3);
-    //         }
-    //     } catch (error) {
-    //         console.error("회원가입 중 오류 발생:", error);
-    //     }
-    // };
-
-    // const [idCheckMessage, setIdCheckMessage] = useState('');
-
-
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault(); // 페이지 리로드 방지
-    //
-    //     const formData = new FormData(event.target);
-    //
-    //     try {
-    //         const response = await fetch('http://localhost:8080/api/join_seller', {
-    //             method: 'POST',
-    //             body: formData,
-    //         });
-    //
-    //         if (response.ok) {
-    //             // 회원가입 성공 시 step을 3으로 설정
-    //             setStep(3);
-    //         } else {
-    //             // 에러 처리 (예: 잘못된 입력 처리)
-    //             console.error('회원가입 실패');
-    //         }
-    //     } catch (error) {
-    //         console.error('서버와의 통신에 실패했습니다:', error);
-    //     }
-    // };
-
 
     return (
         <div id={'body'}>
@@ -847,11 +823,12 @@ function Join_seller() {
                                                placeholder="아이디를 입력하세요"/>
                                         <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인
                                         </button>
-                                        <div className="id_dupli_check">
-                                            {idCheckMessage &&
-                                                <p className="id_dupli_check_message">{idCheckMessage}</p>}
-                                        </div>
+                                        {/*<div className="id_dupli_check">*/}
+                                        {/*    {idCheckMessage &&*/}
+                                        {/*        <p className="id_dupli_check_message">{idCheckMessage}</p>}*/}
+                                        {/*</div>*/}
                                     </div>
+                                    <p className="error_message" id="userIdError"></p>
                                     <div className="form_group">
                                         <label>비밀번호</label>
                                         <input type="password"
@@ -860,6 +837,7 @@ function Join_seller() {
                                                onChange={handleInputChange}
                                                placeholder="비밀번호를 입력하세요"/>
                                     </div>
+                                    <p className="error_message" id="passwordError"></p>
                                     <div className="form_group">
                                         <label>비밀번호 확인</label>
                                         <input type="password"
@@ -868,6 +846,7 @@ function Join_seller() {
                                                onChange={handleInputChange}
                                                placeholder="비밀번호를 재입력하세요"/>
                                     </div>
+                                    <p className="error_message" id="confirmPasswordError"></p>
                                     <div className="form_group">
                                         <label>이름</label>
                                         <input type="text"
@@ -876,6 +855,7 @@ function Join_seller() {
                                                onChange={handleInputChange}
                                                placeholder="이름을 입력하세요"/>
                                     </div>
+                                    <p className="error_message" id="nameError"></p>
                                     <div className="form_group">
                                         <label>가게 이름</label>
                                         <input type="text"
@@ -884,6 +864,7 @@ function Join_seller() {
                                                onChange={handleInputChange}
                                                placeholder="파밍에서 사용할 가게 이름을 입력하세요"/>
                                     </div>
+                                    <p className="error_message" id="storeNameError"></p>
                                     <div className="form_group">
                                         <label>사업자 번호</label>
                                         <input type="text"
@@ -892,6 +873,7 @@ function Join_seller() {
                                                onChange={handleInputChange}
                                                placeholder="사업자 번호를 입력하세요"/>
                                     </div>
+                                    <p className="error_message" id="businessNumberError"></p>
                                     <div className="form_group">
                                         <label>전화번호</label>
                                         <input type="tel"
@@ -901,6 +883,7 @@ function Join_seller() {
                                                onChange={handleInputChange}
                                                placeholder="휴대폰 번호를 입력하세요 ('-'제외 11자리 입력)"/>
                                     </div>
+                                    <p className="error_message" id="phoneNumberError"></p>
                                     <div className="form_group">
                                         <label>가게 전화번호</label>
                                         <input type="tel"
@@ -910,6 +893,7 @@ function Join_seller() {
                                                onChange={handleInputChange}
                                                placeholder="가게 전화번호를 입력하세요 ('-'제외)"/>
                                     </div>
+                                    <p className="error_message" id="storePhoneNumberError"></p>
                                     <div className="form_group">
                                         <label>이메일 주소</label>
                                         <input type="email"
@@ -918,6 +902,7 @@ function Join_seller() {
                                                onChange={handleInputChange}
                                                placeholder="이메일 주소를 입력하세요"/>
                                     </div>
+                                    <p className="error_message" id="emailError"></p>
                                     <div className="form_group">
                                         <label>가게 주소</label>
                                         <input type="text"
@@ -926,6 +911,7 @@ function Join_seller() {
                                                onChange={handleInputChange}
                                                placeholder="가게 주소를 입력하세요"/>
                                     </div>
+                                    <p className="error_message" id="addressError"></p>
                                 </div>
                                 <button type="submit" className="submit_btn">회원가입</button>
                             </form>
