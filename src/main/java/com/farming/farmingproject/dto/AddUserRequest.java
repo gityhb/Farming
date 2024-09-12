@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AddUserRequest {
-    private Long id;
+    private long id;
     private String userId;
     private String password;
     private String name;

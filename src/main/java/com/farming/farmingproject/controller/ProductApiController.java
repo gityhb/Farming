@@ -45,9 +45,6 @@ public class ProductApiController {
             // 요청 객체에 판매자 ID 설정
             request.setSellerId(sellerId);
             request.setProductStatus(0);
-            request.getProductPrice2();
-            request.getProductDeliveryDate();
-            request.getSellerName();
             productService.save(request);
             response.put("message", "상품 등록 신청 성공");
             return ResponseEntity.ok(response);

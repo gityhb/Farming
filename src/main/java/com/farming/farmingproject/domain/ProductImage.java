@@ -15,15 +15,12 @@ import java.sql.Timestamp;
 public class ProductImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_image_id", updatable = false)
     private Long productImageId;
 
-////    @ManyToOne
-//    @JoinColumn(name = "product_id", nullable = false)
-//    private Long productId;
-////    private Product productId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product productId;
+    @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(name = "FK_PRODUCT_ID"))  // 외래키로 설정
+    private Product product;    // Product 엔티티 전체를 참조 (id 뿐만 아니라 모든 필드와 관계를 포함해 참조)
 
     @Column(name = "product_image_path", nullable = false)
     private String productImagePath;
@@ -35,8 +32,8 @@ public class ProductImage {
     private Timestamp productImageModifiedDate;
 
     @Builder
-    public ProductImage(Product productId, String productImagePath) {
-        this.productId = productId;
+    public ProductImage(Product product, String productImagePath) {
+        this.product = product;
         this.productImagePath = productImagePath;
         this.productImageCreatedDate = new Timestamp(System.currentTimeMillis());
         this.productImageModifiedDate = new Timestamp(System.currentTimeMillis());

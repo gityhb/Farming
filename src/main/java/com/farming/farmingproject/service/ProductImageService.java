@@ -15,13 +15,16 @@ public class ProductImageService {
     @Autowired
     private final ProductImageRepository productImageRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public Long save(AddProductImageRequest dto) {
 
+        // Product 엔티티 조회
+        Product product = productRepository.findById(dto.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
         return productImageRepository.save(ProductImage.builder()
-                .productId(dto.getProductId())
+                .product(product)
                 .productImagePath(dto.getProductImagePath())
                 .build()).getProductImageId();
     }

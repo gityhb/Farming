@@ -821,8 +821,9 @@ function Join_seller() {
                                                value={form.userId}
                                                onChange={handleInputChange}
                                                placeholder="아이디를 입력하세요"/>
-                                        <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인
-                                        </button>
+                                        <div className={"dupli_check_btn"} onClick={checkId}>중복확인</div>
+                                        {/*<button type="button" className="dupli_check_btn" onClick={checkId}>중복확인*/}
+                                        {/*</button>*/}
                                         {/*<div className="id_dupli_check">*/}
                                         {/*    {idCheckMessage &&*/}
                                         {/*        <p className="id_dupli_check_message">{idCheckMessage}</p>}*/}

@@ -69,7 +69,6 @@ function Farmer_product_apply() {
                 productOrigin: form.productOrigin,
                 productDeliveryDate: form.productDeliveryDate,
                 productInfo: form.productInfo
-                // ... 기타 product 관련 필드
             };
 
             // 2. 상품 등록 요청
@@ -103,8 +102,8 @@ function Farmer_product_apply() {
     });
 
     if (productImageResponse.ok) {
-        alert("상품 등록 신청이 되었습니다.");
-        // navigate('/');
+        // alert("상품 등록 신청이 되었습니다.");
+        navigate('/');
         console.log("성공함!!!!");
     } else {
         console.error('이미지 등록 실패:', await productImageResponse.json());
@@ -129,7 +128,7 @@ function Farmer_product_apply() {
                     <div id={'product_apply_title'}>
                         <h1>상품 등록 신청</h1>
                     </div>
-                    <form onSubmit={submitForm} method="POST" enctype="multipart/form-data">
+                    <form onSubmit={submitForm} method="POST" encType="multipart/form-data">
                         <div id={'product_apply_img'}>
                             <div className={'product_apply_img_box'}>
                                 <div className={'product_img_show'} id={'product_img_show'}>
@@ -151,7 +150,7 @@ function Farmer_product_apply() {
                             </div>
 
                             <div className={'product_apply_img_btn'}>
-                                <label for={"choosefile"}>사진첨부</label>
+                                <label htmlFor={"choosefile"}>사진첨부</label>
                             </div>
                             <input type="file" id={"choosefile"} name={"productImagePath"} value={form.productImagePath}  onChange={handleFileInputChange} accept="image/*" multiple  style={{visibility: "hidden"}}/>
                         </div>
@@ -194,7 +193,7 @@ function Farmer_product_apply() {
                                     placeholder="0"
                                 />
                                 <select name={"productPrice2"} value={form.productPrice2}  onChange={handleInputChange}>
-                                    <option value={'g'} selected>g</option>
+                                    <option value={'g'}>g</option>
                                     <option value={'kg'}>kg</option>
                                     <option value={'ea'}>개</option>
                                     <option value={'pack'}>팩</option>
@@ -227,7 +226,7 @@ function Farmer_product_apply() {
                                 </div>
                                 주문 후
                                 <select name={"productDeliveryDate"} value={form.productDeliveryDate}  onChange={handleInputChange}>
-                                    <option value={'today'} selected>당일</option>
+                                    <option value={'today'}>당일</option>
                                     <option value={'tomorrow'}>내일</option>
                                     <option value={'etc'}>상시배송</option>
                                 </select>
