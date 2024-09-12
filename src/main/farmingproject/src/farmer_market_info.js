@@ -322,7 +322,7 @@ function Farmer_market_info() {
                                                 <div className="header">
                                                     <h2>상품 문의 답변</h2>
                                                 </div>
-                                                <textarea placeholder="문의하실 내용을 입력하세요"></textarea>
+                                                <textarea className={"product_ask_reply"} placeholder="문의하실 내용을 입력하세요"></textarea>
                                                 <div className="response_message">
                                                     <span>문의하신 내용에 대한 답변은 해당 상품의 상세페이지에서 확인하실 수 있습니다.</span>
                                                 </div>

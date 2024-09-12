@@ -553,7 +553,7 @@ h2 {
 
 }
 
-textarea {
+.product_ask_reply {
     width: 80%;
     height: 150px;
     padding: 10px;
@@ -565,7 +565,7 @@ textarea {
     margin-top: 20px;
 }
 
-textarea::placeholder {
+.product_ask_reply::placeholder {
     color: #bbb;
 }
 

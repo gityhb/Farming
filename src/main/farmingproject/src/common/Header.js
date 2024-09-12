@@ -143,23 +143,23 @@ function Header() {
                                 )}
                             </li>
                             <li onMouseEnter={handleMarketMouseEnter} onMouseLeave={handleMarketMouseLeave}>
-                                <Link to={"/farmer_market"}>농부마켓</Link>
+                                <Link to={"/farmer_market_seller"}>농부마켓</Link>
                                 {isMarketDropdownOpen && (
                                     <ul className="dropdown">
                                         <div className="farmer_market_group">
-                                            <li><Link to={"/farmer_market"}>1인 가구 마켓</Link></li>
-                                            <li><Link to={"/farmer_market"}>일반 마켓</Link></li>
+                                            <li><Link to={"/farmer_market_seller"}>1인 가구 마켓</Link></li>
+                                            <li><Link to={"/farmer_market_seller"}>일반 마켓</Link></li>
                                         </div>
                                     </ul>
                                 )}
                             </li>
                             <li><Link to={"/farmer_recommend"}>농부추천</Link></li>
-                            <li><Link to={"/..."}>청과경매</Link></li>
+                            <li><Link to={"/auction"}>청과경매</Link></li>
                             <li><Link to={"/farmer_job"}>파머직</Link></li>
-                            <li><Link to={"/farmer_product_apply"}>고객센터</Link></li>
-                            <li><Link to={"/shopping_basket"}>장바구니</Link></li>
-                            <li><Link to={"/..."}>마이페이지</Link></li>
-                            <li><Link to={"/..."}>판매자 {user.name}님</Link></li>
+                            <li><Link to={"/farmer_product_apply"}>판매신청</Link></li>
+                            <li><Link to={"/customer_service_FAQ"}>고객센터</Link></li>
+                            <li><Link to={"/mypage_seller"}>마이페이지</Link></li>
+                            <li>판매자 {user.name}님</li>
                             <li><Link to={"/"} onClick={handleClick}>로그아웃</Link></li>
                         </ul>
                     ) : (
@@ -175,7 +175,7 @@ function Header() {
                                 <Link to={'/admin/reports'}>리포트 관리</Link>
                             </li>
                             <li>
-                                <Link to={'/...'}>{user.name} 관리자님</Link>
+                                {user.name} 관리자님
                             </li>
                             <li>
                                 <Link to={'/'} onClick={handleClick}>

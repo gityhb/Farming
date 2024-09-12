@@ -379,7 +379,7 @@
     padding: 20px;
 }
 
-table {
+.table_seller {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
@@ -438,7 +438,7 @@ h2 {
 
 }
 
-textarea {
+.seller_product_ask_reply {
     width: 80%;
     height: 150px;
     padding: 10px;
@@ -451,7 +451,7 @@ textarea {
     margin-top: 20px;
 }
 
-textarea::placeholder {
+.seller_product_ask_reply::placeholder {
     color: #bbb;
 }
 

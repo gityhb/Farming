@@ -329,7 +329,7 @@ function Farmer_market_info_seller() {
                                                 <div className="header">
                                                     <h2>상품 문의 답변</h2>
                                                 </div>
-                                                <textarea placeholder="내용을 입력하세요"></textarea>
+                                                <textarea className={"seller_product_ask_reply"} placeholder="내용을 입력하세요"></textarea>
                                                 <div className="button-container">
                                                     <button className="cancel-button" onClick={closeModal}>취소</button>
                                                     <button className="submit-button">등록</button>

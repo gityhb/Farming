@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './mypage_seller.css';
 import './common/root.css';
+import {Link} from "react-router-dom";
 
 function Mypage_seller() {
 
@@ -38,7 +39,7 @@ function Mypage_seller() {
                 </div>
                 <div class="product_list">
                     <div class="product_item">
-                        <img src="./img/watermelon.png" alt="상품사진"/>
+                        <Link to={"/farmer_market_info_seller"}><img src="./img/watermelon.png" alt="상품사진"/></Link>
                     </div>
                     <div class="product_item">
                         <img src="./img/strawberry.png" alt="상품사진"/>
