@@ -42,13 +42,13 @@ public class User implements UserDetails {  // UserDetails를 상속받아 인�
     private String storeName;
 
     @Column(name = "business_number")
-    private Integer businessNumber;
+    private String businessNumber;
 
     @Column(name = "phone_number", nullable = false)
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @Column(name = "store_phone_number")
-    private Integer storePhoneNumber;
+    private String storePhoneNumber;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -66,7 +66,7 @@ public class User implements UserDetails {  // UserDetails를 상속받아 인�
     private Timestamp modifiedDate;
 
     @Builder
-    public User(String userId, String password, String name, String nickname, String storeName, Integer businessNumber, Integer phoneNumber, Integer storePhoneNumber, String email, String address, Integer authority) {
+    public User(String userId, String password, String name, String nickname, String storeName, String businessNumber, String phoneNumber, String storePhoneNumber, String email, String address, Integer authority) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -92,6 +92,8 @@ public class User implements UserDetails {  // UserDetails를 상속받아 인�
     public String getUsername() {
         return userId;
     }
+
+    public Integer getAuthority() { return authority; }
 
     // 사용자의 패스워드 반환
     @Override

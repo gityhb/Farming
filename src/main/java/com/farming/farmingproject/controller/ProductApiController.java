@@ -1,0 +1,56 @@
+package com.farming.farmingproject.controller;
+
+import com.farming.farmingproject.domain.User;
+import com.farming.farmingproject.dto.AddProductRequest;
+import com.farming.farmingproject.service.ProductService;
+import com.farming.farmingproject.service.UserService;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RequiredArgsConstructor
+@Controller
+@RequestMapping("/api/product")
+public class ProductApiController {
+    @Autowired
+    private final ProductService productService;
+
+    private final UserService userService;
+
+    @PostMapping("/apply")
+    public ResponseEntity<Map<String, String>> applyProduct(@RequestBody AddProductRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            if (userDetails == null) {
+                response.put("message", "인증되지 않은 사용자입니다.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            // UserDetails에서 아이디를 추출하여 사용자 정보를 조회
+            User user = userService.findByUserId(userDetails.getUsername());
+            Long sellerId = user.getId();
+
+            // 요청 객체에 판매자 ID 설정
+            request.setSellerId(sellerId);
+            request.setProductStatus(0);
+            productService.save(request);
+            response.put("message", "상품 등록 신청 성공");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "상품 등록 신청 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+}

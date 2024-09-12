@@ -169,14 +169,14 @@ function Payment() {
                                 <div id="product_info_content_info">
                                     <img src="img/watermelon.png" alt="market_img"/>
                                     <div id="product_info_content_info_p">
-                                        <p id="product_info_content_info_title">프리미엄 고당도 꿀수박 1.35KG</p>
+                                        <p id="product_info_content_info_title">프리미엄 고당도 미니 꿀수박</p>
                                         <p id="product_info_content_info_origin">원산지: 산골짜기</p>
                                     </div>
                                 </div>
                             </td>
                             <td>1</td>
-                            <td>189원</td>
-                            <td>18,900원</td>
+                            <td>30원</td>
+                            <td>3,000원</td>
                         </tr>
                     </table>
 
@@ -186,7 +186,7 @@ function Payment() {
                     <table id="t_address_info">
                         <tr>
                             <td className="address_tbl_title">상품금액</td>
-                            <td className="address_tbl_info">18,900원</td>
+                            <td className="address_tbl_info">3,000원</td>
                         </tr>
                         <tr>
                             <td className="address_tbl_title">상품할인</td>
@@ -277,7 +277,7 @@ function Payment() {
                         <tr className={"payment_info_title"}>
                             <th>
                                 <p>총 상품금액</p>
-                                <p>18,900원</p>
+                                <p>3,000원</p>
                             </th>
                             <th>
                                 <p>총 추가금액</p>
@@ -289,7 +289,7 @@ function Payment() {
                             </th>
                             <th rowSpan={2} style={{ backgroundColor: 'white' }}>
                                 <p>최종 결제금액</p>
-                                <p>23,900</p>
+                                <p>3,000</p>
                             </th>
                         </tr>
                         <tr className={"payment_info_content"}>
@@ -297,7 +297,7 @@ function Payment() {
                                 <div className="info-container">
                                     <div className="info-row">
                                         <span id="item-name">상품 1개</span>
-                                        <span id="item-price">18,900원</span>
+                                        <span id="item-price">3,000원</span>
                                     </div>
                                     <div className="info-row">
                                         <span id="discount-name">ㄴ상품할인</span>
