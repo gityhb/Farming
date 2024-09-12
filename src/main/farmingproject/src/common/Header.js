@@ -147,11 +147,11 @@ function Header() {
                         )}
                     </li>
                     <li><Link to={"/farmer_recommend"}>농부추천</Link></li>
-                    <li><Link to={"/..."}>청과경매</Link></li>
+                    <li><Link to={"/Auction"}>청과경매</Link></li>
                     <li><Link to={"/farmer_job"}>파머직</Link></li>
                     <li><Link to={"/..."}>고객센터</Link></li>
                     <li><Link to={"/shopping_basket"}>장바구니</Link></li>
-                    <li><Link to={"/..."}>마이페이지</Link></li>
+                    <li><Link to={"/Mypage_seller"}>마이페이지</Link></li>
                     <li><Link to={"/login"}>로그인</Link></li>
                 </ul>)}
 
