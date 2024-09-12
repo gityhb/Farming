@@ -48,7 +48,7 @@
 /*전체적인 부분*/
 #basket_table #basket_table_list thead tr th, #basket_table #basket_table_list tbody tr td {
     padding: 10px;
-    text-align: center;
+    /*text-align: center;*/
     overflow: hidden; /* 내용이 넘칠 때 숨기기 */
 }
 
@@ -113,6 +113,7 @@
     border: none;
     color: #000;
     cursor: pointer;
+    line-height: 12px;
 }
 
 #basket_list_quantity_td #basket_list_quantity span {

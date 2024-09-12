@@ -812,7 +812,7 @@ function Join_seller() {
                     )}
                     {step === 2 && (
                         <div id="join_seller_form">
-                            <form onSubmit={handleSubmitForm}>
+                            <form onSubmit={handleSubmitForm} action={"@{/user}"} method={"POST"}>
                                 <div id="join_seller_form_group">
                                     <div className="form_group">
                                         <label>아이디</label>

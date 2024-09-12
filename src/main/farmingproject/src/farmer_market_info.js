@@ -266,7 +266,7 @@ function Farmer_market_info() {
                                     </div>
 
                                     <div className="table_container">
-                                        <table>
+                                        <table className={"table_consumer"}>
                                             <thead>
                                             <tr>
                                                 <th>Q / A</th>

@@ -19,6 +19,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 14px;
     border-radius: 5px;
     flex: 1;
 }
@@ -85,12 +86,13 @@
 #join_consumer_form form #join_consumer_form_group .form_group {
     display: flex;
     align-items: center;
-    margin-bottom: 35px;
+    margin-bottom: 10px;
     position: relative;
 }
 
 #join_consumer_form form #join_consumer_form_group .form_group label {
     width: 105px;
+    font-size: 14px;
     margin-right: 15px;
     text-align: end;
 }
@@ -125,6 +127,14 @@
     left: 120px;
     color: red;
     font-size: 12px;
+}
+
+.error_message {
+    height: 13px;
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-left: 125px;
 }
 
 /*가입완료*/

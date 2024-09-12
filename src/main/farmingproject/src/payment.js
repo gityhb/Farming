@@ -183,7 +183,7 @@ function Payment() {
 
                     {/* 결제창 결제금액 */}
                     <div className="payment_title">결제금액</div>
-                    <table id="t_address_info">
+                    <table id="t_address_info" className={"payment_table"}>
                         <tr>
                             <td className="address_tbl_title">상품금액</td>
                             <td className="address_tbl_info">3,000원</td>
@@ -273,7 +273,7 @@ function Payment() {
 
                     {/* 결제창 결제정보 */}
                     <div className="payment_title"> 결제정보</div>
-                    <table id="t_payment_info">
+                    <table id="t_payment_info" className={"table_container"} >
                         <tr className={"payment_info_title"}>
                             <th>
                                 <p>총 상품금액</p>

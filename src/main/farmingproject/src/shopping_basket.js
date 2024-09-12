@@ -1,6 +1,7 @@
 import './shopping_basket.css';
 import './common/root.css';
 import React, {useState, useEffect} from 'react';
+import {Link} from "react-router-dom";
 
 function Shopping_Basket() {
 
@@ -29,10 +30,10 @@ function Shopping_Basket() {
             id: 3,
             quantity: 1,
             totalAmount: 3000,
-            name: "국내산 사과",
+            name: "프리미엄 고당도 미니 꿀수박",
             marketName: "과일의왕",
             price: 3000,
-            marketImg: "img/food1.png",
+            marketImg: "img/watermelon.png",
             checked: true
         },
     ]);
@@ -143,7 +144,7 @@ function Shopping_Basket() {
                         </div>
                     </div>
                     <div id="order_button">
-                        <button id="order_select_btn">선택주문</button>
+                        <Link to={"/payment"}><button id="order_select_btn">선택주문</button></Link>
                         <button id="order_all_btn">전체주문</button>
                     </div>
                 </div>

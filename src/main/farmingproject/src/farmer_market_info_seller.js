@@ -88,7 +88,7 @@ function Farmer_market_info_seller() {
                         <div className={'product_detail_info_area'}>
                             {activeTab === 'orderdetails' && (
                                 <div className="table_container">
-                                    <table>
+                                    <table className={"table_seller"}>
                                         <thead>
                                         <tr>
                                             <th>주문자</th>
@@ -294,7 +294,7 @@ function Farmer_market_info_seller() {
                             {activeTab === 'questioninfo' && (
                                 <div className={'product_detail_info'}>
                                     <div className="table_container">
-                                        <table>
+                                        <table className={"table_seller"}>
                                             <thead>
                                             <tr>
                                                 <th>Q / A</th>

@@ -94,6 +94,9 @@ import Farmer_market_seller from "./farmer_market_seller";
 import Farmer_market_info_seller from "./farmer_market_info_seller";
 import Farmer_product_apply from "./farmer_product_apply";
 import {UserProvider} from "./common/userContext";
+import Customer_service_one from "./customer_service_one";
+import Customer_service_FAQ from "./customer_service_FAQ";
+import Customer_service_notice from "./customer_service_notice";
 
 function App() {
     const location = useLocation();
@@ -126,6 +129,9 @@ function App() {
                 <Route path="/auction_detail" element={<AuctionDetail/>} />
                 <Route path="/farmer_market_seller" element={<Farmer_market_seller/>} />
                 <Route path="/farmer_market_info_seller" element={<Farmer_market_info_seller/>} />
+                <Route path="/customer_service_one" element={<Customer_service_one/>} />
+                <Route path="/customer_service_FAQ" element={<Customer_service_FAQ/>} />
+                <Route path="/customer_service_notice" element={<Customer_service_notice/>} />
 
 
 

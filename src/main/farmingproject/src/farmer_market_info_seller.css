@@ -85,7 +85,7 @@
 
 .product_detail_more_area .product_detail_info_area {
     padding: 10px;
-    width: 97.7%;
+    width: 98.05%;
     border: 2px solid #BEBEBE;
     border-top: none;
 }
@@ -400,7 +400,7 @@ tbody{
     border: 1px solid #BEBEBE;
 }
 
-tbody td {
+.table_seller tbody td {
     padding: 12px;
     text-align: center;
     cursor: pointer;
@@ -462,13 +462,13 @@ textarea::placeholder {
     gap: 10px;
 }
 
-button {
-    width: 80px;
-    padding: 10px;
-    border: none;
-    font-size: 14px;
-    cursor: pointer;
-}
+/*button {*/
+/*    width: 80px;*/
+/*    padding: 10px;*/
+/*    border: none;*/
+/*    font-size: 14px;*/
+/*    cursor: pointer;*/
+/*}*/
 
 .cancel-button {
     background-color: #F0F0F0;

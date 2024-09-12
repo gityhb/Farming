@@ -107,12 +107,12 @@ function Header() {
                             )}
                         </li>
                         <li><Link to={"/farmer_recommend"}>농부추천</Link></li>
-                        <li><Link to={"/..."}>청과경매</Link></li>
+                        <li><Link to={"/auction"}>청과경매</Link></li>
                         <li><Link to={"/farmer_job"}>파머직</Link></li>
-                        <li><Link to={"/..."}>고객센터</Link></li>
+                        <li><Link to={"/customer_service_FAQ"}>고객센터</Link></li>
                         <li><Link to={"/shopping_basket"}>장바구니</Link></li>
-                        <li><Link to={"/..."}>마이페이지</Link></li>
-                        <li><Link to={"/..."}>소비자 {user.name}님</Link></li>
+                        <li><Link to={"/mypage"}>마이페이지</Link></li>
+                        <li>소비자 {user.name}님</li>
                         <li><Link to={"/"} onClick={handleClick}>로그아웃</Link></li>
                     </ul>
                 ) : user.authority === 2 ? (

@@ -70,6 +70,10 @@
     display: flex;
 }
 
+.right_area .purchase_cnt table,.right_area .purchase_cnt table {
+    width: 50%;
+}
+
 /* 구매 수량 테투리 만들기*/
 .right_area .purchase_cnt table,.right_area .purchase_cnt table tr, .right_area .purchase_cnt table tr td {
     border: 1.5px solid #ACACAC;
@@ -160,7 +164,7 @@
 
 .product_detail_more_area .product_detail_info_area {
     padding: 10px;
-    width: 96.75%;
+    width: 98.1%;
     border: 2px solid #BEBEBE;
     border-top: none;
 }
@@ -480,6 +484,7 @@
     cursor: pointer;
     border-radius: 5px;
     font-size: 14px;
+    border: 2px solid #FFDC41;
 }
 
 
@@ -487,7 +492,7 @@
     padding: 20px;
 }
 
-table {
+.table_container table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
@@ -508,7 +513,7 @@ tbody {
     border: 1px solid #BEBEBE;
 }
 
-tbody td {
+.table_consumer tbody td {
     padding: 12px;
     text-align: center;
     cursor: pointer;
@@ -578,13 +583,13 @@ textarea::placeholder {
     gap: 10px;
 }
 
-button {
-    width: 80px;
-    padding: 10px;
-    border: none;
-    font-size: 14px;
-    cursor: pointer;
-}
+/*button {*/
+/*    width: 80px;*/
+/*    padding: 10px;*/
+/*    border: none;*/
+/*    font-size: 14px;*/
+/*    cursor: pointer;*/
+/*}*/
 
 .cancel_button {
     background-color: #F0F0F0;

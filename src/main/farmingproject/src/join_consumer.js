@@ -16,17 +16,17 @@ function Join_consumer() {
         event: false
     });
     const [form, setForm] = useState({
-        id: "",
+        userId: "",
         password: "",
         confirmPassword: "",
         name: "",
-        nickname:"",
-        phone: "",
+        nickName:"",
+        phoneNumber: "",
         email: "",
         address: ""
     });
-    const [nicknameCheckMessage, setNicknameCheckMessage] = useState("");
 
+    const [nicknameCheckMessage, setNicknameCheckMessage] = useState("");
 
     useEffect(() => {
         // Initialize terms state on component mount
@@ -46,48 +46,140 @@ function Join_consumer() {
         }
     };
 
+    // const handleSubmitForm = (event) => {
+    //     event.preventDefault();
+    //
+    //     if (isIdDuplicate) {
+    //         alert("이미 사용 중인 아이디입니다. 다른 아이디를 사용하세요.");
+    //         return;
+    //     }
+    //
+    //     if (!form.id) {
+    //         alert("아이디를 입력하세요");
+    //         return;
+    //     }
+    //     if (!form.password) {
+    //         alert("비밀번호를 입력하세요");
+    //         return;
+    //     }
+    //     if (form.password !== form.confirmPassword) {
+    //         alert("비밀번호가 일치하지 않습니다.\n다시 입력해 주세요");
+    //         return;
+    //     }
+    //     if (!form.name) {
+    //         alert("이름을 입력하세요");
+    //         return;
+    //     }
+    //     if (!form.nickname) {
+    //         alert("닉네임을 입력하세요");
+    //         return;
+    //     }
+    //     if (!form.phone) {
+    //         alert("전화번호를 입력하세요");
+    //         return;
+    //     }
+    //     if (!form.email) {
+    //         alert("이메일을 입력하세요");
+    //         return;
+    //     }
+    //     if (!form.address) {
+    //         alert("주소를 입력하세요");
+    //         return;
+    //     }
+    //
+    //     setStep(step + 1);
+    // };
+
     const handleSubmitForm = (event) => {
         event.preventDefault();
+        let isValid = true;
+
+        // 초기화: 모든 에러 메시지 초기화
+        document.getElementById("userIdError").textContent = "";
+        document.getElementById("passwordError").textContent = "";
+        document.getElementById("confirmPasswordError").textContent = "";
+        document.getElementById("nameError").textContent = "";
+        document.getElementById("nickNameError").textContent = "";
+        document.getElementById("phoneNumberError").textContent = "";
+        document.getElementById("emailError").textContent = "";
+        document.getElementById("addressError").textContent = "";
 
         if (isIdDuplicate) {
             alert("이미 사용 중인 아이디입니다. 다른 아이디를 사용하세요.");
             return;
         }
 
-        if (!form.id) {
-            alert("아이디를 입력하세요");
-            return;
+        if (!form.userId) {
+            document.getElementById("userIdError").textContent = "아이디를 입력하세요";
+            isValid = false;
         }
         if (!form.password) {
-            alert("비밀번호를 입력하세요");
-            return;
+            document.getElementById("passwordError").textContent = "비밀번호를 입력하세요";
+            isValid = false;
         }
-        if (form.password !== form.confirmPassword) {
-            alert("비밀번호가 일치하지 않습니다.\n다시 입력해 주세요");
-            return;
+        if (!form.confirmPassword) {
+            document.getElementById("confirmPasswordError").textContent = "비밀번호를 재입력하세요";
+            isValid = false;
         }
-        if (!form.name) {
-            alert("이름을 입력하세요");
-            return;
-        }
-        if (!form.nickname) {
-            alert("닉네임을 입력하세요");
-            return;
-        }
-        if (!form.phone) {
-            alert("전화번호를 입력하세요");
-            return;
-        }
-        if (!form.email) {
-            alert("이메일을 입력하세요");
-            return;
-        }
-        if (!form.address) {
-            alert("주소를 입력하세요");
-            return;
+        else {
+            if (form.password !== form.confirmPassword) {
+                document.getElementById("confirmPasswordError").textContent = "비밀번호가 일치하지 않습니다";
+                isValid = false;
+            }
         }
 
-        setStep(step + 1);
+        if (!form.name) {
+            document.getElementById("nameError").textContent = "이름을 입력하세요";
+            isValid = false;
+        }
+
+        if (!form.nickName) {
+            document.getElementById("nickNameError").textContent = "닉네임을 입력하세요";
+            isValid = false;
+        }
+
+        if (!form.phoneNumber) {
+            document.getElementById("phoneNumberError").textContent = "휴대폰 번호를 입력하세요";
+            isValid = false;
+        }
+
+        if (!form.email) {
+            document.getElementById("emailError").textContent = "이메일 주소를 입력하세요";
+            isValid = false;
+        }
+
+        if (!form.address) {
+            document.getElementById("addressError").textContent = "가게 주소를 입력하세요";
+            isValid = false;
+        }
+
+        // 모든 필드가 유효한 경우에만 제출
+        if (isValid) {
+            submitForm(); // 실제 제출 함수 호출
+        }
+    };
+
+    const submitForm = async () => {
+        try {
+            const response = await fetch('/api/join_consumer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(form),
+            });
+
+            if (response.ok) {
+                // 회원가입 성공 -> step 3으로 이동
+                setStep(3);
+            } else {
+                // 실패 처리 (에러 메시지 표시 등)
+                const errorData = await response.json();
+                console.error('회원가입 실패:', errorData);
+            }
+        } catch (error) {
+            console.error('회원가입 중 오류 발생:', error);
+        }
     };
 
     const handleTermsChange = (name) => {
@@ -118,9 +210,9 @@ function Join_consumer() {
     const checkId = async () => {
         try {
             const response = await fetch(`/api/check_user_id?userId=${form.userId}`);
-            const data = await response.json();
+            const result = await response.json();
 
-            if (data.isDuplicate) {
+            if (result.isDuplicate) {
                 setIdCheckMessage("이미 사용 중인 아이디입니다.");
                 setIsIdDuplicate(true);
             } else {
@@ -132,6 +224,8 @@ function Join_consumer() {
             setIdCheckMessage("중복 확인 중 오류가 발생했습니다.");
         }
     };
+
+
 
 
     // const checkNickname = () => {
@@ -757,17 +851,18 @@ function Join_consumer() {
                                         <label>아이디</label>
                                         <input
                                             type="text"
-                                            name="id"
-                                            value={form.id}
+                                            name="userId"
+                                            value={form.userId}
                                             onChange={handleInputChange}
                                             placeholder="아이디를 입력하세요"
                                         />
-                                        <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인
-                                        </button>
+                                        <div className={"dupli_check_btn"} onClick={checkId}>중복확인</div>
                                         <div className="id_dupli_check">
-                                            {idCheckMessage && <p className="id_dupli_check_message">{idCheckMessage}</p>}
+                                            {idCheckMessage &&
+                                                <p className="id_dupli_check_message">{idCheckMessage}</p>}
                                         </div>
                                     </div>
+                                    <p className="error_message" id="userIdError"></p>
                                     <div className="form_group">
                                         <label>비밀번호</label>
                                         <input
@@ -778,6 +873,7 @@ function Join_consumer() {
                                             placeholder="비밀번호를 입력하세요"
                                         />
                                     </div>
+                                    <p className="error_message" id="passwordError"></p>
                                     <div className="form_group">
                                         <label>비밀번호 확인</label>
                                         <input
@@ -785,9 +881,10 @@ function Join_consumer() {
                                             name="confirmPassword"
                                             value={form.confirmPassword}
                                             onChange={handleInputChange}
-                                            placeholder="비밀번호를 입력하세요"
+                                            placeholder="비밀번호를 재입력하세요"
                                         />
                                     </div>
+                                    <p className="error_message" id="confirmPasswordError"></p>
                                     <div className="form_group">
                                         <label>이름</label>
                                         <input
@@ -798,31 +895,34 @@ function Join_consumer() {
                                             placeholder="이름을 입력하세요"
                                         />
                                     </div>
+                                    <p className="error_message" id="nameError"></p>
                                     <div className="form_group">
                                         <label>닉네임</label>
                                         <input
                                             type="text"
-                                            name="nickname"
-                                            value={form.nickname}
+                                            name="nickName"
+                                            value={form.nickName}
                                             onChange={handleInputChange}
                                             placeholder="닉네임을 입력하세요"
                                         />
                                         {/*<button type="button" className="dupli_check_btn" onClick={checkNickname}>중복확인</button>*/}
-                                        <div className="id_dupli_check">
-                                            {nicknameCheckMessage &&
-                                                <p className="id_dupli_check_message">{nicknameCheckMessage}</p>}
-                                        </div>
+                                        {/*<div className="id_dupli_check">*/}
+                                        {/*    {nicknameCheckMessage &&*/}
+                                        {/*        <p className="id_dupli_check_message">{nicknameCheckMessage}</p>}*/}
+                                        {/*</div>*/}
                                     </div>
+                                    <p className="error_message" id="nickNameError"></p>
                                     <div className="form_group">
                                         <label>전화번호</label>
                                         <input
-                                            type="text"
-                                            name="phone"
-                                            value={form.phone}
+                                            type="tel"
+                                            maxLength={11}
+                                            name="phoneNumber"
+                                            value={form.phoneNumber}
                                             onChange={handleInputChange}
-                                            placeholder="전화번호를 입력하세요"
-                                        />
+                                            placeholder="휴대폰 번호를 입력하세요 ('-'제외 11자리 입력)"/>
                                     </div>
+                                    <p className="error_message" id="phoneNumberError"></p>
                                     <div className="form_group">
                                         <label>이메일</label>
                                         <input
@@ -830,9 +930,9 @@ function Join_consumer() {
                                             name="email"
                                             value={form.email}
                                             onChange={handleInputChange}
-                                            placeholder="이메일을 입력하세요"
-                                        />
+                                            placeholder="이메일 주소를 입력하세요"/>
                                     </div>
+                                    <p className="error_message" id="emailError"></p>
                                     <div className="form_group">
                                         <label>주소</label>
                                         <input
@@ -843,8 +943,9 @@ function Join_consumer() {
                                             placeholder="주소를 입력하세요"
                                         />
                                     </div>
+                                    <p className="error_message" id="addressError"></p>
                                 </div>
-                                <button type="submit" className="submit_btn">가입하기</button>
+                                <button type="submit" className="submit_btn">회원가입</button>
                             </form>
                         </div>
                     )}
@@ -852,7 +953,7 @@ function Join_consumer() {
                     {step === 3 && (
                         <div id="completion_message">
                             <h1>회원가입이 완료되었습니다!</h1>
-                            <Link to={"/main"}><button className="main_btn">메인으로 이동</button></Link>
+                            <Link to={"/"}><button className="main_btn">메인으로 이동</button></Link>
                         </div>
                     )}
                 </div>
