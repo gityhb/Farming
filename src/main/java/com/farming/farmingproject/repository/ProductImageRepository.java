@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
+public interface ProductImageRepository extends JpaRepository<ProductImage, Product> {
     Optional<ProductImage> findByProductImageId(Product productId);     // 상품 고유 아이디로 상품 이미지를 가져옴
 }

@@ -17,11 +17,15 @@ public class ProductImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productImageId;
 
-    @ManyToOne
+////    @ManyToOne
+//    @JoinColumn(name = "product_id", nullable = false)
+//    private Long productId;
+////    private Product productId;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product productId;
 
-    @Column(name = "image_path", nullable = false)
+    @Column(name = "product_image_path", nullable = false)
     private String productImagePath;
 
     @Column(name = "product_image_created_date", nullable = false)

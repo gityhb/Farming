@@ -14,13 +14,13 @@ function Farmer_product_apply() {
 
     const [form, setForm] = useState( {
         productName: "",
-        productImg: "",
+        productImagePath: "",
         sellerName: "",
         productPrice1: "",
-        productPrice2: "",
+        productPrice2: "g",
         productPrice3: "",
         productOrigin: "",
-        productDeliveryDate: "",
+        productDeliveryDate: "today",
         productInfo: "",
     });
 
@@ -51,6 +51,11 @@ function Farmer_product_apply() {
         setImageSrcs((prevSrcs) => prevSrcs.filter((_, i) => i !== index));
     };
 
+    const handleFileInputChange = (e) => {
+        handleInputChange(e);
+        loadFile(e);
+    };
+
     const submitForm = async () => {
         try {
             // 1. 상품 데이터 준비
@@ -59,10 +64,10 @@ function Farmer_product_apply() {
                 productName: form.productName,
                 sellerName: user.name,
                 productPrice1: form.productPrice1,
-                productPrice2: 'g',
+                productPrice2: form.productPrice2,
                 productPrice3: form.productPrice3,
                 productOrigin: form.productOrigin,
-                productDeliveryDate: 'today',
+                productDeliveryDate: form.productDeliveryDate,
                 productInfo: form.productInfo
                 // ... 기타 product 관련 필드
             };
@@ -77,19 +82,19 @@ function Farmer_product_apply() {
             });
 
             if (productResponse.ok) {
-                const productResult = await productResponse.json();
-                const productId = productResult.productId; // 서버에서 반환한 상품 ID
+                // const productResult = await productResponse.json();
+                // const productId = productResult.productId; // 서버에서 반환한 상품 ID
 
             // 3. 이미지 데이터 준비(productId를 이제는 알고 있음)
             const productImageData = {
                 // productImage 관련 데이터
-                productId: productId, // 이 값은 product 생성 후에 설정해야 할 수 있습니다
-                imageName: form.imageName,
+                // productId: productId, // 이 값은 product 생성 후에 설정해야 할 수 있습니다
+                productImagePath: form.productImagePath,
                 // ... 기타 image 관련 필드
             };
 
             // 4. 이미지 등록 요청
-            const productImageResponse = await fetch('/api/productImage/apply', {
+            const productImageResponse = await fetch('/api/product_img/apply', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -99,7 +104,8 @@ function Farmer_product_apply() {
 
     if (productImageResponse.ok) {
         alert("상품 등록 신청이 되었습니다.");
-        navigate(-1);
+        // navigate('/');
+        console.log("성공함!!!!");
     } else {
         console.error('이미지 등록 실패:', await productImageResponse.json());
     }
@@ -147,7 +153,7 @@ function Farmer_product_apply() {
                             <div className={'product_apply_img_btn'}>
                                 <label for={"choosefile"}>사진첨부</label>
                             </div>
-                            <input type="file" id={"choosefile"} name={"productImg"} value={form.productImg}  onChange={handleInputChange} accept="image/*" multiple onChange={loadFile} style={{visibility: "hidden"}}/>
+                            <input type="file" id={"choosefile"} name={"productImagePath"} value={form.productImagePath}  onChange={handleFileInputChange} accept="image/*" multiple  style={{visibility: "hidden"}}/>
                         </div>
                         <div className={'farmer_product_apply_form_group'}>
                             <div className={'pform_group'}>

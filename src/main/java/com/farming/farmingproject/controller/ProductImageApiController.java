@@ -27,6 +27,7 @@ public class ProductImageApiController {
         try {
             String imagePath = "./img/products/" + request.getProductImagePath();
             request.setProductImagePath(imagePath);
+
             productImageService.save(request);
             response.put("message", "상품 이미지 등록 성공");
             return ResponseEntity.ok(response);
