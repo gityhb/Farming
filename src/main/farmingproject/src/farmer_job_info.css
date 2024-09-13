@@ -2,43 +2,59 @@
     width: 1020px;
     background-color: #ffffff;
     margin: 0 auto;
+
 }
 
 .farmergic_info_title{
     font-size: 36px;
     font-weight: bold;
-    padding: 15px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    color: #2c3e50;
+    text-align: center;
 
 }
 .farmergic_info_seller {
     display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
     height: 170px;
     background-color: #FFF0AD;
     margin-bottom: 40px;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 .farmergic_info_detail{
     background-color: rgba(229, 229, 229, 0.31);
-    height: 540px;
+    height: auto; /* 높이를 콘텐츠에 맞춤 */
+    padding: 20px;
     margin-bottom: 40px;
+    border-radius: 10px;
 }
 
-.farmergic_info_map{
+.farmergic_info_map {
     height: 320px;
     margin-bottom: 40px;
+    border-radius: 10px;
+    overflow: hidden; /* 모서리 둥글게 처리 시 맵이 넘치지 않도록 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 맵 섹션에 그림자 추가 */
 }
 
 .farmer_info_btn{
     background-color: #FFEA8D;
-    width: 1020px;
+    width: 100%;
     height: 85px;
     border-radius: 20px;
     text-align: center;
     font-weight: bold;
     font-size:32px;
     margin-bottom: 30px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+.farmer_info_btn:hover {
+    background-color: #f1c40f;
 }
 
 .farmer_info_btn_text{
