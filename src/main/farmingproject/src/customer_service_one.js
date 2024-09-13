@@ -7,7 +7,44 @@ import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
 
 function Customer_service_one() {
-
+    const [oitems, setoItems] = useState([
+        {
+            onum:6,
+            otitle:"타이틀 테스트6",
+            odate:"08.06",
+            oanswer:"답변대기"
+        },
+        {
+            onum:5,
+            otitle:"타이틀 테스트5",
+            odate:"08.06",
+            oanswer:"답변대기"
+        },
+        {
+            onum:4,
+            otitle:"타이틀 테스트4",
+            odate:"08.01",
+            oanswer:"답변대기"
+        },
+        {
+            onum:3,
+            otitle:"타이틀 테스트3",
+            odate:"08.02",
+            oanswer:"답변대기"
+        },
+        {
+            onum:2,
+            otitle:"타이틀 테스트2",
+            odate:"08.04",
+            oanswer:"답변완료"
+        },
+        {
+            onum:1,
+            otitle:"타이틀 테스트1",
+            odate:"08.08",
+            oanswer:"답변완료"
+        }
+    ]);
 
     return (
         <div id="body">
@@ -27,30 +64,14 @@ function Customer_service_one() {
                             <div className={'Customer_service_top_answer'}>답변여부</div>
                         </div>
 
-                        <div className={'Customer_service_inner'}>
-                            <div className={'Customer_service_inner_num'}>04</div>
-                            <div className={'Customer_service_inner_title'}>문의 테스트 테스트</div>
-                            <div className={'Customer_service_inner_o_date'}>08.15</div>
-                            <div className={'Customer_service_inner_answer'}>답변대기</div>
-                        </div>
-                        <div className={'Customer_service_inner'}>
-                            <div className={'Customer_service_inner_num'}>03</div>
-                            <div className={'Customer_service_inner_title'}>문의3</div>
-                            <div className={'Customer_service_inner_o_date'}>08.07</div>
-                            <div className={'Customer_service_inner_answer'}>답변대기</div>
-                        </div>
-                        <div className={'Customer_service_inner'}>
-                            <div className={'Customer_service_inner_num'}>02</div>
-                            <div className={'Customer_service_inner_title'}>문의2</div>
-                            <div className={'Customer_service_inner_o_date'}>08.07</div>
-                            <div className={'Customer_service_inner_answer'}>답변완료</div>
-                        </div>
-                        <div className={'Customer_service_inner'}>
-                            <div className={'Customer_service_inner_num'}>01</div>
-                            <div className={'Customer_service_inner_title'}>문의1</div>
-                            <div className={'Customer_service_inner_o_date'}>08.07</div>
-                            <div className={'Customer_service_inner_answer'}>답변완료</div>
-                        </div>
+                        {oitems.map((item) => (
+                            <div className={'Customer_service_inner'}>
+                                <div className={'Customer_service_inner_num'}>{item.onum}</div>
+                                <div className={'Customer_service_inner_title'}>{item.otitle}</div>
+                                <div className={'Customer_service_inner_o_date'}>{item.odate}</div>
+                                <div className={'Customer_service_inner_answer'}>{item.oanswer}</div>
+                            </div>
+                        ))}
                     </div>
 
                     <div className={'one_add_Btn'}>1:1 문의하기</div>

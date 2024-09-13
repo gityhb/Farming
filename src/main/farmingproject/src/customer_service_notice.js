@@ -6,7 +6,23 @@ import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
 
 function Customer_service_notice() {
-
+    const [nitems, setnItems] = useState([
+        {
+            nnum:3,
+            ntitle:"1공지사항 테스트3",
+            ndate:"08.02"
+        },
+        {
+            nnum:2,
+            ntitle:"공지사항 테스트3",
+            ndate:"08.04"
+        },
+        {
+            nnum:1,
+            ntitle:"공지사항 테스트3",
+            ndate:"08.08"
+        }
+    ]);
 
     return (
         <div id="body">
@@ -25,26 +41,13 @@ function Customer_service_notice() {
                             <div className={'Customer_service_top_date'}>등록일</div>
                         </div>
 
-                        <div className={'Customer_service_inner'}>
-                            <div className={'Customer_service_inner_num'}>04</div>
-                            <div className={'Customer_service_inner_title'}>공지사항 테스트</div>
-                            <div className={'Customer_service_inner_date'}>08.15</div>
-                        </div>
-                        <div className={'Customer_service_inner'}>
-                            <div className={'Customer_service_inner_num'}>03</div>
-                            <div className={'Customer_service_inner_title'}>공지사항3</div>
-                            <div className={'Customer_service_inner_date'}>08.07</div>
-                        </div>
-                        <div className={'Customer_service_inner'}>
-                            <div className={'Customer_service_inner_num'}>02</div>
-                            <div className={'Customer_service_inner_title'}>공지사항2</div>
-                            <div className={'Customer_service_inner_date'}>08.07</div>
-                        </div>
-                        <div className={'Customer_service_inner'}>
-                            <div className={'Customer_service_inner_num'}>01</div>
-                            <div className={'Customer_service_inner_title'}>공지사항1</div>
-                            <div className={'Customer_service_inner_date'}>08.07</div>
-                        </div>
+                        {nitems.map((item) => (
+                            <div className={'Customer_service_inner'}>
+                                <div className={'Customer_service_inner_num'}>{item.nnum}</div>
+                                <div className={'Customer_service_inner_title'}>{item.ntitle}</div>
+                                <div className={'Customer_service_inner_o_date'}>{item.ndate}</div>
+                            </div>
+                        ))}
                     </div>
 
                     <div className={'pagenation'}>1</div>

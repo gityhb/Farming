@@ -5,6 +5,44 @@ import './farmer_market.css';
 
 function Farmer_market() {
 
+    const [mitems, setmItems] = useState([
+        {
+            mid:1,
+            mname:"수박데스",
+            mpercent:"35%",
+            mprice:3000,
+            mImg: "img/watermelon.png"
+        },
+        {
+            mid:2,
+            mname:"오이지 오이 10kg",
+            mpercent:"25%",
+            mprice:2000,
+            mImg: "img/cucumber.png"
+        },
+        {
+            mid:3,
+            mname:"딸기",
+            mpercent:"40%",
+            mprice:1000,
+            mImg: "img/snow_white_strawberry.png"
+        },
+        {
+            mid:4,
+            mname:"감딸기",
+            mpercent:"10%",
+            mprice:1200,
+            mImg: "img/snow_white_strawberry.png"
+        },
+        {
+            mid:5,
+            mname:"스트로베리",
+            mpercent:"23%",
+            mprice:3200,
+            mImg: "img/snow_white_strawberry.png"
+        }
+    ]);
+
     return (
         <div id={'body'}>
             <div id={'farmer_market_page'} className={'page'}>
@@ -29,420 +67,26 @@ function Farmer_market() {
                             </ul>
                         </div>
                     </div>
-                    <div id={'product_list'}>
-                        {/*첫번째 줄*/}
-                        <ul className={'pd_list'}>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <Link to={"/farmer_market_info"}>
-                                        <img src={'img/watermelon.png'} style={{width: '190px', height: '190px'}}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
+                    <div id='product_list'>
+                        {/* useState로 관리되는 상품 목록을 맵핑하여 렌더링 */}
+                        <ul className='pd_list'>
+                            {mitems.map((item) => (
+                                <li key={item.mid}>
+                                    <div className='pd_info'>
+                                        <Link to="/farmer_market_info">
+                                            <img src={item.mImg} style={{width: '190px', height: '190px'}}
+                                                 alt={item.mname}/>
+                                            <p className='pd_name'>
+                                                {item.mname}
+                                            </p>
+                                        </Link>
+                                        <p className='pd_price'>
+                                            <span className='pr_per'>{item.mpercent} </span>
+                                            <span className='pr_num'>{item.mprice.toLocaleString()}</span>원
                                         </p>
-                                    </Link>
-                                        <p className={'pd_price'}>
-                                            <span className={'pr_per'}>27% </span>
-                                            <span className={'pr_num'}>18,900</span>원
-                                        </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/watermelon.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/watermelon.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/watermelon.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
-                        {/*두번째 줄*/}
-                        <ul className={'pd_list'}>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/zucchini_2.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/zucchini_2.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/zucchini_2.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/zucchini_2.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
-                        {/*세번째 줄*/}
-                        <ul className={'pd_list'}>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/aralia.png'}/>
-                                        <p className={'pd_name'}>
-                                            순창 두릅
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>10% </span>
-                                        <span className={'pr_num'}>5,000</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/aralia.png'}/>
-                                        <p className={'pd_name'}>
-                                            순창 두릅
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>10% </span>
-                                        <span className={'pr_num'}>5,000</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/aralia.png'}/>
-                                        <p className={'pd_name'}>
-                                            순창 두릅
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>10% </span>
-                                        <span className={'pr_num'}>5,000</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/aralia.png'}/>
-                                        <p className={'pd_name'}>
-                                            순창 두릅
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>10% </span>
-                                        <span className={'pr_num'}>5,000</span>원
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
-                        {/*네번째 줄*/}
-                        <ul className={'pd_list'}>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/strawberry_3.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/strawberry_3.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/strawberry_3.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/strawberry_3.png'}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>27% </span>
-                                        <span className={'pr_num'}>18,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
-                        {/*다섯번째 줄*/}
-                        <ul className={'pd_list'}>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/cucumber.png'}/>
-                                        <p className={'pd_name'}>
-                                            오이지오이 10kg
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>15% </span>
-                                        <span className={'pr_num'}>12,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/cucumber.png'}/>
-                                        <p className={'pd_name'}>
-                                            오이지오이 10kg
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>15% </span>
-                                        <span className={'pr_num'}>12,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/cucumber.png'}/>
-                                        <p className={'pd_name'}>
-                                            오이지오이 10kg
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>15% </span>
-                                        <span className={'pr_num'}>12,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/cucumber.png'}/>
-                                        <p className={'pd_name'}>
-                                            오이지오이 10kg
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>15% </span>
-                                        <span className={'pr_num'}>12,900</span>원
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
-                        {/*여섯번째 줄*/}
-                        <ul className={'pd_list'}>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/snow_white_strawberry.png'}/>
-                                        <p className={'pd_name'}>
-                                            백설향 딸기
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>40% </span>
-                                        <span className={'pr_num'}>5,000</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/snow_white_strawberry.png'}/>
-                                        <p className={'pd_name'}>
-                                            백설향 딸기
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>40% </span>
-                                        <span className={'pr_num'}>5,000</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/snow_white_strawberry.png'}/>
-                                        <p className={'pd_name'}>
-                                            백설향 딸기
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>40% </span>
-                                        <span className={'pr_num'}>5,000</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/snow_white_strawberry.png'}/>
-                                        <p className={'pd_name'}>
-                                            백설향 딸기
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>40% </span>
-                                        <span className={'pr_num'}>5,000</span>원
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
-                        {/*일곱번째 줄*/}
-                        <ul className={'pd_list'}>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/zucchini_2.png'}/>
-                                        <p className={'pd_name'}>
-                                            국내산 애호박 5개
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>10% </span>
-                                        <span className={'pr_num'}>4,500</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/zucchini_2.png'}/>
-                                        <p className={'pd_name'}>
-                                            국내산 애호박 5개
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>10% </span>
-                                        <span className={'pr_num'}>4,500</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/zucchini_2.png'}/>
-                                        <p className={'pd_name'}>
-                                            국내산 애호박 5개
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>10% </span>
-                                        <span className={'pr_num'}>4,500</span>원
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <a href={'/'}>
-                                        <img src={'img/zucchini_2.png'}/>
-                                        <p className={'pd_name'}>
-                                            국내산 애호박 5개
-                                        </p>
-                                    </a>
-                                    <p className={'pd_price'}>
-                                        <span className={'pr_per'}>10% </span>
-                                        <span className={'pr_num'}>4,500</span>원
-                                    </p>
-                                </div>
-                            </li>
-
+                                    </div>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                     <div id={'page_list'}>
