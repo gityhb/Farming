@@ -36,10 +36,10 @@ function Customer_service_FAQ() {
                     </div>
 
                     <div className={'Customer_service_div'}>
-                        {/*<div className={'Customer_service_top'}>*/}
-                        {/*    <div className={'Customer_service_top_num'}>No.</div>*/}
-                        {/*    <div className={'Customer_service_top_title'}>제목</div>*/}
-                        {/*</div>*/}
+                        <div className={'Customer_service_top'}>
+                            <div className={'Customer_service_top_num'}>No.</div>
+                            <div className={'Customer_service_top_title'}>제목</div>
+                        </div>
 
                         {/*<div className={'Customer_service_inner'}>*/}
                         {/*    <div className={'Customer_service_inner_num'}>03</div>*/}
