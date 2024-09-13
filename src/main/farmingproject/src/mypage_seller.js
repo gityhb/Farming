@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './mypage_seller.css';
 import './common/root.css';
+import JobModal from './component/job_modal';
 import {Link} from "react-router-dom";
 
 function Mypage_seller() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isJobModalOpen, setIsJobModalOpen] = useState(false);
 
     const handleViewResume = () => {
         setIsModalOpen(true);
@@ -15,6 +17,13 @@ function Mypage_seller() {
         setIsModalOpen(false);
     };
 
+    const handleAddJob = () => {
+        setIsJobModalOpen(true); // Open job modal
+    };
+
+    const closeJobModal = () => {
+        setIsJobModalOpen(false); // Close job modal
+    };
 
     return (
         <div class="mypage_seller">
@@ -90,9 +99,11 @@ function Mypage_seller() {
                             <a href="#"><strong>배추 심기 작업</strong> - 9월 10일부터 9월 20일까지, 일당 60,000원</a>
                         </li>
                     </ul>
-                    <button class="add_job_button">새 공고 추가</button>
+                    <button class="add_job_button" onClick={handleAddJob}>새 공고 추가</button>
                 </div>
             </div>
+
+            <JobModal isOpen={isJobModalOpen} closeJobModal={closeJobModal} />
 
             <div class="application_section">
                 <div class="application_summary">
