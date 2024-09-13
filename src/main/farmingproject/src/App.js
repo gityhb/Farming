@@ -90,13 +90,8 @@ import Auction from "./auction";
 import Payment from "./payment";
 import Payment_success from "./payment_success";
 import Join from "./join";
-import Farmer_market_seller from "./farmer_market_seller";
-import Farmer_market_info_seller from "./farmer_market_info_seller";
-import Farmer_product_apply from "./farmer_product_apply";
-import {UserProvider} from "./common/userContext";
-import Customer_service_one from "./customer_service_one";
-import Customer_service_FAQ from "./customer_service_FAQ";
-import Customer_service_notice from "./customer_service_notice";
+import Farmer_job_seller from "./farmer_job_seller";
+import CustomerService from "./customer_service";
 
 function App() {
     const location = useLocation();
@@ -104,7 +99,6 @@ function App() {
 
     return (
         <div>
-            <UserProvider>
             {!hideHeaderFooter && <Header />}
             <Routes>
                 <Route path="/" element={<Main />} />
@@ -113,7 +107,6 @@ function App() {
                 <Route path="/farmer_recommend" element={<Farmer_recommend />} />
                 <Route path="/farmer_market" element={<Farmer_market />} />
                 <Route path="/farmer_market_info" element={<Farmer_market_info />} />
-                <Route path="/farmer_product_apply" element={<Farmer_product_apply />} />
                 <Route path="/farmer_job_info" element={<FarmerJobInfo />} />
                 <Route path="/farmer_job_apply" element={<FarmerJobApply />} />
                 <Route path="/login" element={<Login />} />
@@ -127,17 +120,13 @@ function App() {
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/auction" element={<Auction/>} />
                 <Route path="/auction_detail" element={<AuctionDetail/>} />
-                <Route path="/farmer_market_seller" element={<Farmer_market_seller/>} />
-                <Route path="/farmer_market_info_seller" element={<Farmer_market_info_seller/>} />
-                <Route path="/customer_service_one" element={<Customer_service_one/>} />
-                <Route path="/customer_service_FAQ" element={<Customer_service_FAQ/>} />
-                <Route path="/customer_service_notice" element={<Customer_service_notice/>} />
+                <Route path="/farmer_job_seller" element={<Farmer_job_seller/>} />
+                <Route path="/customer_service" element={<CustomerService/>} />
 
 
 
             </Routes>
             {!hideHeaderFooter && <Footer />}
-            </UserProvider>
         </div>
     );
 }
