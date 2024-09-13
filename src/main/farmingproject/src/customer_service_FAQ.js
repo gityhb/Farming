@@ -6,7 +6,24 @@ import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
 
 function Customer_service_FAQ() {
-
+    // const [fitems, setfItems] = useState([
+    //     {
+    //         fnum:4,
+    //         ftitle:"당장 오늘안에 보내주시오",
+    //     },
+    //     {
+    //         fnum:3,
+    //         ftitle:"빨리 보내라",
+    //     },
+    //     {
+    //         fnum:2,
+    //         ftitle:"예상 배송 날짜",
+    //     },
+    //     {
+    //         fnum:1,
+    //         ftitle:"오토바이로 보내주시나요?",
+    //     }
+    // ]);
 
     return (
         <div id="body">
@@ -36,6 +53,12 @@ function Customer_service_FAQ() {
                             <div className={'Customer_service_inner_num'}>01</div>
                             <div className={'Customer_service_inner_title'}>환불 및 교환 방법이 궁금해요.</div>
                         </div>
+                        {/*{fitems.map((item) => (*/}
+                        {/*    <div className={'Customer_service_inner'}>*/}
+                        {/*        <div className={'Customer_service_inner_num'}>{item.fnum}</div>*/}
+                        {/*        <div className={'Customer_service_inner_title'}>{item.ftitle}</div>*/}
+                        {/*    </div>*/}
+                        {/*))}*/}
                     </div>
 
                     <div className={'pagenation'}>1</div>
