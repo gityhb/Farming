@@ -103,7 +103,7 @@ function Farmer_product_apply() {
 
     if (productImageResponse.ok) {
         // alert("상품 등록 신청이 되었습니다.");
-        navigate('/');
+        navigate("/");
         console.log("성공함!!!!");
     } else {
         console.error('이미지 등록 실패:', await productImageResponse.json());
