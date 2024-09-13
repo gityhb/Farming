@@ -6,24 +6,24 @@ import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
 
 function Customer_service_FAQ() {
-    const [fitems, setfItems] = useState([
-        {
-            fnum:4,
-            ftitle:"당장 오늘안에 보내주시오",
-        },
-        {
-            fnum:3,
-            ftitle:"빨리 보내라",
-        },
-        {
-            fnum:2,
-            ftitle:"예상 배송 날짜",
-        },
-        {
-            fnum:1,
-            ftitle:"오토바이로 보내주시나요?",
-        }
-    ]);
+    // const [fitems, setfItems] = useState([
+    //     {
+    //         fnum:4,
+    //         ftitle:"당장 오늘안에 보내주시오",
+    //     },
+    //     {
+    //         fnum:3,
+    //         ftitle:"빨리 보내라",
+    //     },
+    //     {
+    //         fnum:2,
+    //         ftitle:"예상 배송 날짜",
+    //     },
+    //     {
+    //         fnum:1,
+    //         ftitle:"오토바이로 보내주시나요?",
+    //     }
+    // ]);
 
     return (
         <div id="body">
