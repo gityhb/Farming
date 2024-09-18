@@ -12,7 +12,7 @@ function FarmerJobApply({isOpen,closeApplyModal}) {
                     <span className="close" onClick={closeApplyModal}>&times;</span>
                 </div>
                 <div className="apply_main">
-                    <div className="main_name">
+                <div className="main_name">
                         <label>이름</label>
                         <input type="text" id="name" name="name"/>
                     </div>
