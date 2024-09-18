@@ -1,8 +1,38 @@
 import React from 'react';
 import './job_modal.css';
 
-function JobModal({ isOpen, closeJobModal }) {
+function JobModal({ isOpen, closeJobModal,userId }) {
     if (!isOpen) return null;
+
+    //공고 추가 로직
+    const handleAddJob = () => {
+        const jobData = {
+            userId,
+            jobTitle: document.getElementById("job_title").value,
+            jobDate: document.getElementById("job_date").value,
+            jobTime: document.getElementById("job_time").value,
+            jobSalary: document.getElementById("job_salary").value,
+            jobLocation: document.getElementById("job_location").value,
+            jobDescription: document.getElementById("job_description").value||"", //null인경우 빈 문자열로 처리
+        };
+
+        fetch('api/job/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jobData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                closeJobModal(); // 성공적으로 추가되면 모달 닫기
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    };
+
 
     return (
         <div className="job_modal">
@@ -38,11 +68,11 @@ function JobModal({ isOpen, closeJobModal }) {
                         <input type="text" id="job_location" name="job_location"/>
                     </div>
                     <div className="job_form_group">
-                        <label htmlFor="job_details">상세내역</label>
-                        <textarea id="job_details" name="job_details"></textarea>
+                        <label htmlFor="job_description">상세내역</label>
+                        <textarea id="job_description" name="job_description"></textarea>
                     </div>
                     <div className="job_form_group">
-                        <button className="add_btn">추가</button>
+                        <button className="add_btn" onClick={handleAddJob}>추가</button>
                         <button className="close_btn" onClick={closeJobModal}>취소</button>
                     </div>
                 </div>

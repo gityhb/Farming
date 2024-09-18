@@ -97,6 +97,7 @@ import {UserProvider} from "./common/userContext";
 import Customer_service_one from "./customer_service_one";
 import Customer_service_FAQ from "./customer_service_FAQ";
 import Customer_service_notice from "./customer_service_notice";
+import JobModal from './component/job_modal';
 
 function App() {
     const location = useLocation();
@@ -132,8 +133,6 @@ function App() {
                 <Route path="/customer_service_one" element={<Customer_service_one/>} />
                 <Route path="/customer_service_FAQ" element={<Customer_service_FAQ/>} />
                 <Route path="/customer_service_notice" element={<Customer_service_notice/>} />
-
-
 
             </Routes>
             {!hideHeaderFooter && <Footer />}

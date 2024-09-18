@@ -128,4 +128,6 @@ public class User implements UserDetails {  // UserDetails를 상속받아 인�
         // 계정 사용 가능한지 확인하는 로직
         return true;    // true -> 사용 가능
     }
+
+
 }
