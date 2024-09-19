@@ -1,8 +1,19 @@
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import  './farmer_market_info.css';
 import './common/root.css';
+import FarmerReviewModal from "./farmer_market_review_modal";
 
 function Farmer_market_info() {
+
+    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
+    const handleReviewModal = () => {
+        setIsReviewModalOpen(true);  // 모달 열기
+    }
+
+    const closeReviewModal = () => {
+        setIsReviewModalOpen(false);  // 모달 닫기
+    }
 
     const [product, setProduct] = useState(null);
     const [activeTab, setActiveTab] = useState('pdinfo');
@@ -15,6 +26,19 @@ function Farmer_market_info() {
 
     const closeModal = () => {
         setIsModalOpen(false);
+    };
+
+    const [reviews, setReviews] = useState([]);
+
+    const handleReviewSubmit = (reviewData) => {
+        const newReview = {
+            id: Date.now(),
+            user: "현재 로그인한 사용자",
+            date: new Date().toLocaleDateString(),
+            ...reviewData
+        };
+        setReviews(prevReviews => [newReview, ...prevReviews]);
+        closeReviewModal();
     };
 
 
@@ -176,74 +200,39 @@ function Farmer_market_info() {
                                     <div className="review_section">
                                         <div className="review_header">
                                             <h2>리뷰 <span>(79건)</span></h2>
+                                            <button onClick={handleReviewModal}>
+                                                리뷰 작성하기
+                                            </button>
+
+                                            <FarmerReviewModal
+                                                isReviewOpen={isReviewModalOpen}
+                                                closeReviewModal={closeReviewModal}
+                                                onSubmit={handleReviewSubmit}
+                                            />
+
                                             <div className="review_ranking_options">
                                                 <span>랭킹순</span> | <span>최신순</span> | <span>평점 높은순</span> | <span>평점 낮은순</span>
                                             </div>
                                         </div>
-                                        <div className="review_body">
-                                            <div className="review_content">
-                                                <div className="review_star">
-                                                    ★★★★★
-                                                </div>
-                                                <div className="review_info">
-                                                    <span className="review_user">jiwon</span>
-                                                    <span className="review_date">24.05.07 | 신고</span>
-                                                    <p className="review_text">
-                                                        <span className="review_title">맛</span> <span
-                                                        className="review_detail">맛있어요</span>
-                                                        <span className="review_title">신선도</span> <span
-                                                        className="review_detail">신선해요</span>
-                                                        <span className="review_title">포장</span> <span
-                                                        className="review_detail">꼼꼼해요</span><br/>
-                                                        <span className="review_text_detail">꼼꼼하게 포장 잘 되어서 오고 당도가 엄청 높아요! 매우 만족합니다.</span>
-                                                    </p>
-                                                </div>
-                                                <div className="seller_reply">
-                                                    <div className="seller_reply_header">
-                                                        <span className="seller_reply_user">판매자</span>
-                                                        <span className="seller_reply_date">24.05.08 | 신고</span>
+                                        {reviews.map(review => (
+                                            <div key={review.id} className="review_body">
+                                                <div className="review_content">
+                                                    <div className="review_star">
+                                                        {"★".repeat(review.rating)}
                                                     </div>
-                                                    <span className="seller_reply_detail">주문해주셔서 감사합니다! 또 이용해주세요.</span>
-                                                </div>
-                                            </div>
-                                            <div className="review_image_container">
-                                                <div className="review_image">
-                                                    <img src="img/review_img1.png"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="review_body">
-                                            <div className="review_content">
-                                                <div className="review_star">
-                                                    ★★★★★
-                                                </div>
-                                                <div className="review_info">
-                                                    <span className="review_user">hb</span>
-                                                    <span className="review_date">24.05.07 | 신고</span>
-                                                    <p className="review_text">
-                                                        <span className="review_title">맛</span> <span
-                                                        className="review_detail">맛있어요</span>
-                                                        <span className="review_title">신선도</span> <span
-                                                        className="review_detail">신선해요</span>
-                                                        <span className="review_title">포장</span> <span
-                                                        className="review_detail">꼼꼼해요</span><br/>
-                                                        <span className="review_text_detail">꼼꼼하게 포장 잘 되어서 오고 당도가 엄청 높아요! 매우 만족합니다.</span>
-                                                    </p>
-                                                </div>
-                                                <div className="seller_reply">
-                                                    <div className="seller_reply_header">
-                                                        <span className="seller_reply_user">판매자</span>
-                                                        <span className="seller_reply_date">24.05.08 | 신고</span>
+                                                    <div className="review_info">
+                                                        <span className="review_user">{review.user}</span>
+                                                        <span className="review_date">{review.date} | 신고</span>
+                                                        <p className="review_text">
+                                                            <span className="review_title">맛</span> <span className="review_detail">{review.taste}</span>
+                                                            <span className="review_title">신선도</span> <span className="review_detail">{review.freshness}</span>
+                                                            <span className="review_title">포장</span> <span className="review_detail">{review.packaging}</span><br/>
+                                                            <span className="review_text_detail">{review.comment}</span>
+                                                        </p>
                                                     </div>
-                                                    <span className="seller_reply_detail">주문해주셔서 감사합니다! 또 이용해주세요.</span>
                                                 </div>
                                             </div>
-                                            <div className="review_image_container">
-                                                <div className="review_image">
-                                                    <img src="img/review_img2.png"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        ))}
                                     </div>
                                 </div>
                             )}
