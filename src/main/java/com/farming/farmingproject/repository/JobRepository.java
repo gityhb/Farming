@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface JobRepository extends JpaRepository<Job,Long>{
     List<Job> findByUser(User user);
-
+    Optional<Job> findByJobId(Long jobId);  // jobId로 조회하는 메소드 추가
 }
+

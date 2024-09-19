@@ -35,7 +35,7 @@ function Mypage_seller() {
                 setLoggedInUserId(data.userId);
             })
             .catch(error=>{
-                console.errer("Error fetching user info:",error);
+                console.error("Error fetching user info:",error);
             });
     },[]);
 

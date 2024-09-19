@@ -3,6 +3,7 @@ package com.farming.farmingproject.controller;
 import com.farming.farmingproject.domain.Job;
 import com.farming.farmingproject.dto.JobDTO;
 import com.farming.farmingproject.service.JobService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/job") //들어오는 요청 처리
+@RequestMapping("api/job") //들어오는 요청 처리 기본 URL
 @CrossOrigin(origins = "http://localhost:3000") //프론트 도메인 허용
 
 public class JobController {
@@ -22,6 +23,7 @@ public class JobController {
         this.jobService=jobService;
     }
 
+    //1.Job 생성(POST 요청)
     //새로운 Job 공고 생성메서드 /api/job/create로 들어오는 요청 매핑
     @PostMapping("/create")
     public ResponseEntity<Job> createJob(@RequestBody JobDTO jobDTO){
@@ -29,12 +31,16 @@ public class JobController {
         return  ResponseEntity.ok(job); //저장된 Job 객체 응답으로 반환
     }
 
+    //2. 특정 Job ID로 Job 조회(GET 요청)
     //특정 Job 공고를 ID로 조회하는 메서드 /api/job/{id}로 들어오는 요청 매핑
-    @GetMapping("/{id}")
-    public ResponseEntity<Job> getJobById(@PathVariable Long id) {
-        Optional<Job> job = jobService.findJobById(id);// 주어진 ID로 Job을 조회
-        return job.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());// 조회된 Job이 있으면 반환하고, 없으면 404 응답
+    @GetMapping("/{jobId}")
+    public ResponseEntity<Job> getJobById(@PathVariable("jobId") Long jobId) {
+        Optional<Job> job = jobService.findJobById(jobId);
+        return job.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
 
     //모든 Job 공고를 조회하는 메서드
     @GetMapping("/all")
