@@ -76,8 +76,6 @@ function FarmerReviewModal({isReviewOpen, closeReviewModal, onSubmit}) {
     };
 
 
-
-
     return (
         <div className="apply_modal">
             <div className={"apply_modal_content"}>
