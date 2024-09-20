@@ -1,5 +1,10 @@
 /* FAQ css에서 모두 관리 */
-
+.Customer_service_one_inner{
+    display: flex;
+    border-bottom: 1px solid #D9D9D9;
+    cursor: pointer;
+    padding: 20px;
+}
 
 .Customer_service_top_o_date{
     margin-left: 630px;
@@ -7,7 +12,7 @@
 }
 
 .Customer_service_inner_o_date{
-    margin-left: -105px;
+    margin-left: -100px;
 }
 
 .Customer_service_inner_title{
@@ -15,7 +20,7 @@
 }
 
 .Customer_service_inner_answer{
-    margin-left: 50px;
+    margin-left: 60px;
 }
 
 .Customer_service_div{

@@ -65,7 +65,7 @@ function Customer_service_one() {
                         </div>
 
                         {oitems.map((item) => (
-                            <div className={'Customer_service_inner'}>
+                            <div className={'Customer_service_one_inner'}>
                                 <div className={'Customer_service_inner_num'}>{item.onum}</div>
                                 <div className={'Customer_service_inner_title'}>{item.otitle}</div>
                                 <div className={'Customer_service_inner_o_date'}>{item.odate}</div>
