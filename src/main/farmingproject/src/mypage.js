@@ -155,9 +155,6 @@ function MyPage(){
                 {/*qna_container*/}
             </div>
         </div>
-
-
     );
 }
-
 export default MyPage;

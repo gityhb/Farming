@@ -1,9 +1,41 @@
 import {useState, useEffect} from "react";
 import {Link, Route} from 'react-router-dom';
+import axios from "axios";
 import './common/root.css';
 import './farmer_market.css';
 
 function Farmer_market() {
+    const [searchQuery, setSearchQuery]=useState(""); //검색어 상태
+    const [products, setProducts]=useState([]); //제품 리스트 상태
+
+    // 검색어 입력 처리
+    const handleInputChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    // 검색 버튼 클릭 시 실행되는 함수
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get(`/api/search?query=${searchQuery}`);
+            setProducts(response.data); // 서버에서 검색된 제품 리스트로 상태 업데이트
+        } catch (error) {
+            console.error("검색 중 에러 발생:", error);
+        }
+    };
+
+    useEffect(() => {
+        // 페이지 로드 시 모든 제품을 기본으로 로드
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get("/api/products");
+                setProducts(response.data);
+            } catch (error) {
+                console.error("제품 로드 중 에러 발생:", error);
+            }
+        };
+        fetchProducts();
+    }, []);
+
 
     const [mitems, setmItems] = useState([
         {
@@ -48,12 +80,20 @@ function Farmer_market() {
             <div id={'farmer_market_page'} className={'page'}>
                 <div id={'contents'}>
                     <div id={'search_box'}>
-                        <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
-                        <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/> </button>
+                        <input
+                            type={'text'}
+                            id={'search_query'}
+                            placeholder={'검색 내용을 입력하세요'}
+                            value={searchQuery}
+                            onChange={handleInputChange} // 검색어 입력 관리
+                        />
+                        <button id={'search_btn'} onClick={handleSearch}>
+                            <img src="img/etc/search.png" alt={"search_btn"}/>
+                        </button>
                     </div>
                     <div id={'align_box'}>
                         <div id={'category_box'}>
-                            <ul>
+                        <ul>
                                 <li>일반마켓</li>
                             </ul>
                         </div>
