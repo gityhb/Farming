@@ -1,26 +1,27 @@
 package com.farming.farmingproject.service;
 
 import com.farming.farmingproject.domain.Review;
-import com.farming.farmingproject.dto.ReviewDTO;
+import com.farming.farmingproject.dto.AddReviewRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.farming.farmingproject.repository.ReviewRepository;
 
+@RequiredArgsConstructor
 @Service
 public class ReviewService {
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
-    public void createReview(ReviewDTO reviewDTO) {
-        Review review = new Review();
-        review.setName(reviewDTO.getName());
-        review.setStar(reviewDTO.getStar());
-        review.setTaste(reviewDTO.getTaste());
-        review.setFresh(reviewDTO.getFresh());
-        review.setPackageQuality(reviewDTO.getPackageQuality());
-        review.setReviewdetail(reviewDTO.getReviewdetail());
-
-        reviewRepository.save(review);
+    public Long createReview(AddReviewRequest dto) {
+        return reviewRepository.save(Review.builder()
+                .name(dto.getName())
+                .taste(dto.getTaste())
+                .star(dto.getStar())
+                .fresh(dto.getFresh())
+                .packageQuality(dto.getPackageQuality())
+                .reviewdetail(dto.getReviewdetail())
+                .build()).getReviewId();
     }
 }

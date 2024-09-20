@@ -1,78 +1,50 @@
 package com.farming.farmingproject.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
+@Getter
 @Entity
 @Table(name = "review_table")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "review_id", nullable = false)
     private Long reviewId;
 
-    @Column(nullable = false, length = 10)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "star", nullable = false)
     private int star;
 
-    @Column(nullable = false, length = 6)
+    @Column(name = "taste", nullable = false)
     private String taste;
 
-    @Column(nullable = false, length = 6)
+    @Column(name = "fresh", nullable = false)
     private String fresh;
 
-    @Column(name = "package", nullable = false, length = 6)
+    @Column(name = "package", nullable = false)
     private String packageQuality;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "reviewdetail", nullable = false)
     private String reviewdetail;
 
-    // Getters and setters
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    @Builder
+    public Review(Long reviewId, String name, int star, String taste, String fresh, String packageQuality, String reviewdetail) {
+        this.reviewId = reviewId;
         this.name = name;
-    }
-
-    public int getStar() {
-        return star;
-    }
-
-    public void setStar(int star) {
         this.star = star;
-    }
-
-    public String getTaste() {
-        return taste;
-    }
-
-    public void setTaste(String taste) {
         this.taste = taste;
-    }
-
-    public String getFresh() {
-        return fresh;
-    }
-
-    public void setFresh(String fresh) {
         this.fresh = fresh;
-    }
-
-    public String getPackageQuality() {
-        return packageQuality;
-    }
-
-    public void setPackageQuality(String packageQuality) {
         this.packageQuality = packageQuality;
-    }
-
-    public String getReviewdetail() {
-        return reviewdetail;
-    }
-
-    public void setReviewdetail(String reviewdetail) {
         this.reviewdetail = reviewdetail;
     }
 }
+
