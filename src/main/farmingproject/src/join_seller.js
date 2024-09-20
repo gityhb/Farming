@@ -63,37 +63,37 @@ function Join_seller() {
     };
 
     // 아이디 중복 확인 함수
-    const checkId = async () => {
-        if (!form.userId) {
-            document.getElementById("userIdError").textContent = "아이디를 입력하세요";
-            return;
-        }
-
-        try {
-            const response = await fetch(`/api/check_user_id?userId=${form.userId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                if (result.isDuplicate) {
-                    document.getElementById("userIdError").textContent = "이미 존재하는 아이디입니다";
-                    setIsIdDuplicate(true);
-                } else {
-                    document.getElementById("userIdError").textContent = "사용 가능한 아이디입니다";
-                    setIsIdDuplicate(false);
-                }
-            } else {
-                document.getElementById("userIdError").textContent = "아이디 중복 확인에 실패하였습니다";
-            }
-        } catch (error) {
-            console.error("아이디 중복 확인 오류:", error);
-            document.getElementById("userIdError").textContent = "아이디 중복 확인 중 오류가 발생하였습니다";
-        }
-    };
+    // const checkId = async () => {
+    //     if (!form.userId) {
+    //         document.getElementById("userIdError").textContent = "아이디를 입력하세요";
+    //         return;
+    //     }
+    //
+    //     try {
+    //         const response = await fetch(`/api/check_user_id?userId=${encodeURIComponent(form.userId)}`, {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         });
+    //
+    //         if (response.ok) {
+    //             const isDuplicate = await response.json();
+    //             if (isDuplicate) {
+    //                 document.getElementById("userIdError").textContent = "이미 사용 중인 아이디입니다";
+    //                 setIsIdDuplicate(true);
+    //             } else {
+    //                 document.getElementById("userIdError").textContent = "사용 가능한 아이디입니다";
+    //                 setIsIdDuplicate(false);
+    //             }
+    //         } else {
+    //             document.getElementById("userIdError").textContent = "아이디 중복 확인 중 오류가 발생하였습니다";
+    //         }
+    //     } catch (error) {
+    //         console.error("아이디 중복 확인 오류:", error);
+    //         document.getElementById("userIdError").textContent = "서버 연결에 실패했습니다";
+    //     }
+    // };
 
     const handleNextStep = () => {
         if (step === 1 && terms.service && terms.privacy) {
@@ -120,7 +120,8 @@ function Join_seller() {
 
         if (isIdDuplicate) {
             alert("이미 사용 중인 아이디입니다. 다른 아이디를 사용하세요.");
-            return;
+            isValid = false;
+            // return;
         }
 
         if (!form.userId) {
@@ -812,7 +813,7 @@ function Join_seller() {
                     )}
                     {step === 2 && (
                         <div id="join_seller_form">
-                            <form onSubmit={handleSubmitForm} action={"@{/user}"} method={"POST"}>
+                            <form onSubmit={handleSubmitForm} method={"POST"}>
                                 <div id="join_seller_form_group">
                                     <div className="form_group">
                                         <label>아이디</label>
@@ -821,7 +822,7 @@ function Join_seller() {
                                                value={form.userId}
                                                onChange={handleInputChange}
                                                placeholder="아이디를 입력하세요"/>
-                                        <div className={"dupli_check_btn"} onClick={checkId}>중복확인</div>
+                                        <div className={"dupli_check_btn"} >중복확인</div>
                                         {/*<button type="button" className="dupli_check_btn" onClick={checkId}>중복확인*/}
                                         {/*</button>*/}
                                         {/*<div className="id_dupli_check">*/}

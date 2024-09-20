@@ -5,6 +5,7 @@ import axios from "axios";
 import {useUser} from "./userContext";
 
 function Header() {
+
     // // 회원가입 및 로그인 관련 (먼저 실행해주어야 함, 실행 순서 중요!)
     // const [user, setUser] = useState(null);
     // const navigate = useNavigate();
@@ -25,7 +26,9 @@ function Header() {
     //         });
     // }, []);
 
+
     const { user } = useUser();
+    console.log("User in Header: ", user);
 
     const handleClick = async () => {
         try {

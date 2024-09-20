@@ -102,7 +102,7 @@ function Farmer_product_apply() {
     });
 
     if (productImageResponse.ok) {
-        // alert("상품 등록 신청이 되었습니다.");
+        alert("상품 등록 신청이 되었습니다.");
         navigate("/");
         console.log("성공함!!!!");
     } else {
@@ -128,7 +128,7 @@ function Farmer_product_apply() {
                     <div id={'product_apply_title'}>
                         <h1>상품 등록 신청</h1>
                     </div>
-                    <form onSubmit={submitForm} method="POST" encType="multipart/form-data">
+                    <form onSubmit={submitForm} encType="multipart/form-data">
                         <div id={'product_apply_img'}>
                             <div className={'product_apply_img_box'}>
                                 <div className={'product_img_show'} id={'product_img_show'}>

@@ -21,25 +21,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/api")
 public class UserApiController {
     @Autowired
     private final UserService userService;
 
+
+
     // 회원가입 아이디 중복여부
-    @GetMapping("/check_user_id")
-    @PermitAll // 이 메서드는 인증 없이 접근 가능
-    public ResponseEntity<Map<String, Boolean>> checkUserId(@RequestParam String userId) {
-        boolean isDuplicate = userService.checkUserIdDuplicate(userId);
-
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("isDuplicate", isDuplicate);
-
-        return ResponseEntity.ok(response);
-    }
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    @GetMapping("/check_user_id")
+////    @PermitAll // 이 메서드는 인증 없이 접근 가능
+//    public ResponseEntity<Boolean> checkUserId(@RequestParam String userId) {
+//        boolean isDuplicate = userService.checkUserIdDuplicate(userId);
+//        return ResponseEntity.ok(isDuplicate);
+//    }
 
     // 소비자 회원가입
     @PostMapping("/join_consumer")
@@ -97,6 +96,10 @@ public class UserApiController {
         return ResponseEntity.ok(response);
 
     }
+
+
+
+
 
 //    @PostMapping("/logout")
 //    public String logout(HttpServletRequest request, HttpServletResponse response) {
