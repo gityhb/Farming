@@ -109,7 +109,7 @@ function App() {
             {!hideHeaderFooter && <Header />}
             <Routes>
                 <Route path="/" element={<Main />} />
-                <Route path="/category" element={<Category />} />
+                {/*<Route path="/category" element={<Category />} />*/}
                 <Route path="/farmer_job" element={<FarmerJob />} />
                 <Route path="/farmer_recommend" element={<Farmer_recommend />} />
                 <Route path="/farmer_market" element={<Farmer_market />} />

@@ -5,27 +5,7 @@ import axios from "axios";
 import {useUser} from "./userContext";
 
 function Header() {
-    // // 회원가입 및 로그인 관련 (먼저 실행해주어야 함, 실행 순서 중요!)
-    // const [user, setUser] = useState(null);
-    // const navigate = useNavigate();
-    //
-    // useEffect(() => {
-    //     // 로그인된 사용자 정보를 API에서 가져옴
-    //     axios.get('http://localhost:8080/api/user', { withCredentials: true })
-    //         .then(response => {
-    //             setUser(response.data);
-    //         })
-    //         .catch(error => {
-    //             if (error.response && error.response.status === 401) {
-    //                 // 사용자 정보가 없는 경우
-    //                 setUser(null);
-    //             } else {
-    //                 console.error("There was an error fetching the user data!", error);
-    //             }
-    //         });
-    // }, []);
-
-    const { user } = useUser();
+    const { user, setUser, setIsLoggedIn } = useUser(); // setIsLoggedIn 추가
 
     const handleClick = async () => {
         try {
@@ -35,12 +15,18 @@ function Header() {
             // 세션 쿠키 삭제
             document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
 
-            // 서버에서 처리된 리디렉션을 반영하기 위해 페이지 새로 고침
+            // 사용자 정보를 null로 설정하여 상태 초기화
+            setUser(null);
+            setIsLoggedIn(false); // 로그아웃 상태로 전환
+
+            // 페이지 새로 고침으로 상태 갱신
             window.location.reload();
         } catch (error) {
             console.error("There was an error logging out!", error);
         }
     };
+
+
 
     const[isCategoryDropdownOpen,setCategoryDropdownOpen]=useState(false); //카테고리 드롭다운 메뉴
     const [isMarketDropdownOpen,setMarketDropdownOpen]=useState(false); //농부마켓 드롭다운 메뉴
