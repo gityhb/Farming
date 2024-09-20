@@ -79,7 +79,7 @@ function FarmerJobInfo() {
             </button>
 
             {isApplyModalOpen && (
-                <FarmerJobApply isOpen={isApplyModalOpen} closeApplyModal={closeApplyModal} />
+                <FarmerJobApply isOpen={isApplyModalOpen} closeApplyModal={closeApplyModal} jobId={jobId} />
             )}
         </div>
     );

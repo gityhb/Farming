@@ -2,7 +2,7 @@ package com.farming.farmingproject.service;
 
 import com.farming.farmingproject.domain.Job;
 import com.farming.farmingproject.domain.User;
-import com.farming.farmingproject.dto.JobDTO;
+import com.farming.farmingproject.dto.AddJobRequest;
 import com.farming.farmingproject.repository.JobRepository;
 import com.farming.farmingproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class JobService {
 
     //Job 저장
     @Transactional
-    public Job saveJob(JobDTO jobDTO){
+    public Job saveJob(AddJobRequest jobDTO){
         // userId가 null인 경우 예외 처리
         if (jobDTO.getUserId() == null) {
             throw new IllegalArgumentException("User ID must not be null");

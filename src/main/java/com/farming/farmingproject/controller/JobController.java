@@ -1,11 +1,9 @@
 package com.farming.farmingproject.controller;
 
 import com.farming.farmingproject.domain.Job;
-import com.farming.farmingproject.dto.JobDTO;
+import com.farming.farmingproject.dto.AddJobRequest;
 import com.farming.farmingproject.service.JobService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +24,7 @@ public class JobController {
     //1.Job 생성(POST 요청)
     //새로운 Job 공고 생성메서드 /api/job/create로 들어오는 요청 매핑
     @PostMapping("/create")
-    public ResponseEntity<Job> createJob(@RequestBody JobDTO jobDTO){
+    public ResponseEntity<Job> createJob(@RequestBody AddJobRequest jobDTO){
         Job job = jobService.saveJob(jobDTO); //jobDTO 사용해 Job 객체 생성하고 저장
         return  ResponseEntity.ok(job); //저장된 Job 객체 응답으로 반환
     }

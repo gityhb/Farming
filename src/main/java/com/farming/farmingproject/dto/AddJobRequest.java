@@ -8,7 +8,7 @@ import java.sql.Date;
 
 @Getter
 @Setter
-public class JobDTO {
+public class AddJobRequest {
     private Long jobId;
     private String userId;
     private String jobTitle;
