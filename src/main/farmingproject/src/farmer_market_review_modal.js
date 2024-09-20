@@ -7,7 +7,7 @@ function FarmerReviewModal({isReviewOpen, closeReviewModal, onSubmit}) {
     const [freshness, setFreshness] = useState('');
     const [packaging, setPackaging] = useState('');
     const [detailReview, setDetailReview] = useState('');
-    const [rating, setRating] = useState(5); // 별점 추가
+    const [rating, setRating] = useState(0); // 별점 추가
 
     if(!isReviewOpen) return null;
 
@@ -31,7 +31,7 @@ function FarmerReviewModal({isReviewOpen, closeReviewModal, onSubmit}) {
         setRating(newRating);
     }
 
-    const handleSubmit = (e) => {
+    /*const handleSubmit = (e) => {
         e.preventDefault();
         const reviewData = {
             taste,
@@ -42,7 +42,40 @@ function FarmerReviewModal({isReviewOpen, closeReviewModal, onSubmit}) {
         };
         onSubmit(reviewData);
         closeReviewModal();
+    };*/
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const reviewData = {
+            name: "현재 로그인한 사용자", // 실제 사용자 이름으로 대체해야 함
+            star: rating,
+            taste: taste,
+            fresh: freshness,
+            package: packaging,
+            reviewdetail: detailReview
+        };
+
+        try {
+            const response = await fetch('/api/reviews', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reviewData)
+            });
+
+            if (response.ok) {
+                onSubmit(reviewData);
+                closeReviewModal();
+            } else {
+                console.error('리뷰 제출 실패');
+            }
+        } catch (error) {
+            console.error('리뷰 제출 중 오류 발생:', error);
+        }
     };
+
+
 
 
     return (

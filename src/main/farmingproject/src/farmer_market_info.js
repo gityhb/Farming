@@ -33,7 +33,7 @@ function Farmer_market_info() {
     const handleReviewSubmit = (reviewData) => {
         const newReview = {
             id: Date.now(),
-            user: "현재 로그인한 사용자",
+            user: "구매자 닉네임",
             date: new Date().toLocaleDateString(),
             ...reviewData
         };
@@ -224,11 +224,27 @@ function Farmer_market_info() {
                                                         <span className="review_user">{review.user}</span>
                                                         <span className="review_date">{review.date} | 신고</span>
                                                         <p className="review_text">
-                                                            <span className="review_title">맛</span> <span className="review_detail">{review.taste}</span>
-                                                            <span className="review_title">신선도</span> <span className="review_detail">{review.freshness}</span>
-                                                            <span className="review_title">포장</span> <span className="review_detail">{review.packaging}</span><br/>
+                                                            <span className="review_title">맛</span> <span
+                                                            className="review_detail">{review.taste}</span>
+                                                            <span className="review_title">신선도</span> <span
+                                                            className="review_detail">{review.freshness}</span>
+                                                            <span className="review_title">포장</span> <span
+                                                            className="review_detail">{review.packaging}</span><br/>
                                                             <span className="review_text_detail">{review.comment}</span>
                                                         </p>
+                                                    </div>
+                                                    <div className="seller_reply">
+                                                        <div className="seller_reply_header">
+                                                            <span className="seller_reply_user">판매자</span>
+                                                            <span className="seller_reply_date">24.05.08 | 신고</span>
+                                                        </div>
+                                                        <span
+                                                            className="seller_reply_detail">주문해주셔서 감사합니다! 또 이용해주세요.</span>
+                                                    </div>
+                                                </div>
+                                                <div className="review_image_container">
+                                                    <div className="review_image">
+                                                        <img src="img/review_img2.png"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -239,7 +255,7 @@ function Farmer_market_info() {
 
                             {activeTab === 'questioninfo' && (
                                 <div className={'product_detail_info'}>
-                                    <div className="notice">
+                                <div className="notice">
                                         <ul>
                                             <li>구매한 상품의 취소 / 반품은 구매내역 신청에서 가능합니다.</li>
                                             <li>상품 문의 및 리뷰를 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
