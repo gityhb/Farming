@@ -16,7 +16,7 @@
 }
 
 .auction_detail_item .item_title{
-    font-size:36px;
+    font-size:35px;
     font-weight: bold;
     margin-bottom: 20px;
 }
@@ -40,7 +40,7 @@
 }
 
 .auction_detail_item .item_minbid .minbid_amount{
-    font-size: 36px;
+    font-size: 35px;
     font-weight: bold;
     margin-left:20px;
 }
@@ -132,7 +132,7 @@
     justify-content: center;
     align-items: flex-end;
     gap: 20px;
-    border: 1px solid #000000;
+    border: 1px solid #919191;
     width: 350px;
     height: 340px;
 }
