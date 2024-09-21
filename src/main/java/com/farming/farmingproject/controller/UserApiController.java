@@ -29,7 +29,22 @@ public class UserApiController {
     @Autowired
     private final UserService userService;
 
-    // 회원가입 아이디 중복여부
+    //아이디 중복 확인 API
+    @GetMapping("/check_user_id")
+    public ResponseEntity<Map<String,Object>> checkUserIdDuplicate(@RequestParam(name ="userId") String userId) {
+        boolean isDuplicate = userService.checkUserIdDuplicate(userId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("isDuplicate", isDuplicate);
+
+        if (isDuplicate) {
+            response.put("message", "이미 존재하는 아이디입니다.");
+        } else {
+            response.put("message", "사용 가능한 아이디 입니다.");
+        }
+        return ResponseEntity.ok(response);
+    }
+
+   /* // 회원가입 아이디 중복여부
     @GetMapping("/check_user_id")
     @PermitAll // 이 메서드는 인증 없이 접근 가능
     public ResponseEntity<Map<String, Boolean>> checkUserId(@RequestParam String userId) {
@@ -39,7 +54,7 @@ public class UserApiController {
         response.put("isDuplicate", isDuplicate);
 
         return ResponseEntity.ok(response);
-    }
+    }*/
 
     // 소비자 회원가입
     @PostMapping("/join_consumer")

@@ -87,6 +87,7 @@ function Join_seller() {
                     setIsIdDuplicate(false);
                 }
             } else {
+                console.error("응답 상태 코드:", response.status);
                 document.getElementById("userIdError").textContent = "아이디 중복 확인에 실패하였습니다";
             }
         } catch (error) {
