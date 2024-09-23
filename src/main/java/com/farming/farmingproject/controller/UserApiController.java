@@ -29,7 +29,25 @@ public class UserApiController {
     @Autowired
     private final UserService userService;
 
+    //아이디 중복 확인 API
+    @GetMapping("/check_user_id")
+    public ResponseEntity<Map<String,Object>> checkUserIdDuplicate(@RequestParam(name ="userId") String userId) {
+        boolean isDuplicate = userService.checkUserIdDuplicate(userId);
+        Map<String, Object> response = new HashMap<>();
 
+        try {
+            response.put("isDuplicate", isDuplicate);
+            if (isDuplicate) {
+                response.put("message", "이미 존재하는 아이디입니다.");
+            } else {
+                response.put("message", "사용 가능한 아이디 입니다.");
+            }
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "아이디 중복 확인 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
     // 회원가입 아이디 중복여부
 //    @CrossOrigin(origins = "http://localhost:3000")

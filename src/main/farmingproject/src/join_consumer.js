@@ -916,6 +916,7 @@ function Join_consumer() {
                                         <label>전화번호</label>
                                         <input
                                             type="tel"
+                                            minLength={11}
                                             maxLength={11}
                                             name="phoneNumber"
                                             value={form.phoneNumber}
