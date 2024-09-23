@@ -1,11 +1,12 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import './join_seller.css';
 import './common/root.css';
 import {Link} from "react-router-dom";
+import DaumPostcode from "react-daum-postcode";
+import Modal from "react-modal";
 
 function Join_seller() {
-    const [idCheckMessage, setIdCheckMessage] = useState("");
-    const [isIdDuplicate, setIsIdDuplicate] = useState(false);
+    const [isIdDuplicate, setIsIdDuplicate] = useState(2);
     const [step, setStep] = useState(1);
     const [terms, setTerms] = useState({
         all: false,
@@ -15,6 +16,34 @@ function Join_seller() {
         location: false,
         event: false
     });
+
+    // Modal 스타일 정의
+    const modalStyles = {
+        content: {
+            width: '600px', // 모달 창의 너비
+            height: '400px', // 모달 창의 높이
+            margin: 'auto', // 중앙 정렬
+        },
+        overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 검정색 배경
+        },
+    };
+
+    const completeHandler = (data) => {
+        setForm({
+            ...form,
+            userZipcode: data.zonecode,
+            userAddr: data.roadAddress,
+        });
+        setIsOpen(false);
+    }
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const new_addr = () => {
+        setIsOpen(!isOpen);
+    }
+
     const [form, setForm] = useState({
         userId: "",
         password: "",
@@ -25,12 +54,14 @@ function Join_seller() {
         phoneNumber: "",
         storePhoneNumber: "",
         email: "",
-        address: "",
+        userZipcode: "",
+        userAddr: "",
+        userDetailAddr: "",
     });
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
+        const {name, value} = e.target;
+        setForm({...form, [name]: value});
     };
 
     useEffect(() => {
@@ -47,7 +78,7 @@ function Join_seller() {
     // step1의 체크박스
     const handleTermsChange = (name) => {
         setTerms(prevTerms => {
-            const updatedTerms = { ...prevTerms, [name]: !prevTerms[name] };
+            const updatedTerms = {...prevTerms, [name]: !prevTerms[name]};
 
             if (name === 'all') {
                 const allChecked = !prevTerms.all;
@@ -80,8 +111,8 @@ function Join_seller() {
                 const data = await response.json();
                 const isDuplicate = data.isDuplicate;
 
-                console.log("data: ",data);
-                console.log("isDuplicate: ",isDuplicate);
+                console.log("data: ", data);
+                console.log("isDuplicate: ", isDuplicate);
 
                 if (isDuplicate) {
                     document.getElementById("userIdError").textContent = "이미 사용 중인 아이디입니다";
@@ -123,7 +154,15 @@ function Join_seller() {
         document.getElementById("emailError").textContent = "";
         document.getElementById("addressError").textContent = "";
 
-        if (isIdDuplicate) {
+        console.log("isIdDuplicate : ", isIdDuplicate);
+
+        if (isIdDuplicate === 1) {
+            document.getElementById("userIdError").textContent = "이미 사용 중인 아이디입니다";
+            isValid = false;
+        }
+
+        if (isIdDuplicate === 2) {
+            document.getElementById("userIdError").textContent = "아이디 중복확인을 해주세요";
             isValid = false;
         }
 
@@ -138,8 +177,7 @@ function Join_seller() {
         if (!form.confirmPassword) {
             document.getElementById("confirmPasswordError").textContent = "비밀번호를 재입력하세요";
             isValid = false;
-        }
-        else {
+        } else {
             if (form.password !== form.confirmPassword) {
                 document.getElementById("confirmPasswordError").textContent = "비밀번호가 일치하지 않습니다";
                 isValid = false;
@@ -176,7 +214,7 @@ function Join_seller() {
             isValid = false;
         }
 
-        if (!form.address) {
+        if (!form.userZipcode || !form.userAddr || !form.userDetailAddr) {
             document.getElementById("addressError").textContent = "가게 주소를 입력하세요";
             isValid = false;
         }
@@ -189,12 +227,19 @@ function Join_seller() {
 
     const submitForm = async () => {
         try {
+            const fullAddress = `(${form.userZipcode}) ${form.userAddr} ${form.userDetailAddr}`;
+
+            const updatedForm = {
+                ...form,
+                address: fullAddress
+            };
+
             const response = await fetch('/api/join_seller', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(form),
+                body: JSON.stringify(updatedForm),
             });
 
             if (response.ok) {
@@ -248,7 +293,8 @@ function Join_seller() {
                                                onChange={() => handleTermsChange('service')}/>
                                         [필수] 파밍 이용약관
                                     </label>
-                                    <p className="agree">파밍 서비스 및 제품(이하 ‘서비스’)을 이용해 주셔서 감사합니다. 본 약관은 다양한 파밍 서비스의 이용과 관련하여 파밍
+                                    <p className="agree">파밍 서비스 및 제품(이하 ‘서비스’)을 이용해 주셔서 감사합니다. 본 약관은 다양한 파밍 서비스의 이용과
+                                        관련하여 파밍
                                         서비스를 제공하는 파밍(이하 ‘파밍’)와
                                         이를 이용하는 파밍 서비스 회원(이하 ‘회원’) 또는 비회원과의 관계를 설명하며, 아울러 여러분의 파밍 서비스 이용에 도움이 될 수 있는 유익한
                                         정보를 포함하고
@@ -825,12 +871,7 @@ function Join_seller() {
                                                value={form.userId}
                                                onChange={handleInputChange}
                                                placeholder="아이디를 입력하세요"/>
-                                        <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인
-                                        </button>
-                                        <div className="id_dupli_check">
-                                            {idCheckMessage &&
-                                                <p className="id_dupli_check_message">{idCheckMessage}</p>}
-                                        </div>
+                                        <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인</button>
                                     </div>
                                     <p className="error_message" id="userIdError"></p>
                                     <div className="form_group">
@@ -908,13 +949,30 @@ function Join_seller() {
                                                placeholder="이메일 주소를 입력하세요"/>
                                     </div>
                                     <p className="error_message" id="emailError"></p>
+                                    <Modal isOpen={isOpen} style={modalStyles} ariaHideApp={false}
+                                           onRequestClose={() => setIsOpen(false)}>
+                                        <DaumPostcode onComplete={completeHandler} height="100%"/>
+                                    </Modal>
                                     <div className="form_group">
                                         <label>가게 주소</label>
-                                        <input type="text"
-                                               name="address"
-                                               value={form.address}
-                                               onChange={handleInputChange}
-                                               placeholder="가게 주소를 입력하세요"/>
+                                        <div className={"address_list"}>
+                                            <div className={'address_input'}>
+                                                <input value={form.userZipcode || ''} name="userZipcode" readOnly placeholder="우편번호"/>
+                                                <button type={"button"} className={'find_zip_code_btn'} onClick={new_addr}>
+                                                    우편번호 찾기
+                                                </button>
+                                            </div>
+                                            <div className={'address_input'}>
+                                                <input value={form.userAddr || ''} name="userAddr" readOnly placeholder="도로명 주소"/>
+                                            </div>
+                                            <div className={'address_input'}>
+                                                <input type="text"
+                                                       name="userDetailAddr"
+                                                       value={form.userDetailAddr}
+                                                       onChange={handleInputChange}
+                                                       placeholder="상세주소"/>
+                                            </div>
+                                        </div>
                                     </div>
                                     <p className="error_message" id="addressError"></p>
                                 </div>
@@ -925,7 +983,9 @@ function Join_seller() {
                     {step === 3 && (
                         <div id="completion_message">
                             <h1>회원가입이 완료되었습니다!</h1>
-                            <Link to={"/"}><button className="main_btn">메인으로 이동</button></Link>
+                            <Link to={"/"}>
+                                <button className="main_btn">메인으로 이동</button>
+                            </Link>
                         </div>
                     )}
                 </div>

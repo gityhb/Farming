@@ -10,7 +10,7 @@ public class AddUserRequest {
     private String userId;
     private String password;
     private String name;
-    private String nickname;
+    private String nickName;
     private String storeName;
     private String businessNumber;
     private String phoneNumber;

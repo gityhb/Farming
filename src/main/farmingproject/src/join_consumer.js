@@ -1,11 +1,12 @@
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import './join_consumer.css';
 import './common/root.css';
+import DaumPostcode from "react-daum-postcode";
+import Modal from "react-modal";
 
 function Join_consumer() {
-    const [idCheckMessage, setIdCheckMessage] = useState("");
-    const [isIdDuplicate, setIsIdDuplicate] = useState(false);
+    const [isIdDuplicate, setIsIdDuplicate] = useState(2);
     const [step, setStep] = useState(1);
     const [terms, setTerms] = useState({
         all: false,
@@ -15,6 +16,34 @@ function Join_consumer() {
         location: false,
         event: false
     });
+
+    // Modal 스타일 정의
+    const modalStyles = {
+        content: {
+            width: '600px', // 모달 창의 너비
+            height: '400px', // 모달 창의 높이
+            margin: 'auto', // 중앙 정렬
+        },
+        overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 검정색 배경
+        },
+    };
+
+    const completeHandler = (data) => {
+        setForm({
+            ...form,
+            userZipcode: data.zonecode,
+            userAddr: data.roadAddress,
+        });
+        setIsOpen(false);
+    }
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const new_addr = () => {
+        setIsOpen(!isOpen);
+    }
+
     const [form, setForm] = useState({
         userId: "",
         password: "",
@@ -23,10 +52,10 @@ function Join_consumer() {
         nickName:"",
         phoneNumber: "",
         email: "",
-        address: ""
+        userZipcode: "",
+        userAddr: "",
+        userDetailAddr: "",
     });
-
-    const [nicknameCheckMessage, setNicknameCheckMessage] = useState("");
 
     useEffect(() => {
         // Initialize terms state on component mount
@@ -46,50 +75,6 @@ function Join_consumer() {
         }
     };
 
-    // const handleSubmitForm = (event) => {
-    //     event.preventDefault();
-    //
-    //     if (isIdDuplicate) {
-    //         alert("이미 사용 중인 아이디입니다. 다른 아이디를 사용하세요.");
-    //         return;
-    //     }
-    //
-    //     if (!form.id) {
-    //         alert("아이디를 입력하세요");
-    //         return;
-    //     }
-    //     if (!form.password) {
-    //         alert("비밀번호를 입력하세요");
-    //         return;
-    //     }
-    //     if (form.password !== form.confirmPassword) {
-    //         alert("비밀번호가 일치하지 않습니다.\n다시 입력해 주세요");
-    //         return;
-    //     }
-    //     if (!form.name) {
-    //         alert("이름을 입력하세요");
-    //         return;
-    //     }
-    //     if (!form.nickname) {
-    //         alert("닉네임을 입력하세요");
-    //         return;
-    //     }
-    //     if (!form.phone) {
-    //         alert("전화번호를 입력하세요");
-    //         return;
-    //     }
-    //     if (!form.email) {
-    //         alert("이메일을 입력하세요");
-    //         return;
-    //     }
-    //     if (!form.address) {
-    //         alert("주소를 입력하세요");
-    //         return;
-    //     }
-    //
-    //     setStep(step + 1);
-    // };
-
     const handleSubmitForm = (event) => {
         event.preventDefault();
         let isValid = true;
@@ -104,9 +89,16 @@ function Join_consumer() {
         document.getElementById("emailError").textContent = "";
         document.getElementById("addressError").textContent = "";
 
-        if (isIdDuplicate) {
-            alert("이미 사용 중인 아이디입니다. 다른 아이디를 사용하세요.");
-            return;
+        console.log("isIdDuplicate : ", isIdDuplicate);
+
+        if (isIdDuplicate === 1) {
+            document.getElementById("userIdError").textContent = "이미 사용 중인 아이디입니다";
+            isValid = false;
+        }
+
+        if (isIdDuplicate === 2) {
+            document.getElementById("userIdError").textContent = "아이디 중복확인을 해주세요";
+            isValid = false;
         }
 
         if (!form.userId) {
@@ -148,8 +140,8 @@ function Join_consumer() {
             isValid = false;
         }
 
-        if (!form.address) {
-            document.getElementById("addressError").textContent = "가게 주소를 입력하세요";
+        if (!form.userZipcode || !form.userAddr || !form.userDetailAddr) {
+            document.getElementById("addressError").textContent = "주소를 입력하세요";
             isValid = false;
         }
 
@@ -161,12 +153,19 @@ function Join_consumer() {
 
     const submitForm = async () => {
         try {
+            const fullAddress = `(${form.userZipcode}) ${form.userAddr} ${form.userDetailAddr}`;
+
+            const updatedForm = {
+                ...form,
+                address: fullAddress
+            };
+
             const response = await fetch('/api/join_consumer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(form),
+                body: JSON.stringify(updatedForm),
             });
 
             if (response.ok) {
@@ -179,6 +178,45 @@ function Join_consumer() {
             }
         } catch (error) {
             console.error('회원가입 중 오류 발생:', error);
+        }
+    };
+
+    // 아이디 중복 확인 함수
+    const checkId = async () => {
+        if (!form.userId) {
+            document.getElementById("userIdError").textContent = "아이디를 입력하세요";
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/check_user_id?userId=${encodeURIComponent(form.userId)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                const isDuplicate = data.isDuplicate;
+
+                console.log("data: ", data);
+                console.log("isDuplicate: ", isDuplicate);
+
+                if (isDuplicate) {
+                    document.getElementById("userIdError").textContent = "이미 사용 중인 아이디입니다";
+                    document.getElementById("userIdError").style.color = "#FF0000";  // 빨간색
+                    setIsIdDuplicate(1);
+                } else {
+                    document.getElementById("userIdError").textContent = "사용 가능한 아이디입니다";
+                    document.getElementById("userIdError").style.color = "#55a630";  // 초록색
+                    setIsIdDuplicate(0);
+                }
+            } else {
+                document.getElementById("userIdError").textContent = "아이디 중복 확인 중 오류가 발생하였습니다";
+            }
+        } catch (error) {
+            console.error("아이디 중복 확인 오류:", error);
+            document.getElementById("userIdError").textContent = "서버 연결에 실패했습니다";
         }
     };
 
@@ -201,32 +239,17 @@ function Join_consumer() {
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
+
+        // 아이디 변경 시 setIsIdDuplicate를 2로 설정
+        if (name === 'userId') {
+            setIsIdDuplicate(2);
+        }
+
         setForm(prevForm => ({
             ...prevForm,
             [name]: value
         }));
     };
-
-    const checkId = async () => {
-        try {
-            const response = await fetch(`/api/check_user_id?userId=${form.userId}`);
-            const result = await response.json();
-
-            if (result.isDuplicate) {
-                setIdCheckMessage("이미 사용 중인 아이디입니다.");
-                setIsIdDuplicate(true);
-            } else {
-                setIdCheckMessage("사용 가능한 아이디입니다.");
-                setIsIdDuplicate(false);
-            }
-        } catch (error) {
-            console.error("아이디 중복 확인 오류:", error);
-            setIdCheckMessage("중복 확인 중 오류가 발생했습니다.");
-        }
-    };
-
-
-
 
     // const checkNickname = () => {
     //     if (!form.nickname || form.nickname.trim() === "") {
@@ -854,13 +877,8 @@ function Join_consumer() {
                                             name="userId"
                                             value={form.userId}
                                             onChange={handleInputChange}
-                                            placeholder="아이디를 입력하세요"
-                                        />
-                                        <div className={"dupli_check_btn"} onClick={checkId}>중복확인</div>
-                                        <div className="id_dupli_check">
-                                            {idCheckMessage &&
-                                                <p className="id_dupli_check_message">{idCheckMessage}</p>}
-                                        </div>
+                                            placeholder="아이디를 입력하세요"/>
+                                        <button type="button" className="dupli_check_btn" onClick={checkId}>중복확인</button>
                                     </div>
                                     <p className="error_message" id="userIdError"></p>
                                     <div className="form_group">
@@ -870,8 +888,7 @@ function Join_consumer() {
                                             name="password"
                                             value={form.password}
                                             onChange={handleInputChange}
-                                            placeholder="비밀번호를 입력하세요"
-                                        />
+                                            placeholder="비밀번호를 입력하세요"/>
                                     </div>
                                     <p className="error_message" id="passwordError"></p>
                                     <div className="form_group">
@@ -881,8 +898,7 @@ function Join_consumer() {
                                             name="confirmPassword"
                                             value={form.confirmPassword}
                                             onChange={handleInputChange}
-                                            placeholder="비밀번호를 재입력하세요"
-                                        />
+                                            placeholder="비밀번호를 재입력하세요"/>
                                     </div>
                                     <p className="error_message" id="confirmPasswordError"></p>
                                     <div className="form_group">
@@ -892,8 +908,7 @@ function Join_consumer() {
                                             name="name"
                                             value={form.name}
                                             onChange={handleInputChange}
-                                            placeholder="이름을 입력하세요"
-                                        />
+                                            placeholder="이름을 입력하세요"/>
                                     </div>
                                     <p className="error_message" id="nameError"></p>
                                     <div className="form_group">
@@ -925,7 +940,7 @@ function Join_consumer() {
                                     </div>
                                     <p className="error_message" id="phoneNumberError"></p>
                                     <div className="form_group">
-                                        <label>이메일</label>
+                                        <label>이메일 주소</label>
                                         <input
                                             type="email"
                                             name="email"
@@ -934,15 +949,33 @@ function Join_consumer() {
                                             placeholder="이메일 주소를 입력하세요"/>
                                     </div>
                                     <p className="error_message" id="emailError"></p>
+                                    <Modal isOpen={isOpen} style={modalStyles} ariaHideApp={false}
+                                           onRequestClose={() => setIsOpen(false)}>
+                                        <DaumPostcode onComplete={completeHandler} height="100%"/>
+                                    </Modal>
                                     <div className="form_group">
-                                        <label>주소</label>
-                                        <input
-                                            type="text"
-                                            name="address"
-                                            value={form.address}
-                                            onChange={handleInputChange}
-                                            placeholder="주소를 입력하세요"
-                                        />
+                                        <label>가게 주소</label>
+                                        <div className={"address_list"}>
+                                            <div className={'address_input'}>
+                                                <input value={form.userZipcode || ''} name="userZipcode" readOnly
+                                                       placeholder="우편번호"/>
+                                                <button type={"button"} className={'find_zip_code_btn'}
+                                                        onClick={new_addr}>
+                                                    우편번호 찾기
+                                                </button>
+                                            </div>
+                                            <div className={'address_input'}>
+                                                <input value={form.userAddr || ''} name="userAddr" readOnly
+                                                       placeholder="도로명 주소"/>
+                                            </div>
+                                            <div className={'address_input'}>
+                                                <input type="text"
+                                                       name="userDetailAddr"
+                                                       value={form.userDetailAddr}
+                                                       onChange={handleInputChange}
+                                                       placeholder="상세주소"/>
+                                            </div>
+                                        </div>
                                     </div>
                                     <p className="error_message" id="addressError"></p>
                                 </div>
@@ -954,7 +987,9 @@ function Join_consumer() {
                     {step === 3 && (
                         <div id="completion_message">
                             <h1>회원가입이 완료되었습니다!</h1>
-                            <Link to={"/"}><button className="main_btn">메인으로 이동</button></Link>
+                            <Link to={"/"}>
+                                <button className="main_btn">메인으로 이동</button>
+                            </Link>
                         </div>
                     )}
                 </div>

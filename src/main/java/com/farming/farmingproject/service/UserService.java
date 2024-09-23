@@ -22,7 +22,7 @@ public class UserService {
                 // 패스워드 암호화
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
-                .nickname(dto.getNickname())
+                .nickname(dto.getNickName())
                 .storeName(dto.getStoreName())
                 .businessNumber(dto.getBusinessNumber())
                 .phoneNumber(dto.getPhoneNumber())
