@@ -22,7 +22,7 @@ public class UserService {
                 // 패스워드 암호화
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
-                .nickname(dto.getNickName())
+                .nickname(dto.getNickname())
                 .storeName(dto.getStoreName())
                 .businessNumber(dto.getBusinessNumber())
                 .phoneNumber(dto.getPhoneNumber())
@@ -42,5 +42,10 @@ public class UserService {
     // 아이디 중복 여부를 확인하는 메서드
     public boolean checkUserIdDuplicate(String userId) {
         return userRepository.findByUserId(userId).isPresent();  // userId 존재 여부 반환
+    }
+
+    // 닉네임 중복 여부를 확인하는 메서드
+    public boolean checkUserNicknameDuplicate(String nickname) {
+        return userRepository.findByNickname(nickname).isPresent();   // nickNmae 존재 여부 반환
     }
 }

@@ -18,6 +18,8 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +40,7 @@ public class UserApiController {
         try {
             response.put("isDuplicate", isDuplicate);
             if (isDuplicate) {
-                response.put("message", "이미 존재하는 아이디입니다.");
+                response.put("message", "이미 존재하는 아이디 입니다.");
             } else {
                 response.put("message", "사용 가능한 아이디 입니다.");
             }
@@ -49,14 +51,27 @@ public class UserApiController {
         }
     }
 
-    // 회원가입 아이디 중복여부
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @GetMapping("/check_user_id")
-////    @PermitAll // 이 메서드는 인증 없이 접근 가능
-//    public ResponseEntity<Boolean> checkUserId(@RequestParam String userId) {
-//        boolean isDuplicate = userService.checkUserIdDuplicate(userId);
-//        return ResponseEntity.ok(isDuplicate);
-//    }
+    //닉네임 중복 확인
+    @PostMapping("/check_user_nickname")
+    public ResponseEntity<Map<String,Object>> checkUserNicknameDuplicate(@RequestBody AddUserRequest request) {
+        String nickname = request.getNickname();
+
+        boolean isNicknameDuplicate = userService.checkUserNicknameDuplicate(nickname);
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            response.put("isNicknameDuplicate", isNicknameDuplicate);
+            if (isNicknameDuplicate) {
+                response.put("message", "이미 존재하는 닉네임 입니다.");
+            } else {
+                response.put("message", "사용 가능한 닉네임 입니다.");
+            }
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "닉네임 중복 확인 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
     // 소비자 회원가입
     @PostMapping("/join_consumer")

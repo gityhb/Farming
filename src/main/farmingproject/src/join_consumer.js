@@ -7,6 +7,7 @@ import Modal from "react-modal";
 
 function Join_consumer() {
     const [isIdDuplicate, setIsIdDuplicate] = useState(2);
+    const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(2);
     const [step, setStep] = useState(1);
     const [terms, setTerms] = useState({
         all: false,
@@ -49,7 +50,7 @@ function Join_consumer() {
         password: "",
         confirmPassword: "",
         name: "",
-        nickName:"",
+        nickname:"",
         phoneNumber: "",
         email: "",
         userZipcode: "",
@@ -84,7 +85,7 @@ function Join_consumer() {
         document.getElementById("passwordError").textContent = "";
         document.getElementById("confirmPasswordError").textContent = "";
         document.getElementById("nameError").textContent = "";
-        document.getElementById("nickNameError").textContent = "";
+        document.getElementById("nicknameError").textContent = "";
         document.getElementById("phoneNumberError").textContent = "";
         document.getElementById("emailError").textContent = "";
         document.getElementById("addressError").textContent = "";
@@ -93,11 +94,27 @@ function Join_consumer() {
 
         if (isIdDuplicate === 1) {
             document.getElementById("userIdError").textContent = "이미 사용 중인 아이디입니다";
+            document.getElementById("userIdError").style.color = "#FF0000";  // 빨간색
             isValid = false;
         }
 
         if (isIdDuplicate === 2) {
             document.getElementById("userIdError").textContent = "아이디 중복확인을 해주세요";
+            document.getElementById("userIdError").style.color = "#FF0000";  // 빨간색
+            isValid = false;
+        }
+
+        console.log("isNicknameDuplicate : ", isNicknameDuplicate);
+
+        if (isNicknameDuplicate === 1) {
+            document.getElementById("nicknameError").textContent = "이미 사용 중인 닉네임입니다";
+            document.getElementById("userIdError").style.color = "#FF0000";  // 빨간색
+            isValid = false;
+        }
+
+        if (isNicknameDuplicate === 2) {
+            document.getElementById("nicknameError").textContent = "닉네임 중복확인을 해주세요";
+            document.getElementById("userIdError").style.color = "#FF0000";  // 빨간색
             isValid = false;
         }
 
@@ -125,8 +142,8 @@ function Join_consumer() {
             isValid = false;
         }
 
-        if (!form.nickName) {
-            document.getElementById("nickNameError").textContent = "닉네임을 입력하세요";
+        if (!form.nickname) {
+            document.getElementById("nicknameError").textContent = "닉네임을 입력하세요";
             isValid = false;
         }
 
@@ -199,7 +216,7 @@ function Join_consumer() {
                 const data = await response.json();
                 const isDuplicate = data.isDuplicate;
 
-                console.log("data: ", data);
+                console.log("userIdData: ", data);
                 console.log("isDuplicate: ", isDuplicate);
 
                 if (isDuplicate) {
@@ -217,6 +234,46 @@ function Join_consumer() {
         } catch (error) {
             console.error("아이디 중복 확인 오류:", error);
             document.getElementById("userIdError").textContent = "서버 연결에 실패했습니다";
+        }
+    };
+
+    // 닉네임 중복 확인 함수
+    const checkNickname = async () => {
+        if (!form.nickname) {
+            document.getElementById("nicknameError").textContent = "닉네임을 입력하세요";
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/check_user_nickname`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nickname: form.nickname }),  // JSON 형태로 전송
+            });
+            if (response.ok) {
+                const data = await response.json();
+                const isNicknameDuplicate = data.isNicknameDuplicate;
+
+                console.log("userNicknameData: ", data);
+                console.log("isNicknameDuplicate: ", isNicknameDuplicate);
+
+                if (isNicknameDuplicate) {
+                    document.getElementById("nicknameError").textContent = "이미 사용 중인 닉네임입니다";
+                    document.getElementById("nicknameError").style.color = "#FF0000";  // 빨간색
+                    setIsNicknameDuplicate(1);
+                } else {
+                    document.getElementById("nicknameError").textContent = "사용 가능한 닉네임입니다";
+                    document.getElementById("nicknameError").style.color = "#55a630";  // 초록색
+                    setIsNicknameDuplicate(0);
+                }
+            } else {
+                document.getElementById("nicknameError").textContent = "닉네임 중복 확인 중 오류가 발생하였습니다";
+            }
+        } catch (error) {
+            console.error("닉네임 중복 확인 오류:", error);
+            document.getElementById("nicknameError").textContent = "서버 연결에 실패했습니다";
         }
     };
 
@@ -245,21 +302,16 @@ function Join_consumer() {
             setIsIdDuplicate(2);
         }
 
+        // 닉네임 변경 시 setIsNicknameDuplicate를 2로 설정
+        if (name === 'nickname') {
+            setIsNicknameDuplicate(2);
+        }
+
         setForm(prevForm => ({
             ...prevForm,
             [name]: value
         }));
     };
-
-    // const checkNickname = () => {
-    //     if (!form.nickname || form.nickname.trim() === "") {
-    //         setNicknameCheckMessage("닉네임을 입력해 주세요.");
-    //     } else if (existingIds.includes(form.nickname)) {
-    //         setNicknameCheckMessage("닉네임이 중복됩니다.");
-    //     } else {
-    //         setNicknameCheckMessage("사용 가능한 닉네임입니다.");
-    //     }
-    // };
 
     return (
         <div id={'body'}>
@@ -915,18 +967,14 @@ function Join_consumer() {
                                         <label>닉네임</label>
                                         <input
                                             type="text"
-                                            name="nickName"
-                                            value={form.nickName}
+                                            name="nickname"
+                                            value={form.nickname}
                                             onChange={handleInputChange}
                                             placeholder="닉네임을 입력하세요"
                                         />
-                                        {/*<button type="button" className="dupli_check_btn" onClick={checkNickname}>중복확인</button>*/}
-                                        {/*<div className="id_dupli_check">*/}
-                                        {/*    {nicknameCheckMessage &&*/}
-                                        {/*        <p className="id_dupli_check_message">{nicknameCheckMessage}</p>}*/}
-                                        {/*</div>*/}
+                                        <button type="button" className="dupli_check_btn" onClick={checkNickname}>중복확인</button>
                                     </div>
-                                    <p className="error_message" id="nickNameError"></p>
+                                    <p className="error_message" id="nicknameError"></p>
                                     <div className="form_group">
                                         <label>전화번호</label>
                                         <input
