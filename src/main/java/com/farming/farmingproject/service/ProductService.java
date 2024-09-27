@@ -13,8 +13,22 @@ public class ProductService {
     @Autowired
     private final ProductRepository productRepository;
 
-    public Long save(AddProductRequest dto) {
-        return productRepository.save(Product.builder()
+//    public Long save(AddProductRequest dto) {
+//        return productRepository.save(Product.builder()
+//                .sellerId(dto.getSellerId())
+//                .productName(dto.getProductName())
+//                .sellerName(dto.getSellerName())
+//                .productPrice1(dto.getProductPrice1())
+//                .productPrice2(dto.getProductPrice2())
+//                .productPrice3(dto.getProductPrice3())
+//                .productOrigin(dto.getProductOrigin())
+//                .productDeliveryDate(dto.getProductDeliveryDate())
+//                .productInfo(dto.getProductInfo())
+//                .productStatus(dto.getProductStatus())
+//                .build()).getProductId();
+//    }
+    public Product save(AddProductRequest dto) {
+        Product product = Product.builder()
                 .sellerId(dto.getSellerId())
                 .productName(dto.getProductName())
                 .sellerName(dto.getSellerName())
@@ -25,7 +39,9 @@ public class ProductService {
                 .productDeliveryDate(dto.getProductDeliveryDate())
                 .productInfo(dto.getProductInfo())
                 .productStatus(dto.getProductStatus())
-                .build()).getProductId();
+                .build();
+
+        return productRepository.save(product);
     }
 
 }

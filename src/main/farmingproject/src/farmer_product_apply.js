@@ -81,13 +81,13 @@ function Farmer_product_apply() {
             });
 
             if (productResponse.ok) {
-                // const productResult = await productResponse.json();
-                // const productId = productResult.productId; // 서버에서 반환한 상품 ID
+                const productResult = await productResponse.json();
+                const productId = productResult.productId; // 서버에서 반환한 상품 ID
 
             // 3. 이미지 데이터 준비(productId를 이제는 알고 있음)
             const productImageData = {
                 // productImage 관련 데이터
-                // productId: productId, // 이 값은 product 생성 후에 설정해야 할 수 있습니다
+                productId: productId, // 이 값은 product 생성 후에 설정해야 할 수 있습니다
                 productImagePath: form.productImagePath,
                 // ... 기타 image 관련 필드
             };
