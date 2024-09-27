@@ -39,10 +39,10 @@ function FarmerJob() {
             console.error('Error fetching jobs:',error);
         }
     };
-    
-    useEffect(()=>{
-        fetchJobs();//컴포넌트 마운트 시 일자리 정보 가져옴
-    })
+
+    useEffect(() => {
+        fetchJobs(); // 컴포넌트 마운트 시 일자리 정보 가져옴
+    }, []); // 빈 배열을 두 번째 인자로 전달하여 최초 마운트 시에만 호출
 
     useEffect(()=>{
         if(selectedCity){

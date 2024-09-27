@@ -55,7 +55,7 @@ function Mypage_seller() {
     };
     useEffect(() => {
         fetchJobs(); //컴포넌트 마운트 시 일자리 정보 가져옴
-    })
+    },[]);
 
     return (
         <div className="mypage_seller">
