@@ -123,7 +123,7 @@ function Mypage_seller() {
                     <ul className="job_list">
                         {jobs.length>0?(
                             jobs.map((job)=>(
-                                <li key={job.id}>
+                                <li key={job.jobId}>
                                     <a href="#"><strong>{job.jobTitle}</strong> - {job.jobDate}, 일당 {job.jobSalary}</a>
                                 </li>
                             ))

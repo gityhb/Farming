@@ -44,8 +44,11 @@ public class Job {
     @Column(name = "job_description", nullable = false)
     private String jobDescription;
 
+    @Column (name="job_photo") //사진 경로 저장하기 위한 필드 추가
+    private String jobPhoto;
+
     @Builder
-    public Job(User user, String jobTitle, Date jobDate, String jobTime, String jobSalary, String jobLocation, String jobDescription) {
+    public Job(User user, String jobTitle, Date jobDate, String jobTime, String jobSalary, String jobLocation, String jobDescription, String jobPhoto) {
         this.user = user;
         this.jobTitle = jobTitle;
         this.jobDate = jobDate;
@@ -53,5 +56,6 @@ public class Job {
         this.jobSalary = jobSalary;
         this.jobLocation = jobLocation;
         this.jobDescription = jobDescription;
+        this.jobPhoto = jobPhoto; //사진 경로 설정
     }
 }

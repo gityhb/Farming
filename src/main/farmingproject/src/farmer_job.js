@@ -62,9 +62,10 @@ function FarmerJob() {
                         </div>
                         <div id="farmergic_menu_button">
                             <select className={'farmergic_menu_button_1'}
-                                    value={selectedCity}
-                                    onChange={(e)=> setSelectedCity(e.target.value)}>
-                                <option value={''} selected>시</option>
+                                    value={selectedCity} // selected 대신 value를 사용하여 선택된 값을 제어
+                                    onChange={(e) => setSelectedCity(e.target.value)}>
+                                <option value={''}>시</option>
+                                {/* selected 속성 제거 */}
                                 <option value={'seoul'}>서울</option>
                                 <option value={'gyeonggi'}>경기</option>
                                 <option value={'incheon'}>인천</option>
@@ -81,6 +82,7 @@ function FarmerJob() {
                                 <option value={'chungbuk'}>충북</option>
                                 <option value={'jeju'}>제주</option>
                             </select>
+
                             <select className="farmergic_menu_button_2">
                                 <option>구</option>
                                 {districts.map((district, index) => (
@@ -115,8 +117,9 @@ function FarmerJob() {
                                                 </div>
                                             </div>
                                             <div className="farmergic_main_item_image">
-                                                <img src="/img/strawberry_2.jpg" alt="Job Image"
+                                                <img src={`http://localhost:8080${job.jobPhoto}`} alt="Job Image"
                                                      style={{width: '230px', height: '160px'}}/>
+
                                             </div>
                                         </div>
                                     </Link>

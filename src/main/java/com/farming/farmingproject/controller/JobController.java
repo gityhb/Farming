@@ -5,6 +5,7 @@ import com.farming.farmingproject.dto.AddJobRequest;
 import com.farming.farmingproject.service.JobService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +25,13 @@ public class JobController {
     //1.Job 생성(POST 요청)
     //새로운 Job 공고 생성메서드 /api/job/create로 들어오는 요청 매핑
     @PostMapping("/create")
-    public ResponseEntity<Job> createJob(@RequestBody AddJobRequest jobDTO){
-        Job job = jobService.saveJob(jobDTO); //jobDTO 사용해 Job 객체 생성하고 저장
-        return  ResponseEntity.ok(job); //저장된 Job 객체 응답으로 반환
+    public ResponseEntity<Job> createJob(
+            @ModelAttribute AddJobRequest jobDTO,  // @RequestBody 대신 @ModelAttribute 사용
+            @RequestParam("jobPhoto") MultipartFile jobPhoto // 파일을 직접 받기 위한 부분 추가
+    ) {
+        jobDTO.setJobPhoto(jobPhoto);  // AddJobRequest에 jobPhoto 설정
+        Job job = jobService.saveJob(jobDTO);  // jobDTO 사용해 Job 객체 생성하고 저장
+        return ResponseEntity.ok(job);  // 저장된 Job 객체 응답으로 반환
     }
 
     //2. 특정 Job ID로 Job 조회(GET 요청)
@@ -45,5 +50,4 @@ public class JobController {
         return ResponseEntity.ok(jobs); // 조회된 리스트 응답으로 반환
     }
 
-    //삭제하는 메서드
 }

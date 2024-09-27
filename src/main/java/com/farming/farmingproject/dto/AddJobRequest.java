@@ -2,6 +2,7 @@ package com.farming.farmingproject.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 
@@ -17,4 +18,5 @@ public class AddJobRequest {
     private String jobSalary;
     private String jobLocation;
     private String jobDescription;
+    private MultipartFile jobPhoto; //사진 업로드 위한 필드 추가
 }
