@@ -38,8 +38,6 @@ public class JobController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
-
     //모든 Job 공고를 조회하는 메서드
     @GetMapping("/all")
     public ResponseEntity<List<Job>> getAllJobs(){

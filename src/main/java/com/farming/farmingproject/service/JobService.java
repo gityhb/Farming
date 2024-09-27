@@ -20,7 +20,6 @@ public class JobService {
     public JobService(JobRepository jobRepository,UserRepository userRepository){
         this.jobRepository=jobRepository;
         this.userRepository=userRepository;
-
     }
 
     //Job 저장

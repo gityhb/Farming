@@ -27,5 +27,4 @@ public class ProductService {
                 .productStatus(dto.getProductStatus())
                 .build()).getProductId();
     }
-
 }

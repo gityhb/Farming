@@ -9,6 +9,7 @@ function Mypage_seller() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isJobModalOpen, setIsJobModalOpen] = useState(false);
     const [loggedInUserId,setLoggedInUserId]=useState(null);
+    const [jobs,setJobs]=useState([]); //job 상태 추가
 
     const handleViewResume = () => {
         setIsModalOpen(true);
@@ -38,6 +39,23 @@ function Mypage_seller() {
                 console.error("Error fetching user info:",error);
             });
     },[]);
+
+    //데이터베이스에서 일자리 정보를 가져오는 함수
+    const fetchJobs=async ()=>{
+        try{
+            const res = await fetch('api/job/all') //모든 일자리 백엔드 호출
+            if(!res.ok){
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            const data = await res.json();
+            setJobs(data); //일자리 데이터 상태에 저장
+        }catch(error){
+            console.error('Error fetching jobs:',error);
+        }
+    };
+    useEffect(() => {
+        fetchJobs(); //컴포넌트 마운트 시 일자리 정보 가져옴
+    })
 
     return (
         <div className="mypage_seller">
@@ -103,7 +121,16 @@ function Mypage_seller() {
                 </div>
                 <div className="job_management">
                     <ul className="job_list">
-                        <li>
+                        {jobs.length>0?(
+                            jobs.map((job)=>(
+                                <li key={job.id}>
+                                    <a href="#"><strong>{job.jobTitle}</strong> - {job.jobDate}, 일당 {job.jobSalary}</a>
+                                </li>
+                            ))
+                        ): (
+                            <li>등록된 일자리가 없습니다.</li>
+                        )}
+                        {/*<li>
                             <a href="#"><strong>포도 수확 알바</strong> - 8월 15일부터 9월 15일까지, 일당 80,000원</a>
                         </li>
                         <li>
@@ -111,7 +138,7 @@ function Mypage_seller() {
                         </li>
                         <li>
                             <a href="#"><strong>배추 심기 작업</strong> - 9월 10일부터 9월 20일까지, 일당 60,000원</a>
-                        </li>
+                        </li>*/}
                     </ul>
                     <button className="add_job_button" onClick={handleAddJob}>새 공고 추가</button>
                 </div>
@@ -181,50 +208,8 @@ function Mypage_seller() {
                                         <div className="form_cell input">떡잎마을</div>
                                     </div>
                                     <div className="form_row">
-                                        <div className="form_cell label">학력사항</div>
-                                        <div className="form_cell input">
-                                            <table>
-                                                <tr>
-                                                    <th>학교명</th>
-                                                    <th>기간</th>
-                                                    <th>전공</th>
-                                                </tr>
-                                                <tr>
-                                                    <td>떡잎대학교</td>
-                                                    <td>2020.03.02~2024.02.03</td>
-                                                    <td>바이오시스템공학과</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div className="form_row">
-                                        <div className="form_cell label">아르바이트 경력사항</div>
-                                        <div className="form_cell input">
-                                            <table>
-                                                <tr>
-                                                    <th>직장명</th>
-                                                    <th>기간</th>
-                                                    <th>주요 업무</th>
-                                                </tr>
-                                                <tr>
-                                                    <td>떡잎파스타</td>
-                                                    <td>2022.03~2023.05</td>
-                                                    <td>서빙</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div className="form_row">
                                         <div className="form_cell label">지원동기</div>
                                         <div className="form_cell input">농부가 되보고 싶어서 지원했습니다.</div>
-                                    </div>
-                                    <div className="form_row">
-                                        <div className="form_cell label">근무시간</div>
-                                        <div className="form_cell input">6시간</div>
-                                    </div>
-                                    <div className="form_row">
-                                        <div className="form_cell label">희망시급</div>
-                                        <div className="form_cell input">9,860원</div>
                                     </div>
                                 </div>
                             </div>
@@ -235,6 +220,7 @@ function Mypage_seller() {
                         </div>
                     </div>
                 )}
+
                 <div className="application_inquiry_summary">
                     <div className="section_header">
                         <h2>지원 문의 내역</h2>
