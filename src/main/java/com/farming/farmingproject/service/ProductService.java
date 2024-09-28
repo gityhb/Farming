@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class ProductService {
@@ -42,6 +45,16 @@ public class ProductService {
                 .build();
 
         return productRepository.save(product);
+    }
+
+    // 모든 상품 가져오기
+    public List<Product> findAllProducts() {
+        return productRepository.findAll();  // 모든 상품을 리스트로 반환
+    }
+
+    // 특정 ID를 가진 상품 가져오기
+    public Product findProductById(Long id) {
+        return productRepository.findById(id).orElse(null);  // 상품이 없을 경우 null 반환
     }
 
 }

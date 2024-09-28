@@ -169,7 +169,7 @@ function Header() {
                         // 관리자 권한 (authority가 3인 경우)
                         <ul id="nav_links">
                             <li>
-                                <Link to={'/admin/dashboard'}>관리자 대시보드</Link>
+                                <Link to={'/admin/admin_product_apply_check'}>판매자 상품 등록 관리</Link>
                             </li>
                             <li>
                                 <Link to={'/admin/users'}>회원 관리</Link>
