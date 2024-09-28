@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/api/product")
 public class ProductApiController {
     @Autowired
@@ -62,9 +62,14 @@ public class ProductApiController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.findProductById(id);
-        return ResponseEntity.ok(product);
+    @GetMapping("/{productId}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
+        try {
+            Product product = productService.findProductById(productId);
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

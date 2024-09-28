@@ -37,7 +37,7 @@ function ProductApplyCheck() {
             if(error.response) {
                 setProducts(null);
             } else {
-                console.log("There was an error fetching the user data!", error);
+                console.log("There was an error fetching the products!", error);
             }
         }
     };
@@ -49,7 +49,7 @@ function ProductApplyCheck() {
 
     // Handle navigation to the product details page
     const handleProductClick = (productId) => {
-        navigate(`/product/${productId}`); // Navigate to the product detail page
+        navigate(`/admin/product/${productId}`); // Navigate to the product detail page
     };
 
     // 페이지 변경 시 호출되는 함수

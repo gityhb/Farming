@@ -53,8 +53,9 @@ public class ProductService {
     }
 
     // 특정 ID를 가진 상품 가져오기
-    public Product findProductById(Long id) {
-        return productRepository.findById(id).orElse(null);  // 상품이 없을 경우 null 반환
+    public Product findProductById(Long productId) {
+        return productRepository.findByProductId(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found with productId: " + productId));
     }
 
 }

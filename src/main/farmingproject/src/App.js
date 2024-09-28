@@ -97,7 +97,9 @@ import {UserProvider} from "./common/userContext";
 import Customer_service_one from "./customer_service_one";
 import Customer_service_FAQ from "./customer_service_FAQ";
 import Customer_service_notice from "./customer_service_notice";
-import Admin_product_apply_check from "./admin/product_apply_check";
+import Product_apply_check from "./admin/product_apply_check";
+import Product_apply_check_detail from "./admin/product_apply_check_detail";
+
 
 function App() {
     const location = useLocation();
@@ -134,8 +136,8 @@ function App() {
                 <Route path="/customer_service_FAQ" element={<Customer_service_FAQ/>} />
                 <Route path="/customer_service_notice" element={<Customer_service_notice/>} />
 
-                <Route path="/admin/admin_product_apply_check" element={<Admin_product_apply_check />} />
-
+                <Route path="/admin/product_apply_check" element={<Product_apply_check />} />
+                <Route path="/admin/product/:productId" element={<Product_apply_check_detail />} />
 
 
             </Routes>
