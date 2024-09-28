@@ -5,6 +5,7 @@ import axios from "axios";
 import {useUser} from "./userContext";
 
 function Header() {
+
     // // 회원가입 및 로그인 관련 (먼저 실행해주어야 함, 실행 순서 중요!)
     // const [user, setUser] = useState(null);
     // const navigate = useNavigate();
@@ -25,7 +26,9 @@ function Header() {
     //         });
     // }, []);
 
+
     const { user } = useUser();
+    console.log("User in Header: ", user);
 
     const handleClick = async () => {
         try {
@@ -166,7 +169,7 @@ function Header() {
                         // 관리자 권한 (authority가 3인 경우)
                         <ul id="nav_links">
                             <li>
-                                <Link to={'/admin/dashboard'}>관리자 대시보드</Link>
+                                <Link to={'/admin/product_apply_check'}>판매자 상품 등록 관리</Link>
                             </li>
                             <li>
                                 <Link to={'/admin/users'}>회원 관리</Link>

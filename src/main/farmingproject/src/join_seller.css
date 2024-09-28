@@ -102,8 +102,19 @@
     flex-grow: 1;
 }
 
-#join_seller_form form #join_seller_form_group .form_group .dupli_check_btn {
-    width: 70px;
+/* 가게 주속 관련 css*/
+#join_seller_form form #join_seller_form_group .form_group .address_list {
+    width: 380px;
+}
+
+#join_seller_form form #join_seller_form_group .form_group .address_list .address_input {
+    margin-bottom: 5px;
+    display: flex;
+}
+
+#join_seller_form form #join_seller_form_group .form_group .dupli_check_btn,
+#join_seller_form form #join_seller_form_group .form_group .address_list .address_input .find_zip_code_btn {
+    width: 80px;
     font-size: 12px;
     padding: 8px;
     background-color: #FFF0AD;
@@ -112,22 +123,26 @@
     border: none;
 }
 
-/*아이디 중복 체크*/
-/*왜 있는지 확인 필요*/
-#join_seller_form form #join_seller_form_group .form_group .id_dupli_check{
-    flex-direction: column; /* 요소를 수직으로 쌓기 */
-    align-items: flex-start;
-    margin: 0 auto;
+#join_seller_form form #join_seller_form_group .form_group .address_list .address_input .find_zip_code_btn {
+    width: 100px;
 }
 
-#join_seller_form form #join_seller_form_group .form_group .id_dupli_check .id_dupli_check_message {
-    margin-top: 5px;
-    position: absolute;
-    top: 100%;
-    left: 120px;
-    color: red;
-    font-size: 12px;
-}
+/*아이디 중복 체크*/
+/*왜 있는지 확인 필요*/
+/*#join_seller_form form #join_seller_form_group .form_group .id_dupli_check{*/
+/*    flex-direction: column; !* 요소를 수직으로 쌓기 *!*/
+/*    align-items: flex-start;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/*#join_seller_form form #join_seller_form_group .form_group .id_dupli_check .id_dupli_check_message {*/
+/*    margin-top: 5px;*/
+/*    position: absolute;*/
+/*    top: 100%;*/
+/*    left: 120px;*/
+/*    color: red;*/
+/*    font-size: 12px;*/
+/*}*/
 
 .error_message {
     height: 13px;

@@ -22,12 +22,12 @@ public class ProductImageApiController {
     private final ProductImageService productImageService;
 
     @PostMapping("/apply")
-    public ResponseEntity<Map<String, String>> applyProductImage(@RequestBody AddProductImageRequest request) {
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> applyProductImage(@RequestBody AddProductImageRequest request) {
+        Map<String, Object> response = new HashMap<>();
         try {
             String imagePath = "./img/products/" + request.getProductImagePath();
             request.setProductImagePath(imagePath);
-            request.setProductId(2L);
+//            request.setProductId(2L);
             productImageService.save(request);
             response.put("message", "상품 이미지 등록 성공");
             return ResponseEntity.ok(response);

@@ -102,14 +102,29 @@
     flex-grow: 1;
 }
 
-#join_consumer_form form #join_consumer_form_group .form_group .dupli_check_btn {
-    width: 70px;
+/* 가게 주속 관련 css*/
+#join_consumer_form form #join_consumer_form_group .form_group .address_list {
+    width: 380px;
+}
+
+#join_consumer_form form #join_consumer_form_group .form_group .address_list .address_input {
+    margin-bottom: 5px;
+    display: flex;
+}
+
+#join_consumer_form form #join_consumer_form_group .form_group .dupli_check_btn,
+#join_consumer_form form #join_consumer_form_group .form_group .address_list .address_input .find_zip_code_btn {
+    width: 80px;
     font-size: 12px;
     padding: 8px;
     background-color: #FFF0AD;
     margin-left: 10px;
     border-radius: 5px;
     border: none;
+}
+
+#join_consumer_form form #join_consumer_form_group .form_group .address_list .address_input .find_zip_code_btn {
+    width: 100px;
 }
 
 /*아이디 중복 체크*/

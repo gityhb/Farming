@@ -39,6 +39,7 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/signup"),
                                 new AntPathRequestMatcher("/user"),
                                 new AntPathRequestMatcher("/api/**"),
+                                new AntPathRequestMatcher("/api/product/**"),
                                 new AntPathRequestMatcher("/api/check_user_id")     // 모든 API 엔드포인트를 허용
                         ).permitAll()
                         .anyRequest().authenticated())

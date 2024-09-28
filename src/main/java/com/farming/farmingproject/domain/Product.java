@@ -55,7 +55,8 @@ public class Product {
     private Timestamp productModifiedDate;
 
     @Builder
-    public Product(Long sellerId, String productName, String sellerName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate, String productInfo, Integer productStatus) {
+    public Product(Long productId, Long sellerId, String productName, String sellerName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate, String productInfo, Integer productStatus) {
+        this.productId = productId;
         this.sellerId = sellerId;
         this.productName = productName;
         this.sellerName = sellerName;

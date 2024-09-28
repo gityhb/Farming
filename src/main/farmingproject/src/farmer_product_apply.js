@@ -37,10 +37,18 @@ function Farmer_product_apply() {
 
         if(files.length > 0) {
             const newNames = files.map((file) => file.name);   // 새로 선택된 파일들의 이름 배열
+            // const newNames = files.map((file) => `./img/products/${file.name}`);
             const newSrcs = files.map((file) => URL.createObjectURL(file));    // 새로 선택된 이미지들의 URL 배열
 
             setFileNames((prevNames) => [...prevNames, ...newNames]);
             setImageSrcs((prevSrcs) => [...prevSrcs, ...newSrcs]);
+
+            console.log("fileNames : ", fileNames);
+            // setForm(prevForm => ({
+            //     ...prevForm,
+            //     productImagePath: [...prevForm.productImagePath, ...newNames]
+            // })
+            // );
         }
     };
 
@@ -49,11 +57,28 @@ function Farmer_product_apply() {
         // 선택된 인덱스를 제외한 나머지 파일들만 배열로 새로 설정
         setFileNames((prevNames) => prevNames.filter((_, i) => i !== index));
         setImageSrcs((prevSrcs) => prevSrcs.filter((_, i) => i !== index));
+
     };
 
     const handleFileInputChange = (e) => {
-        handleInputChange(e);
         loadFile(e);
+        console.log("handleInputFile: ",fileNames);
+    };
+
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();  // 기본 폼 제출 동작 막기
+
+        try {
+            // 여기서 데이터 처리 및 로그 출력
+            console.log("폼 제출 시도 중...");
+
+            await submitForm();  // 제출 함수 호출
+
+        } catch (error) {
+            console.error("제출 중 오류 발생:", error);
+        }
     };
 
     const submitForm = async () => {
@@ -81,36 +106,63 @@ function Farmer_product_apply() {
             });
 
             if (productResponse.ok) {
-                // const productResult = await productResponse.json();
-                // const productId = productResult.productId; // 서버에서 반환한 상품 ID
+                const productResult = await productResponse.json();
+                const productId = productResult.productId; // 서버에서 반환한 상품 ID
 
-            // 3. 이미지 데이터 준비(productId를 이제는 알고 있음)
-            const productImageData = {
-                // productImage 관련 데이터
-                // productId: productId, // 이 값은 product 생성 후에 설정해야 할 수 있습니다
-                productImagePath: form.productImagePath,
-                // ... 기타 image 관련 필드
-            };
+                // 3. 이미지 데이터 준비(productId를 이제는 알고 있음)
+                // const productImageData = {
+                //     // productImage 관련 데이터
+                //     productId: productId, // 이 값은 product 생성 후에 설정해야 할 수 있습니다
+                //     productImagePath: form.productImagePath,
+                //     // ... 기타 image 관련 필드
+                // };
+                // 3. 각 이미지에 대해 개별적으로 요청 보내기
+                for (let fileName of fileNames) {
+                    let success = false;
+                    let attempts = 0;
 
-            // 4. 이미지 등록 요청
-            const productImageResponse = await fetch('/api/product_img/apply', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(productImageData),
-    });
+                    while (!success && attempts < 3) {  // 최대 3회 재시도
+                        attempts++;
 
-    if (productImageResponse.ok) {
-        // alert("상품 등록 신청이 되었습니다.");
-        navigate("/");
-        console.log("성공함!!!!");
-    } else {
-        console.error('이미지 등록 실패:', await productImageResponse.json());
-    }
-} else {
-    console.error('상품 등록 실패:', await productResponse.json());
-}
+                        try {
+
+                    const productImageData = {
+                        productId: productId,
+                        productImagePath: fileName,
+                    };
+
+                    // 4. 이미지 등록 요청
+                    const productImageResponse = await fetch('/api/product_img/apply', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(productImageData),
+                    });
+                            if (productImageResponse.ok) {
+                                success = true;  // 성공 시 반복 종료
+                            } else {
+                                console.error('이미지 등록 실패:', await productImageResponse.json());
+                            }
+
+                            // 성공 여부와 상관없이 1초 지연
+                            await delay(1000);
+                        } catch (error) {
+                            console.error('이미지 등록 시 오류 발생:', error);
+                        }
+                    }
+
+                    if (!success) {
+                        console.error('이미지 등록 3회 실패: ', fileName);
+                    }
+                }
+
+
+                alert("상품 등록 신청이 되었습니다.");
+                navigate("/");
+            } else {
+                console.error('상품 등록 실패:', await productResponse.json());
+            }
 } catch (error) {
     console.error('등록 중 오류 발생:', error);
 }
@@ -128,7 +180,7 @@ function Farmer_product_apply() {
                     <div id={'product_apply_title'}>
                         <h1>상품 등록 신청</h1>
                     </div>
-                    <form onSubmit={submitForm} method="POST" encType="multipart/form-data">
+                    <form onSubmit={handleSubmit} encType="multipart/form-data">
                         <div id={'product_apply_img'}>
                             <div className={'product_apply_img_box'}>
                                 <div className={'product_img_show'} id={'product_img_show'}>
