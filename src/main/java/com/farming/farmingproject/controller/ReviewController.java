@@ -24,8 +24,6 @@ public class ReviewController {
     @Autowired
     private final ReviewService reviewService;
 
-
-
     @PostMapping("/reviews_create")
     public ResponseEntity<Map<String, String>> save(@RequestBody AddReviewRequest addReviewRequest, @AuthenticationPrincipal UserDetails userDetails) {
         Map<String, String> response = new HashMap<>();
@@ -84,4 +82,10 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    /*@GetMapping("/product/{productId}")
+    public ResponseEntity<List<Review>> getReviewsByProductId(@PathVariable Long productId) {
+        List<Review> reviews = reviewService.getReviewsByProductId(productId);
+        return ResponseEntity.ok(reviews);
+    }*/
 }

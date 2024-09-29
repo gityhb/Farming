@@ -55,4 +55,8 @@ public class ReviewService {
 
         reviewRepository.save(review);
     }
+
+    /*public List<Review> getReviewsByProductId(Long productId) {
+        return reviewRepository.findByProductIdOrderByReviewIdAsc(productId);
+    }*/
 }

@@ -6,6 +6,8 @@ import {useUser} from "./common/userContext";
 
 function Farmer_market_info() {
     const { user } = useUser();
+    //const {product} = useProduct();
+
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
     const [selectedReview, setSelectedReview] = useState(null);
 
@@ -66,6 +68,26 @@ function Farmer_market_info() {
             console.error('리뷰 가져오는 중 오류 발생:', error);
         }
     };
+
+    // productid 가져올때
+
+   /* const fetchReviews = async (productId) => {
+        try {
+            const response = await fetch(`/api/reviews/product/${productId}`);
+            if (response.ok) {
+                const reviews = await response.json();
+                setReviews(reviews);
+            } else {
+                console.error('리뷰 가져오기 실패');
+            }
+        } catch (error) {
+            console.error('리뷰 가져오는 중 오류 발생:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchReviews(productId);
+    }, [productId]);*/
 
     /*리뷰 삭제 함수*/
     const handleDeleteReview = async (reviewId) => {
