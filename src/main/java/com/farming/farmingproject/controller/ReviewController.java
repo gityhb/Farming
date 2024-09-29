@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +27,11 @@ public class ReviewController {
 
 
     @PostMapping("/reviews_create")
-    public ResponseEntity<Map<String, String>> save(@RequestBody AddReviewRequest addReviewRequest) {
+    public ResponseEntity<Map<String, String>> save(@RequestBody AddReviewRequest addReviewRequest, @AuthenticationPrincipal UserDetails userDetails) {
         Map<String, String> response = new HashMap<>();
         try {
-            reviewService.save(addReviewRequest);
+            String userId = userDetails.getUsername();  // 현재 로그인한 사용자의 userId
+            reviewService.save(addReviewRequest, userId);
             response.put("message", "리뷰 작성 성공");
             return ResponseEntity.ok(response);
         } catch (Exception e) {

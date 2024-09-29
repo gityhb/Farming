@@ -2,9 +2,10 @@ import React, {useState, useEffect} from "react";
 import  './farmer_market_info.css';
 import './common/root.css';
 import FarmerReviewModal from "./farmer_market_review_modal";
+import {useUser} from "./common/userContext";
 
 function Farmer_market_info() {
-
+    const { user } = useUser();
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
     const [selectedReview, setSelectedReview] = useState(null);
 
@@ -271,13 +272,17 @@ function Farmer_market_info() {
                                                     </div>
                                                     <div className="review_info">
                                                         <span className="review_user">{review.name}</span>
-                                                        <span
-                                                            className="review_date">{new Date(review.createdAt).toLocaleDateString()} | 신고
-                                                            <span className="review_delete_Btn"
-                                                                  onClick={() => handleEditReview(review)}> 수정 </span>
-                                                            <span className="review_delete_Btn"
-                                                                  onClick={() => handleDeleteReview(review.reviewId)}> 삭제 </span>
-                                                        </span>
+                                                        {user && user.userId === review.userId && (
+                                                            <>
+                                                                <span
+                                                                    className="review_date">{new Date(review.createdAt).toLocaleDateString()} | 신고
+                                                                    <span className="review_delete_Btn"
+                                                                          onClick={() => handleEditReview(review)}> 수정 </span>
+                                                                    <span className="review_delete_Btn"
+                                                                          onClick={() => handleDeleteReview(review.reviewId)}> 삭제 </span>
+                                                                </span>
+                                                            </>
+                                                        )}
                                                         <p className="review_text">
                                                             <span className="review_title">맛</span> <span
                                                             className="review_detail">{review.taste}</span>

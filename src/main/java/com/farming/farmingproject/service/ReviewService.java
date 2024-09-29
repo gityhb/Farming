@@ -16,15 +16,18 @@ public class ReviewService {
     @Autowired
     private final ReviewRepository reviewRepository;
 
-    public Long save(AddReviewRequest dto) {
-        return reviewRepository.save(Review.builder()
+    public Long save(AddReviewRequest dto, String userId) {
+        Review review = Review.builder()
                 .name(dto.getName())
                 .taste(dto.getTaste())
                 .star(dto.getStar())
                 .fresh(dto.getFresh())
                 .packageQuality(dto.getPackageQuality())
                 .reviewDetail(dto.getReviewDetail())
-                .build()).getReviewId();
+                .userId(userId)  // 현재 로그인한 사용자의 userId
+                .build();
+        Review savedReview = reviewRepository.save(review);
+        return savedReview.getReviewId();
     }
 
     public List<Review> getAllReviews() {

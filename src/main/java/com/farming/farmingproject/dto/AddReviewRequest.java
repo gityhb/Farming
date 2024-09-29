@@ -13,4 +13,6 @@ public class AddReviewRequest {
     private String fresh;
     private String packageQuality;
     private String reviewDetail;
+    //private Long userId;  // 사용자 ID 추가
+    //private Long productId;  // 제품 ID 추가
 }
