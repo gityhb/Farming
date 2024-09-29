@@ -8,19 +8,23 @@ const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
+    // 사용자 정보를 가져오는 함수
+    const fetchUser = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/api/user', { withCredentials: true });
+            setUser(response.data);
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                setUser(null);
+            } else {
+                console.error("There was an error fetching the user data!", error);
+            }
+        }
+    };
+
     useEffect(() => {
-        // 로그인된 사용자 정보를 API에서 가져옴
-        axios.get('http://localhost:8080/api/user', { withCredentials: true })
-            .then(response => {
-                setUser(response.data);
-            })
-            .catch(error => {
-                if (error.response && error.response.status === 401) {
-                    setUser(null);
-                } else {
-                    console.error("There was an error fetching the user data!", error);
-                }
-            });
+        // 페이지 로드 시 사용자 정보 가져오기
+        fetchUser();
     }, []);
 
     return (

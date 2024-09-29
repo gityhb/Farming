@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import './farmer_job_apply.css';
 import './farmer_market_review_modal.css';
+import {useUser} from "./common/userContext";
 
-function FarmerReviewModal({isReviewOpen, closeReviewModal, onSubmit}) {
-    const [taste, setTaste] = useState('');
-    const [freshness, setFreshness] = useState('');
-    const [packaging, setPackaging] = useState('');
-    const [detailReview, setDetailReview] = useState('');
-    const [rating, setRating] = useState(0); // 별점 추가
+function FarmerReviewModal({isReviewOpen, closeReviewModal, onReviewSubmitted, initialReviewData}) {
+    const [taste, setTaste] = useState(initialReviewData?.taste || '');
+    const [freshness, setFreshness] = useState(initialReviewData?.fresh || '');
+    const [packaging, setPackaging] = useState(initialReviewData?.packageQuality || '');
+    const [detailReview, setDetailReview] = useState(initialReviewData?.reviewDetail || '');
+    const [rating, setRating] = useState(initialReviewData?.star || 0);
+
+    const { user } = useUser();
+
+    useEffect(() => {
+        if (initialReviewData) {
+            setTaste(initialReviewData.taste);
+            setFreshness(initialReviewData.fresh);
+            setPackaging(initialReviewData.packageQuality);
+            setDetailReview(initialReviewData.reviewDetail);
+            setRating(initialReviewData.star);
+        }
+    }, [initialReviewData]);
 
     if(!isReviewOpen) return null;
 
@@ -31,33 +44,23 @@ function FarmerReviewModal({isReviewOpen, closeReviewModal, onSubmit}) {
         setRating(newRating);
     }
 
-    /*const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         const reviewData = {
-            taste,
-            freshness,
-            packaging,
-            comment: detailReview,
-            rating
-        };
-        onSubmit(reviewData);
-        closeReviewModal();
-    };*/
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const reviewData = {
-            name: "현재 로그인한 사용자", // 실제 사용자 이름으로 대체해야 함
+            reviewId: initialReviewData?.reviewId, // 수정 시 필요
+            name: user.name,
             star: rating,
             taste: taste,
             fresh: freshness,
-            package: packaging,
-            reviewdetail: detailReview
+            packageQuality: packaging,
+            reviewDetail: detailReview
         };
 
         try {
-            const response = await fetch('/api/reviews', {
-                method: 'POST',
+            const url = initialReviewData ? '/api/reviews/update' : '/api/reviews/reviews_create';
+            const method = initialReviewData ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -65,8 +68,9 @@ function FarmerReviewModal({isReviewOpen, closeReviewModal, onSubmit}) {
             });
 
             if (response.ok) {
-                onSubmit(reviewData);
+                alert(initialReviewData ? "리뷰가 수정되었습니다!" : "리뷰 작성이 완료되었습니다!!");
                 closeReviewModal();
+                onReviewSubmitted();
             } else {
                 console.error('리뷰 제출 실패');
             }

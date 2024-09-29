@@ -14,27 +14,27 @@ function Farmer_market() {
     };
 
     // 검색 버튼 클릭 시 실행되는 함수
-    const handleSearch = async () => {
-        try {
-            const response = await axios.get(`/api/search?query=${searchQuery}`);
-            setProducts(response.data); // 서버에서 검색된 제품 리스트로 상태 업데이트
-        } catch (error) {
-            console.error("검색 중 에러 발생:", error);
-        }
-    };
-
-    useEffect(() => {
-        // 페이지 로드 시 모든 제품을 기본으로 로드
-        const fetchProducts = async () => {
-            try {
-                const response = await axios.get("/api/products");
-                setProducts(response.data);
-            } catch (error) {
-                console.error("제품 로드 중 에러 발생:", error);
-            }
-        };
-        fetchProducts();
-    }, []);
+    // const handleSearch = async () => {
+    //     try {
+    //         const response = await axios.get(`/api/search?query=${searchQuery}`);
+    //         setProducts(response.data); // 서버에서 검색된 제품 리스트로 상태 업데이트
+    //     } catch (error) {
+    //         console.error("검색 중 에러 발생:", error);
+    //     }
+    // };
+    //
+    // useEffect(() => {
+    //     // 페이지 로드 시 모든 제품을 기본으로 로드
+    //     const fetchProducts = async () => {
+    //         try {
+    //             const response = await axios.get("/api/products");
+    //             setProducts(response.data);
+    //         } catch (error) {
+    //             console.error("제품 로드 중 에러 발생:", error);
+    //         }
+    //     };
+    //     fetchProducts();
+    // }, []);
 
 
     const [mitems, setmItems] = useState([
@@ -87,9 +87,9 @@ function Farmer_market() {
                             value={searchQuery}
                             onChange={handleInputChange} // 검색어 입력 관리
                         />
-                        <button id={'search_btn'} onClick={handleSearch}>
-                            <img src="img/etc/search.png" alt={"search_btn"}/>
-                        </button>
+                        {/*<button id={'search_btn'} onClick={handleSearch}>*/}
+                        {/*    <img src="img/etc/search.png" alt={"search_btn"}/>*/}
+                        {/*</button>*/}
                     </div>
                     <div id={'align_box'}>
                         <div id={'category_box'}>

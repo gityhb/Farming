@@ -358,6 +358,17 @@
     justify-content: space-between;
 }
 
+.review_delete_Btn{
+    font-size: 17px;
+    margin-left: 15px;
+    color: grey;
+    cursor: pointer;
+}
+
+.review_delete_Btn:hover{
+    border-bottom: 1px solid black;
+}
+
 .review_star {
     font-size: 24px;
     color: #FFD700;

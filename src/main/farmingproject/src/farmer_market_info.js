@@ -6,6 +6,7 @@ import FarmerReviewModal from "./farmer_market_review_modal";
 function Farmer_market_info() {
 
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+    const [selectedReview, setSelectedReview] = useState(null);
 
     const handleReviewModal = () => {
         setIsReviewModalOpen(true);  // 모달 열기
@@ -24,13 +25,18 @@ function Farmer_market_info() {
         setIsModalOpen(true);
     };
 
+    const handleEditReview = (review) => {
+        setSelectedReview(review);
+        setIsReviewModalOpen(true);
+    };
+
     const closeModal = () => {
         setIsModalOpen(false);
     };
 
     const [reviews, setReviews] = useState([]);
 
-    const handleReviewSubmit = (reviewData) => {
+    /*const handleReviewSubmit = (reviewData) => {
         const newReview = {
             id: Date.now(),
             user: "구매자 닉네임",
@@ -39,6 +45,48 @@ function Farmer_market_info() {
         };
         setReviews(prevReviews => [newReview, ...prevReviews]);
         closeReviewModal();
+    };*/
+
+    useEffect(() => {
+        fetchReviews();
+    }, []);
+
+    const fetchReviews = async () => {
+        try {
+            const response = await fetch('/api/reviews/get_reviews');
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Fetched reviews:', data);
+                setReviews(data);
+            } else {
+                console.error('리뷰 가져오기 실패');
+            }
+        } catch (error) {
+            console.error('리뷰 가져오는 중 오류 발생:', error);
+        }
+    };
+
+    /*리뷰 삭제 함수*/
+    const handleDeleteReview = async (reviewId) => {
+        if (window.confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+            try {
+                const response = await fetch(`/api/reviews/delete/${reviewId}`, {
+                    method: 'DELETE',
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    alert(data.message);
+                    // 리뷰 목록 업데이트
+                    setReviews(prevReviews => prevReviews.filter(review => review.reviewId !== reviewId));
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message);
+                }
+            } catch (error) {
+                console.error('리뷰 삭제 중 오류 발생:', error);
+                alert('리뷰 삭제 중 오류가 발생했습니다.');
+            }
+        }
     };
 
 
@@ -207,7 +255,8 @@ function Farmer_market_info() {
                                             <FarmerReviewModal
                                                 isReviewOpen={isReviewModalOpen}
                                                 closeReviewModal={closeReviewModal}
-                                                onSubmit={handleReviewSubmit}
+                                                onReviewSubmitted={fetchReviews}
+                                                initialReviewData={selectedReview}
                                             />
 
                                             <div className="review_ranking_options">
@@ -218,29 +267,36 @@ function Farmer_market_info() {
                                             <div key={review.id} className="review_body">
                                                 <div className="review_content">
                                                     <div className="review_star">
-                                                        {"★".repeat(review.rating)}
+                                                        {"★".repeat(review.star)}
                                                     </div>
                                                     <div className="review_info">
-                                                        <span className="review_user">{review.user}</span>
-                                                        <span className="review_date">{review.date} | 신고</span>
+                                                        <span className="review_user">{review.name}</span>
+                                                        <span
+                                                            className="review_date">{new Date(review.createdAt).toLocaleDateString()} | 신고
+                                                            <span className="review_delete_Btn"
+                                                                  onClick={() => handleEditReview(review)}> 수정 </span>
+                                                            <span className="review_delete_Btn"
+                                                                  onClick={() => handleDeleteReview(review.reviewId)}> 삭제 </span>
+                                                        </span>
                                                         <p className="review_text">
                                                             <span className="review_title">맛</span> <span
                                                             className="review_detail">{review.taste}</span>
                                                             <span className="review_title">신선도</span> <span
-                                                            className="review_detail">{review.freshness}</span>
+                                                            className="review_detail">{review.fresh}</span>
                                                             <span className="review_title">포장</span> <span
-                                                            className="review_detail">{review.packaging}</span><br/>
-                                                            <span className="review_text_detail">{review.comment}</span>
+                                                            className="review_detail">{review.packageQuality}</span><br/>
+                                                            <span
+                                                                className="review_text_detail">{review.reviewDetail}</span>
                                                         </p>
                                                     </div>
-                                                    <div className="seller_reply">
+                                                    {/* <div className="seller_reply">
                                                         <div className="seller_reply_header">
                                                             <span className="seller_reply_user">판매자</span>
                                                             <span className="seller_reply_date">24.05.08 | 신고</span>
                                                         </div>
                                                         <span
                                                             className="seller_reply_detail">주문해주셔서 감사합니다! 또 이용해주세요.</span>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                                 <div className="review_image_container">
                                                     <div className="review_image">
@@ -255,7 +311,7 @@ function Farmer_market_info() {
 
                             {activeTab === 'questioninfo' && (
                                 <div className={'product_detail_info'}>
-                                <div className="notice">
+                                    <div className="notice">
                                         <ul>
                                             <li>구매한 상품의 취소 / 반품은 구매내역 신청에서 가능합니다.</li>
                                             <li>상품 문의 및 리뷰를 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
