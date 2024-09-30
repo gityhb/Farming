@@ -28,12 +28,12 @@ public class ReviewController {
     public ResponseEntity<Map<String, String>> save(@RequestBody AddReviewRequest addReviewRequest, @AuthenticationPrincipal UserDetails userDetails) {
         Map<String, String> response = new HashMap<>();
         try {
-            String userId = userDetails.getUsername();  // 현재 로그인한 사용자의 userId
+            String userId = userDetails.getUsername();
             reviewService.save(addReviewRequest, userId);
             response.put("message", "리뷰 작성 성공");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("message", "리뷰 작성 실패");
+            response.put("message", "리뷰 작성 실패: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -78,14 +78,21 @@ public class ReviewController {
             response.put("message", "리뷰 수정 성공");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("message", "리뷰 수정 실패");
+            response.put("message", "리뷰 수정 실패: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
-    /*@GetMapping("/product/{productId}")
-    public ResponseEntity<List<Review>> getReviewsByProductId(@PathVariable Long productId) {
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<List<Review>> getReviewsByProductId(@PathVariable("productId") Long productId) {
         List<Review> reviews = reviewService.getReviewsByProductId(productId);
         return ResponseEntity.ok(reviews);
-    }*/
+    }
+
+    @PostMapping("/{reviewId}/sellercomment")
+    public ResponseEntity<?> addSellerComment(@PathVariable("reviewId") Long reviewId, @RequestBody Map<String, String> payload) {
+        String sellerComment = payload.get("sellerComment");
+        reviewService.addSellerComment(reviewId, sellerComment);
+        return ResponseEntity.ok().build();
+    }
 }

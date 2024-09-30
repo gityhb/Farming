@@ -19,8 +19,8 @@ public class Review {
     @Column(name = "user_id", nullable = false)
     private String userId;  // AddUserRequest의 userId와 매칭됨
 
-    //@Column(name = "product_id")
-    //private Long productId;  // 제품 ID 추가
+    @Column(name = "product_id")
+    private Long productId;  // 제품 ID 추가
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -40,8 +40,12 @@ public class Review {
     @Column(name = "reviewDetail", nullable = false)
     private String reviewDetail;
 
+    @Column(name = "seller_comment", nullable = true)
+    private String sellerComment;
+
     @Builder
-    public Review(Long reviewId, String userId, String name, Integer star, String taste, String fresh, String packageQuality, String reviewDetail) {
+    public Review(Long productId, Long reviewId, String userId, String name, Integer star, String taste, String fresh, String packageQuality, String reviewDetail,String sellerComment) {
+        this.productId=productId;
         this.reviewId = reviewId;
         this.userId = userId;  // Builder에 userId 추가
         this.name = name;
@@ -50,7 +54,7 @@ public class Review {
         this.fresh = fresh;
         this.packageQuality = packageQuality;
         this.reviewDetail = reviewDetail;
+        this.sellerComment = sellerComment;
     }
-
 }
 

@@ -80,7 +80,7 @@ import Farmer_market from "./farmer_market";
 import Farmer_recommend from "./farmer_recommend";
 import Login from "./login";
 import Shopping_Basket from "./shopping_basket";
-import Farmer_market_info from "./farmer_market_info";
+import Farmer_market_info from './farmer_market_info';
 import Join_consumer from "./join_consumer";
 import Join_seller from "./join_seller";
 import MyPage from "./mypage";
@@ -112,7 +112,6 @@ function App() {
                     <Route path="/farmer_job" element={<FarmerJob />} />
                     <Route path="/farmer_recommend" element={<Farmer_recommend />} />
                     <Route path="/farmer_market" element={<Farmer_market />} />
-                    <Route path="/farmer_market_info" element={<Farmer_market_info />} />
                     <Route path="/farmer_product_apply" element={<Farmer_product_apply />} />
                     <Route path="/farmer_job_info" element={<FarmerJobInfo />} />
                     <Route path="/farmer_job_apply" element={<FarmerJobApply />} />
@@ -132,8 +131,8 @@ function App() {
                     <Route path="/customer_service_one" element={<Customer_service_one/>} />
                     <Route path="/customer_service_FAQ" element={<Customer_service_FAQ/>} />
                     <Route path="/customer_service_notice" element={<Customer_service_notice/>} />
-
-
+                    <Route path="/farmer_market_info/:productId" element={<Farmer_market_info />} />
+                    <Route path="/farmer_market_info_seller/:productId" element={<Farmer_market_info_seller />} />
 
                 </Routes>
                 {!hideHeaderFooter && <Footer />}

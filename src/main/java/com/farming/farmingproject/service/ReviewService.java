@@ -2,6 +2,7 @@ package com.farming.farmingproject.service;
 
 import com.farming.farmingproject.domain.Review;
 import com.farming.farmingproject.dto.AddReviewRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class ReviewService {
                 .packageQuality(dto.getPackageQuality())
                 .reviewDetail(dto.getReviewDetail())
                 .userId(userId)  // 현재 로그인한 사용자의 userId
+                .productId(dto.getProductId())
                 .build();
         Review savedReview = reviewRepository.save(review);
         return savedReview.getReviewId();
@@ -56,7 +58,15 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    /*public List<Review> getReviewsByProductId(Long productId) {
+    public List<Review> getReviewsByProductId(Long productId) {
         return reviewRepository.findByProductIdOrderByReviewIdAsc(productId);
-    }*/
+    }
+
+    @Transactional
+    public void addSellerComment(Long reviewId, String sellerComment) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found with id: " + reviewId));
+        review.setSellerComment(sellerComment);
+        reviewRepository.save(review);
+    }
 }

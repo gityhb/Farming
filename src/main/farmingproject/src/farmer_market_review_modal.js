@@ -3,7 +3,7 @@ import './farmer_job_apply.css';
 import './farmer_market_review_modal.css';
 import {useUser} from "./common/userContext";
 
-function FarmerReviewModal({isReviewOpen, closeReviewModal, onReviewSubmitted, initialReviewData}) {
+function FarmerReviewModal({isReviewOpen, closeReviewModal, onReviewSubmitted, initialReviewData, productId}) {
     const [taste, setTaste] = useState(initialReviewData?.taste || '');
     const [freshness, setFreshness] = useState(initialReviewData?.fresh || '');
     const [packaging, setPackaging] = useState(initialReviewData?.packageQuality || '');
@@ -47,6 +47,7 @@ function FarmerReviewModal({isReviewOpen, closeReviewModal, onReviewSubmitted, i
     const handleSubmit = async () => {
         const reviewData = {
             reviewId: initialReviewData?.reviewId, // 수정 시 필요
+            productId: productId,
             name: user.name,
             star: rating,
             taste: taste,

@@ -3,13 +3,19 @@ import  './farmer_market_info.css';
 import './common/root.css';
 import FarmerReviewModal from "./farmer_market_review_modal";
 import {useUser} from "./common/userContext";
+import {useParams} from "react-router-dom";
 
 function Farmer_market_info() {
     const { user } = useUser();
-    //const {product} = useProduct();
+    const { productId } = useParams();
 
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
     const [selectedReview, setSelectedReview] = useState(null);
+    const [product, setProduct] = useState(null);
+    const [activeTab, setActiveTab] = useState('pdinfo');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [reviewCounts, setReviewCounts] = useState({});
+    const [reviews, setReviews] = useState([]);
 
     const handleReviewModal = () => {
         setIsReviewModalOpen(true);  // 모달 열기
@@ -18,11 +24,6 @@ function Farmer_market_info() {
     const closeReviewModal = () => {
         setIsReviewModalOpen(false);  // 모달 닫기
     }
-
-    const [product, setProduct] = useState(null);
-    const [activeTab, setActiveTab] = useState('pdinfo');
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleViewResume = () => {
         setIsModalOpen(true);
@@ -37,29 +38,39 @@ function Farmer_market_info() {
         setIsModalOpen(false);
     };
 
-    const [reviews, setReviews] = useState([]);
-
-    /*const handleReviewSubmit = (reviewData) => {
-        const newReview = {
-            id: Date.now(),
-            user: "구매자 닉네임",
-            date: new Date().toLocaleDateString(),
-            ...reviewData
-        };
-        setReviews(prevReviews => [newReview, ...prevReviews]);
-        closeReviewModal();
-    };*/
 
     useEffect(() => {
+        fetchProductDetails();
         fetchReviews();
-    }, []);
+        fetchReviewCounts();
+    }, [productId]);
 
-    const fetchReviews = async () => {
+    /*상품정보 가져오기*/
+    const fetchProductDetails = async () => {
         try {
-            const response = await fetch('/api/reviews/get_reviews');
+            console.log(`Fetching product details for ID: ${productId}`);
+            const response = await fetch(`/api/productRG/${productId}`);
+            console.log('Response status:', response.status);
             if (response.ok) {
                 const data = await response.json();
-                console.log('Fetched reviews:', data);
+                console.log('Received data:', data);
+                setProduct(data);
+            } else {
+                console.error('상품 정보 가져오기 실패');
+                const errorText = await response.text();
+                console.error('Error response:', errorText);
+            }
+        } catch (error) {
+            console.error('상품 정보 가져오는 중 오류 발생:', error);
+        }
+    };
+
+    /*리뷰 가져오기*/
+    const fetchReviews = async () => {
+        try {
+            const response = await fetch(`/api/reviews/product/${productId}`);
+            if (response.ok) {
+                const data = await response.json();
                 setReviews(data);
             } else {
                 console.error('리뷰 가져오기 실패');
@@ -69,25 +80,25 @@ function Farmer_market_info() {
         }
     };
 
-    // productid 가져올때
-
-   /* const fetchReviews = async (productId) => {
+    /*리뷰갯수*/
+    const fetchReviewCounts = async () => {
         try {
-            const response = await fetch(`/api/reviews/product/${productId}`);
+            const response = await fetch('/api/productRG/review-counts');
             if (response.ok) {
-                const reviews = await response.json();
-                setReviews(reviews);
+                const data = await response.json();
+                setReviewCounts(data);
             } else {
-                console.error('리뷰 가져오기 실패');
+                console.error('리뷰 갯수 가져오기 실패');
             }
         } catch (error) {
-            console.error('리뷰 가져오는 중 오류 발생:', error);
+            console.error('리뷰 갯수 가져오는 중 오류 발생:', error);
         }
     };
 
-    useEffect(() => {
-        fetchReviews(productId);
-    }, [productId]);*/
+
+    if (!product) {
+        return <div>Loading...</div>;
+    }
 
     /*리뷰 삭제 함수*/
     const handleDeleteReview = async (reviewId) => {
@@ -119,48 +130,48 @@ function Farmer_market_info() {
                 <div id={'contents'}>
                     <div id={'search_box'}>
                         <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
-                        <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/></button>
+                        <button id={'search_btn'}><img src="/img/etc/search.png" alt={"search_btn"}/></button>
                     </div>
                     <div className={'product_detail'}>
                         <div className={'left_area'}>
                             <div className={'pd_img'}>
-                                <img src={'img/watermelon.png'} />
+                                <img src={`/${product.productimgPath}`} alt={product.productimgPath}/>
                             </div>
                         </div>
                         <div className={'right_area'}>
                             <div className={'pd_info'}>
-                                <div className={'pd_title'}>
+                            <div className={'pd_title'}>
                                     <div className={'pd_name'}>
-                                        <p>프리미엄 고당도 꿀수박 1.35KG</p>
+                                        <p>{product.productName}</p>
                                     </div>
                                     <div className={'pd_like'}>
-                                        <img src={'img/etc/like_blank.png'}/>
+                                        <img src={'/img/etc/like_blank.png'}/>
                                     </div>
                                 </div>
                                 <div className={'pd_value'}>
-                                    <span className={'pd_price'}>18,900</span>
+                                    <span className={'pd_price'}>{product.productPrice3.toLocaleString()}</span>
                                     <span className={'pd_price'}>원 </span>
-                                    <span className={'pd_rate'}>65</span>
+                                    <span className={'pd_rate'}>{product.salenum}</span>
                                     <span className={'pd_rate'}>%</span>
                                 </div>
                                 <div className={'pd_star'}>
-                                    <img src={'img/etc/star.png'}/>
-                                    <span>4.6</span>
+                                    <img src={'/img/etc/star.png'}/>
+                                    <span>{product.astar}</span>
                                 </div>
                                 <div className={'pd_origin'}>
                                     <span>원산지 | </span>
-                                    <span>산골짜기</span>
+                                    <span>{product.productOrigin}</span>
                                 </div>
                                 <div className={'pd_deliver'}>
                                     <span>배송정보 | </span>
-                                    <span>무료배송</span>
-                                    <span> , </span>
-                                    <span>05/07</span>
-                                    <span> 도착예정</span>
+                                    <span>{product.productDeliveryDate} </span>
+                                    {/*<span> , </span>
+                                    <span>05/07</span>*/}
+                                    <span>예정</span>
                                 </div>
                                 <div className={'pd_purchase_cnt'}>
                                     <span>구매건수 | </span>
-                                    <span>256</span>
+                                    <span>{product.sellcount}</span>
                                     <span>건</span>
                                 </div>
                                 <div className={'purchase_cnt'}>
@@ -170,7 +181,7 @@ function Farmer_market_info() {
                                             <td>
                                                 <button>-</button>
                                             </td>
-                                            <td><input type={"text"}/></td>
+                                            <td><input type={"text"} placeholder={1}/></td>
                                             <td>
                                                 <button>+</button>
                                             </td>
@@ -182,7 +193,7 @@ function Farmer_market_info() {
                         <div className={'total_purchase'}>
                             <div className={'total_price'}>
                                 <span>총 금액 </span>
-                                <span>18,900</span>
+                                <span>{product.productPrice3.toLocaleString()}</span>
                                 <span>원</span>
                             </div>
                             <div className={'purchase_btn'}>
@@ -198,19 +209,26 @@ function Farmer_market_info() {
                             <li id={'questioninfo'} className={activeTab === 'questioninfo' ? 'active' : ''} onClick={() => setActiveTab('questioninfo')}>상품문의</li>
                             <li id={'deliveryinfo'} className={activeTab === 'deliveryinfo' ? 'active' : ''} onClick={() => setActiveTab('deliveryinfo')}>배송/교환/반품</li>
                         </ul>
+
+
                         <div className={'product_detail_info_area'}>
+
+                            {/*상품정보 상세페이지 (이미지화 예정)
+                                <img src={`/${product.productInfoimgPath}`} alt={product.productInfoimgPath}/>
+                            */}
+
                             {activeTab === 'pdinfo' && (
                                 <div className={'product_detail_info'}>
                                     <h1 className={'info_title'}>프리미엄 고당도 꿀수박</h1>
                                     <p>믿고 사세요! 고창 군수 10년차, 농사 30년차 김홍만 입니다.</p>
-                                    <img src={'img/watermelon_2.png'}/>
+                                    <img src={'/img/watermelon_2.png'}/>
                                     <p>"저희 꿀 수박은 평균 당도 14Brix 이상의 높은 당도를 자랑하며, 농가에서 직접 선별하여 보내드립니다."</p>
                                     <br/><br/><br/><br/>
                                     <h2 className={'info_sub_title'}>| 수박 레시피 |</h2>
                                     <p>노화 방지, 피로회복 및 각종 암 예방 등 몸에 좋은 수박!</p>
                                     <p>아삭아삭 달콤한 맛으로 그냥 먹어도 맛있지만, 갈아서 쥬스로 먹거나 아이스크림, 빙수 등으로 다양하게 만들어 즐겨보세요.</p>
-                                    <img src={'img/watermelon_icecream.png'}/>
-                                    <img src={'img/watermelon_smoothie.png'}/>
+                                    <img src={'/img/watermelon_icecream.png'}/>
+                                    <img src={'/img/watermelon_smoothie.png'}/>
                                     <br/><br/><br/><br/>
                                     <h2 className={'info_sub_title'}>| 고당도 꿀수박 보관방법 |</h2>
                                     <p>1. 수령 후 바람이 잘 통하고 서늘한 그늘에서 하루 정도 보관 후 드시면 더욱 달콤하게 드실 수 있습니다. 수박은 보관 기간이 길지 않으므로
@@ -219,16 +237,18 @@ function Farmer_market_info() {
                                         주의하시기 바랍니다.</p>
                                 </div>
                             )}
+
+                            {/* 리뷰 */}
                             {activeTab === 'reviewinfo' && (
                                 <div className={'product_detail_info'}>
                                     <div className="product_review">
                                         <div className="profile_card">
                                             <div className="profile_img">
-                                                <img src="img/farmer_profile.png" />
+                                                <img src="/img/farmer_profile.png" />
                                             </div>
 
                                             <div className="profile_info">
-                                                <p className="profile_name">김흥만</p>
+                                                <p className="profile_name">{product.sellerName}</p>
                                                 <p className="profile_followers">관심 고객수 : 156 명</p>
                                             </div>
                                         </div>
@@ -238,7 +258,7 @@ function Farmer_market_info() {
                                             <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                                         </div>
                                         <p className="rating_score_primary">5/</p>
-                                        <p className="rating_score_secondary">5 (79)</p>
+                                        <p className="rating_score_secondary">5 ({reviewCounts[product.productId] || 0})</p>
                                     </div>
 
                                     <div className="rating_container">
@@ -270,7 +290,7 @@ function Farmer_market_info() {
 
                                     <div className="review_section">
                                         <div className="review_header">
-                                            <h2>리뷰 <span>(79건)</span></h2>
+                                            <h2>리뷰 <span>({reviewCounts[product.productId] || 0}건)</span></h2>
                                             <button onClick={handleReviewModal}>
                                                 리뷰 작성하기
                                             </button>
@@ -280,6 +300,7 @@ function Farmer_market_info() {
                                                 closeReviewModal={closeReviewModal}
                                                 onReviewSubmitted={fetchReviews}
                                                 initialReviewData={selectedReview}
+                                                productId={productId}
                                             />
 
                                             <div className="review_ranking_options">
@@ -316,6 +337,14 @@ function Farmer_market_info() {
                                                                 className="review_text_detail">{review.reviewDetail}</span>
                                                         </p>
                                                     </div>
+                                                    {review.sellerComment && (
+                                                        <div className="seller_reply">
+                                                            <div className="seller_reply_header">
+                                                                <span className="seller_reply_user">{product.sellerName}</span>
+                                                            </div>
+                                                            <span className="seller_reply_detail">{review.sellerComment}</span>
+                                                        </div>
+                                                    )}
                                                     {/* <div className="seller_reply">
                                                         <div className="seller_reply_header">
                                                             <span className="seller_reply_user">판매자</span>
@@ -327,7 +356,7 @@ function Farmer_market_info() {
                                                 </div>
                                                 <div className="review_image_container">
                                                     <div className="review_image">
-                                                        <img src="img/review_img2.png"/>
+                                                        <img src="/img/review_img2.png"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -336,6 +365,7 @@ function Farmer_market_info() {
                                 </div>
                             )}
 
+                            {/* 상품문의 */}
                             {activeTab === 'questioninfo' && (
                                 <div className={'product_detail_info'}>
                                     <div className="notice">
@@ -424,6 +454,7 @@ function Farmer_market_info() {
                                 </div>
                             )}
 
+                            {/* 배송/교환/반품 */}
                             {activeTab === 'deliveryinfo' && (
                                 <div className={'product_detail_info'}>
                                     <div className="exchange_info">
