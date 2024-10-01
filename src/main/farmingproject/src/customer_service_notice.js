@@ -44,8 +44,8 @@ function Customer_service_notice() {
                         {nitems.map((item) => (
                             <div className={'Customer_service_notice_inner'}>
                                 <div className={'Customer_service_inner_num'}>{item.nnum}</div>
-                                <div className={'Customer_service_inner_title'}>{item.ntitle}</div>
-                                <div className={'Customer_service_inner_o_date'}>{item.ndate}</div>
+                                <div className={'notice_Customer_service_inner_title'}>{item.ntitle}</div>
+                                <div className={'notice_Customer_service_inner_o_date'}>{item.ndate}</div>
                             </div>
                         ))}
                     </div>
