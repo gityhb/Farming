@@ -46,6 +46,34 @@ function Customer_service_one() {
         }
     ]);
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formTitle, setFormTitle] = useState("");
+    const [formContent, setFormContent] = useState("");
+    const [formType, setFormType] = useState("문의 종류");
+
+    const handleSubmit = () => {
+        console.log({
+            formTitle,
+            formContent,
+            formType,
+        });
+        // 폼 제출 후 값 초기화
+        setFormTitle("");
+        setFormContent("");
+        setFormType("문의 종류");
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        // 취소 버튼 클릭 시 값 초기화
+        setFormTitle("");
+        setFormContent("");
+        setFormType("문의 종류");
+        setIsModalOpen(false);
+    };
+
+
+
     return (
         <div id="body">
             <div id={'payment_success_page'} className={'page'}>
@@ -65,17 +93,54 @@ function Customer_service_one() {
                         </div>
 
                         {oitems.map((item) => (
-                            <div className={'Customer_service_inner'}>
+                            <div className={'Customer_service_one_inner'}>
                                 <div className={'Customer_service_inner_num'}>{item.onum}</div>
-                                <div className={'Customer_service_inner_title'}>{item.otitle}</div>
-                                <div className={'Customer_service_inner_o_date'}>{item.odate}</div>
+                                <div className={'one_Customer_service_inner_title'}>{item.otitle}</div>
+                                <div className={'one_Customer_service_inner_o_date'}>{item.odate}</div>
                                 <div className={'Customer_service_inner_answer'}>{item.oanswer}</div>
                             </div>
                         ))}
                     </div>
 
-                    <div className={'one_add_Btn'}>1:1 문의하기</div>
+                    <div className={'one_add_Btn'} onClick={() => setIsModalOpen(true)}>1:1 문의하기</div>
                     <div className={'pagenation'}>1</div>
+                    {isModalOpen && (
+                        <div className="one_modal">
+                            <div className="one_modal_content">
+                                <h3>문의하기</h3>
+                                <label>
+                                    제목
+                                    <input
+                                        type="text"
+                                        value={formTitle}
+                                        onChange={(e) => setFormTitle(e.target.value)}
+                                    />
+                                </label>
+                                <label>
+                                    문의 내용
+                                    <textarea
+                                        value={formContent}
+                                        onChange={(e) => setFormContent(e.target.value)}
+                                    />
+                                </label>
+                                <label>
+                                    문의 종류
+                                    <select
+                                        value={formType}
+                                        onChange={(e) => setFormType(e.target.value)}
+                                    >
+                                        <option disabled hidden value="문의 종류">문의 종류</option>
+                                        <option value="배송">배송 및 주문 문의</option>
+                                        <option value="상품">상품 관련 문의</option>
+                                        <option value="결제">결제 문의</option>
+                                        <option value="기타">기타 문의</option>
+                                    </select>
+                                </label>
+                                <button onClick={handleSubmit}>제출</button>
+                                <button onClick={handleCancel}>취소</button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
