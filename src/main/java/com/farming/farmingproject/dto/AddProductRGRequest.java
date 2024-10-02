@@ -10,7 +10,7 @@ public class AddProductRGRequest {
     private long productId; //상품 id
     private String sellerId; //판매자 id
     private String productName; //상품명
-    private String sellerName;  //판매자명
+    private String storeName;  //판매가게명
     private int productPrice1; // 중량 숫자
     private String productPrice2; //중량 단위
     private int productPrice3; //가격

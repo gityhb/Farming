@@ -284,7 +284,7 @@ function Farmer_market_info_seller() {
                                             </div>
 
                                             <div className="profile_info">
-                                                <p className="profile_name">{product.sellerName}</p>
+                                                <p className="profile_name">{product.storeName}</p>
                                                 <p className="profile_followers">관심 고객수 : 156 명</p>
                                             </div>
                                         </div>
@@ -371,7 +371,7 @@ function Farmer_market_info_seller() {
                                                         {review.sellerComment && (
                                                             <div className="seller_reply">
                                                                 <div className="seller_reply_header">
-                                                                    <span className="seller_reply_user">{product.sellerName}</span>
+                                                                    <span className="seller_reply_user">{product.storeName}</span>
                                                                 </div>
                                                                 <span className="seller_reply_detail">{review.sellerComment}</span>
                                                             </div>
