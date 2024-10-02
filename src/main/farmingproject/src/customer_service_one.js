@@ -85,12 +85,12 @@ function Customer_service_one() {
                     </div>
 
                     <div className={'Customer_service_div'}>
-                        <div className={'Customer_service_top'}>
-                            <div className={'Customer_service_top_num'}>No.</div>
-                            <div className={'Customer_service_top_title'}>제목</div>
-                            <div className={'Customer_service_top_o_date'}>등록일</div>
-                            <div className={'Customer_service_top_answer'}>답변여부</div>
-                        </div>
+                            <div className={'Customer_service_top'}>
+                                <div className={'Customer_service_top_num'}>No.</div>
+                                <div className={'Customer_service_top_title'}>제목</div>
+                                <div className={'Customer_service_top_o_date'}>등록일</div>
+                                <div className={'Customer_service_top_answer'}>답변여부</div>
+                            </div>
 
                         {oitems.map((item) => (
                             <div className={'Customer_service_one_inner'}>

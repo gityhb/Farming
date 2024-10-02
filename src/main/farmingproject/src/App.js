@@ -141,6 +141,8 @@ function App() {
                 <Route path="/admin/product_apply_check" element={<Product_apply_check />} />
                 <Route path="/admin/product/:productId" element={<Product_apply_check_detail />} />
 
+                <Route path="/farmer_market_info/:productId" element={<Farmer_market_info />} />
+                <Route path="/farmer_market_info_seller/:productId" element={<Farmer_market_info_seller />} />
 
             </Routes>
             {!hideHeaderFooter && <Footer />}

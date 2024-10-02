@@ -1,9 +1,33 @@
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {Link, Route} from 'react-router-dom';
 import './common/root.css';
 import './farmer_market_seller.css';
+import {useUser} from "./common/userContext";
 
 function Farmer_market_seller() {
+
+    const [products, setProducts] = useState([]);
+    const { user } = useUser(); // 현재 로그인한 사용자 정보
+
+    useEffect(() => {
+        if (user && user.userId) {
+            fetchSellerProducts(user.userId);
+        }
+    }, [user]);
+
+    const fetchSellerProducts = async (sellerId) => {
+        try {
+            const response = await fetch(`/api/productRG/seller/${sellerId}`);
+            if (response.ok) {
+                const data = await response.json();
+                setProducts(data);
+            } else {
+                console.error('상품 정보 가져오기 실패');
+            }
+        } catch (error) {
+            console.error('상품 정보 가져오는 중 오류 발생:', error);
+        }
+    };
 
     return (
         <div id={'body'}>
@@ -30,46 +54,24 @@ function Farmer_market_seller() {
                     <div id={'product_list'}>
                         {/*첫번째 줄*/}
                         <ul className={'pd_list'}>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <Link to={"/farmer_market_info_seller"}>
-                                        <img src={'img/watermelon.png'} style={{width: '190px', height: '190px'}}/>
-                                        <p className={'pd_name'}>
-                                            프리미엄 고당도 수박
+                            {products.map(product => (
+                                <li key={product.productId}>
+                                    <div className={'pd_info'}>
+                                        <Link to={`/farmer_market_info_seller/${product.productId}`}>
+                                            <img src={product.productimgPath} style={{width: '190px', height: '190px'}}
+                                                 alt={product.productName}/>
+                                            <p className={'pd_name'}>
+                                                {product.productName}
+                                            </p>
+                                        </Link>
+                                        <p className='pd_price'>
+                                        <span className='pr_per'>{product.salenum}% </span>
+                                        <span className='pr_num'>{product.productPrice3.toLocaleString()}</span>원
                                         </p>
-                                    </Link>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <Link to={"/"}>
-                                        <img src={'img/cucumber.png'} style={{width: '190px', height: '190px'}}/>
-                                        <p className={'pd_name'}>
-                                            오이지오이 10kg
-                                        </p>
-                                    </Link>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <Link to={"/"}>
-                                        <img src={'img/snow_white_strawberry.png'} style={{width: '190px', height: '190px'}}/>
-                                        <p className={'pd_name'}>
-                                            백설향 딸기
-                                        </p>
-                                    </Link>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={'pd_info'}>
-                                    <Link to={"/"}>
-                                        <img src={'img/zucchini_2.png'} style={{width: '190px', height: '190px'}}/>
-                                        <p className={'pd_name'}>
-                                            국산 애호박 5개
-                                        </p>
-                                    </Link>
-                                </div>
-                            </li>
+
+                                    </div>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
