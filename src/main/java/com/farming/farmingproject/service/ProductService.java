@@ -57,5 +57,4 @@ public class ProductService {
         return productRepository.findByProductId(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found with productId: " + productId));
     }
-
 }

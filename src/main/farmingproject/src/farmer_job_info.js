@@ -1,10 +1,33 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import './farmer_job_info.css';
 import MapComponent from './component/MapComponent';
 import FarmerJobApply from './farmer_job_apply';
+import {useParams} from "react-router-dom"; //URL에서 jobId를 가져오기 위한 hook
 
 function FarmerJobInfo() {
-    const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+    const [isApplyModalOpen, setIsApplyModalOpen] = useState(false)
+    const [jobInfo,setJobInfo]=useState(null);//일자리 정보를 저장할 상태
+    const {jobId} =useParams();//URL에서 jobId를 가져옴
+
+    //백엔드에서 일자리 정보 가져오는 함수
+    const fetchJobInfo=async ()=>{
+        try{
+            const response = await fetch(`/api/job/${jobId}`)//jobId 사용해 백엔드 API 호출
+            if(!response.ok){
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setJobInfo(data); //일자리 정보 상태에 저장
+        }catch(error){
+            console.error("Error fetching job info:", error);
+        }
+    };
+
+    useEffect(()=>{
+        if(jobId){
+            fetchJobInfo();//컴포넌트가 로드될 때 일자리 정보 가져옴
+        }
+    },[jobId]);
 
     const handleApplyModal = () => {
         setIsApplyModalOpen(true);  // 모달 열기
@@ -14,43 +37,41 @@ function FarmerJobInfo() {
         setIsApplyModalOpen(false);  // 모달 닫기
     }
 
+    // jobInfo가 null일 경우 로딩 화면을 보여주기
+    if (!jobInfo) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="farmergic_info_main">
             <div className="farmergic_info_main_img">
-                <img src="/img/strawberry_2.jpg" alt="딸기 모종" style={{ width: '1020px', height: '480px' }} />
+                <img src="/img/strawberry_2.jpg" alt="딸기 모종" style={{width: '1020px', height: '480px'}}/>
             </div>
             <div className="farmergic_info_title">
-                쉬운 알바/ 충남/ 논산 / 딸기 모종 심기/ 임금 당일 지급
+                {jobInfo.jobTitle}
             </div>
             <div className="farmergic_info_seller">
-                <img src="/img/pororo.png" alt="딸기" />
+                <img src="/img/pororo.png" alt="딸기"/>
                 <div className="farmergic_info_seller_text">
-                    김흥만<br /><br />
-                    사업자 등록 인증
+                    {/* 사용자 정보 출력 */}
+                    {jobInfo.user?.name} {/* user의 이름 */}
                 </div>
             </div>
             <div className="farmergic_info_detail">
-                <div className="farmergic_info_detail_item_1">
-                    근무 정보 <br />
+                <div className="farmergic_info_detail_title">
+                    날짜<br/>시간<br/>임금<br/>위치<br/>상세내역
                 </div>
-                <div className="farmergic_info_detail_item">
-                    <div className="farmergic_info_detail_title">
-                        날짜<br />시간<br />임금<br />위치<br />상세내역
-                    </div>
-                    <div className="farmergic_info_datail_text">
-                        05/24 금요일<br />
-                        9:00~13:00<br />
-                        48,000원 / 시급 12,000원<br />
-                        충남 논산시 부적면 충곡리<br />
-                        #꿀알바 #당일 지급<br /><br />
-                        딸기 모종 심어주시면 됩니다.<br />
-                        어렵지 않으니 지원 부탁드립니다.
-                    </div>
+                <div className="farmergic_info_detail_text">
+                    {jobInfo.jobDate}<br/>
+                    {jobInfo.jobTime}<br/>
+                    {jobInfo.jobSalary}<br/>
+                    {jobInfo.jobLocation}<br/>
+                    {jobInfo.jobDescription}
                 </div>
             </div>
 
             <div className="farmergic_info_map">
-                <MapComponent />
+                <MapComponent/>
             </div>
 
             <button className="farmer_info_btn" onClick={handleApplyModal}>
@@ -58,7 +79,7 @@ function FarmerJobInfo() {
             </button>
 
             {isApplyModalOpen && (
-                <FarmerJobApply isOpen={isApplyModalOpen} closeApplyModal={closeApplyModal} />
+                <FarmerJobApply isOpen={isApplyModalOpen} closeApplyModal={closeApplyModal} jobId={jobId} />
             )}
         </div>
     );

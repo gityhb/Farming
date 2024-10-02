@@ -100,6 +100,7 @@ import Customer_service_notice from "./customer_service_notice";
 import Product_apply_check from "./admin/product_apply_check";
 import Product_apply_check_detail from "./admin/product_apply_check_detail";
 
+import JobModal from './component/job_modal';
 
 function App() {
     const location = useLocation();
@@ -117,7 +118,8 @@ function App() {
                 <Route path="/farmer_market" element={<Farmer_market />} />
                 <Route path="/farmer_market_info" element={<Farmer_market_info />} />
                 <Route path="/farmer_product_apply" element={<Farmer_product_apply />} />
-                <Route path="/farmer_job_info" element={<FarmerJobInfo />} />
+                {/*<Route path="/farmer_job_info" element={<FarmerJobInfo />} />*/}
+                <Route path="/farmer_job_info/:jobId" element={<FarmerJobInfo />} />
                 <Route path="/farmer_job_apply" element={<FarmerJobApply />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/join" element={<Join />} />

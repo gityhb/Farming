@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 function FarmerJob() {
     const[selectedCity,setSelectedCity]=useState('');
     const[districts, setDistricts]=useState([]);
+    const [jobs,setJobs]=useState([]); //job 상태 추가
 
     const allDistricts={
         'seoul':['강남구','강동구','강북구','강서구','구로구','동작구','마포구','양천구','영등포구','용산구','종로구'],
@@ -25,6 +26,24 @@ function FarmerJob() {
 
     };
 
+    //데이터베이스에서 일자리 정보를 가져오는 함수
+    const fetchJobs=async ()=>{
+        try{
+            const res=await fetch('api/job/all')//모든 일자리 백엔드 API 호출
+            if(!res.ok){
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            const data = await res.json();
+            setJobs(data); //일자리 데이터 상태에 저장
+        }catch(error){
+            console.error('Error fetching jobs:',error);
+        }
+    };
+
+    useEffect(() => {
+        fetchJobs(); // 컴포넌트 마운트 시 일자리 정보 가져옴
+    }, []); // 빈 배열을 두 번째 인자로 전달하여 최초 마운트 시에만 호출
+
     useEffect(()=>{
         if(selectedCity){
             setDistricts(allDistricts[selectedCity]||[]);
@@ -43,9 +62,10 @@ function FarmerJob() {
                         </div>
                         <div id="farmergic_menu_button">
                             <select className={'farmergic_menu_button_1'}
-                                    value={selectedCity}
-                                    onChange={(e)=> setSelectedCity(e.target.value)}>
-                                <option value={''} selected>시</option>
+                                    value={selectedCity} // selected 대신 value를 사용하여 선택된 값을 제어
+                                    onChange={(e) => setSelectedCity(e.target.value)}>
+                                <option value={''}>시</option>
+                                {/* selected 속성 제거 */}
                                 <option value={'seoul'}>서울</option>
                                 <option value={'gyeonggi'}>경기</option>
                                 <option value={'incheon'}>인천</option>
@@ -62,6 +82,7 @@ function FarmerJob() {
                                 <option value={'chungbuk'}>충북</option>
                                 <option value={'jeju'}>제주</option>
                             </select>
+
                             <select className="farmergic_menu_button_2">
                                 <option>구</option>
                                 {districts.map((district, index) => (
@@ -74,98 +95,35 @@ function FarmerJob() {
                     </div>
                     <div className="farmergic_main_container">
                         <div className="farmergic_main">
-                            <Link to={"/farmer_job_info"}>
-                            <div className="farmergic_main_item">
-                                <div className="farmergic_main_item_title">딸기 모종 심기</div>
-                                <div className="farmergic_main_item_info">
-                                    <div className="farmergic_main_item_date_img">
-                                        <img src="/img/clock.jpg" style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_date">05/24 9:00</div>
-                                    </div>
-                                    <div className="farmergic_main_item_pay_img">
-                                        <img src="/img/pay.jpg" alt="딸기 모종" style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_pay">시급 12,000</div>
-                                    </div>
-                                    <div className="farmergic_main_item_location_img">
-                                        <img src="/img/location.jpg" alt="딸기 모종"
-                                             style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_location">충남 / 논산</div>
-                                    </div>
-                                </div>
-                                <div className="farmergic_main_item_image">
-                                    <img src="/img/strawberry_2.jpg" alt="딸기 모종"
-                                         style={{width: '230px', height: '160px'}}/>
-                                </div>
-                            </div>
-                            </Link>
+                            <div className="farmergic_main">
+                                {jobs.map((job) => (
+                                    <Link to={`/farmer_job_info/${job.jobId}`} key={job.jobId}>
+                                        <div className="farmergic_main_item">
+                                            <div className="farmergic_main_item_title">{job.jobTitle}</div>
+                                            <div className="farmergic_main_item_info">
+                                                <div className="farmergic_main_item_date_img">
+                                                    <img src="/img/clock.jpg" style={{width: '20px', height: '15px'}}/>
+                                                    <div className="farmergic_main_item_date">{job.jobDate}</div>
+                                                </div>
+                                                <div className="farmergic_main_item_pay_img">
+                                                    <img src="/img/pay.jpg" style={{width: '20px', height: '15px'}}/>
+                                                    <div className="farmergic_main_item_pay">{job.jobSalary}</div>
+                                                </div>
+                                                <div className="farmergic_main_item_location_img">
+                                                    <img src="/img/location.jpg"
+                                                         style={{width: '20px', height: '15px'}}/>
+                                                    <div
+                                                        className="farmergic_main_item_location">{job.jobLocation}</div>
+                                                </div>
+                                            </div>
+                                            <div className="farmergic_main_item_image">
+                                                <img src={`http://localhost:8080${job.jobPhoto}`} alt="Job Image"
+                                                     style={{width: '230px', height: '160px'}}/>
 
-                            <div className="farmergic_main_item">
-                                <div className="farmergic_main_item_title">고구마 캐기</div>
-                                <div className="farmergic_main_item_info">
-                                    <div className="farmergic_main_item_date_img">
-                                        <img src="/img/clock.jpg" style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_date">05/26 7:00</div>
-                                    </div>
-                                    <div className="farmergic_main_item_pay_img">
-                                        <img src="/img/pay.jpg" alt="딸기 모종" style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_pay">시급 11,000</div>
-                                    </div>
-                                    <div className="farmergic_main_item_location_img">
-                                        <img src="/img/location.jpg" alt="딸기 모종"
-                                             style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_location">전라남도 / 무안군</div>
-                                    </div>
-                                </div>
-                                <div className="farmergic_main_item_image">
-                                    <img src="/img/farmer_job_3.png" alt="딸기 모종"
-                                         style={{width: '230px', height: '160px'}}/>
-                                </div>
-                            </div>
-
-                            <div className="farmergic_main_item">
-                                <div className="farmergic_main_item_title">상추 수확</div>
-                                <div className="farmergic_main_item_info">
-                                    <div className="farmergic_main_item_date_img">
-                                        <img src="/img/clock.jpg" style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_date">05/26 10:00</div>
-                                    </div>
-                                    <div className="farmergic_main_item_pay_img">
-                                        <img src="/img/pay.jpg" alt="딸기 모종" style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_pay">시급 9,860원</div>
-                                    </div>
-                                    <div className="farmergic_main_item_location_img">
-                                        <img src="/img/location.jpg" alt="딸기 모종"
-                                             style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_location">전라북도 / 남원시</div>
-                                    </div>
-                                </div>
-                                <div className="farmergic_main_item_image">
-                                    <img src="/img/farmer_job_2.png" alt="딸기 모종"
-                                         style={{width: '230px', height: '160px'}}/>
-                                </div>
-                            </div>
-
-                            <div className="farmergic_main_item" >
-                                <div className="farmergic_main_item_title">비닐하우스 농약</div>
-                                <div className="farmergic_main_item_info">
-                                    <div className="farmergic_main_item_date_img">
-                                        <img src="/img/clock.jpg" style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_date">05/26 10:00</div>
-                                    </div>
-                                    <div className="farmergic_main_item_pay_img">
-                                        <img src="/img/pay.jpg" alt="딸기 모종" style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_pay">시급 25,000원</div>
-                                    </div>
-                                    <div className="farmergic_main_item_location_img">
-                                        <img src="/img/location.jpg" alt="딸기 모종"
-                                             style={{width: '20px', height: '15px'}}/>
-                                        <div className="farmergic_main_item_location">제주도 / 서귀포</div>
-                                    </div>
-                                </div>
-                                <div className="farmergic_main_item_image">
-                                    <img src="/img/farmer_job_4.png" alt="딸기 모종"
-                                         style={{width: '230px', height: '160px'}}/>
-                                </div>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))}
                             </div>
 
 
