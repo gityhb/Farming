@@ -130,15 +130,6 @@ function Mypage_seller() {
                         ): (
                             <li>등록된 일자리가 없습니다.</li>
                         )}
-                        {/*<li>
-                            <a href="#"><strong>포도 수확 알바</strong> - 8월 15일부터 9월 15일까지, 일당 80,000원</a>
-                        </li>
-                        <li>
-                            <a href="#"><strong>사과 농장 수확 도우미</strong> - 10월 1일부터 11월 1일까지, 일당 70,000원</a>
-                        </li>
-                        <li>
-                            <a href="#"><strong>배추 심기 작업</strong> - 9월 10일부터 9월 20일까지, 일당 60,000원</a>
-                        </li>*/}
                     </ul>
                     <button className="add_job_button" onClick={handleAddJob}>새 공고 추가</button>
                 </div>
