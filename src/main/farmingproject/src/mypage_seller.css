@@ -25,6 +25,12 @@
     font-size: 14px;
     color: #888;
 }
+
+.seller_photo img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
 npm
 .seller_details p {
     margin: 5px 0;

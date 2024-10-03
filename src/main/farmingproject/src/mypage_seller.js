@@ -3,9 +3,11 @@ import './mypage_seller.css';
 import './common/root.css';
 import JobModal from './component/job_modal';
 import {Link} from "react-router-dom";
+import {useUser} from "./common/userContext";
 
 function Mypage_seller() {
 
+    const { user } = useUser();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isJobModalOpen, setIsJobModalOpen] = useState(false);
     const [loggedInUserId,setLoggedInUserId]=useState(null);
@@ -65,12 +67,13 @@ function Mypage_seller() {
             </div>
             <div className="seller_info">
                 <div className="seller_photo">
-                    <span>( 사진 등록 )</span>
+                    {/*<span>( 사진 등록 )</span>*/}
+                    <img src={"./img/osj.jpg"} alt={"판매자 사진"} />
                 </div>
                 <div className="seller_details">
-                    <p>이름</p>
-                    <p>사업자 등록 번호</p>
-                    <p>위치</p>
+                    <p>이름 : {user.name}</p>
+                    <p>사업자 등록 번호 : 12345678</p>
+                    <p>위치 : {user.address}</p>
                 </div>
             </div>
             <div className="products_section">
@@ -83,7 +86,21 @@ function Mypage_seller() {
                         <Link to={"/farmer_market_info_seller"}><img src="./img/watermelon.png" alt="상품사진"/></Link>
                     </div>
                     <div className="product_item">
-                        <img src="./img/strawberry.png" alt="상품사진"/>
+                        <img src="./img/apple_2.png" alt="상품사진"/>
+                    </div>
+                </div>
+            </div>
+            <div className="products_section">
+                <div className="section_header">
+                    <h2> 농장 온습도</h2>
+                </div>
+                <div className="product_list" style={{display: "block"}}>
+                    <div>
+                        온도 : 26.4 'C
+                    </div>
+                    <br/>
+                    <div>
+                        습도 : 37.6 %
                     </div>
                 </div>
             </div>

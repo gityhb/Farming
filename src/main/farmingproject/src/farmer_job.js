@@ -95,36 +95,38 @@ function FarmerJob() {
                     </div>
                     <div className="farmergic_main_container">
                         <div className="farmergic_main">
-                            <div className="farmergic_main">
                                 {jobs.map((job) => (
-                                    <Link to={`/farmer_job_info/${job.jobId}`} key={job.jobId}>
+                                    <div><Link to={`/farmer_job_info/${job.jobId}`} key={job.jobId}>
                                         <div className="farmergic_main_item">
-                                            <div className="farmergic_main_item_title">{job.jobTitle}</div>
-                                            <div className="farmergic_main_item_info">
-                                                <div className="farmergic_main_item_date_img">
-                                                    <img src="/img/clock.jpg" style={{width: '20px', height: '15px'}}/>
-                                                    <div className="farmergic_main_item_date">{job.jobDate}</div>
-                                                </div>
-                                                <div className="farmergic_main_item_pay_img">
-                                                    <img src="/img/pay.jpg" style={{width: '20px', height: '15px'}}/>
-                                                    <div className="farmergic_main_item_pay">{job.jobSalary}</div>
-                                                </div>
-                                                <div className="farmergic_main_item_location_img">
-                                                    <img src="/img/location.jpg"
-                                                         style={{width: '20px', height: '15px'}}/>
-                                                    <div
-                                                        className="farmergic_main_item_location">{job.jobLocation}</div>
+                                            <div className="farmergic_main_item01">
+                                                <div className="farmergic_main_item_title">{job.jobTitle}</div>
+                                                <div className="farmergic_main_item_info">
+                                                    <div className="farmergic_main_item_date_img">
+                                                        <img src="/img/clock.jpg" style={{width: '20px'}}/>
+                                                        <div className="farmergic_main_item_date">{job.jobDate}</div>
+                                                    </div>
+                                                    <div className="farmergic_main_item_pay_img">
+                                                        <img src="/img/pay.jpg" style={{width: '20px'}}/>
+                                                        <div className="farmergic_main_item_pay">{job.jobSalary}</div>
+                                                    </div>
+                                                    <div className="farmergic_main_item_location_img">
+                                                        <img src="/img/location.jpg"
+                                                             style={{width: '20px'}}/>
+                                                        <div
+                                                            className="farmergic_main_item_location">{job.jobLocation}</div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div className="farmergic_main_item02">
                                             <div className="farmergic_main_item_image">
                                                 <img src={`http://localhost:8080${job.jobPhoto}`} alt="Job Image"
                                                      style={{width: '230px', height: '160px'}}/>
 
                                             </div>
+                                            </div>
                                         </div>
-                                    </Link>
+                                    </Link></div>
                                 ))}
-                            </div>
 
 
                         </div>

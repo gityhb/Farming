@@ -3,7 +3,7 @@ import './auction_detail.css';
 import './common/root.css';
 
 function AuctionDetail() {
-    const [timeLeft, setTimeLeft] = useState(300); // 5분 (300초)
+    const [timeLeft, setTimeLeft] = useState(15); // 15초
     const [isAuctionOver, setIsAuctionOver] = useState(false);
     const [chatMessages, setChatMessages] = useState([]);
     const [message, setMessage] = useState("");
@@ -54,7 +54,7 @@ function AuctionDetail() {
             setTimeout(() => {
                 setChatMessages((prevMessages) => [
                     ...prevMessages,
-                    { user: "상대방", text: "안녕하세요", time: getCurrentTime() }
+                    { user: "상대방", text: "1차 입찰 결과 입니다.\n01) 800,0000 \n02) 798,000 \n\n2차 입찰가를 입력해주세요.", time: getCurrentTime() }
                 ]);
             }, 2000);
         }
@@ -89,7 +89,7 @@ function AuctionDetail() {
                             <div className="item_delivery">배송정보 | 무료배송, 08/09 도착예정</div>
                             <div className="item_minbid">
                                 <div className="minbid_title">최소 입찰가</div>
-                                <div className="minbid_amount">300,000원</div>
+                                <div className="minbid_amount">750,000원</div>
                             </div>
                         </div>
                     </div>
@@ -150,27 +150,41 @@ function AuctionDetail() {
                             </div>
                         </>
                     ) : (
-                        <div className="auction_amount">
-                            <div className="auction_amount_input">
-                                <div className="auction_time"> 1차 {formatTime(timeLeft)}</div>
-                                <div className={'auction_input_container'}>
-                                    <input type={'number'} className={'auction_amount_input_field'}
-                                           placeholder={"입찰가 입력"} />
-                                    <div className="auction_amount_text"> 원</div>
-                                </div>
-                            </div>
-                            <div className="auction_amount_btn">입찰하기</div>
-                        </div>
+                        <div className="auction_time"> 1차 {formatTime(timeLeft)}</div>
+                        // <div className="auction_amount">
+                        //     <div className="auction_amount_input">
+                        //         <div className="auction_time"> 1차 {formatTime(timeLeft)}</div>
+                        //         <div className={'auction_input_container'}>
+                        //             <input type={'number'} className={'auction_amount_input_field'}
+                        //                    placeholder={"입찰가 입력"} />
+                        //             <div className="auction_amount_text"> 원</div>
+                        //         </div>
+                        //     </div>
+                        //     <div className="auction_amount_btn">입찰하기</div>
+                        // </div>
                     )}
                     <div className="chat_container">
                         <div className="chat_box" ref={chatBoxRef}>
+                            <div
+                                 className={`chat_message_wrapper other_message_wrapper`}>
+                                    <div className="chat_username">사용자</div> {/* 상대방의 경우 닉네임 표시 */}
+                                <div className={`chat_message other_message`}>
+                                    경매를 시작합니다. 1차 입찰가를 입력해주세요.
+                                </div>
+                                <div className="chat_time">{getCurrentTime()}</div>
+                                {/* 날짜와 시간 표시 */}
+                            </div>
                             {chatMessages.map((msg, index) => (
-                                <div key={index} className={`chat_message_wrapper ${msg.user === "You" ? "my_message_wrapper" : "other_message_wrapper"}`}>
-                                    {msg.user !== "You" && <div className="chat_username">{msg.user}</div>} {/* 상대방의 경우 닉네임 표시 */}
-                                    <div className={`chat_message ${msg.user === "You" ? "my_message" : "other_message"}`}>
+                                <div key={index}
+                                     className={`chat_message_wrapper ${msg.user === "You" ? "my_message_wrapper" : "other_message_wrapper"}`}>
+                                    {msg.user !== "You" &&
+                                        <div className="chat_username">{msg.user}</div>} {/* 상대방의 경우 닉네임 표시 */}
+                                    <div
+                                        className={`chat_message ${msg.user === "You" ? "my_message" : "other_message"}`}  style={{ whiteSpace: 'pre-wrap' }}>
                                         {msg.text}
                                     </div>
-                                    <div className="chat_time">{msg.time}</div> {/* 날짜와 시간 표시 */}
+                                    <div className="chat_time">{msg.time}</div>
+                                    {/* 날짜와 시간 표시 */}
                                 </div>
                             ))}
                         </div>

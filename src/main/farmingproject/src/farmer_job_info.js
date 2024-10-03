@@ -45,28 +45,63 @@ function FarmerJobInfo() {
     return (
         <div className="farmergic_info_main">
             <div className="farmergic_info_main_img">
-                <img src="/img/strawberry_2.jpg" alt="딸기 모종" style={{width: '1020px', height: '480px'}}/>
+                <img src={jobInfo.jobPhoto} alt="딸기 모종"/>
             </div>
             <div className="farmergic_info_title">
                 {jobInfo.jobTitle}
             </div>
             <div className="farmergic_info_seller">
-                <img src="/img/pororo.png" alt="딸기"/>
+                <div className={"farmergic_info_seller_title"}>
+                    사업자 정보
+                </div>
+                <div className={"farmergic_info_seller_contents"}>
+                <img src="/img/osj.jpg" alt="딸기"/>
+
                 <div className="farmergic_info_seller_text">
-                    {/* 사용자 정보 출력 */}
-                    {jobInfo.user?.name} {/* user의 이름 */}
+                    <div className={"seller_name"}>
+                        이름 : {jobInfo.user?.name} {/* user의 이름 */}
+                    </div>
+                    <div className={"seller_name"}>
+                        농장주소 : {jobInfo.jobLocation}
+                    </div>
+                </div>
                 </div>
             </div>
             <div className="farmergic_info_detail">
-                <div className="farmergic_info_detail_title">
-                    날짜<br/>시간<br/>임금<br/>위치<br/>상세내역
+                <div className="farmergic_info_detail_list">
+                    <div className="farmergic_info_detail_title">
+                        날짜
+                    </div>
+                    <div className="farmergic_info_detail_title">
+                        시간
+                    </div>
+                    <div className="farmergic_info_detail_title">
+                        임금
+                    </div>
+                    <div className="farmergic_info_detail_title">
+                        위치
+                    </div>
+                    <div className="farmergic_info_detail_title">
+                        상세내역
+                    </div>
                 </div>
-                <div className="farmergic_info_detail_text">
-                    {jobInfo.jobDate}<br/>
-                    {jobInfo.jobTime}<br/>
-                    {jobInfo.jobSalary}<br/>
-                    {jobInfo.jobLocation}<br/>
-                    {jobInfo.jobDescription}
+                <div className="farmergic_info_detail_list">
+
+                    <div className="farmergic_info_detail_text">
+                        {jobInfo.jobDate}
+                    </div>
+                    <div className="farmergic_info_detail_text">
+                        {jobInfo.jobTime}
+                    </div>
+                    <div className="farmergic_info_detail_text">
+                        {jobInfo.jobSalary}
+                    </div>
+                    <div className="farmergic_info_detail_text">
+                        {jobInfo.jobLocation}
+                    </div>
+                    <div className="farmergic_info_detail_text">
+                        {jobInfo.jobDescription}
+                    </div>
                 </div>
             </div>
 
@@ -79,7 +114,7 @@ function FarmerJobInfo() {
             </button>
 
             {isApplyModalOpen && (
-                <FarmerJobApply isOpen={isApplyModalOpen} closeApplyModal={closeApplyModal} jobId={jobId} />
+                <FarmerJobApply isOpen={isApplyModalOpen} closeApplyModal={closeApplyModal} jobId={jobId}/>
             )}
         </div>
     );

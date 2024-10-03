@@ -2,7 +2,7 @@
     font-size: 40px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 100px;
+    margin-bottom: 60px;
 }
 
 .auction_detail_container{
@@ -10,9 +10,10 @@
 }
 
 .auction_detail_container img{
-    width: 270px;
-    height: 250px;
+    width: 350px;
+    /*height: 250px;*/
     margin-right: 60px;
+    border-radius: 10px;
 }
 
 .auction_detail_item .item_title{
@@ -28,8 +29,8 @@
 
 .auction_detail_item .item_minbid{
     display: flex;
-    margin-left: 300px;
-    margin-top: 100px;
+    margin-left: 299px;
+    margin-top: 25px;
     margin-bottom: 30px;
 }
 
@@ -66,15 +67,26 @@
 
 }
 
-.auction_amount .auction_amount_input .auction_time{
-    background-color:#FFF0AD;
+.auction_time {
+    padding: 10px 0;
+    background-color: #FFF0AD;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-    color:#FF0000;
+    color: #ff0000;
     font-size: 36px;
     font-weight: bold;
     text-align: center;
 }
+
+/*.auction_amount .auction_amount_input .auction_time{*/
+/*    background-color:#FFF0AD;*/
+/*    border-top-left-radius: 3px;*/
+/*    border-top-right-radius: 3px;*/
+/*    color:#FF0000;*/
+/*    font-size: 36px;*/
+/*    font-weight: bold;*/
+/*    text-align: center;*/
+/*}*/
 
 .auction_amount .auction_amount_input .auction_amount_text{
     font-size:24px;
@@ -221,7 +233,7 @@
 
 .chat_box {
     border: 1px solid #ddd;
-    height: 300px;
+    height: 390px;
     width: 100%;
     max-width: 850px;
     padding: 10px;

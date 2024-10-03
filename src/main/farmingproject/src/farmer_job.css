@@ -44,7 +44,6 @@
     display: flex;
     flex-wrap: wrap; /* 한 줄에 두 개씩 배치 */
     justify-content: space-between;
-    padding: 20px; /* 내용물이 많아질 때 높이가 늘어나도록 여백 추가 */
     text-decoration: none;
 }
 
@@ -52,47 +51,42 @@
 .farmergic_main_item_info {
     display: flex;
     flex-direction: column;
-    gap: 5px; /* 각 항목 사이의 간격 조정 */
+    gap: 10px; /* 각 항목 사이의 간격 조정 */
 }
 
 .farmergic_main_item_info > div {
     display: flex;
     align-items: center;
-    margin-left: 30px;
 
 }
 
-.farmergic_main_item_date_img img,
-.farmergic_main_item_pay_img img,
-.farmergic_main_item_location_img img {
-    margin-right:-10px; /* 이미지와 텍스트 사이의 간격 조정 */
-}
 
 .farmergic_main_item {
+    padding: 10px;
     width: 460px;
     height: 250px;
     margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-radius: 10px;
     background-color: #ffffff;
     border: 2px solid #919191; /* 테두리 추가 */
 }
 
-.farmergic_main_item_image{
-    margin-left: 200px;
-    margin-top:-130px;
+.farmergic_main_item_image img{
+    border-radius: 5px;
+    margin-left: 10px;
 }
 
 .farmergic_main_item_title {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
-    margin-left: 30px;
-    margin-top: 50px;
 }
 
 .farmergic_main_item_date,
 .farmergic_main_item_location,
 .farmergic_main_item_pay{
-    margin-left: 20px;
-    margin-bottom: 5px;
+    margin-left: 5px;
 }
