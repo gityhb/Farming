@@ -50,4 +50,11 @@ public class JobController {
         return ResponseEntity.ok(jobs); // 조회된 리스트 응답으로 반환
     }
 
+    //userId로 Job 목록 조회
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Job>> getJobsByUserId(@PathVariable("userId") String userId){
+        List<Job> jobs = jobService.findJobsByUserId(userId); //userId로 Job목록 조회
+        return ResponseEntity.ok(jobs); //조회된 Job 목록을 응답으로 반환
+    }
+
 }
