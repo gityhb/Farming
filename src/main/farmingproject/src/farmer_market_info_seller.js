@@ -357,7 +357,7 @@ function Farmer_market_info_seller() {
                                                             <span
                                                                 className="review_text_detail">{review.reviewDetail}</span>
                                                         </p>
-                                                        <button onClick={handleReplyClick}>답글 남기기</button>
+                                                        <button className={'reply_submit_btn'} onClick={handleReplyClick}>답글 남기기</button>
                                                         {showCommentInput && (
                                                             <div className="seller_reply_input">
                                                                 <textarea
@@ -365,7 +365,7 @@ function Farmer_market_info_seller() {
                                                                     onChange={(e) => setSellerComment(e.target.value)}
                                                                     placeholder="답글을 입력하세요"
                                                                 />
-                                                                <button onClick={() => submitSellerComment(review.reviewId)}>답글 저장</button>
+                                                                <button className={'reply_save_btn'} onClick={() => submitSellerComment(review.reviewId)}>답글 저장</button>
                                                             </div>
                                                         )}
                                                         {review.sellerComment && (

@@ -510,3 +510,26 @@ h2 {
     margin-bottom: 10px;
     font-size: 14px;
 }
+
+
+.reply_submit_btn {
+    background-color: #FFE680;
+    border: none;
+    width: 90px;
+    height: 30px;
+    font-size: 13px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+.reply_save_btn{
+    background-color: #FFE680;
+    border: none;
+    width: 90px;
+    height: 30px;
+    font-size: 13px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+

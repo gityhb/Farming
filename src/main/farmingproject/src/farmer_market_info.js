@@ -291,7 +291,7 @@ function Farmer_market_info() {
                                     <div className="review_section">
                                         <div className="review_header">
                                             <h2>리뷰 <span>({reviewCounts[product.productId] || 0}건)</span></h2>
-                                            <button onClick={handleReviewModal}>
+                                            <button className={'review_btn'} onClick={handleReviewModal}>
                                                 리뷰 작성하기
                                             </button>
 
