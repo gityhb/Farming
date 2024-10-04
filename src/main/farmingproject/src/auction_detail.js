@@ -1,13 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './auction_detail.css';
 import './common/root.css';
+import { useParams } from 'react-router-dom';
 
 function AuctionDetail() {
+    const { auctionId } = useParams(); // URL에서 auction_id를 가져옴
+    const [auction, setAuction] = useState(null); // 경매 데이터를 저장할 상태
     const [timeLeft, setTimeLeft] = useState(15); // 15초
     const [isAuctionOver, setIsAuctionOver] = useState(false);
     const [chatMessages, setChatMessages] = useState([]);
     const [message, setMessage] = useState("");
-    const chatBoxRef = useRef(null); // 채팅 박스에 접근하기 위한 useRef
+    const chatBoxRef = useRef(null);
+
+    // auction_id에 맞는 경매 항목 불러오기
+    useEffect(() => {
+        fetch(`/api/auction/items/${auctionId}`) // 경매 항목에 대한 API 요청
+            .then(response => response.json())
+            .then(data => setAuction(data))
+            .catch(error => console.error('Error fetching auction data:', error));
+    }, [auctionId]);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -80,18 +91,25 @@ function AuctionDetail() {
                         <div className="auction_detail_text">경매 상세</div>
                     </div>
                     <div className="auction_detail_container">
-                        <div>
-                            <img src="img/watermelon_3.png" alt="상품 사진" />
-                        </div>
-                        <div className="auction_detail_item">
-                            <div className="item_title">프리미엄 고당도 꿀수박 50통</div>
-                            <div className="item_origin">원산지 | 산골짜기</div>
-                            <div className="item_delivery">배송정보 | 무료배송, 08/09 도착예정</div>
-                            <div className="item_minbid">
-                                <div className="minbid_title">최소 입찰가</div>
-                                <div className="minbid_amount">750,000원</div>
-                            </div>
-                        </div>
+                        {/* 경매 데이터가 로드되면 해당 정보를 표시 */}
+                        {auction ? (
+                            <>
+                                <div>
+                                    <img src={`http://localhost:8080/images/${auction.auctionImage}`} alt="상품 사진" />
+                                </div>
+                                <div className="auction_detail_item">
+                                    <div className="item_title">{auction.auctionTitle}</div>
+                                    <div className="item_origin">원산지 | 산골짜기</div>
+                                    <div className="item_delivery">배송정보 | 무료배송, 08/09 도착예정</div>
+                                    <div className="item_minbid">
+                                        <div className="minbid_title">최소 입찰가</div>
+                                        <div className="minbid_amount">{auction.auctionMinimumbid}원</div>
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <p>경매 정보를 불러오는 중입니다...</p>
+                        )}
                     </div>
 
                     <div className="auction_detail_separator"></div>

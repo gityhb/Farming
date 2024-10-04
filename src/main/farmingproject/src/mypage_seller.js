@@ -12,6 +12,7 @@ function Mypage_seller() {
     const [isJobModalOpen, setIsJobModalOpen] = useState(false);
     const [loggedInUserId,setLoggedInUserId]=useState(null);
     const [jobs,setJobs]=useState([]); //job 상태 추가
+    const [applications, setApplications] = useState([]); // 지원 완료 내역 상태 추가
 
     const handleViewResume = () => {
         setIsModalOpen(true);
@@ -42,10 +43,10 @@ function Mypage_seller() {
             });
     },[]);
 
-    //데이터베이스에서 일자리 정보를 가져오는 함수
-    const fetchJobs=async ()=>{
+    //데이터베이스에서 일자리 정보를 가져오는 함수 ( userId로 해당 사용자의 일자리 정보 가져옴 )
+    const fetchJobs=async (userId)=>{
         try{
-            const res = await fetch('api/job/all') //모든 일자리 백엔드 호출
+            const res = await fetch(`api/job/user/${userId}`) //모든 일자리 백엔드 호출
             if(!res.ok){
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
@@ -55,9 +56,28 @@ function Mypage_seller() {
             console.error('Error fetching jobs:',error);
         }
     };
+
+    // 지원 완료 내역을 가져오는 함수
+    const fetchApplications = async (userId) => {
+        try {
+            const res = await fetch(`/api/job/user/${userId}/applications`); // 지원 완료 내역 백엔드 호출
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            const data = await res.json();
+            setApplications(data); // 지원 완료 내역 상태에 저장
+        } catch (error) {
+            console.error('Error fetching applications:', error);
+        }
+    };
+
+    // loggedInUserId가 설정된 후 해당 사용자의 일자리 및 지원 내역 정보 가져오기
     useEffect(() => {
-        fetchJobs(); //컴포넌트 마운트 시 일자리 정보 가져옴
-    },[]);
+        if (loggedInUserId) {
+            fetchJobs(loggedInUserId); // loggedInUserId로 fetchJobs 호출
+            fetchApplications(loggedInUserId); // loggedInUserId로 fetchApplications 호출
+        }
+    }, [loggedInUserId]);
 
     return (
         <div className="mypage_seller">
