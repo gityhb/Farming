@@ -11,7 +11,8 @@
 
 .auction_detail_container img{
     width: 350px;
-    /*height: 250px;*/
+    height: 350px;
+    object-fit: cover;
     margin-right: 60px;
     border-radius: 10px;
 }

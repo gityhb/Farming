@@ -62,8 +62,19 @@ public class ProductApiController {
         return ResponseEntity.ok(products);
     }
 
+//    @GetMapping("/{productId}")
+//    public ResponseEntity<List<Product>> getProductById(@PathVariable("productId") Long productId) {
+//        try {
+//            List<Product> product = productService.findProductById(productId);
+//            return ResponseEntity.ok(product);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
+    public ResponseEntity<Product> getProductById(@PathVariable("productId") Long productId) {
         try {
             Product product = productService.findProductById(productId);
             return ResponseEntity.ok(product);
@@ -72,4 +83,5 @@ public class ProductApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 }

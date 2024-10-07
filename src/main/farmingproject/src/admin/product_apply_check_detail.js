@@ -1,8 +1,10 @@
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import  './product_apply_check_detail.css';
 import '../common/root.css';
 import axios from "axios";
 import {useParams} from "react-router-dom";
+import Modal from "react-modal";
+import DaumPostcode from "react-daum-postcode";
 
 function ProductApplyCheckDetail() {
     const { productId } = useParams();
@@ -42,12 +44,65 @@ function ProductApplyCheckDetail() {
     }
 
     return (
-        <div>
-            <h1>{product.productName}</h1>
-            <p>{product.productInfo}</p>
-            {/*<img src={product.productImagePath} alt={product.productName} />*/}
-            {/* Additional product details here */}
+        // <div>
+        //     안녕핫에ㅛ
+        //
+        //     {product.productId}
+        //     <h1>{product.sellerName}</h1>
+        //     <p>{product.productInfo}</p>
+        //     {/*<img src={product.productImagePath} alt={product.productName} />*/}
+        //     {/* Additional product details here */}
+        // </div>
+    <div id="body">
+        <div id={'prouct_apply_check_detail_page'} className={'page'}>
+            <div id={'contents'}>
+                <div id="product_detail_title">
+                    <h1>상품 상세 정보</h1>
+                </div>
+
+
+                {/* 결제창 배송지 정보 */}
+                <div className="payment_title"> 배송지 정보</div>
+                <table id="t_address_info">
+                    <tr>
+                        <td className="address_tbl_title">상품명</td>
+                        <td className="address_tbl_info">
+                            {product.productName}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="address_tbl_title">이름</td>
+                        <td className="address_tbl_info">{product.sellerName}</td>
+                    </tr>
+                    <tr>
+                        <td className="address_tbl_title">상품가격</td>
+                        <td className="new_address_tbl_info">
+                            {product.productPrice1}{product.productPrice2}{product.productPrice3}원
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="address_tbl_title">배송날짜</td>
+                        <td className="new_address_tbl_info">
+                            {product.productDeliveryDate}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="address_tbl_title">배송날짜</td>
+                        <td className="address_tbl_info">
+                            <select id="delivery-notes" class="delivery-notes">
+                                <option value="delivery-notes1" selected>요청사항 없음</option>
+                                <option value="delivery-notes2">문 앞에 놔주세요</option>
+                                <option value="delivery-notes3">도착 전 전화주세요</option>
+                                <option value="delivery-notes4">경비실에 놔주세요</option>
+                                <option value="delivery-notes5">벨 눌러주세요</option>
+                                <option value="delivery-notes6">직접 입력</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
+    </div>
     );
 }
 

@@ -1,5 +1,6 @@
 package com.farming.farmingproject.service;
 
+import com.farming.farmingproject.domain.Job;
 import com.farming.farmingproject.domain.Product;
 import com.farming.farmingproject.dto.AddProductRequest;
 import com.farming.farmingproject.repository.ProductRepository;
@@ -53,8 +54,13 @@ public class ProductService {
     }
 
     // 특정 ID를 가진 상품 가져오기
+//    public List<Product> findProductById(Long productId) {
+//        return productRepository.findInfoByProductId(productId);
+////                .orElseThrow(() -> new IllegalArgumentException("상품의 정보를 얻어올 수 없는 해당 상품 고유 번호: " + productId));
+//    }
+
     public Product findProductById(Long productId) {
-        return productRepository.findByProductId(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found with productId: " + productId));
+        return productRepository.findInfoByProductId(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품의 정보를 얻어올 수 없는 해당 상품 고유 번호: " + productId));
     }
 }
