@@ -107,5 +107,12 @@ public class ProductApiController {
         return ResponseEntity.ok(products);
     }
 
+    // 판매자 별 상품 등록 신청 내역 가져오기
+    @GetMapping("/{sellerId}/applylist")
+    public ResponseEntity<List<Product>> getProductApplyListById(@PathVariable("sellerId") Long sellerId) {
+        List<Product> products = productService.findProductApplyListsById(sellerId);
+        return ResponseEntity.ok(products);     // 조회된 product 목록을 응답으로 반환
+    }
+
 
 }

@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import './mypage_seller.css';
 import './common/root.css';
 import JobModal from './component/job_modal';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useUser} from "./common/userContext";
 
 function Mypage_seller() {
@@ -12,7 +12,9 @@ function Mypage_seller() {
     const [isJobModalOpen, setIsJobModalOpen] = useState(false);
     const [loggedInUserId,setLoggedInUserId]=useState(null);
     const [jobs,setJobs]=useState([]); //job 상태 추가
+    const [productApplyLists, setProductApplyLists] = useState([]);     // 상품 등록 신청 목록 상태 추가
     const [applications, setApplications] = useState([]); // 지원 완료 내역 상태 추가
+    const navigate = useNavigate();
 
     const handleViewResume = () => {
         setIsModalOpen(true);
@@ -57,6 +59,19 @@ function Mypage_seller() {
         }
     };
 
+    const fetchProductApplyLists = async (id) => {
+        console.log("id : ",id);
+        try {
+            const response = await fetch(`api/product/${id}/applylist`)
+            if(response.ok) {
+               const data = await response.json();
+               setProductApplyLists(data);
+            }
+        } catch (error) {
+            console.error('Error fetching productApplyLists : ', error);
+        }
+    }
+
     // 지원 완료 내역을 가져오는 함수
     const fetchApplications = async (userId) => {
         try {
@@ -76,8 +91,13 @@ function Mypage_seller() {
         if (loggedInUserId) {
             fetchJobs(loggedInUserId); // loggedInUserId로 fetchJobs 호출
             fetchApplications(loggedInUserId); // loggedInUserId로 fetchApplications 호출
+            fetchProductApplyLists(user.id);
         }
     }, [loggedInUserId]);
+
+    const handleProductClick = (productId) => {
+        navigate(`/product_apply_list_detail/${productId}`); // Navigate to the product detail page
+    };
 
     return (
         <div className="mypage_seller">
@@ -88,7 +108,7 @@ function Mypage_seller() {
             <div className="seller_info">
                 <div className="seller_photo">
                     {/*<span>( 사진 등록 )</span>*/}
-                    <img src={"./img/osj.jpg"} alt={"판매자 사진"} />
+                    <img src={"./img/osj.jpg"} alt={"판매자 사진"}/>
                 </div>
                 <div className="seller_details">
                     <p>이름 : {user.name}</p>
@@ -153,18 +173,40 @@ function Mypage_seller() {
             </div>
             <div className="farmer_jobs">
                 <div className="section_header">
+                    <h2>상품 등록 신청 현황</h2>
+                    <a href="#" className="more_link">더보기 &gt;</a>
+                </div>
+                <div className="job_management">
+                    <ul className="job_list">
+                        {productApplyLists.length > 0 ? (
+                            productApplyLists.slice(0, 6).map((products) => (
+                                <li key={products.productId} onClick={() => handleProductClick(products.productId)}>
+                                    {products.productStatus === 0 && <span className={"pListsStatus"} style={{backgroundColor: '#D9D9D9'}}>보류</span>}
+                                    {products.productStatus === 1 && <span className={"pListsStatus"} style={{backgroundColor: '#FFF0AD'}}>등록</span>}
+                                    {products.productStatus === 2 && <span className={"pListsStatus"} style={{backgroundColor: '#FB5C5C'}}>탈락</span>}
+                                    <a href="#"><strong>{products.productName}</strong></a>
+                                </li>
+                            ))
+                        ) : (
+                            <li>신청한 상품이 없습니다.</li>
+                        )}
+                    </ul>
+                </div>
+            </div>
+            <div className="farmer_jobs">
+                <div className="section_header">
                     <h2>파머직</h2>
                     <a href="#" className="more_link">더보기 &gt;</a>
                 </div>
                 <div className="job_management">
                     <ul className="job_list">
-                        {jobs.length>0?(
-                            jobs.map((job)=>(
+                        {jobs.length > 0 ? (
+                            jobs.map((job) => (
                                 <li key={job.jobId}>
                                     <a href="#"><strong>{job.jobTitle}</strong> - {job.jobDate}, 일당 {job.jobSalary}</a>
                                 </li>
                             ))
-                        ): (
+                        ) : (
                             <li>등록된 일자리가 없습니다.</li>
                         )}
                     </ul>
