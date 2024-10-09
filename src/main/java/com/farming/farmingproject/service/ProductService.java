@@ -74,4 +74,8 @@ public class ProductService {
     public List<Product> findProductsByStatus(int productStatus) {
         return productRepository.findProductsByProductStatus(productStatus);
     }
+
+    public List<Product> findProductApplyListsById(Long sellerId) {
+        return productRepository.findProductApplyListsBySellerId(sellerId);
+    }
 }

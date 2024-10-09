@@ -104,6 +104,7 @@ import JobModal from './component/job_modal';
 import Product_apply_check_ing from "./admin/product_apply_check_ing";
 import Product_apply_check_pass from "./admin/product_apply_check_pass";
 import Product_apply_check_fail from "./admin/product_apply_check_fail";
+import Product_apply_list_detail from "./product_apply_list_detail";
 
 function App() {
     const location = useLocation();
@@ -149,6 +150,8 @@ function App() {
 
                     <Route path="/farmer_market_info/:productId" element={<Farmer_market_info/>}/>
                     <Route path="/farmer_market_info_seller/:productId" element={<Farmer_market_info_seller/>}/>
+
+                    <Route path="/product_apply_list_detail/:productId" element={<Product_apply_list_detail/>} />
 
                 </Routes>
                 {!hideHeaderFooter && <Footer/>}
