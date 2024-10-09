@@ -71,6 +71,10 @@ public class Product {
         this.productModifiedDate = new Timestamp(System.currentTimeMillis());
     }
 
+    public void setProductStatus(Integer productStatus) {
+        this.productStatus = productStatus;
+    }
+
 
 }
 

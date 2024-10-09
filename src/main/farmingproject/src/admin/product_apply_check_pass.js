@@ -4,7 +4,7 @@ import '../common/root.css';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
 
-function ProductApplyCheck() {
+function ProductApplyCheckPass() {
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
@@ -16,7 +16,7 @@ function ProductApplyCheck() {
 
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/product/all');
+            const response = await axios.get('http://localhost:8080/api/product?productStatus=1');
             setProducts(response.data);
 
             // 상태와 색상을 함께 설정
@@ -93,10 +93,18 @@ function ProductApplyCheck() {
                 <div id={'admin_product_apply_check_page'} className={'page'}>
                     <div id={'contents'}>
                         <div className={'admin_product_apply_chk_Btn'}>
-                            <Link to={"/admin/product_apply_check"}><div className={'product_apply_all_btn'} style={{ backgroundColor: '#FFEA8D' }}>전체</div></Link>
-                            <Link to={"/admin/product_apply_check_ing"}><div className={'product_apply_ing_btn'} style={{ backgroundColor: '#fff' }}>심사 보류</div></Link>
-                            <Link to={"/admin/product_apply_check_pass"}><div className={'product_apply_pass_btn'} style={{ backgroundColor: '#fff' }}>상품 등록</div></Link>
-                            <Link to={"/admin/product_apply_check_fail"}><div className={'product_apply_fail_btn'} style={{ backgroundColor: '#fff' }}>심사 탈락</div></Link>
+                            <Link to={"/admin/product_apply_check"}>
+                                <div className={'product_apply_all_btn'} style={{backgroundColor: '#fff'}}>전체</div>
+                            </Link>
+                            <Link to={"/admin/product_apply_check_ing"}>
+                                <div className={'product_apply_ing_btn'} style={{backgroundColor: '#fff'}}>심사 보류</div>
+                            </Link>
+                            <Link to={"/admin/product_apply_check_pass"}>
+                                <div className={'product_apply_pass_btn'} style={{backgroundColor: '#FFEA8D'}}>상품 등록</div>
+                            </Link>
+                            <Link to={"/admin/product_apply_check_fail"}>
+                                <div className={'product_apply_fail_btn'} style={{backgroundColor: '#fff'}}>심사 탈락</div>
+                            </Link>
                         </div>
 
                         <div className={'admin_product_apply_chk_div'}>
@@ -108,12 +116,16 @@ function ProductApplyCheck() {
                             </div>
 
                             {selectedProducts.map((product, index) => (
-                                <div key={product.productId} className={'admin_product_apply_chk_inner'} onClick={() => handleProductClick(product.productId)}>
+                                <div key={product.productId} className={'admin_product_apply_chk_inner'}
+                                     onClick={() => handleProductClick(product.productId)}>
                                     <div className={'admin_product_apply_chk_inner_content'}>
                                         <div className={'admin_product_apply_chk_inner_num'}>{product.productId}</div>
-                                        <div className={'admin_product_apply_chk_inner_title'}>{product.productName}</div>
-                                        <div className={'admin_product_apply_chk_inner_seller'}>{product.sellerName}</div>
-                                        <div className={'admin_product_apply_chk_inner_status'} style={{ color: pStatus[index]?.color }}>{pStatus[index]?.text}</div>
+                                        <div
+                                            className={'admin_product_apply_chk_inner_title'}>{product.productName}</div>
+                                        <div
+                                            className={'admin_product_apply_chk_inner_seller'}>{product.sellerName}</div>
+                                        <div className={'admin_product_apply_chk_inner_status'}
+                                             style={{color: pStatus[index]?.color}}>{pStatus[index]?.text}</div>
                                     </div>
                                 </div>
                             ))}
@@ -123,7 +135,10 @@ function ProductApplyCheck() {
                         <div className={'admin_product_apply_chk_pagenation'}>
                             {/* << 화살표, 페이지 그룹 이동 */}
                             {pageGroup > 1 && (
-                                <button className={'admin_product_apply_chk_pagenation_btn'} onClick={() => handleGroupChange('prev')}><img src={'/img/etc/arrowL.png'} style={{width: '10px'}}/></button>
+                                <button className={'admin_product_apply_chk_pagenation_btn'}
+                                        onClick={() => handleGroupChange('prev')}><img src={'/img/etc/arrowL.png'}
+                                                                                       style={{width: '10px'}}/>
+                                </button>
                             )}
 
                             {/* 개별 페이지 번호 */}
@@ -141,7 +156,10 @@ function ProductApplyCheck() {
 
                             {/* >> 화살표, 페이지 그룹 이동 */}
                             {endPage < totalPages && (
-                                <button className={'admin_product_apply_chk_pagenation_btn'} onClick={() => handleGroupChange('next')}><img src={'/img/etc/arrowR.png'} style={{width: '10px'}}/></button>
+                                <button className={'admin_product_apply_chk_pagenation_btn'}
+                                        onClick={() => handleGroupChange('next')}><img src={'/img/etc/arrowR.png'}
+                                                                                       style={{width: '10px'}}/>
+                                </button>
                             )}
                         </div>
                     </div>
@@ -150,4 +168,4 @@ function ProductApplyCheck() {
         );
 }
 
-export default ProductApplyCheck;
+export default ProductApplyCheckPass;

@@ -3,6 +3,7 @@ package com.farming.farmingproject.controller;
 import com.farming.farmingproject.domain.Product;
 import com.farming.farmingproject.domain.User;
 import com.farming.farmingproject.dto.AddProductRequest;
+import com.farming.farmingproject.dto.UpdateProductStatusRequest;
 import com.farming.farmingproject.service.ProductService;
 import com.farming.farmingproject.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.management.LockInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ public class ProductApiController {
 
     private final UserService userService;
 
+    // 상품 신청하기
     @PostMapping("/apply")
     public ResponseEntity<Map<String, Object>> applyProduct(@RequestBody AddProductRequest request, @AuthenticationPrincipal UserDetails userDetails) {
         Map<String, Object> response = new HashMap<>();
@@ -56,14 +59,27 @@ public class ProductApiController {
         }
     }
 
+    // 상품 모두 가져오기
     @GetMapping("/all")
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.findAllProducts();
         return ResponseEntity.ok(products);
     }
 
+//    @GetMapping("/{productId}")
+//    public ResponseEntity<List<Product>> getProductById(@PathVariable("productId") Long productId) {
+//        try {
+//            List<Product> product = productService.findProductById(productId);
+//            return ResponseEntity.ok(product);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+
+    // 해당 상품 고유 번호에 맞는 상품 정보 가져오기
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
+    public ResponseEntity<Product> getProductById(@PathVariable("productId") Long productId) {
         try {
             Product product = productService.findProductById(productId);
             return ResponseEntity.ok(product);
@@ -72,4 +88,24 @@ public class ProductApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    // 상품 상태 업데이트
+    @PutMapping("/{productId}/status")
+    public ResponseEntity<String> updateProductStatus(@PathVariable("productId") Long productId, @RequestBody UpdateProductStatusRequest updateStatusRequest) {
+        try {
+            productService.updateProductStatus(productId, updateStatusRequest.getProductStatus());
+            return ResponseEntity.ok("상품 상태가 성공적으로 수정되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("상품 상태 업데이트에 오류가 발생하였습니다.");
+        }
+    }
+
+    // 상품 상태 별로 상품 가져오기
+    @GetMapping("")
+    public ResponseEntity<List<Product>> getProductsByStatus(@RequestParam(value = "productStatus") int productStatus) {
+        List<Product> products = productService.findProductsByStatus(productStatus);
+        return ResponseEntity.ok(products);
+    }
+
+
 }
