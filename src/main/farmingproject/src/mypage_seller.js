@@ -203,7 +203,7 @@ function Mypage_seller() {
                         {jobs.length > 0 ? (
                             jobs.map((job) => (
                                 <li key={job.jobId}>
-                                    <a href="#"><strong>{job.jobTitle}</strong> - {job.jobDate}, 일당 {job.jobSalary}</a>
+                                    <strong>{job.jobTitle}</strong> - {job.jobDate}, 일당 {job.jobSalary}
                                 </li>
                             ))
                         ) : (
