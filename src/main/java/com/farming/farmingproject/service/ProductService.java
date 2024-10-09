@@ -63,4 +63,15 @@ public class ProductService {
         return productRepository.findInfoByProductId(productId)
                 .orElseThrow(() -> new IllegalArgumentException("상품의 정보를 얻어올 수 없는 해당 상품 고유 번호: " + productId));
     }
+
+    public void updateProductStatus(Long productId, int productStatus) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품의 정보를 얻어올 수 없는 해당 상품 고유 번호: " + productId));
+        product.setProductStatus(productStatus);
+        productRepository.save(product);    // 상태 저장
+    }
+
+    public List<Product> findProductsByStatus(int productStatus) {
+        return productRepository.findProductsByProductStatus(productStatus);
+    }
 }
