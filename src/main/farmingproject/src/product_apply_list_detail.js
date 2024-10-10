@@ -3,14 +3,13 @@ import  './admin/product_apply_check_detail.css';
 import './common/root.css';
 import axios from "axios";
 import {useParams} from "react-router-dom";
-import Modal from "react-modal";
-import DaumPostcode from "react-daum-postcode";
 
 function ProductApplyCheckDetail() {
     const { productId } = useParams();
     const [product, setProduct] = useState(null);
     const [pStatus, setPStatus] = useState({text:'', color:''});
     const [productStatus, setProductStatus] = useState(''); // 상태 저장
+    const [productImagesLists, setProductImagesLists] = useState([]);   // 상품 이미지들 저장
 
     console.log("productId : ", productId)
 
@@ -54,31 +53,30 @@ function ProductApplyCheckDetail() {
         }
     }
 
+    // 이미지가 안불러와짐, productId는 불러와짐(500, json 오류라나 뭐라나)
+    const fetchProductImagesLists = async (productId) => {
+        console.log("productId : ", productId);
+        try {
+            const response = await fetch(`/api/product_img/${productId}/list`)
+            if(response.ok) {
+                const data = await response.json();
+                setProductImagesLists(data);
+            }
+        } catch (error) {
+            console.log('Error fetching productImagesLists : ', error);
+        }
+    }
+
     useEffect(() => {
         // 페이지 로드 시 상품 정보 가져오기
         fetchProduct();
+        fetchProductImagesLists(productId);
     }, [productId]);
 
 
     if (!product) {
         return <div>Loading...</div>;
     }
-
-
-
-    const handlePStatusChange = async (e) => {
-        const newPStatus = e.target.value;
-        console.log("변경된 상품 상태(newPStatus) : ", newPStatus);
-        // setProductStatus(parseInt(newPStatus));
-        // 서버로 상태 전송 및 DB 업데이트
-        try {
-            await axios.put(`http://localhost:8080/api/product/${productId}/status`, {productStatus: newPStatus});
-            setPStatus(getPStatusObject(newPStatus));
-            setProductStatus(newPStatus); // 상태 값 업데이트
-        } catch (error) {
-            console.error("상품 상태 업데이트에 실패하였습니다 : ", error);
-        }
-    };
 
     return (
     <div id="body">
@@ -88,6 +86,32 @@ function ProductApplyCheckDetail() {
                     <h1>상품 상세 정보</h1>
                 </div>
                 {/* 결제창 배송지 정보 */}
+
+                <div className={'product_apply_img_box'}>
+                    <div className={'product_img_show'} id={'product_img_show'}>
+                        {productImagesLists.length > 0 ? (
+                            productImagesLists.map((productImage) => (
+                                <div key={productImage.productImageId} className={'product_img_list'}>
+                                    <img src={productImage.productImagePath} alt={product.productName} />
+                                </div>
+                            ))
+                        ): (<div>이미지가 없습니다.</div>
+                        )}
+                        {/*{imageSrcs.map((src, index) => (*/}
+                        {/*    <div key={index} className={'product_img_list'}>*/}
+                        {/*        <img src={src} alt={fileNames[index]} className="product_img"/>*/}
+                        {/*    </div>*/}
+                        {/*))}*/}
+                    </div>
+                    {/*<div id={'product_file_input'}>*/}
+                    {/*    <p>FILE NAME : </p>*/}
+                    {/*    {fileNames.map((name, index) => (*/}
+                    {/*        <p key={index} id={'product_file_name'}>*/}
+                    {/*            {name}*/}
+                    {/*        </p>*/}
+                    {/*    ))}*/}
+                    {/*</div>*/}
+                </div>
                 <table id="t_address_info">
                     <tbody>
                     <tr>

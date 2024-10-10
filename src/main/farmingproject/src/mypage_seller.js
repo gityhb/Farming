@@ -183,7 +183,7 @@ function Mypage_seller() {
                 <div className="job_management">
                     <ul className="job_list">
                         {productApplyLists.length > 0 ? (
-                            productApplyLists.slice(0, 6).map((products) => (
+                            productApplyLists.slice(0, 86).map((products) => (
                                 <li key={products.productId} onClick={() => handleProductClick(products.productId)}>
                                     {products.productStatus === 0 && <span className={"pListsStatus"} style={{backgroundColor: '#D9D9D9'}}>보류</span>}
                                     {products.productStatus === 1 && <span className={"pListsStatus"} style={{backgroundColor: '#FFF0AD'}}>등록</span>}

@@ -9,23 +9,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class ProductImageService {
     @Autowired
     private final ProductImageRepository productImageRepository;
-
     private final ProductRepository productRepository;
 
-    public Long save(AddProductImageRequest dto) {
+    public ProductImage save(AddProductImageRequest dto) {
 
         // Product 엔티티 조회
         Product product = productRepository.findById(dto.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        return productImageRepository.save(ProductImage.builder()
+        ProductImage productImage = ProductImage.builder()
                 .product(product)
                 .productImagePath(dto.getProductImagePath())
-                .build()).getProductImageId();
+                .build();
+
+        return productImageRepository.save(productImage);
+
+    }
+
+    public List<ProductImage> findProductImagesByProductId(Long productId) {
+        return productImageRepository.findProductImagesByProduct_ProductId(productId);
     }
 }

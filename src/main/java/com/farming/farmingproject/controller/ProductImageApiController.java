@@ -1,5 +1,7 @@
 package com.farming.farmingproject.controller;
 
+import com.farming.farmingproject.domain.Product;
+import com.farming.farmingproject.domain.ProductImage;
 import com.farming.farmingproject.dto.AddProductImageRequest;
 import com.farming.farmingproject.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
@@ -7,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -36,5 +38,20 @@ public class ProductImageApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @GetMapping("/{productId}/list")
+    public ResponseEntity<List<ProductImage>>  getProductImagesByProductId(@PathVariable("productId") Long productId) {
+        List<ProductImage> productImages = productImageService.findProductImagesByProductId(productId);
+        return ResponseEntity.ok(productImages);
+    }
+
+//    @GetMapping("/list/{productId}")
+//    public ResponseEntity<List<ProductImageResponse>> getProductImagesByproductId(@PathVariable Long productId) {
+//        List<ProductImage> productImages = productImageRepository.findByProductId(productId);
+//        List<ProductImageResponse> response = productImages.stream()
+//                .map(image -> new ProductImageResponse(image.getProductImagePath()))
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(response);
+//    }
 
 }
