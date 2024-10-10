@@ -53,26 +53,12 @@ public class JobApplyService {
         jobApplyRepository.save(jobApply);
     }
 
-    // 특정 구인 공고에 대한 모든 지원서 조회
-    @Transactional(readOnly = true)
-    public List<JobApply> getJobAppliesByJob(Long jobId) {
-        Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 구인 공고를 찾을 수 없습니다."));
-        return jobApplyRepository.findByJob(job);
+    // **모든 지원서 조회**
+    public List<JobApply> getAllJobApplications() {
+        return jobApplyRepository.findAll();
     }
-
-    // 특정 사용자가 지원한 모든 지원서 조회
-    @Transactional(readOnly = true)
-    public List<JobApply> getJobAppliesByUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 사용자를 찾을 수 없습니다."));
-        return jobApplyRepository.findByUser(user);
-    }
-
-    // 특정 지원서 ID로 지원서 조회
-    @Transactional(readOnly = true)
-    public JobApply getJobApplyById(Long jobApplyId) {
-        return jobApplyRepository.findById(jobApplyId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 지원서를 찾을 수 없습니다."));
+    // 사용자가 올린 구인 공고에 대한 지원 내역 조회
+    public List<JobApply> getApplicationsForUserJobs(String  userId) {
+        return jobApplyRepository.findApplicationsForUserJobs(userId);
     }
 }

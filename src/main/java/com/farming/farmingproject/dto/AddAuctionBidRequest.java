@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AddAuctionBidRequest {
     private Long auctionId;
-    private Long userId;
+    private String userId;
     private double auctionBidAmount;
 
-    public AddAuctionBidRequest(Long auctionId, Long userId, double auctionBidAmount) {
+    public AddAuctionBidRequest(Long auctionId, String userId, double auctionBidAmount) {
         this.auctionId = auctionId;
         this.userId = userId;
         this.auctionBidAmount = auctionBidAmount;

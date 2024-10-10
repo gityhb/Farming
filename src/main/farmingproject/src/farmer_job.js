@@ -96,7 +96,7 @@ function FarmerJob() {
                     <div className="farmergic_main_container">
                         <div className="farmergic_main">
                                 {jobs.map((job) => (
-                                    <div><Link to={`/farmer_job_info/${job.jobId}`} key={job.jobId}>
+                                    <div key={job.jobId}><Link to={`/farmer_job_info/${job.jobId}`} key={job.jobId}>
                                         <div className="farmergic_main_item">
                                             <div className="farmergic_main_item01">
                                                 <div className="farmergic_main_item_title">{job.jobTitle}</div>

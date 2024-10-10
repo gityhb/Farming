@@ -18,12 +18,12 @@ public class JobApply {
     private Long jobApplyId;
 
     //Job테이블과의 관계
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="job_id",nullable = false)//공고 ID 외래키
     private Job job;
 
     //User 테이블과의 관계 (지원자 정보)
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="user_id",nullable = false) //지원자 ID 외래키
     private User user;
 

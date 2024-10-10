@@ -1,26 +1,41 @@
 package com.farming.farmingproject.controller;
 
-
 import com.farming.farmingproject.domain.AuctionBid;
+import com.farming.farmingproject.dto.AddAuctionBidRequest;
 import com.farming.farmingproject.service.AuctionBidService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/auctionbid")
-@CrossOrigin(origins = "http://localhost:3000")//프론트엔드 허용
+@RequestMapping("/api/auctionbid")  // 경매 입찰 관련 API 엔드포인트
+@RequiredArgsConstructor
 public class AuctionBidController {
-    @Autowired
-    private AuctionBidService auctionBidService;
 
-    // 특정 경매의 모든 입찰 목록 조회
-    @GetMapping("/bids/{auctionId}")
-    public ResponseEntity<List<AuctionBid>> getBidsByAuctionId(@PathVariable Long auctionId) {
-        List<AuctionBid> bids = auctionBidService.getBidByAuction(auctionId);
-        return ResponseEntity.ok(bids);
+    private final AuctionBidService auctionBidService;
+
+    // 입찰 추가 API
+    @PostMapping
+    public ResponseEntity<AuctionBid> placeBid(@RequestBody AddAuctionBidRequest request) {
+        AuctionBid auctionBid = auctionBidService.placeBid(request);  // 새로운 입찰 저장
+        return ResponseEntity.ok(auctionBid);  // 성공적으로 저장된 입찰 반환
     }
+
+    // 특정 경매에 대한 가장 높은 입찰 정보를 가져오는 API
+    @GetMapping("/highest/{auctionId}")
+    public ResponseEntity<AuctionBid> getHighestBid(@PathVariable Long auctionId) {
+        return auctionBidService.getHighestBid(auctionId)
+                .map(ResponseEntity::ok)  // 가장 높은 입찰 반환
+                .orElse(ResponseEntity.notFound().build());  // 입찰이 없으면 404 반환
+    }
+
+    // 상위 5개의 입찰 금액을 반환하는 API
+    @GetMapping("/top5/{auctionId}")
+    public ResponseEntity<List<Double>> getTop5BidAmounts(@PathVariable("auctionId") Long auctionId) {
+        List<Double> topBidAmounts = auctionBidService.getTop5BidAmounts(auctionId);
+        return ResponseEntity.ok(topBidAmounts);  // 상위 5개의 입찰 금액을 반환
+    }
+
 }

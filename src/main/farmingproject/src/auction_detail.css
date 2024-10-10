@@ -156,6 +156,7 @@
     background-color: #FFD700;
     text-align: center;
     position: relative;
+    border-radius: 5px 5px 0 0;
 }
 
 .bar_value {
@@ -166,26 +167,32 @@
     font-weight: bold;
 }
 
+/* 막대별 높이 설정 */
 .bar1 {
-    height: 250px;
-    background-color: #FF9900;
+    height: 250px; /* 첫 번째 막대 */
+    background-color: #FF4500; /* 색상 강조 */
 }
 
 .bar2 {
-    height: 180px;
+    height: 200px; /* 두 번째 막대 */
+    background-color: #FFA500;
 }
 
 .bar3 {
-    height: 160px;
+    height: 160px; /* 세 번째 막대 */
+    background-color: #FFD700;
 }
 
 .bar4 {
-    height: 140px;
+    height: 120px; /* 네 번째 막대 */
+    background-color: #F0E68C;
 }
 
 .bar5 {
-    height: 120px;
+    height: 80px; /* 다섯 번째 막대 */
+    background-color: #E6E6FA;
 }
+
 
 
 .auction_complete_input{

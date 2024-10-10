@@ -45,6 +45,7 @@ function Auction() {
                 </div>
             </div>
         </div>
+
     );
 }
 

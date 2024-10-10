@@ -21,7 +21,7 @@ public class AuctionBid {
     @Column(name="auctionbid_id",updatable = false)
     private Long auctionBidId;
 
-    //auction 테이브르이 auctionId 참조
+    //auction 테이블의 auctionId 참조
     @ManyToOne
     @JoinColumn(name="auction_id",nullable = false)
     private Auction auction;
