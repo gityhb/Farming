@@ -6,27 +6,6 @@ import {useUser} from "./userContext";
 
 function Header() {
 
-    // // 회원가입 및 로그인 관련 (먼저 실행해주어야 함, 실행 순서 중요!)
-    // const [user, setUser] = useState(null);
-    // const navigate = useNavigate();
-    //
-    // useEffect(() => {
-    //     // 로그인된 사용자 정보를 API에서 가져옴
-    //     axios.get('http://localhost:8080/api/user', { withCredentials: true })
-    //         .then(response => {
-    //             setUser(response.data);
-    //         })
-    //         .catch(error => {
-    //             if (error.response && error.response.status === 401) {
-    //                 // 사용자 정보가 없는 경우
-    //                 setUser(null);
-    //             } else {
-    //                 console.error("There was an error fetching the user data!", error);
-    //             }
-    //         });
-    // }, []);
-
-
     const { user } = useUser();
     console.log("User in Header: ", user);
 

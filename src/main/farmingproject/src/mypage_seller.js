@@ -12,7 +12,6 @@ function Mypage_seller() {
     const [isJobModalOpen, setIsJobModalOpen] = useState(false);
     const [loggedInUserId,setLoggedInUserId]=useState(null);
     const [jobs,setJobs]=useState([]); //job 상태 추가
-    const [applications, setApplications] = useState([]); // 사용자가 올린 구인 공고에 대한 지원 내역
     const [selectedApplication, setSelectedApplication] = useState(null); // 선택된 지원자의 정보를 저장할 상태
     const [productApplyLists, setProductApplyLists] = useState([]);     // 상품 등록 신청 목록 상태 추가
     const [applications, setApplications] = useState([]); // 지원 완료 내역 상태 추가
@@ -212,7 +211,6 @@ function Mypage_seller() {
                                     <Link to={`/farmer_job_info/${job.jobId}`}>
                                         <strong>{job.jobTitle}</strong> - {job.jobDate}, 일당 {job.jobSalary}
                                     </Link>
-                                    <strong>{job.jobTitle}</strong> - {job.jobDate}, 일당 {job.jobSalary}
                                 </li>
                             ))
                         ) : (
