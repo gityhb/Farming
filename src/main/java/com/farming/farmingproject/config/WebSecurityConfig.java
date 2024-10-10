@@ -38,9 +38,11 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/login"),
                                 new AntPathRequestMatcher("/signup"),
                                 new AntPathRequestMatcher("/user"),
+                                new AntPathRequestMatcher("/error"),
                                 new AntPathRequestMatcher("/api/**"),
                                 new AntPathRequestMatcher("/api/check_user_id"),     // 모든 API 엔드포인트를 허용
                                 new AntPathRequestMatcher("/api/job/**"),     // '/api/job/**' 경로를 인증 없이 허용
+                                new AntPathRequestMatcher("/api/jobapply/**"),     // '/api/job/**' 경로를 인증 없이 허용
                                 new AntPathRequestMatcher("/api/product/**"),
                                 new AntPathRequestMatcher("/api/reviews")
                                 // 모든 API 엔드포인트를 허용

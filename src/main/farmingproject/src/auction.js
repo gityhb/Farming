@@ -23,8 +23,9 @@ function Auction() {
                         </div>
                     </div>
                     <div className={'auction_container'}>
+                        <div className={'auction_content'}>
                         {auctions.map((auction) => (
-                            <div key={auction.auctionId} className={'auction_content'}>
+                            <div key={auction.auctionId}>
                                 <div className={'auction_content_item'}>
                                     {/* auctionId를 URL에 포함해서 전달 */}
                                     <Link to={`/auction_detail/${auction.auctionId}`}>
@@ -39,10 +40,12 @@ function Auction() {
                                 </div>
                             </div>
                         ))}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     );
 }
 

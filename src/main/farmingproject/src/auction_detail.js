@@ -1,87 +1,116 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './auction_detail.css';
 import './common/root.css';
 import { useParams } from 'react-router-dom';
+import { useUser } from './common/userContext';
 
 function AuctionDetail() {
+    const { user } = useUser();
+    const [loggedInUserId, setLoggedInUserId] = useState(null);
     const { auctionId } = useParams(); // URL에서 auction_id를 가져옴
     const [auction, setAuction] = useState(null); // 경매 데이터를 저장할 상태
-    const [timeLeft, setTimeLeft] = useState(15); // 15초
-    const [isAuctionOver, setIsAuctionOver] = useState(false);
-    const [chatMessages, setChatMessages] = useState([]);
-    const [message, setMessage] = useState("");
-    const chatBoxRef = useRef(null);
+    const [bidAmount, setBidAmount] = useState(''); // 입력된 입찰 금액을 저장할 상태
+    const [chatMessages, setChatMessages] = useState([]); // 채팅 메시지 상태
+    const [firstRoundBids, setFirstRoundBids] = useState([]); // 1차 입찰 결과
+    const [combinedBids, setCombinedBids] = useState([]); // 1차 + 2차 결과를 저장할 상태
+    const [firstRoundCompleted, setFirstRoundCompleted] = useState(false); // 1차 입찰 완료 여부
+    const [secondRoundStarted, setSecondRoundStarted] = useState(false); // 2차 입찰 여부를 저장할 상태
+    const [auctionEnded, setAuctionEnded] = useState(false); // 경매 종료 여부
 
     // auction_id에 맞는 경매 항목 불러오기
     useEffect(() => {
         fetch(`/api/auction/items/${auctionId}`) // 경매 항목에 대한 API 요청
-            .then(response => response.json())
-            .then(data => setAuction(data))
-            .catch(error => console.error('Error fetching auction data:', error));
+            .then((response) => response.json())
+            .then((data) => setAuction(data))
+            .catch((error) => console.error('Error fetching auction data:', error));
     }, [auctionId]);
 
+    // 사용자의 정보를 가져오는 useEffect
     useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prevTime) => {
-                if (prevTime > 0) {
-                    return prevTime - 1;
-                } else {
-                    clearInterval(timer);
-                    setIsAuctionOver(true); // 경매가 종료되었음을 표시
-                    return 0;
-                }
+        fetch('/api/user') // 서버에서 사용자의 정보를 불러오는 API 호출
+            .then((response) => response.json())
+            .then((data) => {
+                setLoggedInUserId(data.userId);
+            })
+            .catch((error) => {
+                console.error('Error fetching user info:', error);
             });
-        }, 1000);
-
-        return () => clearInterval(timer);
     }, []);
 
-    const formatTime = (seconds) => {
-        const minutes = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    };
+    // 입찰 금액을 서버에 보내는 함수
+    const handleSendBid = () => {
+        if (!bidAmount || isNaN(bidAmount)) {
+            alert('유효한 금액을 입력하세요.');
+            return;
+        }
 
-    const getCurrentTime = () => {
-        const now = new Date();
-        return now.toLocaleString('ko-KR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-    };
-
-    const handleSendMessage = () => {
-        if (message.trim() !== "") {
-            setChatMessages((prevMessages) => [
-                ...prevMessages,
-                { user: "You", text: message, time: getCurrentTime() }
-            ]);
-            setMessage("");
-
-            // 2초 후에 상대방 메세지 자동으로 전송
-            setTimeout(() => {
+        // 입찰 API 호출
+        fetch('/api/auctionbid', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                auctionId: auctionId, // 경매Id
+                userId: loggedInUserId, // 사용자Id
+                auctionBidAmount: parseFloat(bidAmount), // 입찰금액
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // 입찰이 성공하면 새로운 메시지를 추가
                 setChatMessages((prevMessages) => [
                     ...prevMessages,
-                    { user: "상대방", text: "1차 입찰 결과 입니다.\n01) 800,0000 \n02) 798,000 \n\n2차 입찰가를 입력해주세요.", time: getCurrentTime() }
+                    {
+                        user: '관리자',
+                        message: `입찰가: ${bidAmount}원`,
+                        time: new Date().toLocaleTimeString(),
+                    },
                 ]);
-            }, 2000);
-        }
+
+                setBidAmount(''); // 입력 필드 초기화
+
+                // 1차 입찰 완료 후 30초 후 1차 결과 표시
+                if (!firstRoundCompleted && !secondRoundStarted) {
+                    setTimeout(() => {
+                        fetchTop5Results('first'); // 1차 결과를 가져오는 함수 호출
+                        setFirstRoundCompleted(true);
+                    }, 30 * 1000); // 30초
+                }
+                // 2차 입찰 후 30초 후 1차 + 2차 결과 표시
+                else if (firstRoundCompleted && secondRoundStarted) {
+                    setTimeout(() => {
+                        fetchTop5Results('combined'); // 1차 + 2차 결과를 가져오는 함수 호출
+                        setAuctionEnded(true); // 경매 종료
+                    }, 30 * 1000); // 30초
+                }
+            })
+            .catch((error) => {
+                console.error('Error sending bid:', error);
+            });
     };
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSendMessage();
-        }
+    // 상위 5개의 입찰 금액을 불러오는 함수
+    const fetchTop5Results = (type) => {
+        fetch(`/api/auctionbid/top5/${auctionId}`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (type === 'first') {
+                    setFirstRoundBids(data); // 1차 입찰 결과 저장
+                    startSecondRound(); // 1차 결과 후 2차 입찰 시작
+                } else if (type === 'combined') {
+                    setCombinedBids(data); // 1차 + 2차 결과 저장
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching top 5 bids:', error);
+            });
     };
 
-    useEffect(() => {
-        if (chatBoxRef.current) {
-            chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-        }
-    }, [chatMessages]);
+    // 2차 입찰을 시작하는 함수
+    const startSecondRound = () => {
+        setSecondRoundStarted(true);
+    };
 
     return (
         <div id="body">
@@ -91,11 +120,13 @@ function AuctionDetail() {
                         <div className="auction_detail_text">경매 상세</div>
                     </div>
                     <div className="auction_detail_container">
-                        {/* 경매 데이터가 로드되면 해당 정보를 표시 */}
                         {auction ? (
                             <>
                                 <div>
-                                    <img src={`http://localhost:8080/images/${auction.auctionImage}`} alt="상품 사진" />
+                                    <img
+                                        src={`http://localhost:8080/images/${auction.auctionImage}`}
+                                        alt="상품 사진"
+                                    />
                                 </div>
                                 <div className="auction_detail_item">
                                     <div className="item_title">{auction.auctionTitle}</div>
@@ -114,109 +145,64 @@ function AuctionDetail() {
 
                     <div className="auction_detail_separator"></div>
 
-                    {isAuctionOver ? (
-                        <>
-                            <div className="auction_amount">
-                                <div className="auction_complete_input">
-                                    <div className="auction_complete_box"></div>
-                                    <div className="auction_complete_text">경매완료</div>
+                    <div className="auction_graphs_container">
+                        {/* 1차 입찰 결과 표시 */}
+                        {firstRoundBids.length > 0 && (
+                            <div className="graph_section left">
+                                <div className="graph_title">1차 입찰 결과 TOP 5</div>
+                                <div className="graph">
+                                    {firstRoundBids.map((bid, index) => (
+                                        <div key={index} className={`bar bar${index + 1}`}>
+                                            <div className="bar_value">{bid}원</div>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="auction_amount_btn">입찰하기</div>
                             </div>
+                        )}
 
-                            <div className="auction_graphs_container">
-                                <div className="graph_section">
-                                    <div className="graph_title">1차 입찰 결과 TOP5</div>
-                                    <div className="graph">
-                                        <div className="bar bar1">
-                                            <div className="bar_value">400,000</div>
+                        {/* 1차 + 2차 입찰 결과 표시 */}
+                        {combinedBids.length > 0 && (
+                            <div className="graph_section right">
+                                <div className="graph_title">1차 + 2차 입찰 결과 TOP 5</div>
+                                <div className="graph">
+                                    {combinedBids.map((bid, index) => (
+                                        <div key={index} className={`bar bar${index + 1}`}>
+                                            <div className="bar_value">{bid}원</div>
                                         </div>
-                                        <div className="bar bar2">
-                                            <div className="bar_value">397,000</div>
-                                        </div>
-                                        <div className="bar bar3">
-                                            <div className="bar_value">395,000</div>
-                                        </div>
-                                        <div className="bar bar4">
-                                            <div className="bar_value">394,000</div>
-                                        </div>
-                                        <div className="bar bar5">
-                                            <div className="bar_value">388,000</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="graph_section">
-                                    <div className="graph_title">1차 + 2차 입찰 결과 TOP5</div>
-                                    <div className="graph">
-                                        <div className="bar bar1">
-                                            <div className="bar_value">470,000</div>
-                                        </div>
-                                        <div className="bar bar2">
-                                            <div className="bar_value">450,000</div>
-                                        </div>
-                                        <div className="bar bar3">
-                                            <div className="bar_value">435,000</div>
-                                        </div>
-                                        <div className="bar bar4">
-                                            <div className="bar_value">400,000</div>
-                                        </div>
-                                        <div className="bar bar5">
-                                            <div className="bar_value">397,000</div>
-                                        </div>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
-                        </>
-                    ) : (
-                        <div className="auction_time"> 1차 {formatTime(timeLeft)}</div>
-                        // <div className="auction_amount">
-                        //     <div className="auction_amount_input">
-                        //         <div className="auction_time"> 1차 {formatTime(timeLeft)}</div>
-                        //         <div className={'auction_input_container'}>
-                        //             <input type={'number'} className={'auction_amount_input_field'}
-                        //                    placeholder={"입찰가 입력"} />
-                        //             <div className="auction_amount_text"> 원</div>
-                        //         </div>
-                        //     </div>
-                        //     <div className="auction_amount_btn">입찰하기</div>
-                        // </div>
-                    )}
+                        )}
+                    </div>
+
                     <div className="chat_container">
-                        <div className="chat_box" ref={chatBoxRef}>
-                            <div
-                                 className={`chat_message_wrapper other_message_wrapper`}>
-                                    <div className="chat_username">사용자</div> {/* 상대방의 경우 닉네임 표시 */}
-                                <div className={`chat_message other_message`}>
-                                    경매를 시작합니다. 1차 입찰가를 입력해주세요.
-                                </div>
-                                <div className="chat_time">{getCurrentTime()}</div>
-                                {/* 날짜와 시간 표시 */}
-                            </div>
+                        <div className="chat_box">
                             {chatMessages.map((msg, index) => (
-                                <div key={index}
-                                     className={`chat_message_wrapper ${msg.user === "You" ? "my_message_wrapper" : "other_message_wrapper"}`}>
-                                    {msg.user !== "You" &&
-                                        <div className="chat_username">{msg.user}</div>} {/* 상대방의 경우 닉네임 표시 */}
-                                    <div
-                                        className={`chat_message ${msg.user === "You" ? "my_message" : "other_message"}`}  style={{ whiteSpace: 'pre-wrap' }}>
-                                        {msg.text}
-                                    </div>
+                                <div key={index} className={`chat_message_wrapper`}>
+                                    <div className="chat_username">{msg.user}</div>
+                                    <div className="chat_message">{msg.message}</div>
                                     <div className="chat_time">{msg.time}</div>
-                                    {/* 날짜와 시간 표시 */}
                                 </div>
                             ))}
                         </div>
-                        <div className="chat_input_container">
-                            <input
-                                type="text"
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                                className="chat_input"
-                                placeholder="메세지를 입력하세요..."
-                                onKeyDown={handleKeyPress}
-                            />
-                            <button onClick={handleSendMessage} className="chat_send_btn">전송</button>
-                        </div>
+
+                        {/* 입찰 종료 후 입력 금지 */}
+                        {!auctionEnded ? (
+                            <div className="chat_input_container">
+                                <input
+                                    type="text"
+                                    className="chat_input"
+                                    placeholder={secondRoundStarted ? "2차 입찰 금액을 입력하세요..." : "입찰 금액을 입력하세요..."}
+                                    value={bidAmount}
+                                    onChange={(e) => setBidAmount(e.target.value)}
+                                />
+                                <button className="chat_send_btn" onClick={handleSendBid}>
+                                    {secondRoundStarted ? "2차 입찰" : "입찰"}
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="auction_ended">경매가 종료되었습니다.</div>
+                        )}
                     </div>
                 </div>
             </div>

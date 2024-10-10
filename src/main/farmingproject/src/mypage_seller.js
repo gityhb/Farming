@@ -12,14 +12,17 @@ function Mypage_seller() {
     const [isJobModalOpen, setIsJobModalOpen] = useState(false);
     const [loggedInUserId,setLoggedInUserId]=useState(null);
     const [jobs,setJobs]=useState([]); //job 상태 추가
-    const [applications, setApplications] = useState([]); // 지원 완료 내역 상태 추가
+    const [applications, setApplications] = useState([]); // 사용자가 올린 구인 공고에 대한 지원 내역
+    const [selectedApplication, setSelectedApplication] = useState(null); // 선택된 지원자의 정보를 저장할 상태
 
-    const handleViewResume = () => {
-        setIsModalOpen(true);
+    const handleViewResume = (application) => {
+        setSelectedApplication(application);  // 선택된 지원자의 정보를 상태에 저장
+        setIsModalOpen(true);  // 모달 열기
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        setIsModalOpen(false);  // 모달 닫기
+        setSelectedApplication(null);  // 선택된 지원자 정보 초기화
     };
 
     const handleAddJob = () => {
@@ -57,15 +60,15 @@ function Mypage_seller() {
         }
     };
 
-    // 지원 완료 내역을 가져오는 함수
+    // 사용자가 올린 구인 공고에 대해 지원한 지원 내역을 가져오는 함수
     const fetchApplications = async (userId) => {
         try {
-            const res = await fetch(`/api/job/user/${userId}/applications`); // 지원 완료 내역 백엔드 호출
+            const res = await fetch(`/api/jobapply/user/${userId}/applications`); // 지원 내역을 가져오는 API 호출
             if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
             const data = await res.json();
-            setApplications(data); // 지원 완료 내역 상태에 저장
+            setApplications(data); // 지원 내역 상태에 저장
         } catch (error) {
             console.error('Error fetching applications:', error);
         }
@@ -151,6 +154,7 @@ function Mypage_seller() {
                     </ul>
                 </div>
             </div>
+            {/* 사용자가 올린 구인 공고 */}
             <div className="farmer_jobs">
                 <div className="section_header">
                     <h2>파머직</h2>
@@ -161,10 +165,12 @@ function Mypage_seller() {
                         {jobs.length>0?(
                             jobs.map((job)=>(
                                 <li key={job.jobId}>
-                                    <a href="#"><strong>{job.jobTitle}</strong> - {job.jobDate}, 일당 {job.jobSalary}</a>
+                                    <Link to={`/farmer_job_info/${job.jobId}`}>
+                                        <strong>{job.jobTitle}</strong> - {job.jobDate}, 일당 {job.jobSalary}
+                                    </Link>
                                 </li>
                             ))
-                        ): (
+                        ) : (
                             <li>등록된 일자리가 없습니다.</li>
                         )}
                     </ul>
@@ -181,30 +187,26 @@ function Mypage_seller() {
                         <a href="#" className="more_link">더보기 &gt;</a>
                     </div>
                     <ul className="application_list">
-                        <li>
-                            <div className="application_details">
-                                <p><strong>포도 수확 알바</strong></p>
-                                <p>지원자: 신짱구</p>
-                                <p>확인: <button className="btn" onClick={() => handleViewResume()}>이력서 열람</button></p>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="application_details">
-                                <p><strong>사과 농장 수확 도우미</strong></p>
-                                <p>지원자: 도라에몽</p>
-                                <p>확인: <button className="btn" onClick={() => handleViewResume()}>이력서 열람</button></p>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="application_details">
-                                <p><strong>배추 심기 작업</strong></p>
-                                <p>지원자: 노진구</p>
-                                <p>확인: <button className="btn" onClick={() => handleViewResume()}>이력서 열람</button></p>
-                            </div>
-                        </li>
+                        {applications.length > 0 ? (
+                            applications.map((application) => (
+                                <li key={application.jobApplyId}>
+                                    <div className="application_details">
+                                        <p><strong>{application.job ? application.job.jobTitle : '직업 정보 없음'}</strong>
+                                        </p>
+                                        <p>지원자: {application.user ? application.user.name : '지원자 정보 없음'}</p>
+                                        <p>지원 내용: {application.applyContent || '지원 내용 없음'}</p>
+                                        <p>확인: <button className="btn" onClick={() => handleViewResume(application)}>이력서
+                                            열람</button></p>
+                                    </div>
+                                </li>
+                            ))
+                        ) : (
+                            <li>등록된 지원 내역이 없습니다.</li>
+                        )}
                     </ul>
+
                 </div>
-                {isModalOpen && (
+                {isModalOpen && selectedApplication && selectedApplication.user && (
                     <div className="modal">
                         <div className="modal_content">
                             <span className="close" onClick={closeModal}>&times;</span>
@@ -213,37 +215,37 @@ function Mypage_seller() {
                                 <div className="form_table">
                                     <div className="form_row">
                                         <div className="form_cell label">성명</div>
-                                        <div className="form_cell input">신짱구</div>
+                                        <div className="form_cell input">{selectedApplication.user.name}</div>
                                     </div>
                                     <div className="form_row">
                                         <div className="form_cell label">생년월일</div>
-                                        <div className="form_cell input">1994년 05월 05일</div>
+                                        <div className="form_cell input">{selectedApplication.applyBirth}</div>
                                     </div>
                                     <div className="form_row">
                                         <div className="form_cell label">성별</div>
-                                        <div className="form_cell input">남</div>
+                                        <div className="form_cell input">{selectedApplication.user.gender}</div>
                                     </div>
                                     <div className="form_row">
                                         <div className="form_cell label">연락처(핸드폰)</div>
-                                        <div className="form_cell input">010-1234-5678</div>
+                                        <div className="form_cell input">{selectedApplication.user.phoneNumber}</div>
                                     </div>
                                     <div className="form_row">
                                         <div className="form_cell label">e-mail</div>
-                                        <div className="form_cell input">abc123@gmail.com</div>
+                                        <div className="form_cell input">{selectedApplication.user.email}</div>
                                     </div>
                                     <div className="form_row">
                                         <div className="form_cell label">현 주소</div>
-                                        <div className="form_cell input">떡잎마을</div>
+                                        <div className="form_cell input">{selectedApplication.user.address}</div>
                                     </div>
                                     <div className="form_row">
                                         <div className="form_cell label">지원동기</div>
-                                        <div className="form_cell input">농부가 되보고 싶어서 지원했습니다.</div>
+                                        <div className="form_cell input">{selectedApplication.applyContent}</div>
                                     </div>
                                 </div>
                             </div>
                             <div className="confirmation">
                                 상기 내용은 사실과 같음 <br/>
-                                2024년 08월 06일 (인)
+                                {new Date().toLocaleDateString()} (인)
                             </div>
                         </div>
                     </div>
