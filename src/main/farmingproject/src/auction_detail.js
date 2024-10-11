@@ -16,6 +16,7 @@ function AuctionDetail() {
     const [firstRoundCompleted, setFirstRoundCompleted] = useState(false); // 1차 입찰 완료 여부
     const [secondRoundStarted, setSecondRoundStarted] = useState(false); // 2차 입찰 여부를 저장할 상태
     const [auctionEnded, setAuctionEnded] = useState(false); // 경매 종료 여부
+    const [remainingTime, setRemainingTime] = useState(10); // 남은 시간을 10초로 설정
 
     // auction_id에 맞는 경매 항목 불러오기
     useEffect(() => {
@@ -31,17 +32,91 @@ function AuctionDetail() {
             .then((response) => response.json())
             .then((data) => {
                 setLoggedInUserId(data.userId);
+                // 사용자가 불러와진 후에 '관리자' 메시지를 추가
+                setChatMessages((prevMessages) => [
+                    ...prevMessages,
+                    {
+                        user: '관리자',
+                        message: '1차 입찰 금액을 입력하세요.',
+                        time: new Date().toLocaleTimeString(),
+                    },
+                ]);
             })
             .catch((error) => {
                 console.error('Error fetching user info:', error);
             });
     }, []);
 
+    // 남은 시간을 업데이트하는 타이머
+    useEffect(() => {
+        if (!auctionEnded && remainingTime > 0) {
+            const timer = setInterval(() => {
+                setRemainingTime((prevTime) => prevTime - 1);
+            }, 1000);
+
+            return () => clearInterval(timer); // 타이머 정리
+        }
+
+        // 남은 시간이 0이 되면 입찰 라운드를 종료
+        if (remainingTime === 0) {
+            if (!firstRoundCompleted) {
+                // 1차 입찰 종료
+                fetchTop5Results('first'); // 1차 결과를 가져옴
+                setFirstRoundCompleted(true); // 1차 완료 상태 업데이트
+                setSecondRoundStarted(true); // 2차 입찰 시작
+                setChatMessages((prevMessages) => [
+                    ...prevMessages,
+                    {
+                        user: '관리자',
+                        message: '2차 입찰 금액을 입력하세요.',
+                        time: new Date().toLocaleTimeString(),
+                    },
+                ]);
+                setRemainingTime(10); // 2차 입찰을 위해 타이머 리셋 (10초로 설정)
+            } else if (firstRoundCompleted && secondRoundStarted) {
+                // 2차 입찰 종료
+                fetchTop5Results('combined'); // 최종 결과를 가져옴
+                setAuctionEnded(true); // 경매 종료
+                setChatMessages((prevMessages) => [
+                    ...prevMessages,
+                    {
+                        user: '관리자',
+                        message: '경매가 종료되었습니다.',
+                        time: new Date().toLocaleTimeString(),
+                    },
+                ]);
+            }
+        }
+    }, [remainingTime, auctionEnded, firstRoundCompleted, secondRoundStarted]);
+
     // 입찰 금액을 서버에 보내는 함수
     const handleSendBid = () => {
+        // 유효하지 않은 금액일 경우
         if (!bidAmount || isNaN(bidAmount)) {
-            alert('유효한 금액을 입력하세요.');
-            return;
+            // 관리자가 유효한 금액을 입력하라고 채팅창에 메시지 추가
+            setChatMessages((prevMessages) => [
+                ...prevMessages,
+                {
+                    user: '관리자',
+                    message: '유효한 금액을 입력하세요.',
+                    time: new Date().toLocaleTimeString(),
+                },
+            ]);
+            return; // 입찰을 처리하지 않고 함수 종료
+        }
+
+        // 최소 입찰가 확인
+        if (parseFloat(bidAmount) < auction.auctionMinimumbid) {
+            // 최소 입찰가보다 낮으면 채팅창에 경고 메시지를 추가
+            setChatMessages((prevMessages) => [
+                ...prevMessages,
+                {
+                    user: '관리자',
+                    message: `최소 입찰가는 ${auction.auctionMinimumbid}원입니다. 다시 확인해주세요.`,
+                    time: new Date().toLocaleTimeString(),
+                },
+            ]);
+            return; // 입찰을 처리하지 않고 함수 종료
         }
 
         // 입찰 API 호출
@@ -62,33 +137,20 @@ function AuctionDetail() {
                 setChatMessages((prevMessages) => [
                     ...prevMessages,
                     {
-                        user: '관리자',
+                        user: loggedInUserId, // 사용자 ID 추가
                         message: `입찰가: ${bidAmount}원`,
                         time: new Date().toLocaleTimeString(),
+                        isUserMessage: true, // 사용자 메시지 여부를 표시
                     },
                 ]);
 
                 setBidAmount(''); // 입력 필드 초기화
-
-                // 1차 입찰 완료 후 30초 후 1차 결과 표시
-                if (!firstRoundCompleted && !secondRoundStarted) {
-                    setTimeout(() => {
-                        fetchTop5Results('first'); // 1차 결과를 가져오는 함수 호출
-                        setFirstRoundCompleted(true);
-                    }, 30 * 1000); // 30초
-                }
-                // 2차 입찰 후 30초 후 1차 + 2차 결과 표시
-                else if (firstRoundCompleted && secondRoundStarted) {
-                    setTimeout(() => {
-                        fetchTop5Results('combined'); // 1차 + 2차 결과를 가져오는 함수 호출
-                        setAuctionEnded(true); // 경매 종료
-                    }, 30 * 1000); // 30초
-                }
             })
             .catch((error) => {
                 console.error('Error sending bid:', error);
             });
     };
+
 
     // 상위 5개의 입찰 금액을 불러오는 함수
     const fetchTop5Results = (type) => {
@@ -97,7 +159,6 @@ function AuctionDetail() {
             .then((data) => {
                 if (type === 'first') {
                     setFirstRoundBids(data); // 1차 입찰 결과 저장
-                    startSecondRound(); // 1차 결과 후 2차 입찰 시작
                 } else if (type === 'combined') {
                     setCombinedBids(data); // 1차 + 2차 결과 저장
                 }
@@ -105,11 +166,6 @@ function AuctionDetail() {
             .catch((error) => {
                 console.error('Error fetching top 5 bids:', error);
             });
-    };
-
-    // 2차 입찰을 시작하는 함수
-    const startSecondRound = () => {
-        setSecondRoundStarted(true);
     };
 
     return (
@@ -174,13 +230,25 @@ function AuctionDetail() {
                             </div>
                         )}
                     </div>
+                    {/* 남은 시간 표시 */}
+                    {!auctionEnded && (
+                        <div className="remaining_time">
+                            남은 시간 : {remainingTime}초
+                        </div>
+                    )}
 
                     <div className="chat_container">
                         <div className="chat_box">
                             {chatMessages.map((msg, index) => (
-                                <div key={index} className={`chat_message_wrapper`}>
+                                <div
+                                    key={index}
+                                    className={`chat_message_wrapper ${msg.isUserMessage ? 'my_message_wrapper' : ''}`}
+                                >
                                     <div className="chat_username">{msg.user}</div>
-                                    <div className="chat_message">{msg.message}</div>
+                                    <div
+                                        className={`chat_message ${msg.isUserMessage ? 'my_message' : 'other_message'}`}>
+                                        {msg.message}
+                                    </div>
                                     <div className="chat_time">{msg.time}</div>
                                 </div>
                             ))}
@@ -192,12 +260,12 @@ function AuctionDetail() {
                                 <input
                                     type="text"
                                     className="chat_input"
-                                    placeholder={secondRoundStarted ? "2차 입찰 금액을 입력하세요..." : "입찰 금액을 입력하세요..."}
+                                    placeholder={secondRoundStarted ? '2차 입찰 금액을 입력하세요...' : '입찰 금액을 입력하세요...'}
                                     value={bidAmount}
                                     onChange={(e) => setBidAmount(e.target.value)}
                                 />
                                 <button className="chat_send_btn" onClick={handleSendBid}>
-                                    {secondRoundStarted ? "2차 입찰" : "입찰"}
+                                    {secondRoundStarted ? '2차 입찰' : '입찰'}
                                 </button>
                             </div>
                         ) : (
