@@ -3,7 +3,7 @@ import  './farmer_market_info.css';
 import './common/root.css';
 import FarmerReviewModal from "./farmer_market_review_modal";
 import {useUser} from "./common/userContext";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 function Farmer_market_info() {
     const { user } = useUser();
@@ -16,6 +16,7 @@ function Farmer_market_info() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reviewCounts, setReviewCounts] = useState({});
     const [reviews, setReviews] = useState([]);
+    const navigate = useNavigate();
 
     const handleReviewModal = () => {
         setIsReviewModalOpen(true);  // 모달 열기
@@ -95,6 +96,60 @@ function Farmer_market_info() {
         }
     };
 
+    /*장바구니 추가*/
+    const handleAddToBasket = async () => {
+        if (!user) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/basket/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: user.userId,
+                    productId: product.productId,
+                    quantity: 1 // 또는 사용자가 선택한 수량
+                }),
+            });
+
+            const text = await response.text();
+            console.log('서버 응답:', text);
+
+            if (response.ok) {
+                if (text.includes("Item added to basket successfully")) {
+                    alert('상품이 장바구니에 추가되었습니다.');
+                } else {
+                    alert('장바구니 추가 성공, 하지만 예상치 못한 응답입니다.');
+                }
+            } else {
+                alert('장바구니 추가 실패: ' + text);
+            }
+        } catch (error) {
+            console.error('장바구니 추가 중 오류 발생:', error);
+            alert('장바구니 추가 중 오류가 발생했습니다.');
+        }
+    };
+
+    /* 구매하기 */
+    const handlePurchase = () => {
+        navigate('/payment', {
+            state: {
+                product: {
+                    id: product.productId,
+                    name: product.productName,
+                    price: product.productPrice3,
+                    quantity: 1, // 또는 사용자가 선택한 수량
+                    imgPath: product.productimgPath,
+                    origin: product.productOrigin,
+                    storename: product.storeName
+                }
+            }
+        });
+    };
 
     if (!product) {
         return <div>Loading...</div>;
@@ -135,12 +190,12 @@ function Farmer_market_info() {
                     <div className={'product_detail'}>
                         <div className={'left_area'}>
                             <div className={'pd_img'}>
-                                <img src={`/${product.productimgPath}`} alt={product.productimgPath}/>
+                                <img src={`{product.productimgPath}`} alt={product.productimgPath}/>
                             </div>
                         </div>
                         <div className={'right_area'}>
                             <div className={'pd_info'}>
-                            <div className={'pd_title'}>
+                                <div className={'pd_title'}>
                                     <div className={'pd_name'}>
                                         <p>{product.productName}</p>
                                     </div>
@@ -156,7 +211,7 @@ function Farmer_market_info() {
                                 </div>
                                 <div className={'pd_star'}>
                                     <img src={'/img/etc/star.png'}/>
-                                    <span>{product.astar}</span>
+                                    <span>{product.star}</span>
                                 </div>
                                 <div className={'pd_origin'}>
                                     <span>원산지 | </span>
@@ -171,7 +226,7 @@ function Farmer_market_info() {
                                 </div>
                                 <div className={'pd_purchase_cnt'}>
                                     <span>구매건수 | </span>
-                                    <span>{product.sellcount}</span>
+                                    <span>{product.sellCount}</span>
                                     <span>건</span>
                                 </div>
                                 <div className={'purchase_cnt'}>
@@ -197,8 +252,8 @@ function Farmer_market_info() {
                                 <span>원</span>
                             </div>
                             <div className={'purchase_btn'}>
-                                <button id={'basket_btn'}>장바구니</button>
-                                <button id={'buy_btn'}>바로구매</button>
+                                <button id={'basket_btn'} onClick={handleAddToBasket}>장바구니</button>
+                                <button id={'buy_btn'} onClick={handlePurchase}>바로구매</button>
                             </div>
                         </div>
                     </div>
@@ -218,24 +273,7 @@ function Farmer_market_info() {
                             */}
 
                             {activeTab === 'pdinfo' && (
-                                <div className={'product_detail_info'}>
-                                    <h1 className={'info_title'}>프리미엄 고당도 꿀수박</h1>
-                                    <p>믿고 사세요! 고창 군수 10년차, 농사 30년차 김홍만 입니다.</p>
-                                    <img src={'/img/watermelon_2.png'}/>
-                                    <p>"저희 꿀 수박은 평균 당도 14Brix 이상의 높은 당도를 자랑하며, 농가에서 직접 선별하여 보내드립니다."</p>
-                                    <br/><br/><br/><br/>
-                                    <h2 className={'info_sub_title'}>| 수박 레시피 |</h2>
-                                    <p>노화 방지, 피로회복 및 각종 암 예방 등 몸에 좋은 수박!</p>
-                                    <p>아삭아삭 달콤한 맛으로 그냥 먹어도 맛있지만, 갈아서 쥬스로 먹거나 아이스크림, 빙수 등으로 다양하게 만들어 즐겨보세요.</p>
-                                    <img src={'/img/watermelon_icecream.png'}/>
-                                    <img src={'/img/watermelon_smoothie.png'}/>
-                                    <br/><br/><br/><br/>
-                                    <h2 className={'info_sub_title'}>| 고당도 꿀수박 보관방법 |</h2>
-                                    <p>1. 수령 후 바람이 잘 통하고 서늘한 그늘에서 하루 정도 보관 후 드시면 더욱 달콤하게 드실 수 있습니다. 수박은 보관 기간이 길지 않으므로
-                                        빠른 시일 내에 드셔주세요!</p>
-                                    <p>2. 냉장 보관 시 깍뚝 썰어 밀폐용기에 담아 냉장보관 하신 후 꺼내드시면 좋습니다. 수박은 섭씨 4도 이하로 보관하면 냉해를 입을 수 있으니
-                                        주의하시기 바랍니다.</p>
-                                </div>
+                                <img src={`/${product.productInfoimgPath}`} alt={product.productInfoimgPath}/>
                             )}
 
                             {/* 리뷰 */}
@@ -445,7 +483,7 @@ function Farmer_market_info() {
                                                     <span>문의하신 내용에 대한 답변은 해당 상품의 상세페이지에서 확인하실 수 있습니다.</span>
                                                 </div>
                                                 <div className="button_container">
-                                                <button className="cancel_button" onClick={closeModal}>취소</button>
+                                                    <button className="cancel_button" onClick={closeModal}>취소</button>
                                                     <button className="submit_button">등록</button>
                                                 </div>
                                             </div>

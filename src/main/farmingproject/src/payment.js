@@ -4,6 +4,9 @@ import './shopping_basket.css';
 import React, {useState, useEffect} from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import Modal from 'react-modal';
+import {useLocation, Navigate, useNavigate} from 'react-router-dom';
+import {useUser} from "./common/userContext";
+
 
 
 // Modal 스타일 정의
@@ -25,6 +28,11 @@ function Payment() {
         userAddr: '',
         userDetailAddr: '',
     });
+    const location = useLocation();
+    const { user } = useUser();
+    const [orderItems, setOrderItems] = useState([]);
+    const [productInfo, setProductInfo] = useState(null);
+    const navigate = useNavigate();
 
     const new_addr = () => {
         setIsOpen(!isOpen);
@@ -40,6 +48,14 @@ function Payment() {
     }
 
     useEffect(() => {
+        if (location.state && location.state.product) {
+            setProductInfo(location.state.product);
+        }
+
+        if (location.state && location.state.orderItems) {
+            setOrderItems(location.state.orderItems);
+        }
+
         const script = document.createElement('script');
         script.src = "https://cdn.iamport.kr/js/iamport.payment-1.2.0.js";
         script.async = true;
@@ -53,7 +69,15 @@ function Payment() {
         return () => {
             document.body.removeChild(script);
         };
-    }, []);
+    }, [location]);
+
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+
+    const totalAmount = orderItems.length > 0
+        ? orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+        : (productInfo ? productInfo.price : 0);
 
     const requestPay = () => {
         const { IMP } = window;
@@ -61,18 +85,48 @@ function Payment() {
             {
                 pg: "html5_inicis",
                 pay_method: "card",
-                merchant_uid: "123", //주문번호
-                name: "프리미엄 고당도 꿀수박 1.35KG",
-                amount: 1, //가격
-                buyer_email: "gildong@gmail.com",
-                buyer_name: "홍길동",
-                buyer_tel: "010-4242-4242",
-                buyer_addr: "서울특별시 강남구 신사동",
-                buyer_postcode: "01181"
+                merchant_uid: `mid_${new Date().getTime()}`, // 고유한 주문번호 생성
+                name: orderItems.length > 0 ? `${orderItems[0].name} 외 ${orderItems.length - 1}건` : (productInfo ? productInfo.name : "상품"),
+                amount: totalAmount,
+                buyer_email: user.email,
+                buyer_name: user.name,
+                buyer_tel: user.phoneNumber,
+                buyer_addr: inputUser.userAddr || user.address,
+                buyer_postcode: inputUser.userZipcode || "00000"
             },
-            function (rsp) {
+            async function (rsp) {
                 if (rsp.success) {
                     console.log("결제 성공:", rsp);
+                    try {
+                        const response = await fetch('/api/orders/create', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                userId: user.userId,
+                                items: orderItems.map(item => ({
+                                    productId: item.id,
+                                    quantity: item.quantity,
+                                    price: item.price
+                                })),
+                                deliveryAddress: inputUser.userAddr + " " + inputUser.userDetailAddr,
+                                deliveryRequest: document.getElementById('delivery-notes').value,
+                                totalAmount: totalAmount,
+                                status: "PAID"
+                            }),
+                        });
+
+                        if (response.ok) {
+                            const orderResult = await response.json();
+                            navigate('/payment_success', { state: { orderInfo: orderResult } });
+                        } else {
+                            throw new Error('주문 생성 실패');
+                        }
+                    } catch (error) {
+                        console.error("주문 처리 중 오류 발생:", error);
+                        alert("주문 처리 중 오류가 발생했습니다.");
+                    }
                 } else {
                     alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
                 }
@@ -101,24 +155,26 @@ function Payment() {
                                 <form id="address_info_form">
                                     <label>
                                         <input type="radio" id="old_add" name="address" value="old_add" defaultChecked/>
-                                            기존배송지
+                                        기존배송지
                                     </label>
                                     <label>
-                                        <input type="radio" id="new_add" name="address" value="new_add" onClick={new_addr}/>
-                                            신규배송지
+                                        <input type="radio" id="new_add" name="address" value="new_add"
+                                               onClick={new_addr}/>
+                                        신규배송지
                                     </label>
                                 </form>
                             </td>
                         </tr>
 
-                        <Modal isOpen={isOpen} style={modalStyles} ariaHideApp={false} onRequestClose={()=>setIsOpen(false)}>
+                        <Modal isOpen={isOpen} style={modalStyles} ariaHideApp={false}
+                               onRequestClose={() => setIsOpen(false)}>
                             <DaumPostcode onComplete={completeHandler} height="100%"/>
                         </Modal>
 
 
                         <tr>
                             <td className="address_tbl_title">이름/연락처</td>
-                            <td className="address_tbl_info">오소정 | 010-1234-5678</td>
+                            <td className="address_tbl_info">{user.name} | {user.phoneNumber}</td>
                         </tr>
                         <tr>
                             <td className="address_tbl_title">주소</td>
@@ -156,7 +212,7 @@ function Payment() {
 
 
                     {/* 결제창 상품 정보 */}
-                    <div className="payment_title"> 상품정보 </div>
+                    <div className="payment_title"> 상품정보</div>
                     <table id="t_product_info">
                         <tr className={"product_info_title"}>
                             <th>상품정보</th>
@@ -164,20 +220,39 @@ function Payment() {
                             <th>적립금</th>
                             <th>주문금액</th>
                         </tr>
-                        <tr  className={"product_info_content"}>
-                            <td>
-                                <div id="product_info_content_info">
-                                    <img src="img/watermelon.png" alt="market_img"/>
-                                    <div id="product_info_content_info_p">
-                                        <p id="product_info_content_info_title">프리미엄 고당도 미니 꿀수박</p>
-                                        <p id="product_info_content_info_origin">원산지: 산골짜기</p>
+                        {orderItems.length > 0 ? (
+                            orderItems.map(item => (
+                                <tr key={item.id} className={"product_info_content"}>
+                                    <td>
+                                        <div id="product_info_content_info">
+                                            <img src={item.imgPath} alt="market_img"/>
+                                            <div id="product_info_content_info_p">
+                                                <p id="product_info_content_info_title">{item.name}</p>
+                                                <p id="product_info_content_info_origin">{item.storeName}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{item.quantity}</td>
+                                    <td>{Math.floor(item.price * item.quantity * 0.01)}원</td>
+                                    <td>{(item.price * item.quantity).toLocaleString()}원</td>
+                                </tr>
+                            ))
+                        ) : productInfo && (
+                            <tr className={"product_info_content"}>
+                                <td>
+                                    <div id="product_info_content_info">
+                                        <img src={productInfo.imgPath} alt="market_img"/>
+                                        <div id="product_info_content_info_p">
+                                            <p id="product_info_content_info_title">{productInfo.name}</p>
+                                            <p id="product_info_content_info_origin">{productInfo.storeName}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>1</td>
-                            <td>30원</td>
-                            <td>3,000원</td>
-                        </tr>
+                                </td>
+                                <td>1</td>
+                                <td>{Math.floor(productInfo.price * 0.01)}원</td>
+                                <td>{productInfo.price.toLocaleString()}원</td>
+                            </tr>
+                        )}
                     </table>
 
 
@@ -186,7 +261,7 @@ function Payment() {
                     <table id="t_address_info" className={"payment_table"}>
                         <tr>
                             <td className="address_tbl_title">상품금액</td>
-                            <td className="address_tbl_info">3,000원</td>
+                            <td className="address_tbl_info">{totalAmount.toLocaleString()}원</td>
                         </tr>
                         <tr>
                             <td className="address_tbl_title">상품할인</td>
@@ -202,7 +277,9 @@ function Payment() {
                         </tr>
                         <tr>
                             <td className="address_tbl_title">적립금 사용</td>
-                            <td className="address_tbl_info" style={{ color: '#ababab' }}>3000원 이상 보유시 사용가능 (보유 적립금 116원)</td>
+                            <td className="address_tbl_info" style={{color: '#ababab'}}>3000원 이상 보유시 사용가능 (보유 적립금
+                                116원)
+                            </td>
                         </tr>
                         <tr>
                             <td className="address_tbl_title">배송비</td>
@@ -238,38 +315,6 @@ function Payment() {
                         </form>
                     </div>
 
-                    {/*
-                    <table id="t_payment_select">
-                        <tr>
-                            <td className="payselect_tbl_title">카드 종류</td>
-                            <td className="address_tbl_info">
-                                <select id="card_type" class="delivery-notes">
-                                    <option value="card_type0" selected>카드를 선택해주세요</option>
-                                    <option value="card_type1">KB국민카드</option>
-                                    <option value="card_type2">농협카드</option>
-                                    <option value="card_type3">현대카드</option>
-                                    <option value="card_type4">우리카드</option>
-                                    <option value="card_type5">삼성카드</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="payselect_tbl_title">할부 종류</td>
-                            <td className="address_tbl_info">
-                                <select id="card_month" class="delivery-notes">
-                                    <option value="card_month0" selected>일시불</option>
-                                    <option value="card_month1">1개월</option>
-                                    <option value="card_month2">2개월</option>
-                                    <option value="card_month3">3개월</option>
-                                    <option value="card_month4">4개월</option>
-                                    <option value="card_month5">5개월</option>
-                                    <option value="card_month6">6개월</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
-                    */}
-
 
                     {/* 결제창 결제정보 */}
                     <div className="payment_title"> 결제정보</div>
@@ -277,7 +322,7 @@ function Payment() {
                         <tr className={"payment_info_title"}>
                             <th>
                                 <p>총 상품금액</p>
-                                <p>3,000원</p>
+                                <p>{totalAmount.toLocaleString()}원</p>
                             </th>
                             <th>
                                 <p>총 추가금액</p>
@@ -287,24 +332,23 @@ function Payment() {
                                 <p>총 할인금액</p>
                                 <p>0원</p>
                             </th>
-                            <th rowSpan={2} style={{ backgroundColor: 'white' }}>
+                            <th rowSpan={2} style={{backgroundColor: 'white'}}>
                                 <p>최종 결제금액</p>
-                                <p>3,000</p>
+                                <p>{totalAmount.toLocaleString()}원</p>
                             </th>
                         </tr>
                         <tr className={"payment_info_content"}>
                             <td>
                                 <div className="info-container">
                                     <div className="info-row">
-                                        <span id="item-name">상품 1개</span>
-                                        <span id="item-price">3,000원</span>
+                                        <span id="item-name">상품 {orderItems.length || 1}개</span>
+                                        <span id="item-price">{totalAmount.toLocaleString()}원</span>
                                     </div>
                                     <div className="info-row">
                                         <span id="discount-name">ㄴ상품할인</span>
                                         <span id="discount-price">0원</span>
                                     </div>
                                 </div>
-
                             </td>
                             <td></td>
                             <td></td>

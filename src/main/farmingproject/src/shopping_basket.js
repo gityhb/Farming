@@ -1,44 +1,38 @@
 import './shopping_basket.css';
 import './common/root.css';
 import React, {useState, useEffect} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useUser} from "./common/userContext";
 
 function Shopping_Basket() {
-
-    const [items, setItems] = useState([
-        {
-            id: 1,
-            quantity: 1,
-            totalAmount: 1000,
-            name: "국내산 오이(아삭아삭)",
-            marketName: "햇살농장",
-            price: 1000,
-            marketImg: "img/cucumber.png",
-            checked: true
-        },
-        {
-            id: 2,
-            quantity: 1,
-            totalAmount: 2000,
-            name: "국내산 당근",
-            marketName: "청정농원",
-            price: 2000,
-            marketImg: "img/carrot.png",
-            checked: true
-        },
-        {
-            id: 3,
-            quantity: 1,
-            totalAmount: 3000,
-            name: "프리미엄 고당도 미니 꿀수박",
-            marketName: "과일의왕",
-            price: 3000,
-            marketImg: "img/watermelon.png",
-            checked: true
-        },
-    ]);
-
+    const navigate = useNavigate();
+    const { user } = useUser();
+    const [items, setItems] = useState([]);
     const [allChecked, setAllChecked] = useState(false);
+
+    useEffect(() => {
+        if (user && user.userId) {
+            fetchBasketItems(user.userId);
+        }
+    }, [user]);
+
+    const fetchBasketItems = async (userId) => {
+        try {
+            const response = await fetch(`/api/basket/${userId}`);
+            if (response.ok) {
+                const data = await response.json();
+                setItems(data.map(item => ({
+                    ...item,
+                    checked: true,
+                    totalAmount: item.productRG.productPrice3 * item.quantity
+                })));
+            } else {
+                console.error('장바구니 아이템 가져오기 실패');
+            }
+        } catch (error) {
+            console.error('장바구니 아이템을 가져오는 중 오류 발생:', error);
+        }
+    };
 
     useEffect(() => {
         const areAllItemsChecked = items.every(item => item.checked);
@@ -76,6 +70,38 @@ function Shopping_Basket() {
             ...item,
             checked: newAllChecked
         })));
+    };
+
+    const handleSelectOrder = () => {
+        const selectedItems = items.filter(item => item.checked);
+        if (selectedItems.length === 0) {
+            alert("선택된 상품이 없습니다.");
+            return;
+        }
+        navigateToPayment(selectedItems);
+    };
+
+    const handleAllOrder = () => {
+        if (items.length === 0) {
+            alert("장바구니에 상품이 없습니다.");
+            return;
+        }
+        navigateToPayment(items);
+    };
+
+    const navigateToPayment = (orderItems) => {
+        navigate('/payment', {
+            state: {
+                orderItems: orderItems.map(item => ({
+                    id: item.productRG.id,
+                    name: item.productRG.productName,
+                    price: item.productRG.productPrice3,
+                    quantity: item.quantity,
+                    imgPath: item.productRG.productimgPath,
+                    storeName: item.productRG.storeName
+                }))
+            }
+        });
     };
 
     const totalSum = items.reduce((acc, item) => item.checked ? acc + item.totalAmount : acc, 0);
@@ -118,11 +144,11 @@ function Shopping_Basket() {
                                     <td id="basket_list_td">
                                         <div id="basket_list">
                                             <div id="basket_list_img">
-                                                <img src={item.marketImg} alt="market_img"/>
+                                                <img src={`${item.productRG.productimgPath}`} alt="market_img"/>
                                             </div>
                                             <div id="basket_list_name">
-                                                <div id="basket_list_market_name">{item.marketName}</div>
-                                                <div id="basket_list_product_name">{item.name}</div>
+                                                <div id="basket_list_market_name">{item.productRG.storeName}</div>
+                                                <div id="basket_list_product_name">{item.productRG.productName}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -144,8 +170,8 @@ function Shopping_Basket() {
                         </div>
                     </div>
                     <div id="order_button">
-                        <Link to={"/payment"}><button id="order_select_btn">선택주문</button></Link>
-                        <button id="order_all_btn">전체주문</button>
+                        <button id="order_select_btn" onClick={handleSelectOrder}>선택주문</button>
+                        <button id="order_all_btn" onClick={handleAllOrder}>전체주문</button>
                     </div>
                 </div>
             </div>
