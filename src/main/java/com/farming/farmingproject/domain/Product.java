@@ -42,7 +42,7 @@ public class Product {
     @Column(name = "product_delivery_date", nullable = false)
     private String productDeliveryDate;
 
-    @Column(name = "product_info", nullable = false)
+    @Column(name = "product_info", nullable = false, length = 3000)
     private String productInfo;
 
     @Column(name = "product_status", nullable = false)
