@@ -190,7 +190,7 @@ function Farmer_market_info() {
                     <div className={'product_detail'}>
                         <div className={'left_area'}>
                             <div className={'pd_img'}>
-                                <img src={`{product.productimgPath}`} alt={product.productimgPath}/>
+                                <img src={`/${product.productimgPath}`} alt={product.productimgPath}/>
                             </div>
                         </div>
                         <div className={'right_area'}>
@@ -273,7 +273,7 @@ function Farmer_market_info() {
                             */}
 
                             {activeTab === 'pdinfo' && (
-                                <img src={`/${product.productInfoimgPath}`} alt={product.productInfoimgPath}/>
+                                <img style={{width: '1000px'}} src={`/${product.productInfoimgPath}`} alt={product.productInfoimgPath}/>
                             )}
 
                             {/* 리뷰 */}

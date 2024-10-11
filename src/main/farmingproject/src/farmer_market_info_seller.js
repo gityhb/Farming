@@ -254,24 +254,8 @@ function Farmer_market_info_seller() {
                                 <img src={`/${product.productInfoimgPath}`} alt={product.productInfoimgPath}/>
                             */}
                             {activeTab === 'pdinfo' && (
-                                <div className={'product_detail_info'}>
-                                    <h1 className={'info_title'}>프리미엄 고당도 꿀수박</h1>
-                                    <p>믿고 사세요! 고창 군수 10년차, 농사 30년차 김홍만 입니다.</p>
-                                    <img src={'/img/watermelon_2.png'}/>
-                                    <p>"저희 꿀 수박은 평균 당도 14Brix 이상의 높은 당도를 자랑하며, 농가에서 직접 선별하여 보내드립니다."</p>
-                                    <br/><br/><br/><br/>
-                                    <h2 className={'info_sub_title'}>| 수박 레시피 |</h2>
-                                    <p>노화 방지, 피로회복 및 각종 암 예방 등 몸에 좋은 수박!</p>
-                                    <p>아삭아삭 달콤한 맛으로 그냥 먹어도 맛있지만, 갈아서 쥬스로 먹거나 아이스크림, 빙수 등으로 다양하게 만들어 즐겨보세요.</p>
-                                    <img src={'/img/watermelon_icecream.png'}/>
-                                    <img src={'/img/watermelon_smoothie.png'}/>
-                                    <br/><br/><br/><br/>
-                                    <h2 className={'info_sub_title'}>| 고당도 꿀수박 보관방법 |</h2>
-                                    <p>1. 수령 후 바람이 잘 통하고 서늘한 그늘에서 하루 정도 보관 후 드시면 더욱 달콤하게 드실 수 있습니다. 수박은 보관 기간이 길지 않으므로
-                                        빠른 시일 내에 드셔주세요!</p>
-                                    <p>2. 냉장 보관 시 깍뚝 썰어 밀폐용기에 담아 냉장보관 하신 후 꺼내드시면 좋습니다. 수박은 섭씨 4도 이하로 보관하면 냉해를 입을 수 있으니
-                                        주의하시기 바랍니다.</p>
-                                </div>
+                                <img style={{width: '1000px'}} src={`/${product.productInfoimgPath}`}
+                                     alt={product.productInfoimgPath}/>
                             )}
 
                             {/* 리뷰 */}

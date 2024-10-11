@@ -12,9 +12,9 @@ function MyPage(){
             </div>
             <div className="delivery_component">
                 <div className="hello">
-                    <img src="/img/subin.png" style={{width: '81px', height: '81px'}}/>
+                    <img src="/img/osj.jpg" style={{width: '81px', height: '81px'}}/>
                     <div className="hello_text">
-                        송수빈님, 반갑습니다.
+                        오소정님, 반갑습니다.
                     </div>
                 </div>
                 <div className="delivery_detail">

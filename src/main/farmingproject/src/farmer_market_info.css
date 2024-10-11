@@ -661,6 +661,13 @@ h2 {
     background-color: #FFD700;
 }
 
-
+.pd_img {
+    text-align: center;
+}
+.pd_img img{
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+}
 
 
