@@ -68,7 +68,7 @@
 
 }
 
-.auction_time {
+.remaining_time {
     padding: 10px 0;
     background-color: #FFF0AD;
     border-top-left-radius: 3px;
@@ -127,12 +127,14 @@
 
 .auction_graphs_container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center; /* 두 그래프가 가운데로 오도록 설정 */
+    gap: 50px; /* 그래프 사이의 간격 */
     margin-top: 50px;
 }
 
 .graph_section {
     text-align: center;
+    width: 45%; /* 각 그래프 섹션이 화면의 45%를 차지하도록 설정 */
 }
 
 .graph_title {
@@ -141,13 +143,22 @@
     margin-bottom: 15px;
 }
 
+.bar_value {
+    position: absolute;
+    top: -30px; /* 값을 막대의 상단에 위치시킴 */
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    white-space: nowrap; /* 값이 막대 너비에 맞게 내려오지 않도록 방지 */
+}
+
 .graph {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* 그래프 막대들이 가운데로 올 수 있게 조정 */
     align-items: flex-end;
     gap: 20px;
     border: 1px solid #919191;
-    width: 350px;
+    width: 100%; /* 그래프 너비를 100%로 설정 */
     height: 340px;
 }
 
@@ -157,15 +168,11 @@
     text-align: center;
     position: relative;
     border-radius: 5px 5px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* 값이 막대 상단에 위치하도록 조정 */
 }
 
-.bar_value {
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-weight: bold;
-}
 
 /* 막대별 높이 설정 */
 .bar1 {
