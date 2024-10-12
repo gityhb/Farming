@@ -2,6 +2,7 @@ package com.farming.farmingproject.controller;
 
 import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.domain.Review;
+import com.farming.farmingproject.dto.AddProductRGRequest;
 import com.farming.farmingproject.service.ProductRGService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,6 +53,18 @@ public class ProductRGController {
             return ResponseEntity.ok(products);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerProduct(@ModelAttribute AddProductRGRequest addProductRGRequest) {
+        try {
+            ProductRG savedProduct = productRGService.saveProduct(addProductRGRequest);
+            return ResponseEntity.ok(savedProduct);
+        } catch (Exception e) {
+            e.printStackTrace(); // 서버 로그에 스택 트레이스 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("상품 등록 실패: " + e.getMessage());
         }
     }
 }

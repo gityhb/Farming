@@ -1,16 +1,18 @@
 package com.farming.farmingproject.service;
 
 import com.farming.farmingproject.domain.ProductRG;
+import com.farming.farmingproject.dto.AddProductRGRequest;
 import com.farming.farmingproject.repository.ProductRGRepository;
 import com.farming.farmingproject.repository.ReviewRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 public class ProductRGService {
@@ -22,6 +24,12 @@ public class ProductRGService {
         this.productRGRepository = productRGRepository;
         this.reviewRepository = reviewRepository;
     }
+
+    // 상품 이미지 저장 경로
+    private final String productImageDirectory = new File("src/main/resources/static/img/products/").getAbsolutePath();
+    // 상품 정보 이미지 저장 경로
+    private final String productInfoImageDirectory = new File("src/main/resources/static/img/product_img/").getAbsolutePath();
+
 
     public List<ProductRG> getAllProductRGs() {
         return productRGRepository.findAll();
@@ -50,5 +58,53 @@ public class ProductRGService {
 
     public List<ProductRG> getProductsBySellerId(String sellerId) {
         return productRGRepository.findBySellerId(sellerId);
+    }
+
+    @Transactional
+    public ProductRG saveProduct(AddProductRGRequest addProductRGRequest) {
+        String productImagePath = null;
+        String productInfoImagePath = null;
+
+        if (addProductRGRequest.getProductimgPath() != null && !addProductRGRequest.getProductimgPath().isEmpty()) {
+            productImagePath = saveFile(addProductRGRequest.getProductimgPath(), productImageDirectory);
+        }
+
+        if (addProductRGRequest.getProductInfoimgPath() != null && !addProductRGRequest.getProductInfoimgPath().isEmpty()) {
+            productInfoImagePath = saveFile(addProductRGRequest.getProductInfoimgPath(), productInfoImageDirectory);
+        }
+
+        ProductRG product = ProductRG.builder()
+                .sellerId(addProductRGRequest.getSellerId())
+                .productName(addProductRGRequest.getProductName())
+                .storeName(addProductRGRequest.getStoreName())
+                .productPrice1(addProductRGRequest.getProductPrice1())
+                .productPrice2(addProductRGRequest.getProductPrice2())
+                .productPrice3(addProductRGRequest.getProductPrice3())
+                .productOrigin(addProductRGRequest.getProductOrigin())
+                .productDeliveryDate(addProductRGRequest.getProductDeliveryDate())
+                .productimgPath(productImagePath)
+                .productInfoimgPath(productInfoImagePath)
+                .sellcount(addProductRGRequest.getSellcount())
+                .astar(addProductRGRequest.getAstar())
+                .salenum(addProductRGRequest.getSalenum())
+                .build();
+
+        return productRGRepository.save(product);
+    }
+
+    private String saveFile(MultipartFile file, String directory) {
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        File saveFile = new File(directory + File.separator + fileName);
+
+        try {
+            if (!saveFile.getParentFile().exists()) {
+                saveFile.getParentFile().mkdirs();
+            }
+            file.transferTo(saveFile);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("파일 저장에 실패했습니다: " + e.getMessage());
+        }
+
+        return fileName;
     }
 }

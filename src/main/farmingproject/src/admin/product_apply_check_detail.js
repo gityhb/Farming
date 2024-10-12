@@ -3,6 +3,7 @@ import  './product_apply_check_detail.css';
 import '../common/root.css';
 import axios from "axios";
 import {useParams} from "react-router-dom";
+import ProductRegisterModal from '../product_register_modal'
 import Modal from "react-modal";
 import DaumPostcode from "react-daum-postcode";
 
@@ -11,8 +12,17 @@ function ProductApplyCheckDetail() {
     const [product, setProduct] = useState(null);
     const [pStatus, setPStatus] = useState({text:'', color:''});
     const [productStatus, setProductStatus] = useState(''); // 상태 저장
+    const [showModal, setShowModal] = useState(false);
 
     console.log("productId : ", productId)
+
+    const handleRegisterClick = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
 
     const getPStatusObject = (status) => {
         switch (parseInt(status)) {
@@ -136,18 +146,20 @@ function ProductApplyCheckDetail() {
                             <select
                                 className="product_apply_check_detail_select"
                                 style={{color: pStatus.color}}
-                                value={productStatus}   // 현재 상태 값을 사용
+                                value={productStatus}
                                 onChange={handlePStatusChange}>
                                 <option value="0" style={{color: '#727272'}}>보류</option>
                                 <option value="1" style={{color: '#55A630'}}>등록</option>
                                 <option value="2" style={{color: '#ff0000'}}>탈락</option>
                             </select>
                             {productStatus == "1" &&
-                                <button className={"product_pass_enroll_btn"} onClick={''}>상품 등록</button>}
+                                <button className={"product_pass_enroll_btn"} onClick={handleRegisterClick}>상품
+                                    등록</button>}
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                {showModal && <ProductRegisterModal product={product} onClose={handleCloseModal} />}
             </div>
         </div>
     </div>

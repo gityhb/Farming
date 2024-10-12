@@ -45,23 +45,18 @@ public class ProductRG {
     @Column(name = "product_info_img", nullable = false)
     private String productInfoimgPath;
 
-    @Column(name = "product_status", nullable = false)
-    private int productStatus;
+    @Column(name = "product_sellcount", nullable = true)
+    private Integer sellcount = 0;
 
-    @Column(name = "product_sellcount", nullable = false)
-    private int sellcount;
+    @Column(name = "product_astar", nullable = true)
+    private Float astar = 0f;
 
-    @Column(name = "product_astar", nullable = false)
-    private float astar;
+    @Column(name = "product_salenum", nullable = true)
+    private Integer salenum = 10;
 
-    @Column(name = "product_salenum", nullable = false)
-    private int salenum;
-
-
-
-   @Builder
+    @Builder
     public ProductRG(String sellerId, String productName, String storeName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate,
-                     String productInfoimgPath, Integer productStatus, Integer sellcount, Float astar, Integer salenum, String productimgPath) {
+                     String productInfoimgPath, Integer sellcount, Float astar, Integer salenum, String productimgPath) {
         this.sellerId = sellerId;
         this.productName = productName;
         this.storeName = storeName;
@@ -70,13 +65,10 @@ public class ProductRG {
         this.productPrice3 = productPrice3;
         this.productOrigin = productOrigin;
         this.productDeliveryDate = productDeliveryDate;
-        this.productStatus = productStatus;
-        this.productInfoimgPath=productInfoimgPath;
-        this.sellcount = sellcount;
-        this.astar = astar;
-        this.salenum = salenum;
+        this.productInfoimgPath = productInfoimgPath;
+        this.sellcount = sellcount != null ? sellcount : 0;
+        this.astar = astar != null ? astar : 0f;
+        this.salenum = salenum != null ? salenum : 10;
         this.productimgPath = productimgPath;
     }
-
-
 }

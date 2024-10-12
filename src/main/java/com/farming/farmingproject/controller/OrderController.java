@@ -1,0 +1,37 @@
+package com.farming.farmingproject.controller;
+
+import com.farming.farmingproject.domain.Order;
+import com.farming.farmingproject.dto.AddOrderRequest;
+import com.farming.farmingproject.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+    @Autowired
+    private OrderService orderService;
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createOrder(@RequestBody AddOrderRequest request) {
+        try {
+            Order order = orderService.createOrder(request);
+            return ResponseEntity.ok(order);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("주문 생성 실패: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getOrdersByUser(@PathVariable(name = "userId") String userId) {
+        try {
+            List<Order> orders = orderService.getOrdersByUser(userId);
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("주문 조회 실패: " + e.getMessage());
+        }
+    }
+}

@@ -190,7 +190,7 @@ function Farmer_market_info() {
                     <div className={'product_detail'}>
                         <div className={'left_area'}>
                             <div className={'pd_img'}>
-                                <img src={`/${product.productimgPath}`} alt={product.productimgPath}/>
+                                <img src={`/img/product_img/${product.productimgPath}`} alt={product.productName}/>
                             </div>
                         </div>
                         <div className={'right_area'}>
