@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from "react";
 import  './admin/product_apply_check_detail.css';
+import './farmer_product_apply.css';
+import './product_apply_list_detail.css';
 import './common/root.css';
 import axios from "axios";
 import {useParams} from "react-router-dom";
@@ -8,7 +10,6 @@ function ProductApplyCheckDetail() {
     const { productId } = useParams();
     const [product, setProduct] = useState(null);
     const [pStatus, setPStatus] = useState({text:'', color:''});
-    const [productStatus, setProductStatus] = useState(''); // 상태 저장
     const [productImagesLists, setProductImagesLists] = useState([]);   // 상품 이미지들 저장
 
     console.log("productId : ", productId)
@@ -26,6 +27,36 @@ function ProductApplyCheckDetail() {
         }
     };
 
+    const getPDeliveryDate = (deliveryDate) => {
+        switch (deliveryDate) {
+            case 'today' :
+                return '오늘 배송';
+            case 'tomorrow' :
+                return '내일 배송';
+            case 'etc' :
+                return '상시 배송';
+            default :
+                return '배송 정보 없음';
+        }
+    };
+
+    const getPPrice2 = (unit) => {
+        switch (unit) {
+            case 'g' :
+                return 'g';
+            case 'kg' :
+                return 'kg';
+            case 'ea' :
+                return '개';
+            case 'pack' :
+                return '팩';
+            case 'box' :
+                return '박스';
+            default :
+                return '단위 정보 없음';
+        }
+    };
+
     const fetchProduct = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/product/${productId}`);
@@ -34,7 +65,7 @@ function ProductApplyCheckDetail() {
             // 상품 상태 객체 생성
             const statusObject = getPStatusObject(response.data.productStatus);
             setPStatus(statusObject);
-            setProductStatus(response.data.productStatus);
+            // setProductStatus(response.data.productStatus);
         } catch (error) {
             if (error.response) {
                 // 요청이 이루어졌고, 서버가 상태 코드로 응답했지만, 요청이 실패한 경우
@@ -53,16 +84,11 @@ function ProductApplyCheckDetail() {
         }
     }
 
-    // 이미지가 안불러와짐, productId는 불러와짐(500, json 오류라나 뭐라나)
     const fetchProductImagesLists = async () => {
         console.log("productId : ", productId);
         try {
             const response = await axios.get(`http://localhost:8080/api/product_img/${productId}/list`)
             setProductImagesLists(response.data);
-            // if(response.ok) {
-            //     const data = await response.json();
-            //
-            // }
         } catch (error) {
             console.log('Error fetching productImagesLists : ', error);
         }
@@ -81,28 +107,21 @@ function ProductApplyCheckDetail() {
 
     return (
     <div id="body">
-        <div id={'prouct_apply_check_detail_page'} className={'page'}>
+        <div id={'prouct_apply_list_detail_page'} className={'page'}>
             <div id={'contents'}>
-                <div className="product_detail_title">
+                <div className="product_apply_list_title">
                     <h1>상품 상세 정보</h1>
                 </div>
-                {/* 결제창 배송지 정보 */}
-
-                <div className={'product_apply_img_box'}>
+                <div className={'product_apply_list_img_box'}>
                     <div className={'product_img_show'} id={'product_img_show'}>
                         {productImagesLists.length > 0 ? (
                             productImagesLists.map((productImage) => (
                                 <div key={productImage.productImageId} className={'product_img_list'}>
-                                    <img src={productImage.productImagePath} alt={product.productName} />
+                                    <img src={`http://localhost:8080${productImage.productImagePath}`} className={'product_img'} alt={productImage.productImagePath} />
                                 </div>
                             ))
                         ): (<div>이미지가 없습니다.</div>
                         )}
-                        {/*{imageSrcs.map((src, index) => (*/}
-                        {/*    <div key={index} className={'product_img_list'}>*/}
-                        {/*        <img src={src} alt={fileNames[index]} className="product_img"/>*/}
-                        {/*    </div>*/}
-                        {/*))}*/}
                     </div>
                     {/*<div id={'product_file_input'}>*/}
                     {/*    <p>FILE NAME : </p>*/}
@@ -113,58 +132,58 @@ function ProductApplyCheckDetail() {
                     {/*    ))}*/}
                     {/*</div>*/}
                 </div>
-                <table id="t_address_info">
+                <table className="product_apply_list_table">
                     <tbody>
                     <tr>
-                        <td className="product_apply_check_detail_title">상품번호</td>
-                        <td className="product_apply_check_detail_info">
+                        <td className="product_apply_list_detail_title">상품번호</td>
+                        <td className="product_apply_list_detail_info">
                             {product.productId}
                         </td>
                     </tr>
                     <tr>
-                        <td className="product_apply_check_detail_title">상품명</td>
-                        <td className="product_apply_check_detail_info">
+                        <td className="product_apply_list_detail_title">상품명</td>
+                        <td className="product_apply_list_detail_info">
                             {product.productName}
                         </td>
                     </tr>
                     <tr>
-                        <td className="product_apply_check_detail_title">판매자</td>
-                        <td className="product_apply_check_detail_info">{product.sellerName}</td>
+                        <td className="product_apply_list_detail_title">판매자</td>
+                        <td className="product_apply_list_detail_info">{product.sellerName}</td>
                     </tr>
                     <tr>
-                        <td className="product_apply_check_detail_title">상품가격</td>
-                        <td className="product_apply_check_detail_info">
-                            {product.productPrice1}{product.productPrice2} / {product.productPrice3}원
+                        <td className="product_apply_list_detail_title">상품가격</td>
+                        <td className="product_apply_list_detail_info">
+                            {product.productPrice1}{getPPrice2(product.productPrice2)} / {product.productPrice3}원
                         </td>
                     </tr>
                     <tr>
-                        <td className="product_apply_check_detail_title">원산지</td>
-                        <td className="product_apply_check_detail_info">
+                        <td className="product_apply_list_detail_title">원산지</td>
+                        <td className="product_apply_list_detail_info">
                             {product.productOrigin}
                         </td>
                     </tr>
                     <tr>
-                        <td className="product_apply_check_detail_title">배송날짜</td>
-                        <td className="product_apply_check_detail_info">
-                            {product.productDeliveryDate}
+                        <td className="product_apply_list_detail_title">배송날짜</td>
+                        <td className="product_apply_list_detail_info">
+                            {getPDeliveryDate(product.productDeliveryDate)}
                         </td>
                     </tr>
                     <tr>
-                        <td className="product_apply_check_detail_title">상품정보</td>
-                        <td className="product_apply_check_detail_info">
+                        <td className="product_apply_list_detail_title">상품정보</td>
+                        <td className="product_apply_list_detail_info">
                             {product.productInfo}
                         </td>
                     </tr>
                     <tr>
-                        <td className="product_apply_check_detail_title">상태</td>
-                        <td className="product_apply_check_detail_info"
+                        <td className="product_apply_list_detail_title">상태</td>
+                        <td className="product_apply_list_detail_info"
                             style={{display: 'table-cell', color: pStatus.color}}>
                             {pStatus.text}
                         </td>
                     </tr>
                     <tr>
-                        <td className="product_apply_check_detail_title">등록일</td>
-                        <td className="product_apply_check_detail_info">
+                        <td className="product_apply_list_detail_title">등록일</td>
+                        <td className="product_apply_list_detail_info">
                             {new Date(product.productCreatedDate).toISOString().split('T').join(' ').substring(0, 19)}
                         </td>
                     </tr>

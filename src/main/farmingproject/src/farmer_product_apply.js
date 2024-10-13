@@ -5,14 +5,15 @@ import {useUser} from "./common/userContext";
 import {useNavigate} from "react-router-dom";
 
 function Farmer_product_apply() {
-    const { user } = useUser();
+    const {user} = useUser();
 
     const navigate = useNavigate();
 
     const [fileNames, setFileNames] = useState([]);
     const [imageSrcs, setImageSrcs] = useState([]);
+    const [fileObjects, setFileObjects] = useState([]); // 실제 파일 객체를 저장하는 상태
 
-    const [form, setForm] = useState( {
+    const [form, setForm] = useState({
         productName: "",
         productImagePath: "",
         sellerName: "",
@@ -25,7 +26,7 @@ function Farmer_product_apply() {
     });
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setForm(prevForm => ({
             ...prevForm,
             [name]: value
@@ -35,20 +36,16 @@ function Farmer_product_apply() {
     const loadFile = (event) => {
         const files = Array.from(event.target.files);
 
-        if(files.length > 0) {
+        if (files.length > 0) {
             const newNames = files.map((file) => file.name);   // 새로 선택된 파일들의 이름 배열
             // const newNames = files.map((file) => `./img/products/${file.name}`);
             const newSrcs = files.map((file) => URL.createObjectURL(file));    // 새로 선택된 이미지들의 URL 배열
 
             setFileNames((prevNames) => [...prevNames, ...newNames]);
             setImageSrcs((prevSrcs) => [...prevSrcs, ...newSrcs]);
+            setFileObjects((prevFiles) => [...prevFiles, ...files]); // 파일 객체 저장
 
             console.log("fileNames : ", fileNames);
-            // setForm(prevForm => ({
-            //     ...prevForm,
-            //     productImagePath: [...prevForm.productImagePath, ...newNames]
-            // })
-            // );
         }
     };
 
@@ -57,12 +54,13 @@ function Farmer_product_apply() {
         // 선택된 인덱스를 제외한 나머지 파일들만 배열로 새로 설정
         setFileNames((prevNames) => prevNames.filter((_, i) => i !== index));
         setImageSrcs((prevSrcs) => prevSrcs.filter((_, i) => i !== index));
+        setFileObjects((prevFiles) => prevFiles.filter((_, i) => i !== index)); // 파일 객체도 제거
 
     };
 
     const handleFileInputChange = (e) => {
         loadFile(e);
-        console.log("handleInputFile: ",fileNames);
+        console.log("handleInputFile: ", fileNames);
     };
 
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -93,7 +91,7 @@ function Farmer_product_apply() {
                 productPrice3: form.productPrice3,
                 productOrigin: form.productOrigin,
                 productDeliveryDate: form.productDeliveryDate,
-                productInfo: form.productInfo
+                productInfo: form.productInfo,
             };
 
             // 2. 상품 등록 요청
@@ -109,15 +107,8 @@ function Farmer_product_apply() {
                 const productResult = await productResponse.json();
                 const productId = productResult.productId; // 서버에서 반환한 상품 ID
 
-                // 3. 이미지 데이터 준비(productId를 이제는 알고 있음)
-                // const productImageData = {
-                //     // productImage 관련 데이터
-                //     productId: productId, // 이 값은 product 생성 후에 설정해야 할 수 있습니다
-                //     productImagePath: form.productImagePath,
-                //     // ... 기타 image 관련 필드
-                // };
                 // 3. 각 이미지에 대해 개별적으로 요청 보내기
-                for (let fileName of fileNames) {
+                for (let i = 0; i < fileObjects.length; i++) {
                     let success = false;
                     let attempts = 0;
 
@@ -125,20 +116,15 @@ function Farmer_product_apply() {
                         attempts++;
 
                         try {
+                            const productImageData = new FormData();
+                            productImageData.append("productId", productId);
+                            productImageData.append("productImagePath", fileObjects[i]); // 실제 파일 객체 추가
 
-                    const productImageData = {
-                        productId: productId,
-                        productImagePath: fileName,
-                    };
-
-                    // 4. 이미지 등록 요청
-                    const productImageResponse = await fetch('/api/product_img/apply', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(productImageData),
-                    });
+                            // 4. 이미지 등록 요청
+                            const productImageResponse = await fetch('/api/product_img/apply', {
+                                method: 'POST',
+                                body: productImageData,
+                            });
                             if (productImageResponse.ok) {
                                 success = true;  // 성공 시 반복 종료
                             } else {
@@ -153,7 +139,7 @@ function Farmer_product_apply() {
                     }
 
                     if (!success) {
-                        console.error('이미지 등록 3회 실패: ', fileName);
+                        console.error('이미지 등록 3회 실패: ', fileObjects);
                     }
                 }
 
@@ -163,17 +149,17 @@ function Farmer_product_apply() {
             } else {
                 console.error('상품 등록 실패:', await productResponse.json());
             }
-} catch (error) {
-    console.error('등록 중 오류 발생:', error);
-}
-};
+        } catch (error) {
+            console.error('등록 중 오류 발생:', error);
+        }
+    };
 
     if (!user) {
         return <div>Loading...</div>; // 로딩 상태 표시
     }
 
 
-    return(
+    return (
         <div id={'body'}>
             <div id={'farmer_product_apply_page'} className={'page'}>
                 <div id={'contents'}>
@@ -187,7 +173,9 @@ function Farmer_product_apply() {
                                     {imageSrcs.map((src, index) => (
                                         <div key={index} className={'product_img_list'}>
                                             <img src={src} alt={fileNames[index]} className="product_img"/>
-                                            <img src={'./img/delete_btn.png'} alt={'delete_btn'} className={'product_delete_btn'} onClick={() => handleRemoveImage(index)}/>
+                                            <img src={'./img/delete_btn.png'} alt={'delete_btn'}
+                                                 className={'product_delete_btn'}
+                                                 onClick={() => handleRemoveImage(index)}/>
                                         </div>
                                     ))}
                                 </div>
@@ -204,7 +192,9 @@ function Farmer_product_apply() {
                             <div className={'product_apply_img_btn'}>
                                 <label htmlFor={"choosefile"}>사진첨부</label>
                             </div>
-                            <input type="file" id={"choosefile"} name={"productImagePath"} value={form.productImagePath}  onChange={handleFileInputChange} accept="image/*" multiple  style={{visibility: "hidden"}}/>
+                            <input type="file" id={"choosefile"} name={"productImagePath"} value={form.productImagePath}
+                                   onChange={handleFileInputChange} accept="image/*" multiple
+                                   style={{visibility: "hidden"}}/>
                         </div>
                         <div className={'farmer_product_apply_form_group'}>
                             <div className={'pform_group'}>
@@ -244,7 +234,7 @@ function Farmer_product_apply() {
                                     onChange={handleInputChange}
                                     placeholder="0"
                                 />
-                                <select name={"productPrice2"} value={form.productPrice2}  onChange={handleInputChange}>
+                                <select name={"productPrice2"} value={form.productPrice2} onChange={handleInputChange}>
                                     <option value={'g'}>g</option>
                                     <option value={'kg'}>kg</option>
                                     <option value={'ea'}>개</option>
@@ -277,7 +267,8 @@ function Farmer_product_apply() {
                                     배송날짜
                                 </div>
                                 주문 후
-                                <select name={"productDeliveryDate"} value={form.productDeliveryDate}  onChange={handleInputChange}>
+                                <select name={"productDeliveryDate"} value={form.productDeliveryDate}
+                                        onChange={handleInputChange}>
                                     <option value={'today'}>당일</option>
                                     <option value={'tomorrow'}>내일</option>
                                     <option value={'etc'}>상시배송</option>
@@ -288,7 +279,8 @@ function Farmer_product_apply() {
                                 <div className={'pform_title'}>
                                     상품정보
                                 </div>
-                                <textarea className={'pfrom_product_info'} name={"productInfo"} value={form.productInfo} onChange={handleInputChange}
+                                <textarea className={'pfrom_product_info'} name={"productInfo"} value={form.productInfo}
+                                          onChange={handleInputChange}
                                           placeholder={'자세한 상품소개, 예상 배송날짜, 판매자 소개는 판매에 큰 도움이 됩니다 :)'}/>
                             </div>
                             <div className={'warning_gray'}>
