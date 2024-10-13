@@ -56,13 +56,24 @@ public class ProductRGController {
         }
     }
 
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     public ResponseEntity<?> registerProduct(@ModelAttribute AddProductRGRequest addProductRGRequest) {
         try {
             ProductRG savedProduct = productRGService.saveProduct(addProductRGRequest);
             return ResponseEntity.ok(savedProduct);
         } catch (Exception e) {
             e.printStackTrace(); // 서버 로그에 스택 트레이스 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("상품 등록 실패: " + e.getMessage());
+        }
+    }*/
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerProduct(@ModelAttribute AddProductRGRequest addProductRGRequest) {
+        try {
+            ProductRG savedProduct = productRGService.saveProduct(addProductRGRequest);
+            return ResponseEntity.ok(savedProduct);
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("상품 등록 실패: " + e.getMessage());
         }

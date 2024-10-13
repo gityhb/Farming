@@ -12,6 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Service
@@ -26,9 +30,12 @@ public class ProductRGService {
     }
 
     // 상품 이미지 저장 경로
-    private final String productImageDirectory = new File("src/main/resources/static/img/products/").getAbsolutePath();
+    //private final String productImageDirectory = new File("src/main/resources/static/uploads/product_img/").getAbsolutePath();
     // 상품 정보 이미지 저장 경로
-    private final String productInfoImageDirectory = new File("src/main/resources/static/img/product_img/").getAbsolutePath();
+    //private final String productInfoImageDirectory = new File("src/main/resources/static/uploads/product_info_img/").getAbsolutePath();
+
+    private final String productImageDirectory = "src/main/resources/static/uploads/product_img/";
+    private final String productInfoImageDirectory = "src/main/resources/static/uploads/product_info_img/";
 
 
     public List<ProductRG> getAllProductRGs() {
@@ -60,7 +67,7 @@ public class ProductRGService {
         return productRGRepository.findBySellerId(sellerId);
     }
 
-    @Transactional
+    /*@Transactional
     public ProductRG saveProduct(AddProductRGRequest addProductRGRequest) {
         String productImagePath = null;
         String productInfoImagePath = null;
@@ -106,5 +113,55 @@ public class ProductRGService {
         }
 
         return fileName;
+    }*/
+
+    @Transactional
+    public ProductRG saveProduct(AddProductRGRequest addProductRGRequest) {
+        String productImagePath = null;
+        String productInfoImagePath = null;
+
+        if (addProductRGRequest.getProductimgPath() != null && !addProductRGRequest.getProductimgPath().isEmpty()) {
+            productImagePath = saveFile(addProductRGRequest.getProductimgPath(), productImageDirectory);
+        }
+
+        if (addProductRGRequest.getProductInfoimgPath() != null && !addProductRGRequest.getProductInfoimgPath().isEmpty()) {
+            productInfoImagePath = saveFile(addProductRGRequest.getProductInfoimgPath(), productInfoImageDirectory);
+        }
+
+        ProductRG product = ProductRG.builder()
+                .sellerId(addProductRGRequest.getSellerId())
+                .productName(addProductRGRequest.getProductName())
+                .storeName(addProductRGRequest.getStoreName())
+                .productPrice1(addProductRGRequest.getProductPrice1())
+                .productPrice2(addProductRGRequest.getProductPrice2())
+                .productPrice3(addProductRGRequest.getProductPrice3())
+                .productOrigin(addProductRGRequest.getProductOrigin())
+                .productDeliveryDate(addProductRGRequest.getProductDeliveryDate())
+                .productimgPath(productImagePath)
+                .productInfoimgPath(productInfoImagePath)
+                .sellcount(addProductRGRequest.getSellcount())
+                .astar(addProductRGRequest.getAstar())
+                .salenum(addProductRGRequest.getSalenum())
+                .build();
+
+        return productRGRepository.save(product);
+    }
+
+    private String saveFile(MultipartFile file, String directory) {
+        try {
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path uploadPath = Paths.get(directory);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            return "uploads/" + (directory.contains("product_img") ? "product_img/" : "product_info_img/") + fileName;
+        } catch (IOException e) {
+            throw new RuntimeException("파일 저장에 실패했습니다: " + e.getMessage(), e);
+        }
     }
 }
