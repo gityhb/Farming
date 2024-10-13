@@ -7,6 +7,7 @@ import com.farming.farmingproject.repository.ProductImageRepository;
 import com.farming.farmingproject.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ProductImageService {
     public ProductImage save(AddProductImageRequest dto) {
 
         // Product 엔티티 조회
+
         Product product = productRepository.findById(dto.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -33,7 +35,8 @@ public class ProductImageService {
 
     }
 
-    public List<ProductImage> findProductImagesByProductId(Long productId) {
+//    @Transactional
+    public ProductImage findProductImagesByProductId(Long productId) {
         return productImageRepository.findProductImagesByProduct_ProductId(productId);
     }
 }

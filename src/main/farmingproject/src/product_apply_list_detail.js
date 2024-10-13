@@ -54,14 +54,15 @@ function ProductApplyCheckDetail() {
     }
 
     // 이미지가 안불러와짐, productId는 불러와짐(500, json 오류라나 뭐라나)
-    const fetchProductImagesLists = async (productId) => {
+    const fetchProductImagesLists = async () => {
         console.log("productId : ", productId);
         try {
-            const response = await fetch(`/api/product_img/${productId}/list`)
-            if(response.ok) {
-                const data = await response.json();
-                setProductImagesLists(data);
-            }
+            const response = await axios.get(`http://localhost:8080/api/product_img/${productId}/list`)
+            setProductImagesLists(response.data);
+            // if(response.ok) {
+            //     const data = await response.json();
+            //
+            // }
         } catch (error) {
             console.log('Error fetching productImagesLists : ', error);
         }
@@ -70,7 +71,7 @@ function ProductApplyCheckDetail() {
     useEffect(() => {
         // 페이지 로드 시 상품 정보 가져오기
         fetchProduct();
-        fetchProductImagesLists(productId);
+        fetchProductImagesLists();
     }, [productId]);
 
 

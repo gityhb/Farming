@@ -40,9 +40,14 @@ public class ProductImageApiController {
     }
 
     @GetMapping("/{productId}/list")
-    public ResponseEntity<List<ProductImage>>  getProductImagesByProductId(@PathVariable("productId") Long productId) {
-        List<ProductImage> productImages = productImageService.findProductImagesByProductId(productId);
-        return ResponseEntity.ok(productImages);
+    public ResponseEntity<ProductImage>  getProductImagesByProductId(@PathVariable("productId") Long productId) {
+        try {
+            ProductImage productImages = productImageService.findProductImagesByProductId(productId);
+            return ResponseEntity.ok(productImages);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
 //    @GetMapping("/list/{productId}")
