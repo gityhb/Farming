@@ -34,18 +34,20 @@ function Customer_service_notice() {
                         <Link to={"/customer_service_notice"}><div className={'notice_Btn'} style={{ backgroundColor: '#FFEA8D' }}>공지사항</div></Link>
                     </div>
 
-                    <div className={'Customer_service_div'}>
-                        <div className={'Customer_service_top'}>
-                            <div className={'Customer_service_top_num'}>No.</div>
-                            <div className={'Customer_service_top_title'}>제목</div>
-                            <div className={'Customer_service_top_date'}>등록일</div>
+                    <div className={'admin_product_apply_chk_div'}>
+                        <div className={'admin_product_apply_chk_top'}>
+                            <div className={'admin_product_apply_chk_num'}>No.</div>
+                            <div className={'admin_product_apply_chk_title'}>제목</div>
+                            <div className={'admin_product_apply_chk_seller'}>등록일</div>
                         </div>
 
                         {nitems.map((item) => (
-                            <div className={'Customer_service_notice_inner'}>
-                                <div className={'Customer_service_inner_num'}>{item.nnum}</div>
-                                <div className={'notice_Customer_service_inner_title'}>{item.ntitle}</div>
-                                <div className={'notice_Customer_service_inner_o_date'}>{item.ndate}</div>
+                            <div className={'admin_product_apply_chk_inner'}>
+                            <div className={'admin_product_apply_chk_inner_content'}>
+                                <div className={'admin_product_apply_chk_inner_num'}>{item.nnum}</div>
+                                <div className={'admin_product_apply_chk_inner_title'} style={{flexBasis: '785px'}}>{item.ntitle}</div>
+                                <div className={'admin_product_apply_chk_inner_seller'}>{item.ndate}</div>
+                            </div>
                             </div>
                         ))}
                     </div>

@@ -18,8 +18,8 @@ function Auction() {
             <div id={'auction_page'} className={'page'}>
                 <div id={'contents'}>
                     <div className={'auction_title'}>
-                        <div className={'auction_title_text'}>
-                            청과 경매
+                        <div className={'main_title'}>
+                            <h1 style={{textAlign: 'center'}}>청과 경매</h1>
                         </div>
                     </div>
                     <div className={'auction_container'}>
@@ -32,7 +32,7 @@ function Auction() {
                                         <div className={'item_sec_1'}>{auction.auctionDate} 예정</div>
                                         <div className={'item_sec_2'}>
                                             {/* 경매 상품의 이미지 경로를 사용해 이미지 표시 */}
-                                            <img src={`http://localhost:8080/images/${auction.auctionImage}`} alt="상품 사진"/>
+                                            <img src={`http://localhost:8080/uploads/auction_images/${auction.auctionImage}`} alt="상품 사진"/>
                                             <div className={'item_name'}>{auction.auctionTitle}</div>
                                             <div className={'item_minbid'}>최소 입찰가 | {auction.auctionMinimumbid}원</div>
                                         </div>

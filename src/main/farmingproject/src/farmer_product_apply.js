@@ -163,8 +163,8 @@ function Farmer_product_apply() {
         <div id={'body'}>
             <div id={'farmer_product_apply_page'} className={'page'}>
                 <div id={'contents'}>
-                    <div id={'product_apply_title'}>
-                        <h1>상품 등록 신청</h1>
+                    <div id={'main_title'}>
+                        <h1 style={{textAlign: 'center'}}>상품 등록 신청</h1>
                     </div>
                     <form onSubmit={handleSubmit} encType="multipart/form-data">
                         <div id={'product_apply_img'}>

@@ -84,20 +84,22 @@ function Customer_service_one() {
                         <Link to={"/customer_service_notice"}><div className={'notice_Btn'} style={{ backgroundColor: 'white' }}>공지사항</div></Link>
                     </div>
 
-                    <div className={'Customer_service_div'}>
-                            <div className={'Customer_service_top'}>
-                                <div className={'Customer_service_top_num'}>No.</div>
-                                <div className={'Customer_service_top_title'}>제목</div>
-                                <div className={'Customer_service_top_o_date'}>등록일</div>
-                                <div className={'Customer_service_top_answer'}>답변여부</div>
+                    <div className={'admin_product_apply_chk_div'}>
+                            <div className={'admin_product_apply_chk_top'}>
+                                <div className={'admin_product_apply_chk_num'}>No.</div>
+                                <div className={'admin_product_apply_chk_title'}>제목</div>
+                                <div className={'admin_product_apply_chk_seller'}>등록일</div>
+                                <div className={'admin_product_apply_chk_status'}>답변여부</div>
                             </div>
 
                         {oitems.map((item) => (
-                            <div className={'Customer_service_one_inner'}>
-                                <div className={'Customer_service_inner_num'}>{item.onum}</div>
-                                <div className={'one_Customer_service_inner_title'}>{item.otitle}</div>
-                                <div className={'one_Customer_service_inner_o_date'}>{item.odate}</div>
-                                <div className={'Customer_service_inner_answer'}>{item.oanswer}</div>
+                            <div className={'admin_product_apply_chk_inner'}>
+                                <div className={'admin_product_apply_chk_inner_content'}>
+                                <div className={'admin_product_apply_chk_inner_num'}>{item.onum}</div>
+                                <div className={'admin_product_apply_chk_inner_title'} style={{flexBasis: '670px'}}>{item.otitle}</div>
+                                <div className={'admin_product_apply_chk_inner_seller'}>{item.odate}</div>
+                                <div className={'admin_product_apply_chk_inner_status'} style={{flexBasis: '110px'}}>{item.oanswer}</div>
+                            </div>
                             </div>
                         ))}
                     </div>

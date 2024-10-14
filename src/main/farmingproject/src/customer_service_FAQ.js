@@ -84,15 +84,15 @@ function Customer_service_FAQ() {
 
                     <div className={'Customer_service_div'}>
                         <div className={'Customer_service_top'}>
-                            <div className={'Customer_service_top_num'}>Q</div>
-                            <div className={'Customer_service_top_title'}>제목</div>
+                            <div className={'admin_product_apply_chk_num'}>Q.</div>
+                            <div className={'admin_product_apply_chk_title'}>제목</div>
                         </div>
 
                         {fitems.map((item, index) => (
-                            <div key={index} className={'Customer_service_inner'} onClick={() => toggleAnswer(index)}>
-                                <div className={'Customer_service_inner_content'}>
-                                    <div className={'Customer_service_inner_num'}>{item.fnum}</div>
-                                    <div className={'Customer_service_inner_title'}>{item.ftitle}</div>
+                            <div key={index} className={'admin_product_apply_chk_inner'} onClick={() => toggleAnswer(index)}>
+                                <div className={'admin_product_apply_chk_inner_content'}>
+                                    <div className={'admin_product_apply_chk_inner_num'}>{item.fnum}</div>
+                                    <div className={'admin_product_apply_chk_inner_title'}>{item.ftitle}</div>
                                     <div className={`arrow_icon ${openIndex === index ? 'open' : ''}`}></div>
                                 </div>
                                 {openIndex === index && (
