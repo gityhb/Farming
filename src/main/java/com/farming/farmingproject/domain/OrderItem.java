@@ -8,7 +8,6 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +27,11 @@ public class OrderItem {
     @Column(name = "price", nullable = false)
     private Integer price;
 
-
     @Builder
-    public OrderItem(Order order, ProductRG product,Integer quantity,Integer price) {
-        this.order=order;
-        this.product=product;
-        this.price=price;
-        this.quantity=quantity;
+    public OrderItem(Order order, ProductRG product, Integer quantity, Integer price) {
+        this.order = order;  // 반드시 Order를 설정
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
     }
 }

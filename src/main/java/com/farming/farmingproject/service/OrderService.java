@@ -26,9 +26,11 @@ public class OrderService {
 
     @Transactional
     public Order createOrder(AddOrderRequest request) {
+        // 유저 정보 조회
         User user = userRepository.findByUserId(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        // Order 객체 생성
         Order order = Order.builder()
                 .user(user)
                 .totalAmount(request.getTotalAmount())
@@ -37,19 +39,24 @@ public class OrderService {
                 .status(request.getStatus())
                 .build();
 
+        // 각 OrderItem을 생성하고 Order에 추가
         for (AddOrderItemRequest itemRequest : request.getItems()) {
             ProductRG product = productRGRepository.findById(itemRequest.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
 
+            // OrderItem 생성 시 Order와 연관시키기
             OrderItem orderItem = OrderItem.builder()
+                    .order(order)  // Order 객체 설정
                     .product(product)
                     .quantity(itemRequest.getQuantity())
                     .price(itemRequest.getPrice())
                     .build();
 
+            // Order에 OrderItem 추가
             order.addOrderItem(orderItem);
         }
 
+        // Order와 관련된 OrderItem 모두 저장
         return orderRepository.save(order);
     }
 

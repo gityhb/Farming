@@ -113,7 +113,7 @@ function Payment() {
                                 deliveryAddress: inputUser.userAddr + " " + inputUser.userDetailAddr,
                                 deliveryRequest: document.getElementById('delivery-notes').value,
                                 totalAmount: totalAmount,
-                                status: "PAID"
+                                status: "success"
                             }),
                         });
 
