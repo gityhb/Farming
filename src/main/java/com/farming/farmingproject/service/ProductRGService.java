@@ -164,4 +164,20 @@ public class ProductRGService {
             throw new RuntimeException("파일 저장에 실패했습니다: " + e.getMessage(), e);
         }
     }
+
+    @Transactional
+    public void updateProductAverageStars() {
+        List<Object[]> averageStars = reviewRepository.findAverageStarByProductId();
+
+        for (Object[] result : averageStars) {
+            Long productId = (Long) result[0];
+            Double averageStar = (Double) result[1];
+
+            ProductRG product = productRGRepository.findById(productId)
+                    .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+
+            product.setAstar(averageStar.floatValue());
+            productRGRepository.save(product);
+        }
+    }
 }

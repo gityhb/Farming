@@ -78,4 +78,15 @@ public class ProductRGController {
                     .body("상품 등록 실패: " + e.getMessage());
         }
     }
+
+    @PostMapping("/update-ratings")
+    public ResponseEntity<String> updateProductRatings() {
+        try {
+            productRGService.updateProductAverageStars();
+            return ResponseEntity.ok("Product ratings updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to update product ratings: " + e.getMessage());
+        }
+    }
 }

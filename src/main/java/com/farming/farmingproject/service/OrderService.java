@@ -42,13 +42,12 @@ public class OrderService {
                     .orElseThrow(() -> new RuntimeException("Product not found"));
 
             OrderItem orderItem = OrderItem.builder()
-                    .order(order)
                     .product(product)
                     .quantity(itemRequest.getQuantity())
                     .price(itemRequest.getPrice())
                     .build();
 
-            order.getOrderItems().add(orderItem);
+            order.addOrderItem(orderItem);
         }
 
         return orderRepository.save(order);

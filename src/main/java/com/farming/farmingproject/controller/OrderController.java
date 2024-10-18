@@ -3,6 +3,7 @@ package com.farming.farmingproject.controller;
 import com.farming.farmingproject.domain.Order;
 import com.farming.farmingproject.dto.AddOrderRequest;
 import com.farming.farmingproject.service.OrderService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/create")
+    @Transactional
     public ResponseEntity<?> createOrder(@RequestBody AddOrderRequest request) {
         try {
             Order order = orderService.createOrder(request);
@@ -24,6 +26,8 @@ public class OrderController {
             return ResponseEntity.badRequest().body("주문 생성 실패: " + e.getMessage());
         }
     }
+
+
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getOrdersByUser(@PathVariable(name = "userId") String userId) {

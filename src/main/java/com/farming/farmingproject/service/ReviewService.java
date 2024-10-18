@@ -1,5 +1,6 @@
 package com.farming.farmingproject.service;
 
+import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.domain.Review;
 import com.farming.farmingproject.dto.AddReviewRequest;
 import jakarta.transaction.Transactional;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.farming.farmingproject.repository.ReviewRepository;
+import com.farming.farmingproject.repository.ProductRGRepository;
 
 import java.util.List;
 
@@ -16,7 +18,10 @@ public class ReviewService {
 
     @Autowired
     private final ReviewRepository reviewRepository;
+    @Autowired
+    private final ProductRGRepository productRGRepository;
 
+    @Transactional
     public Long save(AddReviewRequest dto, String userId) {
         Review review = Review.builder()
                 .name(dto.getName())
@@ -25,11 +30,28 @@ public class ReviewService {
                 .fresh(dto.getFresh())
                 .packageQuality(dto.getPackageQuality())
                 .reviewDetail(dto.getReviewDetail())
-                .userId(userId)  // 현재 로그인한 사용자의 userId
+                .userId(userId)
                 .productId(dto.getProductId())
                 .build();
         Review savedReview = reviewRepository.save(review);
+
+        // 평균 별점 업데이트
+        updateProductAverageStar(dto.getProductId());
+
         return savedReview.getReviewId();
+    }
+
+    public void updateProductAverageStar(Long productId) {
+        Double averageStar = reviewRepository.findAverageStarByProductId().stream()
+                .filter(result -> result[0].equals(productId))
+                .findFirst()
+                .map(result -> (Double) result[1])
+                .orElse(0.0);
+
+        ProductRG product = productRGRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+        product.setAstar(averageStar.floatValue());
+        productRGRepository.save(product);
     }
 
     public List<Review> getAllReviews() {

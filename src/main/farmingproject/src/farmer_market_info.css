@@ -50,6 +50,24 @@
 }
 
 /*별점*/
+
+.rating_stars {
+    position: relative;
+    display: inline-block;
+}
+
+.rating_stars_bg {
+    color: #ddd;
+}
+
+.rating_stars_fg {
+    color: #ffb300;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
 .right_area .pd_star img {
     width: 20px;
     height: 20px;

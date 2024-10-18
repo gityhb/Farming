@@ -37,8 +37,13 @@ public class Order {
     @Column(nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
 
     @Builder
     public Order(User user, Long totalAmount, String deliveryAddress, String deliveryRequest, String status) {
