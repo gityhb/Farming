@@ -289,7 +289,7 @@ function Farmer_market_info() {
                             */}
 
                             {activeTab === 'pdinfo' && (
-                                <img style={{width: '1000px'}} src={`/${product.productInfoimgPath}`} alt={product.productInfoimgPath}/>
+                                <img style={{    width: '-webkit-fill-available'}} src={`/${product.productInfoimgPath}`} alt={product.productInfoimgPath}/>
                             )}
 
                             {/* 리뷰 */}
