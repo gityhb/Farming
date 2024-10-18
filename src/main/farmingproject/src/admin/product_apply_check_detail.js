@@ -107,6 +107,10 @@ function ProductApplyCheckDetail() {
                         <td className="product_apply_check_detail_info">{product.sellerName}</td>
                     </tr>
                     <tr>
+                        <td className="product_apply_check_detail_title">가게이름</td>
+                        <td className="product_apply_check_detail_info">{product.storeName}</td>
+                    </tr>
+                    <tr>
                         <td className="product_apply_check_detail_title">상품가격</td>
                         <td className="product_apply_check_detail_info">
                             {product.productPrice1}{product.productPrice2} / {product.productPrice3}원

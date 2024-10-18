@@ -36,6 +36,7 @@ public class ProductService {
                 .sellerId(dto.getSellerId())
                 .productName(dto.getProductName())
                 .sellerName(dto.getSellerName())
+                .storeName(dto.getStoreName())
                 .productPrice1(dto.getProductPrice1())
                 .productPrice2(dto.getProductPrice2())
                 .productPrice3(dto.getProductPrice3())
