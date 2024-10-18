@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 public class AddProductRGRequest {
     private String sellerId;
+    private String sellerName;
     private String productName;
     private String storeName;
     private int productPrice1;

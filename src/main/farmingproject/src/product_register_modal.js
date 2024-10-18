@@ -5,9 +5,10 @@ import axios from "axios";
 
 function ProductRegisterModal({ product, onClose }) {
     const [productDetails, setProductDetails] = useState({
-        sellerId: product.sellerId || '',
+        sellerId: product.sellerId,
+        sellerName: product.sellerName,
         productName: product.productName,
-        storeName: product.storeName || '',
+        storeName: product.storeName,
         productPrice1: product.productPrice1,
         productPrice2: product.productPrice2,
         productPrice3: product.productPrice3,
@@ -19,6 +20,36 @@ function ProductRegisterModal({ product, onClose }) {
         productimgPath: null,
         productInfoimgPath: null
     });
+
+    const getPDeliveryDate = (deliveryDate) => {
+        switch (deliveryDate) {
+            case 'today' :
+                return '오늘 배송';
+            case 'tomorrow' :
+                return '내일 배송';
+            case 'etc' :
+                return '상시 배송';
+            default :
+                return '배송 정보 없음';
+        }
+    };
+
+    const getPPrice2 = (unit) => {
+        switch (unit) {
+            case 'g' :
+                return 'g';
+            case 'kg' :
+                return 'kg';
+            case 'ea' :
+                return '개';
+            case 'pack' :
+                return '팩';
+            case 'box' :
+                return '박스';
+            default :
+                return '단위 정보 없음';
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -90,27 +121,40 @@ function ProductRegisterModal({ product, onClose }) {
                     <span className="close" onClick={onClose}>&times;</span>
                 </div>
                 <div className="apply_main">
-                    <label>판매자 ID</label>
-                    <input type="text" name="sellerId" value={productDetails.sellerId} onChange={handleInputChange}/>
+                    <label>판매자 고유 ID</label>
+                    <input type="text" name="sellerId" value={productDetails.sellerId} onChange={handleInputChange}
+                           readOnly={true}/>
+
+                    <label>판매자</label>
+                    <input type="text" name="sellerId" value={productDetails.sellerName} onChange={handleInputChange}
+                           readOnly={true}/>
+
 
                     <label>상품명</label>
-                    <input type="text" name="productName" value={productDetails.productName} onChange={handleInputChange}/>
+                    <input type="text" name="productName" value={productDetails.productName}
+                           onChange={handleInputChange}/>
 
                     <label>상점명</label>
-                    <input type="text" name="storeName" value={productDetails.storeName} onChange={handleInputChange}/>
+                    <input type="text" name="storeName" value={productDetails.storeName} onChange={handleInputChange}
+                           readOnly={true}/>
 
                     <label>상품가격</label>
                     <div className="register_price">
-                        <input type="number" name="productPrice1" value={productDetails.productPrice1} onChange={handleInputChange}/>
-                        <input type="text" name="productPrice2" value={productDetails.productPrice2} onChange={handleInputChange}/>
-                        <input type="number" name="productPrice3" value={productDetails.productPrice3} onChange={handleInputChange}/>
+                        <input type="text" name="productPrice1" value={productDetails.productPrice1}
+                               onChange={handleInputChange}/>
+                        <input type="text" name="productPrice2" value={getPPrice2(productDetails.productPrice2)}
+                               onChange={handleInputChange}/>
+                        <input type="text" name="productPrice3" value={productDetails.productPrice3}
+                               onChange={handleInputChange}/>
                     </div>
 
                     <label>원산지</label>
-                    <input type="text" name="productOrigin" value={productDetails.productOrigin} onChange={handleInputChange}/>
+                    <input type="text" name="productOrigin" value={productDetails.productOrigin}
+                           onChange={handleInputChange} readOnly={true}/>
 
                     <label>배송날짜</label>
-                    <input type="text" name="productDeliveryDate" value={productDetails.productDeliveryDate} onChange={handleInputChange}/>
+                    <input type="text" name="productDeliveryDate" value={getPDeliveryDate(product.productDeliveryDate)}
+                           onChange={handleInputChange}/>
 
                     <label>상품 대표 이미지</label>
                     <input type="file" onChange={(e) => handleFileChange(e, 'productimgPath')}/>
