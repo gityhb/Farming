@@ -130,6 +130,7 @@ public class ProductRGService {
 
         ProductRG product = ProductRG.builder()
                 .sellerId(addProductRGRequest.getSellerId())
+                .sellerName(addProductRGRequest.getSellerName())
                 .productName(addProductRGRequest.getProductName())
                 .storeName(addProductRGRequest.getStoreName())
                 .productPrice1(addProductRGRequest.getProductPrice1())

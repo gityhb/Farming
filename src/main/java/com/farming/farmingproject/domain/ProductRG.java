@@ -18,6 +18,9 @@ public class ProductRG {
     @Column(name = "seller_id", nullable = false)
     private String sellerId;
 
+    @Column(name = "seller_name", nullable = false)
+    private String sellerName;
+
     @Column(name = "product_name", nullable = false)
     private String productName;
 
@@ -55,9 +58,10 @@ public class ProductRG {
     private Integer salenum = 10;
 
     @Builder
-    public ProductRG(String sellerId, String productName, String storeName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate,
+    public ProductRG(String sellerId, String sellerName, String productName, String storeName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate,
                      String productInfoimgPath, Integer sellcount, Float astar, Integer salenum, String productimgPath) {
         this.sellerId = sellerId;
+        this.sellerName = sellerName;
         this.productName = productName;
         this.storeName = storeName;
         this.productPrice1 = productPrice1;
