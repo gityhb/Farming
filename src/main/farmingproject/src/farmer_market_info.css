@@ -50,7 +50,6 @@
 }
 
 /*별점*/
-
 .rating_stars {
     position: relative;
     display: inline-block;
@@ -58,6 +57,8 @@
 
 .rating_stars_bg {
     color: #ddd;
+    font-size: 40px;
+
 }
 
 .rating_stars_fg {
@@ -66,6 +67,7 @@
     top: 0;
     left: 0;
     overflow: hidden;
+    font-size: 40px;
 }
 
 .right_area .pd_star img {
@@ -255,7 +257,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-    margin-left: 300px;
+    justify-content: center;
 }
 
 .rating_stars span {

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import  './farmer_market_info_seller.css';
+import  './farmer_market_info.css';
 import './common/root.css';
 import {useUser} from "./common/userContext";
 import {useParams} from "react-router-dom";
