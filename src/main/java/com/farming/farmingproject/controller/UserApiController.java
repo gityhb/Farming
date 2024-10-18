@@ -120,7 +120,7 @@ public class UserApiController {
 
         // UserDetails에서 아이디를 추출하여 사용자 정보를 조회
         User user = userService.findByUserId(userDetails.getUsername());
-        UserResponse response = new UserResponse(user.getId(), user.getUserId(), user.getName(), user.getPhoneNumber(), user.getAddress(), user.getAuthority());
+        UserResponse response = new UserResponse(user.getId(), user.getUserId(), user.getName(), user.getPhoneNumber(), user.getStoreName(), user.getAddress(), user.getAuthority());
         return ResponseEntity.ok(response);
 
     }

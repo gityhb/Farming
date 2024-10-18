@@ -112,7 +112,7 @@ function ProductApplyCheck() {
                                     <div className={'admin_product_apply_chk_inner_content'}>
                                         <div className={'admin_product_apply_chk_inner_num'}>{product.productId}</div>
                                         <div className={'admin_product_apply_chk_inner_title'}>{product.productName}</div>
-                                        <div className={'admin_product_apply_chk_inner_seller'}>{product.sellerName}</div>
+                                        <div className={'admin_product_apply_chk_inner_seller'} >{product.sellerName}</div>
                                         <div className={'admin_product_apply_chk_inner_status'} style={{ color: pStatus[index]?.color }}>{pStatus[index]?.text}</div>
                                     </div>
                                 </div>

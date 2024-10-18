@@ -76,7 +76,7 @@ function Farmer_recommend() {
                     </div>
                     {/*오늘의 추천 TOP 5*/}
                     <div id="today_recommend_5">
-                        <div className={'recommend_title'}>
+                        <div className={'sub_title'}>
                             <h1>오늘의 추천 TOP 5</h1>
                         </div>
                         <div id="today_recommend_5_list" className={'recommend_list'}>
@@ -98,7 +98,7 @@ function Farmer_recommend() {
                     </div>
                     {/*오늘의 특가 타임 세일*/}
                     <div id="today_time_sale">
-                        <div className={'recommend_title'} id={'recommend_title_sale'}>
+                        <div className={'recommend_title_sale sub_title'}>
                             <h1>오늘의 특가 타임 세일</h1>
                         </div>
                         <span id="recommend_today_date">{todayDate}</span>

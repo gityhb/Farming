@@ -17,6 +17,7 @@ function Farmer_product_apply() {
         productName: "",
         productImagePath: "",
         sellerName: "",
+        storeName: "",
         productPrice1: "",
         productPrice2: "g",
         productPrice3: "",
@@ -86,6 +87,7 @@ function Farmer_product_apply() {
                 // product 관련 데이터
                 productName: form.productName,
                 sellerName: user.name,
+                storeName: user.storeName,
                 productPrice1: form.productPrice1,
                 productPrice2: form.productPrice2,
                 productPrice3: form.productPrice3,
@@ -163,8 +165,8 @@ function Farmer_product_apply() {
         <div id={'body'}>
             <div id={'farmer_product_apply_page'} className={'page'}>
                 <div id={'contents'}>
-                    <div id={'product_apply_title'}>
-                        <h1>상품 등록 신청</h1>
+                    <div id={'main_title'}>
+                        <h1 style={{textAlign: 'center'}}>상품 등록 신청</h1>
                     </div>
                     <form onSubmit={handleSubmit} encType="multipart/form-data">
                         <div id={'product_apply_img'}>
@@ -220,6 +222,19 @@ function Farmer_product_apply() {
                                     onChange={handleInputChange}
                                     type="text"
                                     placeholder={user.name}
+                                    readOnly
+                                />
+                            </div>
+                            <div className={'pform_group'}>
+                                <div className={'pform_title'}>
+                                    가게 이름
+                                </div>
+                                <input
+                                    name={'storeName'}
+                                    value={user.storeName}
+                                    onChange={handleInputChange}
+                                    type="text"
+                                    placeholder={user.storeName}
                                     readOnly
                                 />
                             </div>

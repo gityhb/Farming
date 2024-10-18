@@ -10,6 +10,7 @@ public class AddProductRequest {
     private long sellerId;
     private String productName;
     private String sellerName;
+    private String storeName;
     private int productPrice1;
     private String productPrice2;
     private int productPrice3;

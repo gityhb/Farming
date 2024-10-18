@@ -27,6 +27,9 @@ public class Product {
     @Column(name = "seller_name", nullable = false)
     private String sellerName;
 
+    @Column(name = "store_name", nullable = false)
+    private String storeName;
+
     @Column(name = "product_price_1", nullable = false)
     private int productPrice1;
 
@@ -55,11 +58,12 @@ public class Product {
     private Timestamp productModifiedDate;
 
     @Builder
-    public Product(Long productId, Long sellerId, String productName, String sellerName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate, String productInfo, Integer productStatus) {
+    public Product(Long productId, Long sellerId, String productName, String sellerName, String storeName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate, String productInfo, Integer productStatus) {
         this.productId = productId;
         this.sellerId = sellerId;
         this.productName = productName;
         this.sellerName = sellerName;
+        this.storeName = storeName;
         this.productPrice1 = productPrice1;
         this.productPrice2 = productPrice2;
         this.productPrice3 = productPrice3;

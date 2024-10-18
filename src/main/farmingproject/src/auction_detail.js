@@ -173,14 +173,14 @@ function AuctionDetail() {
             <div className="page">
                 <div id="contents">
                     <div className="auction_detail_title">
-                        <div className="auction_detail_text">경매 상세</div>
+                        <div className="main_title"><h1 style={{textAlign: 'center'}}>경매 상세</h1></div>
                     </div>
                     <div className="auction_detail_container">
                         {auction ? (
                             <>
                                 <div>
                                     <img
-                                        src={`http://localhost:8080/images/${auction.auctionImage}`}
+                                        src={`http://localhost:8080/uploads/auction_images/${auction.auctionImage}`}
                                         alt="상품 사진"
                                     />
                                 </div>
