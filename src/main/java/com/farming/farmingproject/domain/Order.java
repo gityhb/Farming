@@ -42,7 +42,7 @@ public class Order {
 
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
-        orderItem.setOrder(this);
+        orderItem.setOrder(this);  // order를 양방향으로 설정
     }
 
     @Builder
