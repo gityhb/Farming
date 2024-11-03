@@ -10,8 +10,11 @@ function Farmer_market_seller() {
     const { user } = useUser(); // 현재 로그인한 사용자 정보
 
     useEffect(() => {
-        if (user && user.userId) {
+        /*if (user && user.userId) {
             fetchSellerProducts(user.userId);
+        }*/
+        if (user && user.id) {
+            fetchSellerProducts(user.id);
         }
     }, [user]);
 

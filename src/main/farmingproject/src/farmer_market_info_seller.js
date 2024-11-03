@@ -113,6 +113,22 @@ function Farmer_market_info_seller() {
         return <div>Loading...</div>;
     }
 
+    /* 별점에 따라 별 채워지게 하기*/
+    const RatingStars = ({ rating }) => {
+        const percentage = (rating / 5) * 100;
+
+        return (
+            <div className="rating_summary">
+                <div className="rating_stars">
+                    <div className="rating_stars_bg">★★★★★</div>
+                    <div className="rating_stars_fg" style={{ width: `${percentage}%` }}>★★★★★</div>
+                </div>
+                <p className="rating_score_primary">{rating.toFixed(1)}/</p>
+                <p className="rating_score_secondary">5 ({reviewCounts[product.productId] || 0})</p>
+            </div>
+        );
+    };
+
 
     return (
         <div id={'body'}>
@@ -273,13 +289,7 @@ function Farmer_market_info_seller() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="rating_summary">
-                                        <div className="rating_stars">
-                                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                                        </div>
-                                        <p className="rating_score_primary">5/</p>
-                                        <p className="rating_score_secondary">5 ({reviewCounts[product.productId] || 0})</p>
-                                    </div>
+                                    <RatingStars rating={product.astar} />
 
                                     <div className="rating_container">
                                         <div className="rating_row">

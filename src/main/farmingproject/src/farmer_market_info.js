@@ -44,6 +44,12 @@ function Farmer_market_info() {
         fetchProductDetails();
         fetchReviews();
         fetchReviewCounts();
+        /*const interval = setInterval(() => {
+            fetchReviewCounts();
+        }, 1000); // 1초마다 업데이트
+
+        return () => clearInterval(interval);*/
+
     }, [productId]);
 
     /*상품정보 가져오기*/
