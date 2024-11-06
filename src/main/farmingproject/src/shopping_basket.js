@@ -1,7 +1,7 @@
 import './shopping_basket.css';
 import './common/root.css';
 import React, {useState, useEffect} from 'react';
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useUser} from "./common/userContext";
 
 function Shopping_Basket() {
@@ -42,7 +42,7 @@ function Shopping_Basket() {
     const incrementQuantity = (id) => {
         setItems(items.map(item =>
             item.id === id
-                ? {...item, quantity: item.quantity + 1, totalAmount: item.totalAmount + item.price}
+                ? {...item, quantity: item.quantity + 1, totalAmount: item.totalAmount + item.productRG.productPrice3}
                 : item
         ));
     };
@@ -50,7 +50,7 @@ function Shopping_Basket() {
     const decrementQuantity = (id) => {
         setItems(items.map(item =>
             item.id === id && item.quantity > 0
-                ? {...item, quantity: item.quantity - 1, totalAmount: item.totalAmount - item.price}
+                ? {...item, quantity: item.quantity - 1, totalAmount: item.totalAmount - item.productRG.productPrice3}
                 : item
         ));
     };

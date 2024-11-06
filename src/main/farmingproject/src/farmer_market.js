@@ -92,6 +92,7 @@ function Farmer_market() {
                             ))}
                         </ul>
                     </div>
+                    <div className={'align'}></div>
                     <div id={'page_list'}>
                         <span className={'page_num'}><a>1</a></span>
                     </div>
