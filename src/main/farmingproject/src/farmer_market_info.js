@@ -16,7 +16,7 @@ function Farmer_market_info() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reviewCounts, setReviewCounts] = useState({});
     const [reviews, setReviews] = useState([]);
-    const [isLike, setIsLike] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
     const [items, setItems] = useState([]);
     const navigate = useNavigate();
 
@@ -42,17 +42,36 @@ function Farmer_market_info() {
     };
 
 
+    const checkLikeStatus = async () => {
+        try {
+            const response = await fetch(`/api/productRG/${productId}/like/status`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // 필요한 경우 인증 헤더 추가
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setIsLiked(data.isLiked);
+            }
+        } catch (error) {
+            console.error("좋아요 상태 확인 실패:", error);
+        }
+    };
+
     useEffect(() => {
         fetchProductDetails();
         fetchReviews();
         fetchReviewCounts();
+        checkLikeStatus();
         /*const interval = setInterval(() => {
             fetchReviewCounts();
         }, 1000); // 1초마다 업데이트
 
         return () => clearInterval(interval);*/
 
-    }, [productId]);
+    }, [productId, user]);
 
     /*상품정보 가져오기*/
     const fetchProductDetails = async () => {
@@ -213,10 +232,31 @@ function Farmer_market_info() {
         );
     };
 
+
+
     // 좋아요 버튼
-    const pdLike = () => {
-        setIsLike(!isLike);
+    const pdLike = async () => {
+        try {
+            const response = await fetch(`/api/productRG/${productId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId: user.userId })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setIsLiked(data.isLiked);
+                console.log("좋아요 상태 변경 성공");
+            } else {
+                console.log("좋아요 실패");
+            }
+        } catch (error) {
+            console.error("좋아요 요청 중 오류 발생:", error);
+        }
     };
+
 
     // 상품 가격
     const incrementQuantity = () => {
@@ -256,7 +296,7 @@ function Farmer_market_info() {
                                         <p>{product.productName}</p>
                                     </div>
                                     <div className={'pd_like'} onClick={pdLike}>
-                                        <img src={isLike ? '/img/etc/like_fill.png' : '/img/etc/like_blank.png'}/>
+                                        <img src={isLiked ? '/img/etc/like_fill.png' : '/img/etc/like_blank.png'}/>
                                     </div>
                                 </div>
                                 <div className={'pd_value'}>

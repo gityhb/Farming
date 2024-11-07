@@ -57,6 +57,9 @@ public class ProductRG {
     @Column(name = "product_salenum", nullable = true)
     private Integer salenum = 10;
 
+    @Column(name = "like_count")
+    private Integer likeCount = 0;
+
     @Builder
     public ProductRG(String sellerId, String sellerName, String productName, String storeName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate,
                      String productInfoimgPath, Integer sellcount, Float astar, Integer salenum, String productimgPath) {
