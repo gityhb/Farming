@@ -89,20 +89,37 @@ function Shopping_Basket() {
         navigateToPayment(items);
     };
 
-    const navigateToPayment = (orderItems) => {
+    const navigateToPayment = (selectedItems) => {
+        if (selectedItems.length === 0) {
+            alert("선택된 상품이 없습니다.");
+            return;
+        }
+
+        const orderItems = selectedItems.map(item => ({
+            id: item.productRG.productId,
+            price: item.productRG.productPrice3,
+            quantity: item.quantity,
+            imgPath: item.productRG.productimgPath,
+            name: item.productRG.productName,
+            storeName: item.productRG.storeName
+        }));
+
         navigate('/payment', {
             state: {
-                orderItems: orderItems.map(item => ({
-                    id: item.productRG.id,
+                orderItems: orderItems,
+                product: selectedItems.map(item => ({
+                    id: item.productRG.productId,
                     name: item.productRG.productName,
                     price: item.productRG.productPrice3,
                     quantity: item.quantity,
                     imgPath: item.productRG.productimgPath,
+                    origin: item.productRG.productOrigin,
                     storeName: item.productRG.storeName
                 }))
             }
         });
     };
+
 
     const totalSum = items.reduce((acc, item) => item.checked ? acc + item.totalAmount : acc, 0);
 

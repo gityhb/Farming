@@ -6,6 +6,7 @@ import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.domain.User;
 import com.farming.farmingproject.dto.AddOrderItemRequest;
 import com.farming.farmingproject.dto.AddOrderRequest;
+import com.farming.farmingproject.repository.OrderItemRepository;
 import com.farming.farmingproject.repository.OrderRepository;
 import com.farming.farmingproject.repository.ProductRGRepository;
 import com.farming.farmingproject.repository.UserRepository;
@@ -23,6 +24,8 @@ public class OrderService {
     private UserRepository userRepository;
     @Autowired
     private ProductRGRepository productRGRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;  // OrderItemRepository 추가
 
     @Transactional
     public Order createOrder(AddOrderRequest request) {
@@ -39,6 +42,9 @@ public class OrderService {
                 .status(request.getStatus())
                 .build();
 
+        // Order 저장 (이후 OrderItem들을 저장할 수 있게 ID가 할당됨)
+        order = orderRepository.save(order);
+
         // 각 OrderItem을 생성하고 Order에 추가
         for (AddOrderItemRequest itemRequest : request.getItems()) {
             ProductRG product = productRGRepository.findById(itemRequest.getProductId())
@@ -52,12 +58,12 @@ public class OrderService {
                     .price(itemRequest.getPrice())
                     .build();
 
-            // Order에 OrderItem 추가
-            order.addOrderItem(orderItem);
+            // OrderItem 저장
+            orderItemRepository.save(orderItem);
         }
 
-        // Order와 관련된 OrderItem 모두 저장
-        return orderRepository.save(order);
+        // 최종적으로 저장된 Order 반환
+        return order;
     }
 
     public List<Order> getOrdersByUser(String userId) {
@@ -66,3 +72,4 @@ public class OrderService {
         return orderRepository.findByUser(user);
     }
 }
+

@@ -154,10 +154,21 @@ function Farmer_market_info() {
                     imgPath: product.productimgPath,
                     origin: product.productOrigin,
                     storename: product.storeName
-                }
+                },
+                orderItems: [  // 전달할 orderItems 배열 추가
+                    {
+                        id: product.productId,
+                        name: product.productName,
+                        price: product.productPrice3,
+                        quantity: 1, // 또는 사용자가 선택한 수량
+                        imgPath: product.productimgPath,
+                        storeName: product.storeName
+                    }
+                ]
             }
         });
     };
+
 
     if (!product) {
         return <div>Loading...</div>;

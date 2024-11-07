@@ -48,12 +48,16 @@ function Payment() {
     }
 
     useEffect(() => {
+        console.log(location);
+
         if (location.state && location.state.product) {
             setProductInfo(location.state.product);
+            console.log("상품 정보:", location.state.product);
         }
 
         if (location.state && location.state.orderItems) {
             setOrderItems(location.state.orderItems);
+            console.log("Order Items 활인:", location.state.orderItems);
         }
 
         const script = document.createElement('script');
