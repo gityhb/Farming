@@ -52,4 +52,9 @@ public class BasketService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return basketRepository.findByUser(user);
     }
+
+    @Transactional
+    public void deleteBasketItems(List<Long> ids) {
+        basketRepository.deleteByIdIn(ids);
+    }
 }

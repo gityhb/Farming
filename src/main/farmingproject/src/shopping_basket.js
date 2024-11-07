@@ -89,6 +89,36 @@ function Shopping_Basket() {
         navigateToPayment(items);
     };
 
+    /* 장바구니 삭제 */
+    const handleDeleteSelected = async () => {
+        const selectedItemIds = items.filter(item => item.checked).map(item => item.id);
+        if (selectedItemIds.length === 0) {
+            alert("삭제할 상품을 선택해주세요.");
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/basket/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ basketIds: selectedItemIds }),
+            });
+
+            if (response.ok) {
+                setItems(items.filter(item => !item.checked));
+                alert("선택한 상품이 삭제되었습니다.");
+            } else {
+                const errorData = await response.json();
+                alert("상품 삭제에 실패했습니다: " + errorData.message);
+            }
+        } catch (error) {
+            console.error('상품 삭제 중 오류 발생:', error);
+            alert("상품 삭제 중 오류가 발생했습니다.");
+        }
+    };
+
     const navigateToPayment = (selectedItems) => {
         if (selectedItems.length === 0) {
             alert("선택된 상품이 없습니다.");
@@ -186,6 +216,7 @@ function Shopping_Basket() {
                             <span id={'sum_txt'}>{totalSum}원</span>
                         </div>
                     </div>
+                    <div id="basket_deleteBtn" onClick={handleDeleteSelected}>삭제</div>
                     <div id="order_button">
                         <button id="order_select_btn" onClick={handleSelectOrder}>선택주문</button>
                         <button id="order_all_btn" onClick={handleAllOrder}>전체주문</button>
