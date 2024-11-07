@@ -1,5 +1,6 @@
 package com.farming.farmingproject.controller;
 
+import com.farming.farmingproject.domain.Product;
 import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.domain.ProductLike;
 import com.farming.farmingproject.domain.User;
@@ -48,6 +49,12 @@ public class ProductRGController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/top5")
+    public ResponseEntity<List<?>> getTop5Products() {
+        List<ProductRG> top5Products = productRGService.getTop5Products();
+        return ResponseEntity.ok(top5Products);
     }
 
     /*리뷰갯수*/
@@ -146,4 +153,5 @@ public class ProductRGController {
                     .body("좋아요 상태 확인 실패: " + e.getMessage());
         }
     }
+
 }

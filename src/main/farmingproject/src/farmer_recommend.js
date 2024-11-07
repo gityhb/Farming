@@ -2,6 +2,8 @@ import './shopping_basket.css';
 import './farmer_recommend.css';
 import './common/root.css';
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {Link} from "react-router-dom";
 
 const formatDate = () => {
     const date = new Date();
@@ -46,7 +48,26 @@ const CountdownTimer = () => {
     );
 };
 
+
+
 function Farmer_recommend() {
+
+    const [topProducts, setTopProducts] = useState([]);
+
+    useEffect(() => {
+        // API에서 상품 정보를 불러오는 함수
+        const fetchTopProducts = async () => {
+            try {
+                const response = await axios.get('/api/productRG/top5');
+                setTopProducts(response.data);
+            } catch (error) {
+                console.error('상품 정보를 불러오는 데 실패했습니다.', error);
+            }
+        };
+
+        fetchTopProducts();
+    }, []);
+
     const [items, setItems] = useState([
         { id: 1, name: "맛난 딸기", salepercent: 45, price: 1000, marketImg: "img/strawberry_3.png"},
         { id: 2, name: "국내산 토마토", salepercent: 20, price: 2000, marketImg: "img/tomato.png"},
@@ -80,18 +101,20 @@ function Farmer_recommend() {
                             <h1>오늘의 추천 TOP 5</h1>
                         </div>
                         <div id="today_recommend_5_list" className={'recommend_list'}>
-                            {items.map((item) => (
-                                <div key={item.id} className={'recommend_product'}>
-                                    <img src={item.marketImg} alt="상품 사진" />
-                                    <p className="recommend_product_name">{item.name}</p>
+                            {topProducts.map((product) => (
+                                <div key={product.productId} className={'recommend_product'}>
+                                    <img src={product.productimgPath} alt="상품 사진" />
+                                    <p className="recommend_product_name">{product.productName}</p>
                                     <div className="recommend_product_sale">
-                                        <span className="recommend_product_sale_percent">{item.salepercent}%</span>
+                                        <span className="recommend_product_sale_percent">{product.salenum}%</span>
 
-                                        <span className="recommend_product_sale_price">{item.price}원</span>
+                                        <span className="recommend_product_sale_price">{product.productPrice3}원</span>
                                     </div>
+                                    <Link to={`/farmer_market_info/${product.productId}`}>
                                     <button type="button" className="recommend_buy">
                                         구매하러 가기
                                     </button>
+                                    </Link>
                                 </div>
                             ))}
                         </div>

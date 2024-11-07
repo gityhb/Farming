@@ -23,6 +23,7 @@
 .recommend_product img {
     width: 140px;
     height: 140px;
+    object-fit: cover;
 }
 
 .recommend_product_name {

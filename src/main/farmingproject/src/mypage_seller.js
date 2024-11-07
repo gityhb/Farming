@@ -15,6 +15,7 @@ function Mypage_seller() {
     const [selectedApplication, setSelectedApplication] = useState(null); // 선택된 지원자의 정보를 저장할 상태
     const [productApplyLists, setProductApplyLists] = useState([]);     // 상품 등록 신청 목록 상태 추가
     const [applications, setApplications] = useState([]); // 지원 완료 내역 상태 추가
+    const [products, setProducts] = useState([]);   // 판매자가 판매 중인 상품
     const navigate = useNavigate();
 
     const handleViewResume = (application) => {
@@ -48,6 +49,21 @@ function Mypage_seller() {
             });
     },[]);
 
+    // 판매자가 판매 중인 상품 가져오는 함수
+    const fetchSellerProducts = async (sellerId) => {
+        try {
+            const response = await fetch(`/api/productRG/seller/${sellerId}`);
+            if (response.ok) {
+                const data = await response.json();
+                setProducts(data);
+            } else {
+                console.error('상품 정보 가져오기 실패');
+            }
+        } catch (error) {
+            console.error('상품 정보 가져오는 중 오류 발생:', error);
+        }
+    };
+
     //데이터베이스에서 일자리 정보를 가져오는 함수 ( userId로 해당 사용자의 일자리 정보 가져옴 )
     const fetchJobs=async (userId)=>{
         try{
@@ -62,6 +78,7 @@ function Mypage_seller() {
         }
     };
 
+    // 판매자의 상품 등록 신청 현황 가져오는 함수
     const fetchProductApplyLists = async (id) => {
         console.log("id : ",id);
         try {
@@ -96,6 +113,7 @@ function Mypage_seller() {
             fetchJobs(loggedInUserId); // loggedInUserId로 fetchJobs 호출
             fetchApplications(loggedInUserId); // loggedInUserId로 fetchApplications 호출
             fetchProductApplyLists(user.id);
+            fetchSellerProducts(user.id);
         }
     }, [loggedInUserId]);
 
@@ -122,16 +140,15 @@ function Mypage_seller() {
             </div>
             <div className="products_section">
                 <div className="section_header">
-                    <h2>판매중인 상품 (2)</h2>
+                    <h2>판매중인 상품 ({products.length})</h2>
                     <a href="#" className="more_link">더보기 &gt;</a>
                 </div>
                 <div className="product_list">
+                    {products.map(product => (
                     <div className="product_item">
-                        <Link to={"/farmer_market_info_seller"}><img src="./img/watermelon.png" alt="상품사진"/></Link>
+                        <Link to={`/farmer_market_info_seller/${product.productId}`}><img src={product.productimgPath} alt={product.productName}/></Link>
                     </div>
-                    <div className="product_item">
-                        <img src="./img/apple_2.png" alt="상품사진"/>
-                    </div>
+                    ))}
                 </div>
             </div>
             <div className="products_section">

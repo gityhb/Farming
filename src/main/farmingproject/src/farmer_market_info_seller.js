@@ -139,12 +139,12 @@ function Farmer_market_info_seller() {
                         <button id={'search_btn'}><img src="/img/etc/search.png" alt={"search_btn"}/></button>
                     </div>
                     <div className={'product_detail'}>
-                        <div className={'left_area'}>
+                        <div className={'left_area'} style={{height: '350px'}}>
                             <div className={'pd_img'}>
                                 <img src={`/${product.productimgPath}`} alt={product.productimgPath}/>
                             </div>
                         </div>
-                        <div className={'right_area'}>
+                        <div className={'right_area'} style={{height: '350px'}}>
                             <div className={'pd_info'}>
                                 <div className={'pd_title'}>
                                     <div className={'pd_name'}>

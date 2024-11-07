@@ -1,5 +1,6 @@
 package com.farming.farmingproject.service;
 
+import com.farming.farmingproject.domain.Product;
 import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.dto.AddProductRGRequest;
 import com.farming.farmingproject.repository.ProductRGRepository;
@@ -180,5 +181,10 @@ public class ProductRGService {
             product.setAstar(averageStar.floatValue());
             productRGRepository.save(product);
         }
+    }
+
+    // like_count가 높은 상품 5개를 가져오는 메서드
+    public List<ProductRG> getTop5Products() {
+        return productRGRepository.findTop5ProductsByLikeCount();
     }
 }

@@ -155,12 +155,14 @@
     margin-top: 30px;
     padding: 0;
     width: 100%;
+    display: flex;
 }
 
 .product_detail_more_area .product_detail_tab li {
     padding: 12px 15px;
     width: 219px;
-    display: inline-block;
+    flex: auto;
+    list-style: none;
     border: 2px solid #BEBEBE;
     font-size: 19px;
     text-align: center;
@@ -176,7 +178,6 @@
 
 .product_detail_more_area .product_detail_info_area {
     padding: 10px;
-    width: 96.9%;
     border: 2px solid #BEBEBE;
     border-top: none;
 }
@@ -626,8 +627,7 @@ h2 {
 
 
 .exchange_info {
-    margin: 20px auto;
-    width: 800px;
+    padding: 10px 50px;
     color: #000000;
 }
 
