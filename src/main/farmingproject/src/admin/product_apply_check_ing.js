@@ -81,7 +81,38 @@ function ProductApplyCheckIng() {
 
     // products가 null이 아닌지 확인
     if (!products || products.length === 0) {
-        return <div>Loading...</div>; // 또는 적절한 로딩 UI 제공
+        return (<div id="body">
+            <div id={'admin_product_apply_check_page'} className={'page'}>
+                <div id={'contents'}>
+                    <div className={'admin_product_apply_chk_Btn'}>
+                        <Link to={"/admin/product_apply_check"}>
+                            <div className={'product_apply_all_btn'} style={{backgroundColor: '#fff'}}>전체</div>
+                        </Link>
+                        <Link to={"/admin/product_apply_check_ing"}>
+                            <div className={'product_apply_ing_btn'} style={{backgroundColor: '#FFEA8D'}}>심사 보류</div>
+                        </Link>
+                        <Link to={"/admin/product_apply_check_pass"}>
+                            <div className={'product_apply_pass_btn'} style={{backgroundColor: '#fff'}}>상품 등록</div>
+                        </Link>
+                        <Link to={"/admin/product_apply_check_fail"}>
+                            <div className={'product_apply_fail_btn'} style={{backgroundColor: '#fff'}}>심사 탈락</div>
+                        </Link>
+                    </div>
+
+                    <div className={'admin_product_apply_chk_div'}>
+                        <div className={'admin_product_apply_chk_top'}>
+                            <div className={'admin_product_apply_chk_num'}>No.</div>
+                            <div className={'admin_product_apply_chk_title'}>상품명</div>
+                            <div className={'admin_product_apply_chk_seller'}>판매자</div>
+                            <div className={'admin_product_apply_chk_status'}>상태</div>
+                        </div>
+                    </div>
+                    
+                    <div className={'product_none'}>아직 등록된 상품이 없습니다</div>
+
+                </div>
+            </div>
+        </div>);
     }
 
     // 현재 페이지에 해당하는 항목을 가져옴
