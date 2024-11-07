@@ -1,8 +1,10 @@
 import "./common/root.css";
 import "./farmer_product_apply.css";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useUser} from "./common/userContext";
 import {useNavigate} from "react-router-dom";
+import DaumPostcode from "react-daum-postcode";
+import Modal from "react-modal";
 
 function Farmer_product_apply() {
     const {user} = useUser();
@@ -21,7 +23,9 @@ function Farmer_product_apply() {
         productPrice1: "",
         productPrice2: "g",
         productPrice3: "",
-        productOrigin: "",
+        userZipcode: "",
+        userAddr: "",
+        userDetailAddr: "",
         productDeliveryDate: "today",
         productInfo: "",
     });
@@ -79,9 +83,36 @@ function Farmer_product_apply() {
             console.error("제출 중 오류 발생:", error);
         }
     };
+    // Modal 스타일 정의
+    const modalStyles = {
+        content: {
+            width: '600px', // 모달 창의 너비
+            height: '400px', // 모달 창의 높이
+            margin: 'auto', // 중앙 정렬
+        },
+        overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 검정색 배경
+        },
+    };
+
+    const completeHandler = (data) => {
+        setForm({
+            ...form,
+            userZipcode: data.zonecode,
+            userAddr: data.roadAddress,
+        });
+        setIsOpen(false);
+    }
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const new_addr = () => {
+        setIsOpen(!isOpen);
+    }
 
     const submitForm = async () => {
         try {
+            const fullAddress = `(${form.userZipcode}) ${form.userAddr} ${form.userDetailAddr}`;
             // 1. 상품 데이터 준비
             const productData = {
                 // product 관련 데이터
@@ -91,7 +122,7 @@ function Farmer_product_apply() {
                 productPrice1: form.productPrice1,
                 productPrice2: form.productPrice2,
                 productPrice3: form.productPrice3,
-                productOrigin: form.productOrigin,
+                productOrigin: fullAddress,
                 productDeliveryDate: form.productDeliveryDate,
                 productInfo: form.productInfo,
             };
@@ -265,17 +296,40 @@ function Farmer_product_apply() {
                                 />
                                 <span> 원</span>
                             </div>
+                            <Modal isOpen={isOpen} style={modalStyles} ariaHideApp={false}
+                                   onRequestClose={() => setIsOpen(false)}>
+                                <DaumPostcode onComplete={completeHandler} height="100%"/>
+                            </Modal>
                             <div className={'pform_group'}>
                                 <div className={'pform_title'}>
                                     원산지
                                 </div>
-                                <input
-                                    type="text"
-                                    name={"productOrigin"}
-                                    value={form.productOrigin}
-                                    onChange={handleInputChange}
-                                    placeholder="지역명을 입력해주세요"
-                                />
+                                {/*<input*/}
+                                {/*    type="text"*/}
+                                {/*    name={"productOrigin"}*/}
+                                {/*    value={form.productOrigin}*/}
+                                {/*    onChange={handleInputChange}*/}
+                                {/*    placeholder="지역명을 입력해주세요"*/}
+                                {/*/>*/}
+                                <div className={"address_list"}>
+                                    <div className={'address_input'}>
+                                        <input value={form.userZipcode || ''} name="userZipcode" readOnly
+                                               placeholder="우편번호"/>
+                                        <button type={"button"} className={'find_zip_code_btn'} onClick={new_addr}>
+                                            우편번호 찾기
+                                        </button>
+                                    </div>
+                                    <div className={'address_input'}>
+                                        <input value={form.userAddr || ''} name="userAddr" readOnly placeholder="도로명 주소"/>
+                                    </div>
+                                    <div className={'address_input'}>
+                                        <input type="text"
+                                               name="userDetailAddr"
+                                               value={form.userDetailAddr}
+                                               onChange={handleInputChange}
+                                               placeholder="상세주소"/>
+                                    </div>
+                                </div>
                             </div>
                             <div className={'pform_group'}>
                                 <div className={'pform_title'}>
