@@ -117,3 +117,10 @@
     font-weight: bold;
     color: #000;
 }
+
+.product_none {
+    margin: 100px;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+}

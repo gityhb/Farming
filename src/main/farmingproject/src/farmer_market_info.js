@@ -17,8 +17,9 @@ function Farmer_market_info() {
     const [reviewCounts, setReviewCounts] = useState({});
     const [reviews, setReviews] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const [items, setItems] = useState([]);
     const navigate = useNavigate();
+    const [quantity, setQuantity] = useState(1);
+    const [totalAmount, setTotalAmount] = useState(null);
 
     const handleReviewModal = () => {
         setIsReviewModalOpen(true);  // 모달 열기
@@ -60,6 +61,19 @@ function Farmer_market_info() {
         }
     };
 
+    const getPDeliveryDate = (deliveryDate) => {
+        switch (deliveryDate) {
+            case 'today' :
+                return '오늘 배송';
+            case 'tomorrow' :
+                return '내일 배송';
+            case 'etc' :
+                return '상시 배송';
+            default :
+                return '배송 정보 없음';
+        }
+    };
+
     useEffect(() => {
         fetchProductDetails();
         fetchReviews();
@@ -83,6 +97,7 @@ function Farmer_market_info() {
                 const data = await response.json();
                 console.log('Received data:', data);
                 setProduct(data);
+                setTotalAmount(data.productPrice3);
             } else {
                 console.error('상품 정보 가져오기 실패');
                 const errorText = await response.text();
@@ -139,7 +154,7 @@ function Farmer_market_info() {
                 body: JSON.stringify({
                     userId: user.userId,
                     productId: product.productId,
-                    quantity: 1 // 또는 사용자가 선택한 수량
+                    quantity: quantity
                 }),
             });
 
@@ -169,7 +184,7 @@ function Farmer_market_info() {
                     id: product.productId,
                     name: product.productName,
                     price: product.productPrice3,
-                    quantity: 1, // 또는 사용자가 선택한 수량
+                    quantity: quantity,
                     imgPath: product.productimgPath,
                     origin: product.productOrigin,
                     storename: product.storeName
@@ -179,7 +194,7 @@ function Farmer_market_info() {
                         id: product.productId,
                         name: product.productName,
                         price: product.productPrice3,
-                        quantity: 1, // 또는 사용자가 선택한 수량
+                        quantity: quantity,
                         imgPath: product.productimgPath,
                         storeName: product.storeName
                     }
@@ -259,21 +274,25 @@ function Farmer_market_info() {
 
 
     // 상품 가격
+    // 수량 증가
     const incrementQuantity = () => {
-        setItems(items.map(item => ({
-            ...item,
-            quantity: item.quantity + 1,
-            totalAmount: item.totalAmount + item.productRG.productPrice3})));
+        setQuantity(prevQuantity => {
+            const newQuantity = prevQuantity + 1;
+            setTotalAmount(newQuantity * product.productPrice3);  // 총 가격 업데이트
+            return newQuantity;
+        });
     };
 
+    // 수량 감소
     const decrementQuantity = () => {
-        setItems(items.map(item => ({
-            ...item,
-            quantity: item.quantity > 0 ? item.quantity - 1 : 0,
-            totalAmount: item.productRG.productPrice3 * (item.quantity > 0 ? item.quantity - 1 : 0)})));
+        if (quantity > 1) {
+            setQuantity(prevQuantity => {
+                const newQuantity = prevQuantity - 1;
+                setTotalAmount(newQuantity * product.productPrice3);  // 총 가격 업데이트
+                return newQuantity;
+            });
+        }
     };
-
-    const totalSum = items.reduce((acc, item) => item.checked ? acc + item.totalAmount : acc, 0);
 
     return (
         <div id={'body'}>
@@ -315,7 +334,7 @@ function Farmer_market_info() {
                                 </div>
                                 <div className={'pd_deliver'}>
                                     <span>배송정보 | </span>
-                                    <span>{product.productDeliveryDate} </span>
+                                    <span>{getPDeliveryDate(product.productDeliveryDate)} </span>
                                     {/*<span> , </span>
                                     <span>05/07</span>*/}
                                     <span>예정</span>
@@ -330,12 +349,12 @@ function Farmer_market_info() {
                                     <table>
                                         <tr>
                                             <td>
-                                                <button onClick={() => decrementQuantity()}>-</button>
+                                                <button onClick={decrementQuantity}>-</button>
                                             </td>
                                             {/*상품 수량 증감 및 이를 장바구니에 넣는 작업 진행 중*/}
-                                            <td><input type={"text"}/>{product.quantity}</td>
+                                            <td>{quantity}</td>
                                             <td>
-                                                <button onClick={() => incrementQuantity()}>+</button>
+                                                <button onClick={incrementQuantity}>+</button>
                                             </td>
                                         </tr>
                                     </table>
@@ -345,7 +364,8 @@ function Farmer_market_info() {
                         <div className={'total_purchase'}>
                             <div className={'total_price'}>
                                 <span>총 금액 </span>
-                                <span>{product.productPrice3.toLocaleString()}</span>
+                                <span>{totalAmount}</span>
+                                {/*<span>{product.productPrice3.toLocaleString()}</span>*/}
                                 <span>원</span>
                             </div>
                             <div className={'purchase_btn'}>
