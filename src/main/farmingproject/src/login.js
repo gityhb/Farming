@@ -1,11 +1,11 @@
-import {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import "./common/root.css";
 import "./login.css";
 import axios from "axios";
 
 function Login() {
-    const navigate = useNavigate();
+    const location = useLocation();
 
     // const [activeTab, setActiveTab] = useState("consumer");
     const [userId, setUserId] = useState("");
@@ -17,6 +17,13 @@ function Login() {
     // const [consumerCheckbox2, setConsumerCheckbox2] = useState(false);
     // const [sellerCheckbox1, setSellerCheckbox1] = useState(false);
     // const [sellerCheckbox2, setSellerCheckbox2] = useState(false);
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        if (queryParams.get('error') === 'true') {
+            setErrorMessage('로그인에 실패했습니다. 다시 시도해주세요.');
+        }
+    }, [location]);
 
     // const handleLogin = async (event) => {
     //     event.preventDefault();
