@@ -16,6 +16,8 @@ function Farmer_market_info() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reviewCounts, setReviewCounts] = useState({});
     const [reviews, setReviews] = useState([]);
+    const [isLike, setIsLike] = useState(false);
+    const [items, setItems] = useState([]);
     const navigate = useNavigate();
 
     const handleReviewModal = () => {
@@ -200,6 +202,27 @@ function Farmer_market_info() {
         );
     };
 
+    // 좋아요 버튼
+    const pdLike = () => {
+        setIsLike(!isLike);
+    };
+
+    // 상품 가격
+    const incrementQuantity = () => {
+        setItems(items.map(item => ({
+            ...item,
+            quantity: item.quantity + 1,
+            totalAmount: item.totalAmount + item.productRG.productPrice3})));
+    };
+
+    const decrementQuantity = () => {
+        setItems(items.map(item => ({
+            ...item,
+            quantity: item.quantity > 0 ? item.quantity - 1 : 0,
+            totalAmount: item.productRG.productPrice3 * (item.quantity > 0 ? item.quantity - 1 : 0)})));
+    };
+
+    const totalSum = items.reduce((acc, item) => item.checked ? acc + item.totalAmount : acc, 0);
 
     return (
         <div id={'body'}>
@@ -221,8 +244,8 @@ function Farmer_market_info() {
                                     <div className={'pd_name'}>
                                         <p>{product.productName}</p>
                                     </div>
-                                    <div className={'pd_like'}>
-                                        <img src={'/img/etc/like_blank.png'}/>
+                                    <div className={'pd_like'} onClick={pdLike}>
+                                        <img src={isLike ? '/img/etc/like_fill.png' : '/img/etc/like_blank.png'}/>
                                     </div>
                                 </div>
                                 <div className={'pd_value'}>
@@ -256,11 +279,12 @@ function Farmer_market_info() {
                                     <table>
                                         <tr>
                                             <td>
-                                                <button>-</button>
+                                                <button onClick={() => decrementQuantity()}>-</button>
                                             </td>
-                                            <td><input type={"text"} placeholder={1}/></td>
+                                            {/*상품 수량 증감 및 이를 장바구니에 넣는 작업 진행 중*/}
+                                            <td><input type={"text"}/>{product.quantity}</td>
                                             <td>
-                                                <button>+</button>
+                                                <button onClick={() => incrementQuantity()}>+</button>
                                             </td>
                                         </tr>
                                     </table>
