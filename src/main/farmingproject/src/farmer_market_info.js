@@ -65,11 +65,11 @@ function Farmer_market_info() {
         fetchReviews();
         fetchReviewCounts();
         checkLikeStatus();
-        /*const interval = setInterval(() => {
+        const interval = setInterval(() => {
             fetchReviewCounts();
         }, 1000); // 1초마다 업데이트
 
-        return () => clearInterval(interval);*/
+        return () => clearInterval(interval);
 
     }, [productId, user]);
 
