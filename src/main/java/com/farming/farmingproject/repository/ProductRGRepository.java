@@ -21,4 +21,5 @@ public interface ProductRGRepository extends JpaRepository<ProductRG, Long> {
 
     // 상품 고유 번호로 상품 조회
 //    List<ProductRG> findByProductIdIn(List<Long> productIds);
+    List<ProductRG> findByProductNameContaining(String name);
 }

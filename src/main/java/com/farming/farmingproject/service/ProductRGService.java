@@ -186,6 +186,10 @@ public class ProductRGService {
         }
     }
 
+    public List<ProductRG> searchProductsByName(String name) {
+        return productRGRepository.findByProductNameContaining(name);
+    }
+
     // like_count가 높은 상품 5개를 가져오는 메서드
     public List<ProductRG> getTop5Products() {
         return productRGRepository.findTop5ProductsByLikeCount();
