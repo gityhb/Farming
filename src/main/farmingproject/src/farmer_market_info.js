@@ -328,11 +328,11 @@ function Farmer_market_info() {
                                     <span className={'pd_rate'}>{product.salenum}</span>
                                     <span className={'pd_rate'}>%</span>
                                 </div>
-                                <div className={'pd_star'}>
-                                    <img src={'/img/etc/star.png'}/>
-                                    <span>{product.astar}</span>
-                                </div>
-                                <div className={'pd_origin'}>
+                            <div className={'pd_star'}>
+                                <img src={'/img/etc/star.png'}/>
+                                <span>{product.astar.toFixed(1)}</span>
+                            </div>
+                            <div className={'pd_origin'}>
                                     <span>원산지 | </span>
                                     <span>{product.productOrigin}</span>
                                 </div>
