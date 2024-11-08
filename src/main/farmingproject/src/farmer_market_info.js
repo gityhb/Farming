@@ -21,6 +21,8 @@ function Farmer_market_info() {
     const [quantity, setQuantity] = useState(1);
     const [totalAmount, setTotalAmount] = useState(null);
 
+    const [averageStar, setAverageStar] = useState(0);
+
     const handleReviewModal = () => {
         setIsReviewModalOpen(true);  // 모달 열기
     }
@@ -81,10 +83,10 @@ function Farmer_market_info() {
         checkLikeStatus();
         const interval = setInterval(() => {
             fetchReviewCounts();
+            fetchProductDetails(); // 평균 별점 업데이트를 위해 상품 정보도 주기적으로 가져옵니다
         }, 1000); // 1초마다 업데이트
 
         return () => clearInterval(interval);
-
     }, [productId, user]);
 
     /*상품정보 가져오기*/
@@ -98,6 +100,8 @@ function Farmer_market_info() {
                 console.log('Received data:', data);
                 setProduct(data);
                 setTotalAmount(data.productPrice3);
+                // astar 값을 상태로 관리
+                setAverageStar(data.astar);
             } else {
                 console.error('상품 정보 가져오기 실패');
                 const errorText = await response.text();
