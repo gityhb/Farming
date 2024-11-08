@@ -180,7 +180,7 @@ function Shopping_Basket() {
                             </thead>
                             <tbody>
                             {items.map(item => (
-                                <tr key={item.id}>
+                                <tr key={item.id} style={{height: '150px'}}>
                                     <td>
                                         <button type="button" id="basket_check_btn"
                                                 onClick={() => toggleCheck(item.id)}>
@@ -216,7 +216,7 @@ function Shopping_Basket() {
                             <span id={'sum_txt'}>{totalSum}원</span>
                         </div>
                     </div>
-                    <div id="basket_deleteBtn" onClick={handleDeleteSelected}>삭제</div>
+                    <div id="basket_deleteBtn" onClick={handleDeleteSelected}>선택 상품 삭제</div>
                     <div id="order_button">
                         <button id="order_select_btn" onClick={handleSelectOrder}>선택주문</button>
                         <button id="order_all_btn" onClick={handleAllOrder}>전체주문</button>

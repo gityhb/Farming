@@ -18,4 +18,7 @@ public interface ProductRGRepository extends JpaRepository<ProductRG, Long> {
     // like_count가 높은 순으로 최대 5개 상품을 조회
     @Query("SELECT p FROM ProductRG p ORDER BY p.likeCount DESC")
     List<ProductRG> findTop5ProductsByLikeCount();
+
+    // 상품 고유 번호로 상품 조회
+//    List<ProductRG> findByProductIdIn(List<Long> productIds);
 }

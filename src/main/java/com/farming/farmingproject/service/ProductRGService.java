@@ -3,6 +3,7 @@ package com.farming.farmingproject.service;
 import com.farming.farmingproject.domain.Product;
 import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.dto.AddProductRGRequest;
+import com.farming.farmingproject.repository.ProductLikeRepository;
 import com.farming.farmingproject.repository.ProductRGRepository;
 import com.farming.farmingproject.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
@@ -23,6 +24,8 @@ import java.util.*;
 public class ProductRGService {
     private final ProductRGRepository productRGRepository;
     private final ReviewRepository reviewRepository;
+    @Autowired
+    private ProductLikeRepository productLikeRepository;
 
     @Autowired
     public ProductRGService(ProductRGRepository productRGRepository, ReviewRepository reviewRepository) {
@@ -187,4 +190,9 @@ public class ProductRGService {
     public List<ProductRG> getTop5Products() {
         return productRGRepository.findTop5ProductsByLikeCount();
     }
+
+//    public List<ProductRG> getLikedProducts(Long userId) {
+//        List<Long> likedProductIds = productLikeRepository.findLikedProductIdsByUserId(userId);
+//        return productRGRepository.findByProductIdIn(likedProductIds);
+//    }
 }

@@ -129,6 +129,19 @@ function Farmer_market_info_seller() {
         );
     };
 
+    const getPDeliveryDate = (deliveryDate) => {
+        switch (deliveryDate) {
+            case 'today' :
+                return '오늘 배송';
+            case 'tomorrow' :
+                return '내일 배송';
+            case 'etc' :
+                return '상시 배송';
+            default :
+                return '배송 정보 없음';
+        }
+    };
+
 
     return (
         <div id={'body'}>
@@ -170,7 +183,7 @@ function Farmer_market_info_seller() {
                                 </div>
                                 <div className={'pd_deliver'}>
                                     <span>배송정보 | </span>
-                                    <span>{product.productDeliveryDate} </span>
+                                    <span>{getPDeliveryDate(product.productDeliveryDate)} </span>
                                     {/*<span> , </span>
                                     <span>05/07</span>*/}
                                     <span>예정</span>

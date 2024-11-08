@@ -20,7 +20,7 @@ public class AuctionService {
 
     // 모든 경매 상품 조회
     public List<Auction> getAllAuctions() {
-        return auctionRepository.findAll();
+        return auctionRepository.findAllByOrderByDateAsc();
     }
 
     // 특정 경매 상품 조회

@@ -1,7 +1,30 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './mypage.css';
+import {useUser} from "./common/userContext";
 
 function MyPage(){
+    const { user } = useUser();
+    const [likeProducts, setLikeProducts] = useState([]);
+
+    // const fetchLikeProducts = async (userId) => {
+    //     try {
+    //         const response = await fetch(`/api/productRG/liked/${userId}`);
+    //         if (response.ok) {
+    //             const data = await response.json();
+    //             setLikeProducts(data);
+    //         } else {
+    //             console.error('상품 정보 가져오기 실패');
+    //         }
+    //     } catch (error) {
+    //         console.error('상품 정보 가져오는 중 오류 발생:', error);
+    //     }
+    // };
+    //
+    // useEffect(() => {
+    //     if(user.id) {
+    //         fetchLikeProducts(user.id)
+    //     }
+    // }, [user.id]);
 
     return(
         <div className="mypage">
@@ -12,9 +35,9 @@ function MyPage(){
             </div>
             <div className="delivery_component">
                 <div className="hello">
-                    <img src="/img/osj.jpg" style={{width: '81px', height: '81px'}}/>
+                    <img src="/img/etc/user.png" style={{width: '50px', height: '50px'}}/>
                     <div className="hello_text">
-                        오소정님, 반갑습니다.
+                        {user.name}님, 반갑습니다.
                     </div>
                 </div>
                 <div className="delivery_detail">

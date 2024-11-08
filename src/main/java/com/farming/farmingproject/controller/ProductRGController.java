@@ -57,6 +57,12 @@ public class ProductRGController {
         return ResponseEntity.ok(top5Products);
     }
 
+//    @GetMapping("/liked")
+//    public List<ProductRG> getLikedProducts(@RequestParam Long userId) {
+//        return productRGService.getLikedProducts(userId);
+//    }
+
+
     /*리뷰갯수*/
     @GetMapping("/review-counts")
     public ResponseEntity<Map<Long, Long>> getReviewCounts() {
