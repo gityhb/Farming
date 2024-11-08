@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Link, Route} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import './common/root.css';
 import './farmer_market_seller.css';
 import {useUser} from "./common/userContext";
@@ -8,6 +8,7 @@ function Farmer_market_seller() {
 
     const [products, setProducts] = useState([]);
     const { user } = useUser(); // 현재 로그인한 사용자 정보
+    const [searchQuery,setSearchQuery]=useState(""); //검색어 저장하는 상태
 
     useEffect(() => {
         if (user && user.userId) {
@@ -29,13 +30,27 @@ function Farmer_market_seller() {
         }
     };
 
+    const handleSearch=async()=>{
+        try{
+            const response = await fetch(`/api/productRG/search?name=${searchQuery}`);
+            if(response.ok){
+                const data = await response.json();
+                setProducts(data); //검색 결과를 products 상태로 설정
+            }else{
+                console.error("상품 검색 실패");
+            }
+        }catch(error){
+            console.error("상품 검색 중 오류 발생:".error);
+        }
+    };
+
     return (
         <div id={'body'}>
             <div id={'farmer_market_page'} className={'page'}>
                 <div id={'contents'}>
                     <div id={'search_box'}>
-                        <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
-                        <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/></button>
+                        <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'} value={searchQuery} onChange={(e) =>setSearchQuery(e.target.value)}/>
+                        <button id={'search_btn'} onClick={handleSearch}><img src="img/etc/search.png" alt={"search_btn"}/></button>
                     </div>
                     <div id={'align_box'}>
                         <div id={'category_box'}>

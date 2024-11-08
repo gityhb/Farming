@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface ProductRGRepository extends JpaRepository<ProductRG, Long> {
     Optional<ProductRG> findByProductId(Long productId);
     List<ProductRG> findBySellerId(String sellerId);
+    List<ProductRG> findByProductNameContaining(String name);
 }

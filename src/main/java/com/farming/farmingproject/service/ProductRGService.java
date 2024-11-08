@@ -181,4 +181,8 @@ public class ProductRGService {
             productRGRepository.save(product);
         }
     }
+
+    public List<ProductRG> searchProductsByName(String name) {
+        return productRGRepository.findByProductNameContaining(name);
+    }
 }

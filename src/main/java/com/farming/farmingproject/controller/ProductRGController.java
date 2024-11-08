@@ -89,4 +89,15 @@ public class ProductRGController {
                     .body("Failed to update product ratings: " + e.getMessage());
         }
     }
+
+    //product_name 열 기준으로 제품 검색
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductRG>> searchProductsByName(@RequestParam("name") String name) {
+        try{
+            List<ProductRG> products = productRGService.searchProductsByName(name);
+            return ResponseEntity.ok(products);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
