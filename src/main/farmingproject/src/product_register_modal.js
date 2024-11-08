@@ -97,6 +97,7 @@ function ProductRegisterModal({ product, onClose }) {
 
             console.log('서버 응답:', response.data);
             console.log('상품 등록 성공:', response.data);
+            alert("상품 등록에 성공하였습니다.");
             onClose();
         } catch (error) {
             console.error('상품 등록 실패:', error);
