@@ -330,7 +330,7 @@ function Farmer_market_info() {
                                 </div>
                                 <div className={'pd_star'}>
                                     <img src={'/img/etc/star.png'}/>
-                                    <span>{product.astar.toFixed(1)}</span>
+                                    <span>{product.astar}</span>
                                 </div>
                                 <div className={'pd_origin'}>
                                     <span>원산지 | </span>
