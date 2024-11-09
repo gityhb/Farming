@@ -90,25 +90,19 @@ function Shopping_Basket() {
     };
 
     /* 장바구니 삭제 */
-    const handleDeleteSelected = async () => {
-        const selectedItemIds = items.filter(item => item.checked).map(item => item.id);
-        if (selectedItemIds.length === 0) {
-            alert("삭제할 상품을 선택해주세요.");
-            return;
-        }
-
+    const handleDeleteItem = async (itemId) => {
         try {
             const response = await fetch('/api/basket/delete', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ basketIds: selectedItemIds }),
+                body: JSON.stringify({ basketIds: [itemId] }),
             });
 
             if (response.ok) {
-                setItems(items.filter(item => !item.checked));
-                alert("선택한 상품이 삭제되었습니다.");
+                setItems(items.filter(item => item.id !== itemId));
+                alert("상품이 삭제되었습니다.");
             } else {
                 const errorData = await response.json();
                 alert("상품 삭제에 실패했습니다: " + errorData.message);
@@ -176,6 +170,7 @@ function Shopping_Basket() {
                                 <th>상품정보</th>
                                 <th>수량</th>
                                 <th>가격</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -207,8 +202,11 @@ function Shopping_Basket() {
                                         </div>
                                     </td>
                                     <td id="quantity_total_price_td">{item.totalAmount}원</td>
+                                    <td id="basket_delete_Btn_td">
+                                        <button onClick={() => handleDeleteItem(item.id)}>삭제</button>
+                                    </td>
                                 </tr>
-                            ))}
+                                ))}
                             </tbody>
                         </table>
                         <div id="total_sum_price">
@@ -216,7 +214,7 @@ function Shopping_Basket() {
                             <span id={'sum_txt'}>{totalSum}원</span>
                         </div>
                     </div>
-                    <div id="basket_deleteBtn" onClick={handleDeleteSelected}>선택 상품 삭제</div>
+                    {/*<div id="basket_deleteBtn" onClick={handleDeleteSelected}>선택 상품 삭제</div>*/}
                     <div id="order_button">
                         <button id="order_select_btn" onClick={handleSelectOrder}>선택주문</button>
                         <button id="order_all_btn" onClick={handleAllOrder}>전체주문</button>

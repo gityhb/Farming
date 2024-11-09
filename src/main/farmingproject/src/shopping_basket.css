@@ -40,7 +40,8 @@
 }
 
 #basket_table #basket_table_list td:nth-child(2),
-#basket_table #basket_table_list td:nth-child(3) {
+#basket_table #basket_table_list td:nth-child(3),
+#basket_table #basket_table_list td:nth-child(4){
     border-right: 1px solid #BEBEBE;
 }
 
@@ -101,6 +102,10 @@
     font-size: 20px;
     border: 1px solid #000;
     margin:0 auto;
+}
+
+#basket_delete_Btn_td{
+    width: 60px;
 }
 
 #basket_list_quantity_td #basket_list_quantity button {
