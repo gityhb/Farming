@@ -13,13 +13,15 @@ import java.util.Optional;
 
 @Repository
 public interface ProductLikeRepository extends JpaRepository<ProductLike, Long> {
-
-    // 특정 상품에 대한 좋아요 수를 계산하는 메서드
     int countByProductRG(ProductRG productRG);
     Optional<ProductLike> findByUserAndProductRG(User user, ProductRG productRG);
     boolean existsByUserAndProductRG(User user, ProductRG productRG);
 
-    // 특정 사용자가 좋아요를 누른 상품 찾기
-//    @Query("SELECT pl.productRG FROM ProductLike pl WHERE pl.user = :userId")
-//    List<Long> findLikedProductIdsByUserId(@Param("userId") Long userId);
+    @Query("SELECT pl.productRG.productId FROM ProductLike pl WHERE pl.user.id = :userId")  // userId를 user.id로 변경
+    List<Long> findLikedProductIdsByUserId(@Param("userId") Long userId);
+
+
+    List<ProductLike> findByUserOrderByLikedAtDesc(User user);
+
+    List<ProductLike> findByUserUserId(String userId);
 }

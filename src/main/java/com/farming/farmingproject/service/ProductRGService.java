@@ -1,11 +1,14 @@
 package com.farming.farmingproject.service;
 
 import com.farming.farmingproject.domain.Product;
+import com.farming.farmingproject.domain.ProductLike;
 import com.farming.farmingproject.domain.ProductRG;
+import com.farming.farmingproject.domain.User;
 import com.farming.farmingproject.dto.AddProductRGRequest;
 import com.farming.farmingproject.repository.ProductLikeRepository;
 import com.farming.farmingproject.repository.ProductRGRepository;
 import com.farming.farmingproject.repository.ReviewRepository;
+import com.farming.farmingproject.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +22,25 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductRGService {
+    @Autowired
     private final ProductRGRepository productRGRepository;
+    @Autowired
     private final ReviewRepository reviewRepository;
     @Autowired
     private ProductLikeRepository productLikeRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
-    public ProductRGService(ProductRGRepository productRGRepository, ReviewRepository reviewRepository) {
+    public ProductRGService(ProductRGRepository productRGRepository, ReviewRepository reviewRepository, UserService userService) {
         this.productRGRepository = productRGRepository;
         this.reviewRepository = reviewRepository;
+        this.productLikeRepository = productLikeRepository;
+        this.userRepository = userRepository;
     }
 
     // 상품 이미지 저장 경로
@@ -189,6 +199,34 @@ public class ProductRGService {
     public List<ProductRG> searchProductsByName(String name) {
         return productRGRepository.findByProductNameContaining(name);
     }
+
+    /*좋아요 목록 가져오기*/
+    public List<Map<String, Object>> getLikedProductsByUser(Long userId) {
+        // 유저 정보 조회 (Long 타입으로 변경)
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 유저가 좋아요한 상품 IDs 가져오기
+        List<Long> likedProductIds = productLikeRepository.findLikedProductIdsByUserId(userId);
+
+        // 상품 정보 조회하기
+        List<ProductRG> likedProducts = productRGRepository.findAllById(likedProductIds);
+
+        // 상품 정보를 Map 형태로 변환
+        List<Map<String, Object>> response = likedProducts.stream().map(product -> {
+            Map<String, Object> productMap = new HashMap<>();
+            productMap.put("productId", product.getProductId());
+            productMap.put("productName", product.getProductName());
+            productMap.put("productimgPath", product.getProductimgPath());
+            return productMap;
+        }).collect(Collectors.toList());
+
+        return response;
+    }
+
+
+
+
 
     // like_count가 높은 상품 5개를 가져오는 메서드
     public List<ProductRG> getTop5Products() {

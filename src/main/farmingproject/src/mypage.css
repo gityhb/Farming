@@ -74,10 +74,15 @@
 
 .like_content{
     width:140px;
-    height: 130px;
+    height: 140px;
+    margin: 20px;
     background-color:white;
-    margin:30px;
     border-radius: 10px;
+}
+
+.like_content img{
+    width:140px;
+    height: 140px;
 }
 
 .like_separator {

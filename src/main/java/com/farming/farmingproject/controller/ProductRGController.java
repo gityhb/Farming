@@ -1,6 +1,5 @@
 package com.farming.farmingproject.controller;
 
-import com.farming.farmingproject.domain.Product;
 import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.domain.ProductLike;
 import com.farming.farmingproject.domain.User;
@@ -10,6 +9,7 @@ import com.farming.farmingproject.service.ProductRGService;
 import com.farming.farmingproject.repository.ProductLikeRepository;
 import com.farming.farmingproject.repository.ProductRGRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,9 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -30,6 +28,7 @@ public class ProductRGController {
     private final ProductLikeRepository productLikeRepository;
     private final ProductRGRepository productRGRepository;
     private final UserRepository userRepository;
+
 
     @GetMapping("/get_productRG")
     public ResponseEntity<List<?>> getProductRGs() {
@@ -170,5 +169,23 @@ public class ProductRGController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/user/{userId}/likes")
+    public ResponseEntity<List<Map<String, Object>>> getUserLikedProducts(@PathVariable("userId") Long userId) {
+        try {
+            List<Map<String, Object>> likedProducts = productRGService.getLikedProductsByUser(userId);
+
+            if (likedProducts.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ArrayList<>());
+            }
+
+            return ResponseEntity.ok(likedProducts);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
+        }
+    }
+
+
+
 
 }

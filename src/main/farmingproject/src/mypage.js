@@ -4,27 +4,30 @@ import {useUser} from "./common/userContext";
 
 function MyPage(){
     const { user } = useUser();
-    const [likeProducts, setLikeProducts] = useState([]);
+    const [likedProducts, setLikedProducts] = useState([]);
 
-    // const fetchLikeProducts = async (userId) => {
-    //     try {
-    //         const response = await fetch(`/api/productRG/liked/${userId}`);
-    //         if (response.ok) {
-    //             const data = await response.json();
-    //             setLikeProducts(data);
-    //         } else {
-    //             console.error('상품 정보 가져오기 실패');
-    //         }
-    //     } catch (error) {
-    //         console.error('상품 정보 가져오는 중 오류 발생:', error);
-    //     }
-    // };
-    //
-    // useEffect(() => {
-    //     if(user.id) {
-    //         fetchLikeProducts(user.id)
-    //     }
-    // }, [user.id]);
+    useEffect(() => {
+        if (user && user.id) {
+            fetchLikedProducts(user.id);
+        }
+    }, [user]);
+
+    const fetchLikedProducts = async (userId) => {
+        try {
+            const response = await fetch(`/api/productRG/user/${userId}/likes`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log("좋아요 목록:", data);  // 여기서 좋아요 목록 콘솔에 출력
+                setLikedProducts(data);
+            } else {
+                const errorData = await response.json();
+                console.error('좋아요 목록 가져오기 실패:', errorData);
+                console.log(userId)
+            }
+        } catch (error) {
+            console.error('좋아요 목록을 가져오는 중 오류 발생:', error);
+        }
+    };
 
     return(
         <div className="mypage">
@@ -37,7 +40,7 @@ function MyPage(){
                 <div className="hello">
                     <img src="/img/etc/user.png" style={{width: '50px', height: '50px'}}/>
                     <div className="hello_text">
-                        {user.name}님, 반갑습니다.
+                        {user ? `${user.name}님, 반갑습니다.` : "로그인해주세요."}
                     </div>
                 </div>
                 <div className="delivery_detail">
@@ -78,18 +81,17 @@ function MyPage(){
             {/*delivery_detail*/}
             <div className="like_list_container">
                 <div className="like_text_content">
-                    <div className="like_text">
-                        좋아요 목록
-                    </div>
-                    <div className="more">
-                        더보기 >
-                    </div>
+                    <div className="like_text">좋아요 목록</div>
+                    <div className="more">더보기 ></div>
                 </div>
                 <div className="like_separator"></div>
                 <div className="like_container">
-                    <div className="like_content"></div>
-                    <div className="like_content"></div>
-                    <div className="like_content"></div>
+                    {likedProducts.slice(0, 3).map((product) => (
+                        <div key={product.productId} className="like_content">
+                            {/* 상품 이미지 경로가 product.productImg인 경우 */}
+                            <img src={product.productimgPath} alt={product.productName}/>
+                        </div>
+                    ))}
                 </div>
                 <div className="like_separator"></div>
             </div>
@@ -154,7 +156,7 @@ function MyPage(){
                                 답변대기
                             </div>
                             <div className="answer_qna">
-                                Q.  아니 상추에서 달팽이가;;;
+                                Q. 아니 상추에서 달팽이가;;;
                             </div>
                         </div>
                         <div className="qna_content">
@@ -180,4 +182,5 @@ function MyPage(){
         </div>
     );
 }
+
 export default MyPage;

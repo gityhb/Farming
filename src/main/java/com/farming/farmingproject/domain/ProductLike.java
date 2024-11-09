@@ -17,16 +17,16 @@ public class ProductLike {
     @Column(name = "like_id", nullable = false)
     private Long likeId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // User 테이블과 연결
+    private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-    private ProductRG productRG; // ProductRG 테이블과 연결
+    private ProductRG productRG;
 
     @Column(name = "liked_at", nullable = false)
-    private LocalDateTime likedAt; // 좋아요를 누른 시간
+    private LocalDateTime likedAt;
 
     @Builder
     public ProductLike(User user, ProductRG productRG, LocalDateTime likedAt) {
@@ -35,4 +35,5 @@ public class ProductLike {
         this.likedAt = likedAt;
     }
 }
+
 

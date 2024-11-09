@@ -5,6 +5,7 @@ import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.domain.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +23,7 @@ public interface ProductRGRepository extends JpaRepository<ProductRG, Long> {
     // 상품 고유 번호로 상품 조회
 //    List<ProductRG> findByProductIdIn(List<Long> productIds);
     List<ProductRG> findByProductNameContaining(String name);
+
+    @Query("SELECT pl.productRG FROM ProductLike pl WHERE pl.user.userId = :userId")
+    List<ProductRG> findLikedProductsByUser(@Param("userId") String userId);
 }
