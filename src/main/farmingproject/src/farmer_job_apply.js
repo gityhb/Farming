@@ -10,6 +10,7 @@ function FarmerJobApply({ isOpen, closeApplyModal, jobId }) {
         name: user.name || '',  // 사용자 이름
         age: user.birthDate || '',  // 사용자의 생년월일
         phone: user.phoneNumber || '',  // 사용자 전화번호
+        email:user.email || '', //사용자 이메일
         address: user.address || '',  // 사용자 주소
         detail: ''  // 지원동기는 빈칸으로 유지
     });
@@ -98,6 +99,17 @@ function FarmerJobApply({ isOpen, closeApplyModal, jobId }) {
                             readOnly // 로그인한 사용자 정보이므로 수정 불가하게 설정
                         />
                     </div>
+                    <div className="main_email">
+                        <label htmlFor="email">email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            readOnly
+                        />
+                    </div>
                     <div className="main_address">
                         <label htmlFor="address">주소</label>
                         <input
@@ -117,6 +129,7 @@ function FarmerJobApply({ isOpen, closeApplyModal, jobId }) {
                             rows="4"
                             value={formData.detail}
                             onChange={handleChange}
+                            style={{ resize: 'none' }}
                         />
                     </div>
                 </div>
