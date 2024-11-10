@@ -104,13 +104,13 @@ function Farmer_market_info() {
         checkLikeStatus();
         fetchReviewStatistics();
         sortReviews();
-        /*const interval = setInterval(() => {
+        const interval = setInterval(() => {
             fetchReviewCounts();
             fetchProductDetails(); // 평균 별점 업데이트를 위해 상품 정보도 주기적으로 가져옵니다
             fetchReviewStatistics();
         }, 1000); // 1초마다 업데이트
 
-        return () => clearInterval(interval);*/
+        return () => clearInterval(interval);
     }, [productId, user, sortBy]);
 
     /*상품정보 가져오기*/
@@ -535,14 +535,15 @@ function Farmer_market_info() {
                                                     </div>
                                                     <div className="review_info">
                                                         <span className="review_user">{review.name}</span>
+                                                        <span className="review_date">{formatDate(review)}</span>
                                                         {user && user.userId === review.userId && (
                                                             <>
-                                                                <span className="review_date">{formatDate(review)}
+
                                                                     <span className="review_delete_Btn"
                                                                           onClick={() => handleEditReview(review)}> 수정 </span>
                                                                     <span className="review_delete_Btn"
                                                                           onClick={() => handleDeleteReview(review.reviewId)}> 삭제 </span>
-                                                                </span>
+
                                                             </>
                                                         )}
                                                         <p className="review_text">
