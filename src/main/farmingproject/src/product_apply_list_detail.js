@@ -5,12 +5,23 @@ import './product_apply_list_detail.css';
 import './common/root.css';
 import axios from "axios";
 import {useParams} from "react-router-dom";
+import ProductRegisterModal from "./product_register_modal";
 
 function ProductApplyCheckDetail() {
     const { productId } = useParams();
     const [product, setProduct] = useState(null);
-    const [pStatus, setPStatus] = useState({text:'', color:''});
+    const [productRG, setProductRG] = useState(null);
+    const [pStatus, setPStatus] = useState(null);  // productStatus 상태 관리
     const [productImagesLists, setProductImagesLists] = useState([]);   // 상품 이미지들 저장
+    const [showModal, setShowModal] = useState(false);
+
+    const handleRegisterClick = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
 
     console.log("productId : ", productId)
 
@@ -22,6 +33,8 @@ function ProductApplyCheckDetail() {
                 return { text: '등록', color: '#55A630' };
             case 2:
                 return { text: '탈락', color: '#ff0000' };
+            case 3:
+                return { text: '판매 등록 완료', color: '#55A630' };
             default:
                 return { text: '알 수 없음', color: '#fff' };
         }
@@ -61,11 +74,7 @@ function ProductApplyCheckDetail() {
         try {
             const response = await axios.get(`http://localhost:8080/api/product/${productId}`);
             setProduct(response.data);
-
-            // 상품 상태 객체 생성
-            const statusObject = getPStatusObject(response.data.productStatus);
-            setPStatus(statusObject);
-            // setProductStatus(response.data.productStatus);
+            setPStatus(response.data.productStatus);
         } catch (error) {
             if (error.response) {
                 // 요청이 이루어졌고, 서버가 상태 코드로 응답했지만, 요청이 실패한 경우
@@ -94,16 +103,40 @@ function ProductApplyCheckDetail() {
         }
     }
 
+    const fetchProductRG = async () => {
+        try {
+            console.log(`Fetching product details for ID: ${productId}`);
+            const response = await fetch(`/api/productRG/${productId}`);
+            const data = await  response.json();
+            setProductRG(data);
+        } catch (error) {
+            console.log('Error fetching productRG : ', error);
+        }
+    }
+
     useEffect(() => {
         // 페이지 로드 시 상품 정보 가져오기
         fetchProduct();
         fetchProductImagesLists();
     }, [productId]);
 
+    useEffect(()=> {
+        if(pStatus === 3) {
+            fetchProductRG();
+        }
+    }, [pStatus])
+
+    // 상품 등록 후 productStatus를 업데이트하는 함수
+    const handleStatusChange = (newStatus) => {
+        setPStatus(newStatus); // 상태 변경
+    };
+
 
     if (!product) {
         return <div>Loading...</div>;
     }
+
+    const pdStatus = getPStatusObject(pStatus);
 
     return (
     <div id="body">
@@ -151,6 +184,10 @@ function ProductApplyCheckDetail() {
                         <td className="product_apply_list_detail_info">{product.sellerName}</td>
                     </tr>
                     <tr>
+                        <td className="product_apply_list_detail_title">가게명</td>
+                        <td className="product_apply_list_detail_info">{product.storeName}</td>
+                    </tr>
+                    <tr>
                         <td className="product_apply_list_detail_title">상품가격</td>
                         <td className="product_apply_list_detail_info">
                             {product.productPrice1}{getPPrice2(product.productPrice2)} / {product.productPrice3}원
@@ -177,8 +214,12 @@ function ProductApplyCheckDetail() {
                     <tr>
                         <td className="product_apply_list_detail_title">상태</td>
                         <td className="product_apply_list_detail_info"
-                            style={{display: 'table-cell', color: pStatus.color}}>
-                            {pStatus.text}
+                            style={{display: 'table-cell', color: pdStatus.color}}>
+                            {pdStatus.text}
+                            {/*등록되지 않은 경우에만 등록하기 버튼 표시*/}
+                            {pStatus === 1 &&
+                                <button className={"product_pass_enroll_btn"} onClick={handleRegisterClick}>상품
+                                    등록</button>}
                         </td>
                     </tr>
                     <tr>
@@ -189,6 +230,62 @@ function ProductApplyCheckDetail() {
                     </tr>
                     </tbody>
                 </table>
+                {showModal && <ProductRegisterModal product={product} onClose={handleCloseModal} onStatusChange={handleStatusChange}/>}
+
+                {/*상품 판매 등록 완료일 경우 판매 상품 정보 출력*/}
+                {pStatus === 3 && productRG && (
+                    <div>
+                        <div>상품 판매 정보</div>
+                        <table className="product_apply_list_table">
+                            <tbody>
+                            <tr>
+                                <td className="product_apply_list_detail_title">상품번호</td>
+                                <td className="product_apply_list_detail_info">
+                                    {productRG.product.productId}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="product_apply_list_detail_title">상품명</td>
+                                <td className="product_apply_list_detail_info">
+                                    {productRG.productName}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="product_apply_list_detail_title">판매자</td>
+                                <td className="product_apply_list_detail_info">{productRG.sellerName}</td>
+                            </tr>
+                            <tr>
+                                <td className="product_apply_list_detail_title">가게명</td>
+                                <td className="product_apply_list_detail_info">{productRG.storeName}</td>
+                            </tr>
+                            <tr>
+                                <td className="product_apply_list_detail_title">상품가격</td>
+                                <td className="product_apply_list_detail_info">
+                                    {productRG.productPrice1}{getPPrice2(productRG.productPrice2)} / {productRG.productPrice3}원
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="product_apply_list_detail_title">원산지</td>
+                                <td className="product_apply_list_detail_info">
+                                    {productRG.productOrigin}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="product_apply_list_detail_title">배송날짜</td>
+                                <td className="product_apply_list_detail_info">
+                                    {getPDeliveryDate(productRG.productDeliveryDate)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="product_apply_list_detail_title">할인율</td>
+                                <td className="product_apply_list_detail_info">
+                                    {productRG.salenum}%
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
         </div>
     </div>

@@ -101,7 +101,7 @@ function Farmer_recommend() {
                             <h1>오늘의 추천 TOP 5</h1>
                         </div>
                         <div id="today_recommend_5_list" className={'recommend_list'}>
-                            {topProducts.map((product) => (
+                            {topProducts.slice(0,5).map((product) => (
                                 <div key={product.productId} className={'recommend_product'}>
                                     <img src={product.productimgPath} alt="상품 사진" />
                                     <p className="recommend_product_name">{product.productName}</p>

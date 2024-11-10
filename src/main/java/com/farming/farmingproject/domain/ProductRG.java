@@ -60,9 +60,14 @@ public class ProductRG {
     @Column(name = "like_count")
     private Integer likeCount = 0;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "pd_id", nullable = false, foreignKey = @ForeignKey(name = "FK_PD_ID"))  // 외래키로 설정
+    private Product product;    // Product 엔티티 전체를 참조 (id 뿐만 아니라 모든 필드와 관계를 포함해 참조)
+
     @Builder
     public ProductRG(String sellerId, String sellerName, String productName, String storeName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate,
-                     String productInfoimgPath, Integer sellcount, Float astar, Integer salenum, String productimgPath) {
+                     String productInfoimgPath, Integer sellcount, Float astar, Integer salenum, String productimgPath, Product product) {
         this.sellerId = sellerId;
         this.sellerName = sellerName;
         this.productName = productName;
@@ -77,5 +82,6 @@ public class ProductRG {
         this.astar = astar != null ? astar : 0f;
         this.salenum = salenum != null ? salenum : 10;
         this.productimgPath = productimgPath;
+        this.product = product;
     }
 }

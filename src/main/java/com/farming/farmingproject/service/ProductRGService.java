@@ -5,9 +5,9 @@ import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.dto.AddProductRGRequest;
 import com.farming.farmingproject.repository.ProductLikeRepository;
 import com.farming.farmingproject.repository.ProductRGRepository;
+import com.farming.farmingproject.repository.ProductRepository;
 import com.farming.farmingproject.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +26,9 @@ public class ProductRGService {
     private final ReviewRepository reviewRepository;
     @Autowired
     private ProductLikeRepository productLikeRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     public ProductRGService(ProductRGRepository productRGRepository, ReviewRepository reviewRepository) {
@@ -124,6 +127,9 @@ public class ProductRGService {
         String productImagePath = null;
         String productInfoImagePath = null;
 
+        Product pdt = productRepository.findById(addProductRGRequest.getPdId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
         if (addProductRGRequest.getProductimgPath() != null && !addProductRGRequest.getProductimgPath().isEmpty()) {
             productImagePath = saveFile(addProductRGRequest.getProductimgPath(), productImageDirectory);
         }
@@ -147,6 +153,7 @@ public class ProductRGService {
                 .sellcount(addProductRGRequest.getSellcount())
                 .astar(addProductRGRequest.getAstar())
                 .salenum(addProductRGRequest.getSalenum())
+                .product(pdt)
                 .build();
 
         return productRGRepository.save(product);

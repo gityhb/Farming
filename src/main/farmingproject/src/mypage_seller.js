@@ -205,6 +205,7 @@ function Mypage_seller() {
                                     {products.productStatus === 0 && <span className={"pListsStatus"} style={{backgroundColor: '#D9D9D9'}}>보류</span>}
                                     {products.productStatus === 1 && <span className={"pListsStatus"} style={{backgroundColor: '#FFF0AD'}}>등록</span>}
                                     {products.productStatus === 2 && <span className={"pListsStatus"} style={{backgroundColor: '#FB5C5C'}}>탈락</span>}
+                                    {products.productStatus === 3 && <span className={"pListsStatus"} style={{backgroundColor: '#c3ea8b'}}>판매</span>}
                                     <a href="#"><strong>{products.productName}</strong></a>
                                 </li>
                             ))
