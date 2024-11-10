@@ -383,9 +383,26 @@
 }
 
 .review_star {
+    position: relative;
+    display: inline-block;
     font-size: 24px;
-    color: #FFD700;
     margin-right: 10px;
+    width: 1200px; /* 5개의 별을 표시할 수 있는 너비 */
+    height: 24px;
+    line-height: 1;
+}
+
+.review_stars_bg {
+    color: #ddd;
+
+}
+
+.review_stars_fg {
+    color: #ffb300;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
 }
 
 .review_info {

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -43,6 +44,9 @@ public class Review {
     @Column(name = "seller_comment", nullable = true)
     private String sellerComment;
 
+    @Column(name = "review_date", nullable = true)
+    private Timestamp reviewAt;
+
     @Builder
     public Review(Long productId, Long reviewId, String userId, String name, Integer star, String taste, String fresh, String packageQuality, String reviewDetail,String sellerComment) {
         this.productId=productId;
@@ -55,6 +59,7 @@ public class Review {
         this.packageQuality = packageQuality;
         this.reviewDetail = reviewDetail;
         this.sellerComment = sellerComment;
+        this.reviewAt = new Timestamp(System.currentTimeMillis());
     }
 }
 

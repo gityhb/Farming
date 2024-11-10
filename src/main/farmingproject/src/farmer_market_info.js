@@ -20,6 +20,7 @@ function Farmer_market_info() {
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
     const [totalAmount, setTotalAmount] = useState(null);
+    const [statistics, setStatistics] = useState({ taste: 0, fresh: 0, package: 0 });
 
     const [averageStar, setAverageStar] = useState(0);
 
@@ -81,12 +82,12 @@ function Farmer_market_info() {
         fetchReviews();
         fetchReviewCounts();
         checkLikeStatus();
-        const interval = setInterval(() => {
+        /*const interval = setInterval(() => {
             fetchReviewCounts();
             fetchProductDetails(); // 평균 별점 업데이트를 위해 상품 정보도 주기적으로 가져옵니다
         }, 1000); // 1초마다 업데이트
 
-        return () => clearInterval(interval);
+        return () => clearInterval(interval);*/
     }, [productId, user]);
 
     /*상품정보 가져오기*/
@@ -251,6 +252,29 @@ function Farmer_market_info() {
         );
     };
 
+    const ReviewStars = ({ star }) => {
+        return (
+            <div className="review_star">
+                <span className="review_stars_bg">★★★★★</span>
+                <span className="review_stars_fg">{"★".repeat(star)}</span>
+            </div>
+        );
+    };
+
+    /*리뷰 막대바
+    const fetchReviewStatistics = async () => {
+        try {
+            const response = await fetch(`/api/reviews/statistics/${productId}`);
+            if (response.ok) {
+                const data = await response.json();
+                setStatistics(data);
+            } else {
+                console.error('Failed to fetch review statistics');
+            }
+        } catch (error) {
+            console.error('Error fetching review statistics:', error);
+        }
+    };*/
 
 
     // 좋아요 버튼
@@ -274,6 +298,20 @@ function Farmer_market_info() {
         } catch (error) {
             console.error("좋아요 요청 중 오류 발생:", error);
         }
+    };
+
+    // 날짜 형식을 변경하는 함수
+    const formatDate = (review) => {
+        if (!review || !review.reviewAt) return ''; // 리뷰나 날짜가 없는 경우 처리
+
+        const date = new Date(review.reviewAt);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
     };
 
 
@@ -403,41 +441,44 @@ function Farmer_market_info() {
                                     <div className="product_review">
                                         <div className="profile_card">
                                             <div className="profile_img">
-                                                <img src="/img/farmer_profile.png" />
+                                                <img src="/img/etc/user.png"/>
                                             </div>
 
                                             <div className="profile_info">
                                                 <p className="profile_name">{product.storeName}</p>
-                                                <p className="profile_followers">관심 고객수 : 156 명</p>
+                                                {/*<p className="profile_followers"></p>*/}
                                             </div>
                                         </div>
                                     </div>
-                                    <RatingStars rating={product.astar} />
+                                    <RatingStars rating={product.astar}/>
 
                                     <div className="rating_container">
                                         <div className="rating_row">
                                             <span className="rating_label">맛</span>
                                             <span className="rating_text">맛있어요</span>
                                             <div className="rating_bar">
-                                                <div className="rating_fill fill_82"></div>
+                                                <div className="rating_fill"
+                                                     style={{width: `${statistics.taste}%`}}></div>
                                             </div>
-                                            <span className="rating_percent">82%</span>
+                                            <span className="rating_percent">{statistics.taste.toFixed(0)}%</span>
                                         </div>
                                         <div className="rating_row">
                                             <span className="rating_label">신선도</span>
                                             <span className="rating_text">신선해요</span>
                                             <div className="rating_bar">
-                                                <div className="rating_fill fill_73"></div>
+                                                <div className="rating_fill"
+                                                     style={{width: `${statistics.fresh}%`}}></div>
                                             </div>
-                                            <span className="rating_percent">73%</span>
+                                            <span className="rating_percent">{statistics.fresh.toFixed(0)}%</span>
                                         </div>
                                         <div className="rating_row">
                                             <span className="rating_label">포장</span>
                                             <span className="rating_text">꼼꼼해요</span>
                                             <div className="rating_bar">
-                                                <div className="rating_fill fill_79"></div>
+                                                <div className="rating_fill"
+                                                     style={{width: `${statistics.package}%`}}></div>
                                             </div>
-                                            <span className="rating_percent">79%</span>
+                                            <span className="rating_percent">{statistics.package.toFixed(0)}%</span>
                                         </div>
                                     </div>
 
@@ -457,21 +498,20 @@ function Farmer_market_info() {
                                             />
 
                                             <div className="review_ranking_options">
-                                                <span>랭킹순</span> | <span>최신순</span> | <span>평점 높은순</span> | <span>평점 낮은순</span>
+                                                <span>최신순</span> | <span>평점 높은순</span> | <span>평점 낮은순</span>
                                             </div>
                                         </div>
                                         {reviews.map(review => (
                                             <div key={review.id} className="review_body">
                                                 <div className="review_content">
                                                     <div className="review_star">
-                                                        {"★".repeat(review.star)}
+                                                        <ReviewStars star={review.star}/>
                                                     </div>
                                                     <div className="review_info">
                                                         <span className="review_user">{review.name}</span>
                                                         {user && user.userId === review.userId && (
                                                             <>
-                                                                <span
-                                                                    className="review_date">{new Date(review.createdAt).toLocaleDateString()} | 신고
+                                                                <span className="review_date">{formatDate(review)}
                                                                     <span className="review_delete_Btn"
                                                                           onClick={() => handleEditReview(review)}> 수정 </span>
                                                                     <span className="review_delete_Btn"
@@ -493,9 +533,11 @@ function Farmer_market_info() {
                                                     {review.sellerComment && (
                                                         <div className="seller_reply">
                                                             <div className="seller_reply_header">
-                                                                <span className="seller_reply_user">{product.storeName}</span>
+                                                                <span
+                                                                    className="seller_reply_user">{product.storeName}</span>
                                                             </div>
-                                                            <span className="seller_reply_detail">{review.sellerComment}</span>
+                                                            <span
+                                                                className="seller_reply_detail">{review.sellerComment}</span>
                                                         </div>
                                                     )}
                                                     {/* <div className="seller_reply">
@@ -506,11 +548,6 @@ function Farmer_market_info() {
                                                         <span
                                                             className="seller_reply_detail">주문해주셔서 감사합니다! 또 이용해주세요.</span>
                                                     </div> */}
-                                                </div>
-                                                <div className="review_image_container">
-                                                    <div className="review_image">
-                                                        <img src="/img/review_img2.png"/>
-                                                    </div>
                                                 </div>
                                             </div>
                                         ))}
