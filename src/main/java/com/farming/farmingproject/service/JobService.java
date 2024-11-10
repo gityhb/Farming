@@ -50,7 +50,8 @@ public class JobService {
         Job job = Job.builder()
                 .user(user) // user 필드에 User 엔티티를 할당
                 .jobTitle(jobDTO.getJobTitle())
-                .jobDate((jobDTO.getJobDate()))
+                .jobDateStart(jobDTO.getJobDateStart())
+                .jobDateEnd(jobDTO.getJobDateEnd())
                 .jobTime((jobDTO.getJobTime()))
                 .jobSalary(jobDTO.getJobSalary())
                 .jobLocation(jobDTO.getJobLocation())

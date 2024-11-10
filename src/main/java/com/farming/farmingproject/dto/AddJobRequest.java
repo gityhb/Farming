@@ -13,7 +13,8 @@ public class AddJobRequest {
     private Long jobId;
     private String userId;
     private String jobTitle;
-    private Date jobDate;
+    private Date jobDateStart;
+    private Date jobDateEnd;
     private String jobTime;
     private String jobSalary;
     private String jobLocation;
