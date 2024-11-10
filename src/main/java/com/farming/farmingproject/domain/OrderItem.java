@@ -27,11 +27,18 @@ public class OrderItem {
     @Column(name = "price", nullable = false)
     private Integer price;
 
+
     @Builder
     public OrderItem(Order order, ProductRG product, Integer quantity, Integer price) {
         this.order = order;  // 반드시 Order를 설정
         this.product = product;
         this.quantity = quantity;
         this.price = price;
+    }
+
+    private void incrementProductSellCount() {
+        if (this.product != null && this.quantity != null) {
+            this.product.increaseSellCount(this.quantity);
+        }
     }
 }

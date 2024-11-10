@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.farming.farmingproject.repository.ReviewRepository;
 import com.farming.farmingproject.repository.ProductRGRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -90,5 +92,39 @@ public class ReviewService {
                 .orElseThrow(() -> new RuntimeException("Review not found with id: " + reviewId));
         review.setSellerComment(sellerComment);
         reviewRepository.save(review);
+    }
+
+    public Map<String, Double> getReviewStatistics(Long productId) {
+        long totalReviews = reviewRepository.countByProductId(productId);
+        if (totalReviews == 0) {
+            return Map.of("taste", 0.0, "fresh", 0.0, "package", 0.0);
+        }
+
+        long tasteGood = reviewRepository.countByProductIdAndTaste(productId, "맛있어요");
+        long freshGood = reviewRepository.countByProductIdAndFresh(productId, "신선해요");
+        long packageGood = reviewRepository.countByProductIdAndPackageQuality(productId, "꼼꼼해요");
+
+        Map<String, Double> statistics = new HashMap<>();
+        statistics.put("taste", calculatePercentage(tasteGood, totalReviews));
+        statistics.put("fresh", calculatePercentage(freshGood, totalReviews));
+        statistics.put("package", calculatePercentage(packageGood, totalReviews));
+
+        return statistics;
+    }
+
+    private double calculatePercentage(long count, long total) {
+        return total > 0 ? (double) count / total * 100 : 0;
+    }
+
+    public List<Review> getReviewsByProductIdSortedByDate(Long productId) {
+        return reviewRepository.findByProductIdOrderByReviewAtDesc(productId);
+    }
+
+    public List<Review> getReviewsByProductIdSortedByStarDesc(Long productId) {
+        return reviewRepository.findByProductIdOrderByStarDesc(productId);
+    }
+
+    public List<Review> getReviewsByProductIdSortedByStarAsc(Long productId) {
+        return reviewRepository.findByProductIdOrderByStarAsc(productId);
     }
 }

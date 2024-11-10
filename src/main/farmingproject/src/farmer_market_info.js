@@ -21,6 +21,7 @@ function Farmer_market_info() {
     const [quantity, setQuantity] = useState(1);
     const [totalAmount, setTotalAmount] = useState(null);
     const [statistics, setStatistics] = useState({ taste: 0, fresh: 0, package: 0 });
+    const [sortBy, setSortBy] = useState('date');
 
     const [averageStar, setAverageStar] = useState(0);
 
@@ -77,18 +78,40 @@ function Farmer_market_info() {
         }
     };
 
+    /* 리뷰 막대바 */
+    const fetchReviewStatistics = async () => {
+        try {
+            const response = await fetch(`/api/reviews/statistics/${productId}`);
+            if (!response.ok) {
+                if (response.status === 500) {
+                    console.error('Server error occurred while fetching review statistics');
+                    // 사용자에게 서버 오류 메시지를 표시할 수 있습니다.
+                    return;
+                }
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setStatistics(data);
+        } catch (error) {
+            console.error('Error fetching review statistics:', error.message);
+        }
+    };
+
     useEffect(() => {
         fetchProductDetails();
         fetchReviews();
         fetchReviewCounts();
         checkLikeStatus();
+        fetchReviewStatistics();
+        sortReviews();
         /*const interval = setInterval(() => {
             fetchReviewCounts();
             fetchProductDetails(); // 평균 별점 업데이트를 위해 상품 정보도 주기적으로 가져옵니다
+            fetchReviewStatistics();
         }, 1000); // 1초마다 업데이트
 
         return () => clearInterval(interval);*/
-    }, [productId, user]);
+    }, [productId, user, sortBy]);
 
     /*상품정보 가져오기*/
     const fetchProductDetails = async () => {
@@ -125,6 +148,20 @@ function Farmer_market_info() {
             }
         } catch (error) {
             console.error('리뷰 가져오는 중 오류 발생:', error);
+        }
+    };
+
+    /* 리뷰 정렬 */
+    const sortReviews = async () => {
+        try {
+            const response = await fetch(`/api/reviews/product/${productId}/sorted?sortBy=${sortBy}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch reviews');
+            }
+            const data = await response.json();
+            setReviews(data);
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
         }
     };
 
@@ -260,22 +297,6 @@ function Farmer_market_info() {
             </div>
         );
     };
-
-    /*리뷰 막대바
-    const fetchReviewStatistics = async () => {
-        try {
-            const response = await fetch(`/api/reviews/statistics/${productId}`);
-            if (response.ok) {
-                const data = await response.json();
-                setStatistics(data);
-            } else {
-                console.error('Failed to fetch review statistics');
-            }
-        } catch (error) {
-            console.error('Error fetching review statistics:', error);
-        }
-    };*/
-
 
     // 좋아요 버튼
     const pdLike = async () => {
@@ -460,7 +481,7 @@ function Farmer_market_info() {
                                                 <div className="rating_fill"
                                                      style={{width: `${statistics.taste}%`}}></div>
                                             </div>
-                                            <span className="rating_percent">{statistics.taste.toFixed(0)}%</span>
+                                            <span className="rating_percent">{statistics.taste.toFixed(1)}%</span>
                                         </div>
                                         <div className="rating_row">
                                             <span className="rating_label">신선도</span>
@@ -469,7 +490,7 @@ function Farmer_market_info() {
                                                 <div className="rating_fill"
                                                      style={{width: `${statistics.fresh}%`}}></div>
                                             </div>
-                                            <span className="rating_percent">{statistics.fresh.toFixed(0)}%</span>
+                                            <span className="rating_percent">{statistics.fresh.toFixed(1)}%</span>
                                         </div>
                                         <div className="rating_row">
                                             <span className="rating_label">포장</span>
@@ -478,7 +499,7 @@ function Farmer_market_info() {
                                                 <div className="rating_fill"
                                                      style={{width: `${statistics.package}%`}}></div>
                                             </div>
-                                            <span className="rating_percent">{statistics.package.toFixed(0)}%</span>
+                                            <span className="rating_percent">{statistics.package.toFixed(1)}%</span>
                                         </div>
                                     </div>
 
@@ -498,7 +519,12 @@ function Farmer_market_info() {
                                             />
 
                                             <div className="review_ranking_options">
-                                                <span>최신순</span> | <span>평점 높은순</span> | <span>평점 낮은순</span>
+                                                <span
+                                                    onClick={() => setSortBy('date')}>최신순 |</span>
+                                                <span
+                                                    onClick={() => setSortBy('starDesc')}>평점 높은 순 |</span>
+                                                <span
+                                                    onClick={() => setSortBy('starAsc')}>평점 낮은 순</span>
                                             </div>
                                         </div>
                                         {reviews.map(review => (

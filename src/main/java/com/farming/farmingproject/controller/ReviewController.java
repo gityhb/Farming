@@ -95,4 +95,36 @@ public class ReviewController {
         reviewService.addSellerComment(reviewId, sellerComment);
         return ResponseEntity.ok().build();
     }
+
+
+    @GetMapping("/statistics/{productId}")
+    public ResponseEntity<Map<String, Double>> getReviewStatistics(@PathVariable("productId") Long productId) {
+        try {
+            Map<String, Double> statistics = reviewService.getReviewStatistics(productId);
+            return ResponseEntity.ok(statistics);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/product/{productId}/sorted")
+    public ResponseEntity<List<Review>> getSortedReviewsByProductId(
+            @PathVariable("productId") Long productId,
+            @RequestParam("sortBy") String sortBy) {
+        List<Review> reviews;
+        switch (sortBy) {
+            case "date":
+                reviews = reviewService.getReviewsByProductIdSortedByDate(productId);
+                break;
+            case "starDesc":
+                reviews = reviewService.getReviewsByProductIdSortedByStarDesc(productId);
+                break;
+            case "starAsc":
+                reviews = reviewService.getReviewsByProductIdSortedByStarAsc(productId);
+                break;
+            default:
+                reviews = reviewService.getReviewsByProductId(productId);
+        }
+        return ResponseEntity.ok(reviews);
+    }
 }
