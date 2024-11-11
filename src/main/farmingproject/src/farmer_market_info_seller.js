@@ -17,6 +17,9 @@ function Farmer_market_info_seller() {
     const [reviews, setReviews] = useState([]);
     const [sellerComment, setSellerComment] = useState('');
     const [showCommentInput, setShowCommentInput] = useState(false);
+    const [statistics, setStatistics] = useState({ taste: 0, fresh: 0, package: 0 });
+    const [sortBy, setSortBy] = useState('date');
+    const [orders, setOrders] = useState([]);
 
     const handleViewResume = () => {
         setIsModalOpen(true);
@@ -26,15 +29,40 @@ function Farmer_market_info_seller() {
         setIsModalOpen(false);
     };
 
-    const handleReplyClick = () => {
-        setShowCommentInput(true);
+    const handleReplyClick = (reviewId) => {
+        setShowCommentInput(prev => ({
+            ...prev,
+            [reviewId]: !prev[reviewId]
+        }));
+    };
+
+    /* 리뷰 막대바 */
+    const fetchReviewStatistics = async () => {
+        try {
+            const response = await fetch(`/api/reviews/statistics/${productId}`);
+            if (!response.ok) {
+                if (response.status === 500) {
+                    console.error('Server error occurred while fetching review statistics');
+                    // 사용자에게 서버 오류 메시지를 표시할 수 있습니다.
+                    return;
+                }
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setStatistics(data);
+        } catch (error) {
+            console.error('Error fetching review statistics:', error.message);
+        }
     };
 
     useEffect(() => {
         fetchProductDetails();
         fetchReviews();
         fetchReviewCounts();
-    }, [productId]);
+        fetchReviewStatistics();
+        sortReviews();
+        fetchOrders();
+    }, [productId, sortBy]);
 
     /*상품정보 가져오기*/
     const fetchProductDetails = async () => {
@@ -56,6 +84,42 @@ function Farmer_market_info_seller() {
         }
     };
 
+    /*주문정보 가져오기*/
+    const fetchOrders = async () => {
+        try {
+            const response = await fetch(`/api/orders/product/${productId}`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Orders Data:', data);  // 확인용
+                setOrders(data);  // 주문 정보 상태 업데이트
+            } else {
+                console.error('주문 정보 가져오기 실패');
+            }
+        } catch (error) {
+            console.error('주문 데이터 가져오기 실패:', error);
+        }
+    };
+
+    /*배송상태 업데이트*/
+    const updateDeliveryStatus = async (orderItemId, status) => {
+        try {
+            const response = await fetch(`/api/orderItems/${orderItemId}/deliveryStatus?deliveryStatus=${status}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                throw new Error('배송 상태 업데이트에 실패했습니다');
+            }
+            fetchOrders(); // 상태 업데이트 후 주문 목록 새로고침
+        } catch (error) {
+            console.error('배송 상태 업데이트 실패:', error);
+        }
+        alert('배송상태가 변경되었습니다.');
+    };
+
+
     /*리뷰 가져오기*/
     const fetchReviews = async () => {
         try {
@@ -68,6 +132,20 @@ function Farmer_market_info_seller() {
             }
         } catch (error) {
             console.error('리뷰 가져오는 중 오류 발생:', error);
+        }
+    };
+
+    /* 리뷰 정렬 */
+    const sortReviews = async () => {
+        try {
+            const response = await fetch(`/api/reviews/product/${productId}/sorted?sortBy=${sortBy}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch reviews');
+            }
+            const data = await response.json();
+            setReviews(data);
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
         }
     };
 
@@ -107,6 +185,7 @@ function Farmer_market_info_seller() {
         } catch (error) {
             console.error('답글 저장 중 오류 발생:', error);
         }
+        alert('답글이 작성되었습니다.');
     };
 
     if (!product) {
@@ -142,6 +221,32 @@ function Farmer_market_info_seller() {
         }
     };
 
+    //리뷰 별
+    const ReviewStars = ({ star }) => {
+        return (
+            <div className="review_star">
+                <span className="review_stars_bg">★★★★★</span>
+                <span className="review_stars_fg">{"★".repeat(star)}</span>
+            </div>
+        );
+    };
+
+    // 날짜 형식을 변경하는 함수
+    const formatDate = (review) => {
+        if (!review || !review.reviewAt) return ''; // 리뷰나 날짜가 없는 경우 처리
+
+        const date = new Date(review.reviewAt);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+    };
+
+
+
 
     return (
         <div id={'body'}>
@@ -175,7 +280,7 @@ function Farmer_market_info_seller() {
                                 </div>
                                 <div className={'pd_star'}>
                                     <img src={'/img/etc/star.png'}/>
-                                    <span>{product.astar}</span>
+                                    <span>{product.astar.toFixed(1)}</span>
                                 </div>
                                 <div className={'pd_origin'}>
                                     <span>원산지 | </span>
@@ -221,7 +326,7 @@ function Farmer_market_info_seller() {
                             {/* 주문 정보 테이블 */}
                             {activeTab === 'orderdetails' && (
                                 <div className="table_container">
-                                    <table className={"table_seller"}>
+                                    <table className="table_seller">
                                         <thead>
                                         <tr>
                                             <th>주문자</th>
@@ -232,48 +337,33 @@ function Farmer_market_info_seller() {
                                             <th>배송 상태</th>
                                         </tr>
                                         </thead>
-                                        <br/>
                                         <tbody>
-                                        <tr>
-                                            <td>오소정</td>
-                                            <td>010-1234-5678</td>
-                                            <td>서울 어딘가</td>
-                                            <td>2024.08.08</td>
-                                            <td>1</td>
-                                            <td>배송전</td>
-                                        </tr>
-                                        <tr>
-                                            <td>윤혜빈</td>
-                                            <td>010-1111-2222</td>
-                                            <td>서울 어딘가</td>
-                                            <td>2024.08.07</td>
-                                            <td>1</td>
-                                            <td>배송중</td>
-                                        </tr>
-                                        <tr>
-                                            <td>민지원</td>
-                                            <td>010-2222-3333</td>
-                                            <td>서울 어딘가</td>
-                                            <td>2024.08.07</td>
-                                            <td>1</td>
-                                            <td>배송중</td>
-                                        </tr>
-                                        <tr>
-                                            <td>송수빈</td>
-                                            <td>010-4444-5555</td>
-                                            <td>서울 어딘가</td>
-                                            <td>2024.08.06</td>
-                                            <td>1</td>
-                                            <td>배송완료</td>
-                                        </tr>
-                                        <tr>
-                                            <td>신짱구</td>
-                                            <td>010-7171-6666</td>
-                                            <td>서울 어딘가</td>
-                                            <td>2024.08.02</td>
-                                            <td>3</td>
-                                            <td>배송완료</td>
-                                        </tr>
+                                        {Array.isArray(orders) && orders.length > 0 ? (
+                                            orders.map(order => (
+                                                // orderItem이 객체라면, 아래와 같이 직접 접근합니다.
+                                                <tr key={order.orderId}>
+                                                    <td>{order.userName}</td>
+                                                    <td>{order.userPhone}</td>
+                                                    <td>{order.userAddress}</td>
+                                                    <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                                                    <td>{order.orderItem.quantity}</td>
+                                                    <td>
+                                                        <select
+                                                            value={order.orderItem.deliveryStatus}
+                                                            onChange={(e) => updateDeliveryStatus(order.orderItem.orderItemId, e.target.value)}
+                                                        >
+                                                            <option value="배송준비">배송준비</option>
+                                                            <option value="배송중">배송중</option>
+                                                            <option value="배송완료">배송완료</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="6">주문 내역이 없습니다.</td>
+                                            </tr>
+                                        )}
                                         </tbody>
                                     </table>
                                 </div>
@@ -293,41 +383,44 @@ function Farmer_market_info_seller() {
                                     <div className="product_review">
                                         <div className="profile_card">
                                             <div className="profile_img">
-                                                <img src="/img/farmer_profile.png" />
+                                                <img src="/img/etc/user.png"/>
                                             </div>
 
                                             <div className="profile_info">
                                                 <p className="profile_name">{product.storeName}</p>
-                                                <p className="profile_followers">관심 고객수 : 156 명</p>
+                                                {/*<p className="profile_followers"></p>*/}
                                             </div>
                                         </div>
                                     </div>
-                                    <RatingStars rating={product.astar} />
+                                    <RatingStars rating={product.astar}/>
 
                                     <div className="rating_container">
                                         <div className="rating_row">
                                             <span className="rating_label">맛</span>
                                             <span className="rating_text">맛있어요</span>
                                             <div className="rating_bar">
-                                                <div className="rating_fill fill_82"></div>
+                                                <div className="rating_fill"
+                                                     style={{width: `${statistics.taste}%`}}></div>
                                             </div>
-                                            <span className="rating_percent">82%</span>
+                                            <span className="rating_percent">{statistics.taste.toFixed(1)}%</span>
                                         </div>
                                         <div className="rating_row">
                                             <span className="rating_label">신선도</span>
                                             <span className="rating_text">신선해요</span>
                                             <div className="rating_bar">
-                                                <div className="rating_fill fill_73"></div>
+                                                <div className="rating_fill"
+                                                     style={{width: `${statistics.fresh}%`}}></div>
                                             </div>
-                                            <span className="rating_percent">73%</span>
+                                            <span className="rating_percent">{statistics.fresh.toFixed(1)}%</span>
                                         </div>
                                         <div className="rating_row">
                                             <span className="rating_label">포장</span>
                                             <span className="rating_text">꼼꼼해요</span>
                                             <div className="rating_bar">
-                                                <div className="rating_fill fill_79"></div>
+                                                <div className="rating_fill"
+                                                     style={{width: `${statistics.package}%`}}></div>
                                             </div>
-                                            <span className="rating_percent">79%</span>
+                                            <span className="rating_percent">{statistics.package.toFixed(1)}%</span>
                                         </div>
                                     </div>
 
@@ -336,24 +429,24 @@ function Farmer_market_info_seller() {
                                             <h2>리뷰 <span>({reviewCounts[product.productId] || 0}건)</span></h2>
 
                                             <div className="review_ranking_options">
-                                                <span>랭킹순</span> | <span>최신순</span> | <span>평점 높은순</span> | <span>평점 낮은순</span>
+                                                <span
+                                                    onClick={() => setSortBy('date')}>최신순 |</span>
+                                                <span
+                                                    onClick={() => setSortBy('starDesc')}>평점 높은 순 |</span>
+                                                <span
+                                                    onClick={() => setSortBy('starAsc')}>평점 낮은 순</span>
                                             </div>
+
                                         </div>
                                         {reviews.map(review => (
                                             <div key={review.id} className="review_body">
                                                 <div className="review_content">
                                                     <div className="review_star">
-                                                        {"★".repeat(review.star)}
+                                                        <ReviewStars star={review.star}/>
                                                     </div>
                                                     <div className="review_info">
                                                         <span className="review_user">{review.name}</span>
-                                                        {user && user.userId === review.userId && (
-                                                            <>
-                                                                <span
-                                                                    className="review_date">{new Date(review.createdAt).toLocaleDateString()} | 신고
-                                                                </span>
-                                                            </>
-                                                        )}
+                                                        <span className="review_date">{formatDate(review)}</span>
                                                         <p className="review_text">
                                                             <span className="review_title">맛</span> <span
                                                             className="review_detail">{review.taste}</span>
@@ -364,30 +457,35 @@ function Farmer_market_info_seller() {
                                                             <span
                                                                 className="review_text_detail">{review.reviewDetail}</span>
                                                         </p>
-                                                        <button className={'reply_submit_btn'} onClick={handleReplyClick}>답글 남기기</button>
-                                                        {showCommentInput && (
+                                                        <button
+                                                            className={'reply_submit_btn'}
+                                                            onClick={() => handleReplyClick(review.reviewId)}
+                                                        >
+                                                            답글 남기기
+                                                        </button>
+                                                        {showCommentInput[review.reviewId] && (
                                                             <div className="seller_reply_input">
                                                                 <textarea
                                                                     value={sellerComment}
                                                                     onChange={(e) => setSellerComment(e.target.value)}
                                                                     placeholder="답글을 입력하세요"
                                                                 />
-                                                                <button className={'reply_save_btn'} onClick={() => submitSellerComment(review.reviewId)}>답글 저장</button>
+                                                                <button className={'reply_save_btn'}
+                                                                        onClick={() => submitSellerComment(review.reviewId)}>답글
+                                                                    저장
+                                                                </button>
                                                             </div>
                                                         )}
                                                         {review.sellerComment && (
                                                             <div className="seller_reply">
                                                                 <div className="seller_reply_header">
-                                                                    <span className="seller_reply_user">{product.storeName}</span>
+                                                                    <span
+                                                                        className="seller_reply_user">{product.storeName}</span>
                                                                 </div>
-                                                                <span className="seller_reply_detail">{review.sellerComment}</span>
+                                                                <span
+                                                                    className="seller_reply_detail">{review.sellerComment}</span>
                                                             </div>
                                                         )}
-                                                    </div>
-                                                </div>
-                                                <div className="review_image_container">
-                                                    <div className="review_image">
-                                                        <img src="/img/review_img2.png"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -432,7 +530,7 @@ function Farmer_market_info_seller() {
                                     {isModalOpen && (
                                         <div class="modal">
                                             <div className="container">
-                                                <div className="header">
+                                            <div className="header">
                                                     <h2>상품 문의 답변</h2>
                                                 </div>
                                                 <textarea className={"seller_product_ask_reply"}

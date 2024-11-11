@@ -112,7 +112,8 @@ function Payment() {
                                 items: orderItems.map(item => ({
                                     productId: item.id,
                                     quantity: item.quantity,
-                                    price: item.price
+                                    price: item.price,
+                                    deliveryStatus: "배송대기"
                                 })),
                                 deliveryAddress: inputUser.userAddr + " " + inputUser.userDetailAddr,
                                 deliveryRequest: document.getElementById('delivery-notes').value,

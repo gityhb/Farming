@@ -14,7 +14,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService {
@@ -67,6 +70,43 @@ public class OrderService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return orderRepository.findByUser(user);
+    }
+
+    public List<Map<String, Object>> getOrdersByProductId(Long productId) {
+        List<OrderItem> orderItems = orderItemRepository.findByProduct_ProductId(productId);  // productId로 OrderItem 찾기
+
+        List<Map<String, Object>> response = new ArrayList<>();
+
+        for (OrderItem orderItem : orderItems) {
+            Order order = orderItem.getOrder();  // 해당 주문을 가져옵니다.
+            User user = order.getUser();  // 주문자 정보
+
+            // 주문자 정보와 주문 항목을 포함한 데이터를 준비
+            Map<String, Object> orderMap = new HashMap<>();
+            orderMap.put("orderId", order.getOrderId());
+            orderMap.put("orderDate", order.getOrderDate());
+            orderMap.put("deliveryAddress", order.getDeliveryAddress());
+            orderMap.put("deliveryRequest", order.getDeliveryRequest());
+            orderMap.put("userName", user.getName());
+            orderMap.put("userPhone", user.getPhoneNumber());
+            orderMap.put("userAddress", user.getAddress());  // 주소 정보도 추가
+
+            // 주문 항목 정보 추가
+            Map<String, Object> orderItemMap = new HashMap<>();
+            orderItemMap.put("productId", orderItem.getProduct().getProductId());
+            orderItemMap.put("productName", orderItem.getProduct().getProductName());
+            orderItemMap.put("quantity", orderItem.getQuantity());
+            orderItemMap.put("price", orderItem.getPrice());
+            orderItemMap.put("deliveryStatus", orderItem.getDeliveryStatus());
+            orderItemMap.put("orderItemId", orderItem.getOrderItemId());
+
+            orderMap.put("orderItem", orderItemMap);
+
+            // 결과에 추가
+            response.add(orderMap);
+        }
+
+        return response;
     }
 }
 

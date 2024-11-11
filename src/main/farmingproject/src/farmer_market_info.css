@@ -446,6 +446,7 @@
     padding: 10px;
     height: 60px;
     margin-top: 20px;
+    width: 600px;
 }
 
 .seller_reply_header {
@@ -739,12 +740,11 @@ h2 {
 .seller_reply_input {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     margin-top: 10px;
 }
 
 .seller_reply_input textarea {
-    width: 100%;
+    width: 400px;
     height: 80px;
     margin-bottom: 10px;
     padding: 10px;
