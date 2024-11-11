@@ -162,7 +162,9 @@ public class ProductRGService {
 
     private String saveFile(MultipartFile file, String directory) {
         try {
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            // 이름 중복을 막는 경우
+//            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            String fileName = file.getOriginalFilename();   // 파일 이름 그대로 저장
             Path uploadPath = Paths.get(directory);
 
             if (!Files.exists(uploadPath)) {

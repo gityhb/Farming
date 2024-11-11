@@ -3,6 +3,8 @@ package com.farming.farmingproject.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @Entity
@@ -65,6 +67,12 @@ public class ProductRG {
     @JoinColumn(name = "pd_id", nullable = false, foreignKey = @ForeignKey(name = "FK_PD_ID"))  // 외래키로 설정
     private Product product;    // Product 엔티티 전체를 참조 (id 뿐만 아니라 모든 필드와 관계를 포함해 참조)
 
+    @Column(name = "product_created_date", nullable = false)
+    private Timestamp productCreatedDate;
+
+    @Column(name = "product_modified_date", nullable = false)
+    private Timestamp productModifiedDate;
+
     @Builder
     public ProductRG(String sellerId, String sellerName, String productName, String storeName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate,
                      String productInfoimgPath, Integer sellcount, Float astar, Integer salenum, String productimgPath, Product product) {
@@ -83,5 +91,7 @@ public class ProductRG {
         this.salenum = salenum != null ? salenum : 10;
         this.productimgPath = productimgPath;
         this.product = product;
+        this.productCreatedDate = new Timestamp(System.currentTimeMillis());
+        this.productModifiedDate = new Timestamp(System.currentTimeMillis());
     }
 }

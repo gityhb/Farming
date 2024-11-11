@@ -85,7 +85,7 @@ function Mypage_seller() {
             const response = await fetch(`api/product/${id}/applylist`)
             if(response.ok) {
                const data = await response.json();
-               setProductApplyLists(data);
+               setProductApplyLists(data.reverse());
             }
         } catch (error) {
             console.error('Error fetching productApplyLists : ', error);
