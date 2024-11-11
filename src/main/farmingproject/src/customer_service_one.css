@@ -29,13 +29,14 @@
 }
 
 .one_add_Btn{
-    margin-right: 30px;
+    margin-top: 20px;
+    margin-right: 20px;
     float: right;
     padding: 3px;
     background-color: #FFEA8D;
     width: 110px;
-    color: white;
-    border-radius: 6px;
+    color: #000;
+    border-radius: 5px;
     height: 40px;
     font-size: 16px;
     font-weight: 800;
@@ -67,17 +68,19 @@
     background-color: white;
     padding: 30px;
     border-radius: 10px;
-    width: 400px;
+    width: 700px;
 }
 
 .one_modal_content h3 {
     margin-top: 0;
     margin-bottom: 15px;
+    font-size: 30px;
 }
 
 .one_modal_content label {
     display: block;
     margin-bottom: 10px;
+    font-size: 20px;
 }
 
 .one_modal_content input,
@@ -87,14 +90,25 @@
     width: 100%;
     max-width: 100%;
     padding: 10px;
+    padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
     margin-top: 5px;
+    font-size: 16px;
 }
 
-.one_modal_content button {
+.one_modal_content textarea {
+    height: 300px;
+    resize: none;
+}
+
+.one_modal_content .on_modal_btn {
+    text-align: center;
+}
+
+.one_modal_content .on_modal_btn button {
     padding: 10px 20px;
     background-color: #FFD000;
     border: none;
@@ -102,12 +116,13 @@
     font-weight: bold;
     cursor: pointer;
     margin-right: 10px;
+    font-size: 16px;
 }
 
 .one_modal_content button:last-child {
     background-color: #ccc;
 }
 
-.one_modal_content button:hover {
-    background-color: #ffb800;
-}
+/*.one_modal_content button:hover {*/
+/*    background-color: #ffb800;*/
+/*}*/

@@ -3,6 +3,7 @@ package com.farming.farmingproject.service;
 import com.farming.farmingproject.domain.Product;
 import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.dto.AddProductRGRequest;
+import com.farming.farmingproject.dto.AddProductRequest;
 import com.farming.farmingproject.repository.ProductLikeRepository;
 import com.farming.farmingproject.repository.ProductRGRepository;
 import com.farming.farmingproject.repository.ProductRepository;
@@ -200,6 +201,20 @@ public class ProductRGService {
     // like_count가 높은 상품 5개를 가져오는 메서드
     public List<ProductRG> getTop5Products() {
         return productRGRepository.findTop5ProductsByLikeCount();
+    }
+
+    // 판매 상품 정보 수정
+    public void updateProductRG(Long productId, AddProductRGRequest dto) {
+        ProductRG productRG = productRGRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+
+        productRG.setProductPrice1(dto.getProductPrice1());
+        productRG.setProductPrice2(dto.getProductPrice2());
+        productRG.setProductPrice3(dto.getProductPrice3());
+        productRG.setProductDeliveryDate(dto.getProductDeliveryDate());
+        productRG.setSalenum(dto.getSalenum());
+
+        productRGRepository.save(productRG);
     }
 
 //    public List<ProductRG> getLikedProducts(Long userId) {

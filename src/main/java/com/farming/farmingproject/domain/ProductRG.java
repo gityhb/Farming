@@ -55,7 +55,7 @@ public class ProductRG {
     private Float astar = 0f;
 
     @Column(name = "product_salenum", nullable = true)
-    private Integer salenum = 10;
+    private Integer salenum = 0;
 
     @Column(name = "like_count")
     private Integer likeCount = 0;

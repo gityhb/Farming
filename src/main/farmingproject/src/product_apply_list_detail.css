@@ -57,3 +57,28 @@
     flex-direction: column;
     gap: 10px;
 }
+
+.product_apply_list_detail_btn {
+    width: 130px;
+    height: 60px;
+    float: right;
+    border: none;
+    border-radius: 10px;
+    /*font-weight: bold;*/
+    font-size: 20px;
+    background-color: #FFEA8D;
+    cursor: pointer;
+}
+
+/*수정 정보 관련 css*/
+.product_apply_list_table tbody tr td .edit_text {
+    font-size: 18px;
+    padding: 5px;
+}
+
+/*숫자 버튼 없애기*/
+.product_apply_list_table input[type="number"]::-webkit-inner-spin-button {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}

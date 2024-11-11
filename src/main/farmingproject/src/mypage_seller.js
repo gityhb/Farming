@@ -130,7 +130,7 @@ function Mypage_seller() {
             <div className="seller_info">
                 <div className="seller_photo">
                     {/*<span>( 사진 등록 )</span>*/}
-                    <img src={"./img/osj.jpg"} alt={"판매자 사진"}/>
+                    <img src={"./img/etc/user.png"} alt={"판매자 사진"}/>
                 </div>
                 <div className="seller_details">
                     <p>이름 : {user.name}</p>

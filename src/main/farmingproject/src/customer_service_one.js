@@ -5,74 +5,104 @@ import './customer_service_one.css';
 import './customer_service_FAQ.css';
 import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
+import axios, {post} from "axios";
+import {useUser} from "./common/userContext";
 
 function Customer_service_one() {
-    const [oitems, setoItems] = useState([
-        {
-            onum:6,
-            otitle:"타이틀 테스트6",
-            odate:"08.06",
-            oanswer:"답변대기"
-        },
-        {
-            onum:5,
-            otitle:"타이틀 테스트5",
-            odate:"08.06",
-            oanswer:"답변대기"
-        },
-        {
-            onum:4,
-            otitle:"타이틀 테스트4",
-            odate:"08.01",
-            oanswer:"답변대기"
-        },
-        {
-            onum:3,
-            otitle:"타이틀 테스트3",
-            odate:"08.02",
-            oanswer:"답변대기"
-        },
-        {
-            onum:2,
-            otitle:"타이틀 테스트2",
-            odate:"08.04",
-            oanswer:"답변완료"
-        },
-        {
-            onum:1,
-            otitle:"타이틀 테스트1",
-            odate:"08.08",
-            oanswer:"답변완료"
-        }
-    ]);
+    const {user} = useUser();
+    const [inquiries, setInquiries] = useState([]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [formTitle, setFormTitle] = useState("");
-    const [formContent, setFormContent] = useState("");
-    const [formType, setFormType] = useState("문의 종류");
 
-    const handleSubmit = () => {
-        console.log({
-            formTitle,
-            formContent,
-            formType,
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // // 폼 제출 후 값 초기화
+        // setFormTitle("");
+        // setFormContent("");
+        // setFormType("문의 종류");
+        try {
+            const inquiriesData = {
+                userId: user.id,
+                userName: user.name,
+                inquiriesTitle: form.inquiriesTitle,
+                inquiriesType: form.inquiriesType,
+                inquiriesContent: form.inquiriesContent,
+            };
+
+            const inquiriesResponse = await axios.post('http://localhost:8080/api/customer_inquiries/register', inquiriesData);
+            if(inquiriesResponse.data) {
+                alert("문의가 정상적으로 접수되었습니다.");
+                window.location.reload();
+                // fetchCustomerInquiries();
+            } else {
+                alert("문의 접수에 실패했습니다.");
+            }
+        } catch (error) {
+            if (error.response) {
+                // 요청이 이루어졌고, 서버가 상태 코드로 응답했지만, 요청이 실패한 경우
+                console.error("Error Data: ", error.response.data);
+                console.error("Error Status: ", error.response.status);
+                console.error("Error Headers: ", error.response.headers);
+            } else if (error.request) {
+                // 요청이 이루어졌지만, 응답이 오지 않은 경우
+                console.error("Error Request: ", error.request);
+                console.error("No response received:", error.message);
+            } else {
+                // 오류가 발생하기 전 설정한 요청을 처리할 수 없는 경우
+                console.error("Error Message: ", error.message);
+            }
+            console.log("There was an error fetching the product_detail!: ", error);
+            alert("문의를 접수하는 중 오류가 발생했습니다.");
+        }
+        setForm({
+            inquiriesTitle: "",
+            inquiriesType: "",
+            inquiriesContent: "",
         });
-        // 폼 제출 후 값 초기화
-        setFormTitle("");
-        setFormContent("");
-        setFormType("문의 종류");
         setIsModalOpen(false);
     };
 
-    const handleCancel = () => {
+    const [form, setForm] = useState({
+        inquiriesTitle: "",
+        inquiriesType: "delivery & order",
+        inquiriesContent: "",
+    });
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        setForm(prevForm => ({
+            ...prevForm,
+            [name]: value
+        }));
+    };
+
+    const handleCancel = (e) => {
+        e.preventDefault();
         // 취소 버튼 클릭 시 값 초기화
-        setFormTitle("");
-        setFormContent("");
-        setFormType("문의 종류");
+        setForm({
+            inquiriesTitle: "",
+            inquiriesType: "",
+            inquiriesContent: "",
+        })
         setIsModalOpen(false);
     };
 
+    const fetchCustomerInquiries = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/api/customer_inquiries/all');
+            setInquiries(response.data);
+        } catch (error) {
+            if(error.response) {
+                setInquiries(null);
+            } else {
+                console.log("모든 문의사항을 가져오는데 오류가 발생했습니다 : ", error);
+            }
+        }
+    }
 
+    useEffect(() => {
+        fetchCustomerInquiries();
+    }, []);
 
     return (
         <div id="body">
@@ -92,13 +122,13 @@ function Customer_service_one() {
                                 <div className={'admin_product_apply_chk_status'}>답변여부</div>
                             </div>
 
-                        {oitems.map((item) => (
-                            <div className={'admin_product_apply_chk_inner'}>
+                        {inquiries?.map((inquiries, index) => (
+                            <div key={inquiries.id} className={'admin_product_apply_chk_inner'}>
                                 <div className={'admin_product_apply_chk_inner_content'}>
-                                <div className={'admin_product_apply_chk_inner_num'}>{item.onum}</div>
-                                <div className={'admin_product_apply_chk_inner_title'} style={{flexBasis: '670px'}}>{item.otitle}</div>
-                                <div className={'admin_product_apply_chk_inner_seller'}>{item.odate}</div>
-                                <div className={'admin_product_apply_chk_inner_status'} style={{flexBasis: '110px'}}>{item.oanswer}</div>
+                                <div className={'admin_product_apply_chk_inner_num'}>{inquiries.id}</div>
+                                <div className={'admin_product_apply_chk_inner_title'} style={{flexBasis: '670px'}}>{inquiries.inquiriesTitle}</div>
+                                <div className={'admin_product_apply_chk_inner_seller'}>{inquiries.inquiriesType}</div>
+                                <div className={'admin_product_apply_chk_inner_status'} style={{flexBasis: '110px'}}>{inquiries.inquiriesTitle}</div>
                             </div>
                             </div>
                         ))}
@@ -109,37 +139,44 @@ function Customer_service_one() {
                     {isModalOpen && (
                         <div className="one_modal">
                             <div className="one_modal_content">
-                                <h3>문의하기</h3>
-                                <label>
-                                    제목
-                                    <input
-                                        type="text"
-                                        value={formTitle}
-                                        onChange={(e) => setFormTitle(e.target.value)}
-                                    />
-                                </label>
-                                <label>
-                                    문의 내용
-                                    <textarea
-                                        value={formContent}
-                                        onChange={(e) => setFormContent(e.target.value)}
-                                    />
-                                </label>
-                                <label>
-                                    문의 종류
-                                    <select
-                                        value={formType}
-                                        onChange={(e) => setFormType(e.target.value)}
-                                    >
-                                        <option disabled hidden value="문의 종류">문의 종류</option>
-                                        <option value="배송">배송 및 주문 문의</option>
-                                        <option value="상품">상품 관련 문의</option>
-                                        <option value="결제">결제 문의</option>
-                                        <option value="기타">기타 문의</option>
-                                    </select>
-                                </label>
-                                <button onClick={handleSubmit}>제출</button>
-                                <button onClick={handleCancel}>취소</button>
+                                <form onSubmit={handleSubmit}>
+                                    <h3>문의하기</h3>
+                                    <label>
+                                        제목
+                                        <input
+                                            type="text"
+                                            value={form.inquiriesTitle}
+                                            name={"inquiriesTitle"}
+                                            onChange={handleInputChange}
+                                        />
+                                    </label>
+                                    <label>
+                                        문의 종류
+                                        <select
+                                            value={form.inquiriesType}
+                                            onChange={handleInputChange}
+                                            name={"inquiriesType"}
+                                        >
+                                            <option disabled hidden value="문의 종류">문의 종류</option>
+                                            <option value="delivery & order">배송 및 주문 문의</option>
+                                            <option value="product">상품 관련 문의</option>
+                                            <option value="payment">결제 문의</option>
+                                            <option value="etc">기타 문의</option>
+                                        </select>
+                                    </label>
+                                    <label>
+                                        문의 내용
+                                        <textarea
+                                            value={form.inquiriesContent}
+                                            onChange={handleInputChange}
+                                            name={"inquiriesContent"}
+                                        />
+                                    </label>
+                                    <div className={"on_modal_btn"}>
+                                        <button type={"submit"}>제출</button>
+                                        <button onClick={handleCancel}>취소</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     )}

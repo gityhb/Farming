@@ -171,4 +171,12 @@ public class ProductRGController {
         }
     }
 
+    // 판매 상품 정보 수정
+    @PutMapping("/{productId}/update_product")
+    public ResponseEntity<?> updateProductRG(@PathVariable("productId") Long productId, @RequestBody AddProductRGRequest updateProductRGRequest) {
+        productRGService.updateProductRG(productId, updateProductRGRequest);
+
+        return ResponseEntity.ok().body("상품 정보 수정에 성공했습니다.");
+    }
+
 }

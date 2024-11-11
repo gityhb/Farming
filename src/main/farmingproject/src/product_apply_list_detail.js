@@ -4,7 +4,7 @@ import './farmer_product_apply.css';
 import './product_apply_list_detail.css';
 import './common/root.css';
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {redirect, useParams} from "react-router-dom";
 import ProductRegisterModal from "./product_register_modal";
 
 function ProductApplyCheckDetail() {
@@ -13,7 +13,69 @@ function ProductApplyCheckDetail() {
     const [productRG, setProductRG] = useState(null);
     const [pStatus, setPStatus] = useState(null);  // productStatus 상태 관리
     const [productImagesLists, setProductImagesLists] = useState([]);   // 상품 이미지들 저장
+    const [isEditing, setIsEditing] = useState(false);  // 상품 정보 수정
     const [showModal, setShowModal] = useState(false);
+
+    const [form, setForm] = useState({
+        productPrice1: "",
+        productPrice2: "",
+        productPrice3: "",
+        productDeliveryDate: "",
+        salenum: "",
+    });
+
+    const handleUpdateChange = (e) => {
+        const {name, value} = e.target;
+        setForm(prevForm => ({
+            ...prevForm,
+            [name]: value
+        }));
+    };
+
+    const handleUpdateToggle = () => {
+        setIsEditing(!isEditing);
+    }
+
+    // 판매 상품 정보 수정
+    const submitUpdate = async () => {
+        try {
+            const updatedProductRGData = {
+                productId: productRG.productId,     // 수정할 상품 고유 ID
+                productPrice1: form.productPrice1,
+                productPrice2: form.productPrice2,
+                productPrice3: form.productPrice3,
+                productDeliveryDate: form.productDeliveryDate,
+                salenum: form.salenum,
+            };
+
+            const productRGResponse = await axios.put(`/api/productRG/${productRG.productId}/update_product`, updatedProductRGData);
+            if (productRGResponse.data) {
+                alert("상품 정보가 성공적으로 수정되었습니다.");
+                window.location.reload();
+            } else {
+                alert("상품 정보 수정에 실패했습니다.");
+            }
+
+            setIsEditing(false);
+        } catch (error) {
+            // console.log("상품 정보 수정 오류: ", error);
+            if (error.response) {
+                // 요청이 이루어졌고, 서버가 상태 코드로 응답했지만, 요청이 실패한 경우
+                console.error("Error Data: ", error.response.data);
+                console.error("Error Status: ", error.response.status);
+                console.error("Error Headers: ", error.response.headers);
+            } else if (error.request) {
+                // 요청이 이루어졌지만, 응답이 오지 않은 경우
+                console.error("Error Request: ", error.request);
+                console.error("No response received:", error.message);
+            } else {
+                // 오류가 발생하기 전 설정한 요청을 처리할 수 없는 경우
+                console.error("Error Message: ", error.message);
+            }
+            console.log("There was an error fetching the product_detail!: ", error);
+            alert("상품 정보를 수정하는 중 오류가 발생했습니다.");
+        }
+    }
 
     const handleRegisterClick = () => {
         setShowModal(true);
@@ -25,6 +87,7 @@ function ProductApplyCheckDetail() {
 
     console.log("productId : ", productId)
 
+    // 상품 상태
     const getPStatusObject = (status) => {
         switch (parseInt(status)) {
             case 0:
@@ -40,6 +103,7 @@ function ProductApplyCheckDetail() {
         }
     };
 
+    // 상품 배송
     const getPDeliveryDate = (deliveryDate) => {
         switch (deliveryDate) {
             case 'today' :
@@ -53,6 +117,7 @@ function ProductApplyCheckDetail() {
         }
     };
 
+    // 상품 가격 단위
     const getPPrice2 = (unit) => {
         switch (unit) {
             case 'g' :
@@ -70,6 +135,7 @@ function ProductApplyCheckDetail() {
         }
     };
 
+    // 상품 등록 신청 현황
     const fetchProduct = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/product/${productId}`);
@@ -93,6 +159,7 @@ function ProductApplyCheckDetail() {
         }
     }
 
+    // 상품 이미지
     const fetchProductImagesLists = async () => {
         console.log("productId : ", productId);
         try {
@@ -103,6 +170,7 @@ function ProductApplyCheckDetail() {
         }
     }
 
+    // 판매 상품 정보
     const fetchProductRG = async () => {
         try {
             console.log(`Fetching product details for ID: ${productId}`);
@@ -124,13 +192,24 @@ function ProductApplyCheckDetail() {
         if(pStatus === 3) {
             fetchProductRG();
         }
-    }, [pStatus])
+    }, [pStatus])   // 상품
+
+    useEffect(() => {
+        if (productRG) {
+            setForm({
+                productPrice1: productRG.productPrice1,
+                productPrice2: productRG.productPrice2,
+                productPrice3: productRG.productPrice3,
+                productDeliveryDate: productRG.productDeliveryDate,
+                salenum: productRG.salenum,
+            });
+        }
+    }, [productRG]);  // productRG가 변경될 때마다 form 업데이트
 
     // 상품 등록 후 productStatus를 업데이트하는 함수
     const handleStatusChange = (newStatus) => {
         setPStatus(newStatus); // 상태 변경
     };
-
 
     if (!product) {
         return <div>Loading...</div>;
@@ -234,10 +313,16 @@ function ProductApplyCheckDetail() {
 
                 {/*상품 판매 등록 완료일 경우 판매 상품 정보 출력*/}
                 {pStatus === 3 && productRG && (
-                    <div>
+                    <div style={{marginBottom: '70px'}}>
                         <div>상품 판매 정보</div>
-                        <table className="product_apply_list_table">
+                        <table className="product_apply_list_table" style={{marginBottom: '20px'}}>
                             <tbody>
+                            <tr>
+                                <td className="product_apply_list_detail_title">판매번호</td>
+                                <td className="product_apply_list_detail_info">
+                                    {productRG.productId}
+                                </td>
+                            </tr>
                             <tr>
                                 <td className="product_apply_list_detail_title">상품번호</td>
                                 <td className="product_apply_list_detail_info">
@@ -261,7 +346,42 @@ function ProductApplyCheckDetail() {
                             <tr>
                                 <td className="product_apply_list_detail_title">상품가격</td>
                                 <td className="product_apply_list_detail_info">
-                                    {productRG.productPrice1}{getPPrice2(productRG.productPrice2)} / {productRG.productPrice3}원
+                                    {isEditing ? (
+                                        <div>
+                                            <input
+                                                type="number"
+                                                name={"productPrice1"}
+                                                value={form.productPrice1}
+                                                onChange={handleUpdateChange}
+                                                placeholder="0"
+                                                className={"edit_text"}
+                                                style={{width: '100px', marginRight: '5px'}}
+                                            />
+                                            <select name={"productPrice2"} value={form.productPrice2}
+                                                    onChange={handleUpdateChange}
+                                                    className={"edit_text"}
+                                                    style={{width: '90px', marginRight: '5px'}}>
+                                                <option value={'g'}>g</option>
+                                                <option value={'kg'}>kg</option>
+                                                <option value={'ea'}>개</option>
+                                                <option value={'pack'}>팩</option>
+                                                <option value={'box'}>박스</option>
+                                            </select>
+                                            <input
+                                                type="number"
+                                                name={"productPrice3"}
+                                                value={form.productPrice3}
+                                                onChange={handleUpdateChange}
+                                                placeholder="0"
+                                                className={"edit_text"}
+                                                style={{width: '100px'}}
+                                            />
+                                            <span> 원</span>
+                                        </div>
+                                    ) : (
+                                        ` ${productRG.productPrice1}${getPPrice2(productRG.productPrice2)} / ${productRG.productPrice3}원`
+                                    )}
+
                                 </td>
                             </tr>
                             <tr>
@@ -273,17 +393,44 @@ function ProductApplyCheckDetail() {
                             <tr>
                                 <td className="product_apply_list_detail_title">배송날짜</td>
                                 <td className="product_apply_list_detail_info">
-                                    {getPDeliveryDate(productRG.productDeliveryDate)}
+                                    {isEditing ? (
+                                        <select name={"productDeliveryDate"} value={form.productDeliveryDate}
+                                                onChange={handleUpdateChange}
+                                                className={"edit_text"}
+                                                style={{width: '110px'}}>
+                                            <option value={'today'}>당일</option>
+                                            <option value={'tomorrow'}>내일</option>
+                                            <option value={'etc'}>상시배송</option>
+                                        </select>
+                                    ) : (
+                                        `${getPDeliveryDate(productRG.productDeliveryDate)}`
+                                    )}
+
                                 </td>
                             </tr>
                             <tr>
                                 <td className="product_apply_list_detail_title">할인율</td>
                                 <td className="product_apply_list_detail_info">
-                                    {productRG.salenum}%
+                                    {isEditing ? (
+                                        <div>
+                                            <input type={"number"} name={"salenum"} value={form.salenum} className={"edit_text"}
+                                                   onChange={handleUpdateChange}
+                                                    style={{width: '100px'}}/>
+                                            <span> %</span>
+                                        </div>
+                                    ) : (
+                                        `${productRG.salenum}%`
+                                    )}
                                 </td>
                             </tr>
                             </tbody>
                         </table>
+                        {isEditing ? (
+                            <button className={"product_apply_list_detail_btn"} onClick={submitUpdate}>저장하기</button>
+                        ) : (
+                            <button className={"product_apply_list_detail_btn"} onClick={handleUpdateToggle}>수정하기</button>
+                        )}
+
                     </div>
                 )}
             </div>
