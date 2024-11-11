@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -31,6 +32,16 @@ public class OrderController {
     public ResponseEntity<?> getOrdersByUser(@PathVariable(name = "userId") String userId) {
         try {
             List<Order> orders = orderService.getOrdersByUser(userId);
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("주문 조회 실패: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<?> getOrdersByProductId(@PathVariable("productId") Long productId) {
+        try {
+            List<Map<String, Object>> orders = orderService.getOrdersByProductId(productId);
             return ResponseEntity.ok(orders);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("주문 조회 실패: " + e.getMessage());

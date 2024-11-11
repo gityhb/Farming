@@ -19,6 +19,7 @@ function Farmer_market_info_seller() {
     const [showCommentInput, setShowCommentInput] = useState(false);
     const [statistics, setStatistics] = useState({ taste: 0, fresh: 0, package: 0 });
     const [sortBy, setSortBy] = useState('date');
+    const [orders, setOrders] = useState([]);
 
     const handleViewResume = () => {
         setIsModalOpen(true);
@@ -28,8 +29,11 @@ function Farmer_market_info_seller() {
         setIsModalOpen(false);
     };
 
-    const handleReplyClick = () => {
-        setShowCommentInput(true);
+    const handleReplyClick = (reviewId) => {
+        setShowCommentInput(prev => ({
+            ...prev,
+            [reviewId]: !prev[reviewId]
+        }));
     };
 
     /* 리뷰 막대바 */
@@ -57,6 +61,7 @@ function Farmer_market_info_seller() {
         fetchReviewCounts();
         fetchReviewStatistics();
         sortReviews();
+        fetchOrders();
     }, [productId, sortBy]);
 
     /*상품정보 가져오기*/
@@ -78,6 +83,42 @@ function Farmer_market_info_seller() {
             console.error('상품 정보 가져오는 중 오류 발생:', error);
         }
     };
+
+    /*주문정보 가져오기*/
+    const fetchOrders = async () => {
+        try {
+            const response = await fetch(`/api/orders/product/${productId}`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Orders Data:', data);  // 확인용
+                setOrders(data);  // 주문 정보 상태 업데이트
+            } else {
+                console.error('주문 정보 가져오기 실패');
+            }
+        } catch (error) {
+            console.error('주문 데이터 가져오기 실패:', error);
+        }
+    };
+
+    /*배송상태 업데이트*/
+    const updateDeliveryStatus = async (orderItemId, status) => {
+        try {
+            const response = await fetch(`/api/orderItems/${orderItemId}/deliveryStatus?deliveryStatus=${status}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                throw new Error('배송 상태 업데이트에 실패했습니다');
+            }
+            fetchOrders(); // 상태 업데이트 후 주문 목록 새로고침
+        } catch (error) {
+            console.error('배송 상태 업데이트 실패:', error);
+        }
+        alert('배송상태가 변경되었습니다.');
+    };
+
 
     /*리뷰 가져오기*/
     const fetchReviews = async () => {
@@ -144,6 +185,7 @@ function Farmer_market_info_seller() {
         } catch (error) {
             console.error('답글 저장 중 오류 발생:', error);
         }
+        alert('답글이 작성되었습니다.');
     };
 
     if (!product) {
@@ -203,6 +245,9 @@ function Farmer_market_info_seller() {
         return `${year}-${month}-${day} ${hours}:${minutes}`;
     };
 
+
+
+
     return (
         <div id={'body'}>
             <div id={'market_farmer_info_page'} className={'page'}>
@@ -235,7 +280,7 @@ function Farmer_market_info_seller() {
                                 </div>
                                 <div className={'pd_star'}>
                                     <img src={'/img/etc/star.png'}/>
-                                    <span>{product.astar}</span>
+                                    <span>{product.astar.toFixed(1)}</span>
                                 </div>
                                 <div className={'pd_origin'}>
                                     <span>원산지 | </span>
@@ -281,7 +326,7 @@ function Farmer_market_info_seller() {
                             {/* 주문 정보 테이블 */}
                             {activeTab === 'orderdetails' && (
                                 <div className="table_container">
-                                    <table className={"table_seller"}>
+                                    <table className="table_seller">
                                         <thead>
                                         <tr>
                                             <th>주문자</th>
@@ -292,48 +337,33 @@ function Farmer_market_info_seller() {
                                             <th>배송 상태</th>
                                         </tr>
                                         </thead>
-                                        <br/>
                                         <tbody>
-                                        <tr>
-                                            <td>오소정</td>
-                                            <td>010-1234-5678</td>
-                                            <td>서울 어딘가</td>
-                                            <td>2024.08.08</td>
-                                            <td>1</td>
-                                            <td>배송전</td>
-                                        </tr>
-                                        <tr>
-                                            <td>윤혜빈</td>
-                                            <td>010-1111-2222</td>
-                                            <td>서울 어딘가</td>
-                                            <td>2024.08.07</td>
-                                            <td>1</td>
-                                            <td>배송중</td>
-                                        </tr>
-                                        <tr>
-                                            <td>민지원</td>
-                                            <td>010-2222-3333</td>
-                                            <td>서울 어딘가</td>
-                                            <td>2024.08.07</td>
-                                            <td>1</td>
-                                            <td>배송중</td>
-                                        </tr>
-                                        <tr>
-                                            <td>송수빈</td>
-                                            <td>010-4444-5555</td>
-                                            <td>서울 어딘가</td>
-                                            <td>2024.08.06</td>
-                                            <td>1</td>
-                                            <td>배송완료</td>
-                                        </tr>
-                                        <tr>
-                                            <td>신짱구</td>
-                                            <td>010-7171-6666</td>
-                                            <td>서울 어딘가</td>
-                                            <td>2024.08.02</td>
-                                            <td>3</td>
-                                            <td>배송완료</td>
-                                        </tr>
+                                        {Array.isArray(orders) && orders.length > 0 ? (
+                                            orders.map(order => (
+                                                // orderItem이 객체라면, 아래와 같이 직접 접근합니다.
+                                                <tr key={order.orderId}>
+                                                    <td>{order.userName}</td>
+                                                    <td>{order.userPhone}</td>
+                                                    <td>{order.userAddress}</td>
+                                                    <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                                                    <td>{order.orderItem.quantity}</td>
+                                                    <td>
+                                                        <select
+                                                            value={order.orderItem.deliveryStatus}
+                                                            onChange={(e) => updateDeliveryStatus(order.orderItem.orderItemId, e.target.value)}
+                                                        >
+                                                            <option value="배송준비">배송준비</option>
+                                                            <option value="배송중">배송중</option>
+                                                            <option value="배송완료">배송완료</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="6">주문 내역이 없습니다.</td>
+                                            </tr>
+                                        )}
                                         </tbody>
                                     </table>
                                 </div>
@@ -427,10 +457,13 @@ function Farmer_market_info_seller() {
                                                             <span
                                                                 className="review_text_detail">{review.reviewDetail}</span>
                                                         </p>
-                                                        <button className={'reply_submit_btn'}
-                                                                onClick={handleReplyClick}>답글 남기기
+                                                        <button
+                                                            className={'reply_submit_btn'}
+                                                            onClick={() => handleReplyClick(review.reviewId)}
+                                                        >
+                                                            답글 남기기
                                                         </button>
-                                                        {showCommentInput && (
+                                                        {showCommentInput[review.reviewId] && (
                                                             <div className="seller_reply_input">
                                                                 <textarea
                                                                     value={sellerComment}
