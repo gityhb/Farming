@@ -1,14 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import './mypage.css';
 import {useUser} from "./common/userContext";
+import {Link} from 'react-router-dom';
 
 function MyPage(){
     const { user } = useUser();
     const [likedProducts, setLikedProducts] = useState([]);
-
+    const [statusCount, setStatusCount] = useState({
+        결제완료: 0,
+        배송준비중: 0,
+        배송중: 0,
+        배송완료: 0
+    });
+    
     useEffect(() => {
         if (user && user.id) {
             fetchLikedProducts(user.id);
+            fetchDeliveryStatusCount(user.id);
         }
     }, [user]);
 
@@ -29,6 +37,21 @@ function MyPage(){
         }
     };
 
+    //배송상태 카운트
+    const fetchDeliveryStatusCount = async (userId) => {
+        try {
+            const response = await fetch(`/api/orderItems/delivery-status-count/${userId}`);
+            if (!response.ok) {
+                throw new Error('서버 응답이 실패했습니다');
+            }
+            const data = await response.json();
+            setStatusCount(data);
+        } catch (error) {
+            console.error('배송 상태 카운트 가져오기 실패:', error);
+        }
+    };
+
+
     return(
         <div className="mypage">
             <div className="title_component">
@@ -46,7 +69,7 @@ function MyPage(){
                 <div className="delivery_detail">
                     <div className="detail_item">
                         <div className="item_1">
-                            0<br/>
+                            {statusCount.결제완료}<br/>
                         </div>
                         <div className="item_2">
                             결제완료
@@ -54,7 +77,7 @@ function MyPage(){
                     </div>
                     <div className="detail_item">
                         <div className="item_3">
-                            0<br/>
+                            {statusCount.배송준비중}<br/>
                         </div>
                         <div className="item_4">
                             배송준비중
@@ -62,7 +85,7 @@ function MyPage(){
                     </div>
                     <div className="detail_item">
                         <div className="item_5">
-                            2<br/>
+                            {statusCount.배송중}<br/>
                         </div>
                         <div className="item_6">
                             배송중
@@ -70,7 +93,7 @@ function MyPage(){
                     </div>
                     <div className="detail_item">
                         <div className="item_7">
-                            2<br/>
+                            {statusCount.배송완료}<br/>
                         </div>
                         <div className="item_8">
                             배송완료
@@ -87,10 +110,12 @@ function MyPage(){
                 <div className="like_separator"></div>
                 <div className="like_container">
                     {likedProducts.slice(0, 3).map((product) => (
+                        <Link to={`/farmer_market_info/${product.productId}`}>
                         <div key={product.productId} className="like_content">
                             {/* 상품 이미지 경로가 product.productImg인 경우 */}
                             <img src={product.productimgPath} alt={product.productName}/>
                         </div>
+                        </Link>
                     ))}
                 </div>
                 <div className="like_separator"></div>
