@@ -55,7 +55,6 @@ function FarmerReviewModal({isReviewOpen, closeReviewModal, onReviewSubmitted, i
             packageQuality: packaging,
             reviewDetail: detailReview
         };
-
         try {
             const url = initialReviewData ? '/api/reviews/update' : '/api/reviews/reviews_create';
             const method = initialReviewData ? 'PUT' : 'POST';
@@ -78,6 +77,12 @@ function FarmerReviewModal({isReviewOpen, closeReviewModal, onReviewSubmitted, i
         } catch (error) {
             console.error('리뷰 제출 중 오류 발생:', error);
         }
+
+        setTaste("");
+        setFreshness("");
+        setDetailReview("");
+        setPackaging("");
+        setRating(0);
     };
 
 

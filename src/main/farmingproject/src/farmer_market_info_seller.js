@@ -20,13 +20,19 @@ function Farmer_market_info_seller() {
     const [statistics, setStatistics] = useState({ taste: 0, fresh: 0, package: 0 });
     const [sortBy, setSortBy] = useState('date');
     const [orders, setOrders] = useState([]);
+    const [inquiryContent, setInquiryContent] = useState('');
+    const [qnaList, setQnaList] = useState([]);
+    const [selectedQnaId, setSelectedQnaId] = useState(null); // 선택된 QNA의 ID
 
-    const handleViewResume = () => {
+    const openModal = (qnaId) => {
+        setSelectedQnaId(qnaId);
+        console.log("Selected QNA ID for reply:", qnaId); // Log to verify
         setIsModalOpen(true);
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
+        setInquiryContent("");
     };
 
     const handleReplyClick = (reviewId) => {
@@ -55,6 +61,21 @@ function Farmer_market_info_seller() {
         }
     };
 
+    // 상품문의 가져오기
+    const fetchQNAs = async () => {
+        try {
+            const response = await fetch(`/api/qna/product/${productId}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log(data); // 데이터를 확인합니다.
+            setQnaList(data);
+        } catch (error) {
+            console.error('Error fetching QNAs:', error);
+        }
+    };
+    
     useEffect(() => {
         fetchProductDetails();
         fetchReviews();
@@ -62,6 +83,7 @@ function Farmer_market_info_seller() {
         fetchReviewStatistics();
         sortReviews();
         fetchOrders();
+        fetchQNAs();
     }, [productId, sortBy]);
 
     /*상품정보 가져오기*/
@@ -244,6 +266,36 @@ function Farmer_market_info_seller() {
 
         return `${year}-${month}-${day} ${hours}:${minutes}`;
     };
+
+    // 문의답변 등록
+    const qnaSubmit = async () => {
+        try {
+            const response = await fetch(`/api/qna/${selectedQnaId}/reply`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    qnaAnswer: inquiryContent,
+                }),
+            });
+
+            console.log("응답 상태 코드:", response.status); // 상태 코드 확인
+            console.log("응답 본문:", await response.text()); // 응답 본문 출력
+
+            if (!response.ok) {
+                throw new Error("답변 제출 실패");
+            }
+
+            fetchQNAs(); // QNA 목록 새로고침
+            closeModal(); // 모달 닫기
+        } catch (error) {
+            console.error("QNA 답변 제출 오류:", error);
+            fetchQNAs();
+            closeModal(); // 모달 닫기
+        }
+    };
+
 
 
 
@@ -497,8 +549,19 @@ function Farmer_market_info_seller() {
                             {/* 상품문의 */}
                             {activeTab === 'questioninfo' && (
                                 <div className={'product_detail_info'}>
+                                    <div className="notice">
+                                        <ul>
+                                            <li>구매한 상품의 취소 / 반품은 구매내역 신청에서 가능합니다.</li>
+                                            <li>상품 문의 및 리뷰를 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
+                                            <li>가격, 판매자, 교환/환불 및 배송 등 해당 상품 자체와 관련 없는 문의는 고객센터 문의하기를 이용해 주세요.</li>
+                                            <li>“해당 상품 자체”와 관계없는 글, 양도, 광고성, 욕설, 비방, 도배 등의 글은 예고없이 삭제조치가 취해질 수 있습니다.
+                                            </li>
+                                            <li>공개 게시판이므로 전화번호, 메일 주소 등 고객님의 개인정보는 절대 남기지 말아주세요.</li>
+                                        </ul>
+                                    </div>
+
                                     <div className="table_container">
-                                        <table className={"table_seller"}>
+                                        <table className="table_consumer">
                                             <thead>
                                             <tr>
                                                 <th>Q / A</th>
@@ -506,44 +569,68 @@ function Farmer_market_info_seller() {
                                                 <th>문의 내용</th>
                                                 <th>작성일</th>
                                                 <th>답변 상태</th>
+                                                <th>답변하기</th>
                                             </tr>
                                             </thead>
-                                            <br/>
                                             <tbody>
-                                            <tr>
-                                                <td>Q</td>
-                                                <td>PEPSI</td>
-                                                <td>업소용인가요?</td>
-                                                <td>24.05.05</td>
-                                                <td onClick={() => handleViewResume()}>답변 대기</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Q</td>
-                                                <td>jiwon</td>
-                                                <td>배송료는 개당 붙는건가요?</td>
-                                                <td>24.05.03</td>
-                                                <td>답변 완료</td>
-                                            </tr>
+                                            {qnaList && qnaList.length > 0 ? (
+                                                qnaList.map((qna) => (
+                                                    <React.Fragment key={qna.qnaId}>
+                                                        <tr>
+                                                            <td>Q</td>
+                                                            <td>{qna.user.username}</td>
+                                                            <td>{qna.qnaContent}</td>
+                                                            <td>{new Date(qna.qnaAt).toLocaleDateString()}</td>
+                                                            <td>{qna.qnaStatus}</td>
+                                                            <td>
+                                                                {/* 답변하기 버튼 */}
+                                                                {qna.qnaStatus === "답변대기" && (
+                                                                    <button
+                                                                        onClick={() => openModal(qna.qnaId)}>답변하기</button>
+                                                                )}
+                                                            </td>
+                                                        </tr>
+                                                        {qna.qnaAnswer && (
+                                                            <tr>
+                                                                <td>↳ A</td>
+                                                                <td>판매자</td>
+                                                                <td>{qna.qnaAnswer}</td>
+                                                                <td>{new Date(qna.qnaAt).toLocaleDateString()}</td>
+                                                            </tr>
+                                                        )}
+                                                    </React.Fragment>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="5">No QNA available</td>
+                                                </tr>
+                                            )}
                                             </tbody>
                                         </table>
                                     </div>
                                     {isModalOpen && (
-                                        <div class="modal">
+                                        <div className="modal">
                                             <div className="container">
-                                            <div className="header">
+                                                <div className="header">
                                                     <h2>상품 문의 답변</h2>
                                                 </div>
-                                                <textarea className={"seller_product_ask_reply"}
-                                                          placeholder="내용을 입력하세요"></textarea>
-                                                <div className="button-container">
-                                                    <button className="cancel-button" onClick={closeModal}>취소</button>
-                                                    <button className="submit-button">등록</button>
+                                                <textarea className={"product_ask_reply"} placeholder="문의에 대한 답변을 입력하세요."
+                                                          value={inquiryContent}
+                                                          onChange={(e) => setInquiryContent(e.target.value)}></textarea>
+                                                <div className="response_message">
+                                                    <span>문의하신 내용에 대한 답변은 해당 상품의 상세페이지에서 확인하실 수 있습니다.</span>
+                                                </div>
+                                                <div className="button_container">
+                                                    <button className="cancel_button" onClick={closeModal}>취소</button>
+                                                    <button className="submit_button" onClick={qnaSubmit}>등록</button>
                                                 </div>
                                             </div>
                                         </div>
                                     )}
                                 </div>
                             )}
+
+
                             {activeTab === 'deliveryinfo' && (
                                 <div className={'product_detail_info'}>
                                     <div className="exchange_info">

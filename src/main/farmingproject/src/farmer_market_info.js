@@ -22,6 +22,9 @@ function Farmer_market_info() {
     const [totalAmount, setTotalAmount] = useState(null);
     const [statistics, setStatistics] = useState({ taste: 0, fresh: 0, package: 0 });
     const [sortBy, setSortBy] = useState('date');
+    const [inquiryContent, setInquiryContent] = useState('');
+    const [qnaList, setQnaList] = useState([]);
+
 
     const [averageStar, setAverageStar] = useState(0);
 
@@ -44,6 +47,7 @@ function Farmer_market_info() {
 
     const closeModal = () => {
         setIsModalOpen(false);
+        setInquiryContent("");
     };
 
 
@@ -97,6 +101,24 @@ function Farmer_market_info() {
         }
     };
 
+    // 상품문의 가져오기
+    const fetchQNAs = async () => {
+        try {
+            const response = await fetch(`/api/qna/product/${productId}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log(data); // 데이터를 확인합니다.
+            setQnaList(data);
+        } catch (error) {
+            console.error('Error fetching QNAs:', error);
+        }
+    };
+
+
+
+
     useEffect(() => {
         fetchProductDetails();
         fetchReviews();
@@ -104,10 +126,12 @@ function Farmer_market_info() {
         checkLikeStatus();
         fetchReviewStatistics();
         sortReviews();
+        fetchQNAs();
         const interval = setInterval(() => {
             fetchReviewCounts();
             fetchProductDetails(); // 평균 별점 업데이트를 위해 상품 정보도 주기적으로 가져옵니다
             fetchReviewStatistics();
+            fetchQNAs();
         }, 1000); // 1초마다 업데이트
 
         return () => clearInterval(interval);
@@ -357,6 +381,33 @@ function Farmer_market_info() {
         }
     };
 
+    //상품문의 저장
+    const qnaSubmit = async () => {
+        try {
+            const response = await fetch('/api/qna/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: user.id,
+                    productId: productId,
+                    qnaContent: inquiryContent
+                }),
+            });
+            alert('문의가 등록되었습니다.');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            console.log('QNA created:', data);
+            closeModal();
+        } catch (error) {
+            console.error('Error creating QNA:', error);
+        }
+    };
+
     return (
         <div id={'body'}>
             <div id={'market_farmer_info_page'} className={'page'}>
@@ -601,7 +652,7 @@ function Farmer_market_info() {
                                     </div>
 
                                     <div className="table_container">
-                                        <table className={"table_consumer"}>
+                                        <table className="table_consumer">
                                             <thead>
                                             <tr>
                                                 <th>Q / A</th>
@@ -611,43 +662,32 @@ function Farmer_market_info() {
                                                 <th>답변 상태</th>
                                             </tr>
                                             </thead>
-                                            <br/>
                                             <tbody>
-                                            <tr>
-                                                <td>Q</td>
-                                                <td>PEPSI</td>
-                                                <td>업소용인가요?</td>
-                                                <td>24.05.05</td>
-                                                <td>답변 대기</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Q</td>
-                                                <td>jiwon</td>
-                                                <td>배송료는 개당 붙는건가요?</td>
-                                                <td>24.05.03</td>
-                                                <td>답변 완료</td>
-                                            </tr>
-                                            <tr>
-                                                <td>↳ A</td>
-                                                <td>판매자</td>
-                                                <td>안녕하세요 고객님. 배송비는 한건에 한번 발생합니다.</td>
-                                                <td>24.05.03</td>
-                                                <td>답변 완료</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Q</td>
-                                                <td>jiwon</td>
-                                                <td>배송료는 개당 붙는건가요?</td>
-                                                <td>24.05.03</td>
-                                                <td>답변 완료</td>
-                                            </tr>
-                                            <tr>
-                                                <td>↳ A</td>
-                                                <td>판매자</td>
-                                                <td>안녕하세요 고객님. 배송비는 한건에 한번 발생합니다.</td>
-                                                <td>24.05.03</td>
-                                                <td>답변 완료</td>
-                                            </tr>
+                                            {qnaList && qnaList.length > 0 ? (
+                                                qnaList.map((qna) => (
+                                                    <React.Fragment key={qna.qnaId}>
+                                                        <tr>
+                                                            <td>Q</td>
+                                                            <td>{qna.user.username}</td>
+                                                            <td>{qna.qnaContent}</td>
+                                                            <td>{new Date(qna.qnaAt).toLocaleDateString()}</td>
+                                                            <td>{qna.qnaStatus}</td>
+                                                        </tr>
+                                                        {qna.qnaAnswer && (
+                                                            <tr>
+                                                                <td>↳ A</td>
+                                                                <td>판매자</td>
+                                                                <td>{qna.qnaAnswer}</td>
+                                                                <td>{new Date(qna.qnaAt).toLocaleDateString()}</td>
+                                                            </tr>
+                                                        )}
+                                                    </React.Fragment>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="5">No QNA available</td>
+                                                </tr>
+                                            )}
                                             </tbody>
                                         </table>
                                     </div>
@@ -657,13 +697,15 @@ function Farmer_market_info() {
                                                 <div className="header">
                                                     <h2>상품 문의 답변</h2>
                                                 </div>
-                                                <textarea className={"product_ask_reply"} placeholder="문의하실 내용을 입력하세요"></textarea>
+                                                <textarea className={"product_ask_reply"} placeholder="문의하실 내용을 입력하세요"
+                                                          value={inquiryContent}
+                                                          onChange={(e) => setInquiryContent(e.target.value)}></textarea>
                                                 <div className="response_message">
                                                     <span>문의하신 내용에 대한 답변은 해당 상품의 상세페이지에서 확인하실 수 있습니다.</span>
                                                 </div>
                                                 <div className="button_container">
                                                     <button className="cancel_button" onClick={closeModal}>취소</button>
-                                                    <button className="submit_button">등록</button>
+                                                    <button className="submit_button" onClick={qnaSubmit}>등록</button>
                                                 </div>
                                             </div>
                                         </div>
