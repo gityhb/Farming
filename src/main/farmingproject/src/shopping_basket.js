@@ -125,7 +125,8 @@ function Shopping_Basket() {
             quantity: item.quantity,
             imgPath: item.productRG.productimgPath,
             name: item.productRG.productName,
-            storeName: item.productRG.storeName
+            storeName: item.productRG.storeName,
+            deliveryStatus: "배송준비"
         }));
 
         navigate('/payment', {
@@ -138,7 +139,8 @@ function Shopping_Basket() {
                     quantity: item.quantity,
                     imgPath: item.productRG.productimgPath,
                     origin: item.productRG.productOrigin,
-                    storeName: item.productRG.storeName
+                    storeName: item.productRG.storeName,
+                    address: user.address
                 }))
             }
         });

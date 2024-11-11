@@ -11,6 +11,7 @@ public class AddOrderItemRequest {
     private Long productId;
     private Integer quantity;
     private Integer price;
+    private String deliveryStatus;
 }
 
 

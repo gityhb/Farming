@@ -113,7 +113,7 @@ function Payment() {
                                     productId: item.id,
                                     quantity: item.quantity,
                                     price: item.price,
-                                    deliveryStatus: "배송대기"
+                                    deliveryStatus: "배송준비"
                                 })),
                                 deliveryAddress: inputUser.userAddr + " " + inputUser.userDetailAddr,
                                 deliveryRequest: document.getElementById('delivery-notes').value,

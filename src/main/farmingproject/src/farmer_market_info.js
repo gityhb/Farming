@@ -253,7 +253,8 @@ function Farmer_market_info() {
                     quantity: quantity,
                     imgPath: product.productimgPath,
                     origin: product.productOrigin,
-                    storename: product.storeName
+                    storename: product.storeName,
+                    address: user.address
                 },
                 orderItems: [  // 전달할 orderItems 배열 추가
                     {
@@ -262,7 +263,8 @@ function Farmer_market_info() {
                         price: product.productPrice3,
                         quantity: quantity,
                         imgPath: product.productimgPath,
-                        storeName: product.storeName
+                        storeName: product.storeName,
+                        deliveryStatus: "배송준비"
                     }
                 ]
             }

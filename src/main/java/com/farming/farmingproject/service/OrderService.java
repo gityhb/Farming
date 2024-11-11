@@ -54,6 +54,7 @@ public class OrderService {
                     .product(product)
                     .quantity(itemRequest.getQuantity())
                     .price(itemRequest.getPrice())
+                    .deliveryStatus(itemRequest.getDeliveryStatus())
                     .build();
 
             orderItemRepository.save(orderItem);
