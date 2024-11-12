@@ -16,7 +16,7 @@ function ProductApplyCheckPass() {
 
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/product?productStatus=1');
+            const response = await axios.get('http://localhost:8080/api/product?productStatus=1&productStatus=3');
             setProducts(response.data.reverse());
 
             // 상태와 색상을 함께 설정
@@ -29,6 +29,9 @@ function ProductApplyCheckPass() {
                 }
                 if (product.productStatus === 2) {
                     return { text: '탈락', color: '#ff0000' };
+                }
+                if (product.productStatus === 3) {
+                    return { text: '등록 완료', color: '#55A630' };
                 }
                 return { text: '알 수 없음', color: '#fff' };
             });

@@ -153,9 +153,9 @@ function Header() {
                             <li>
                                 <Link to={'/admin/users'}>회원 관리</Link>
                             </li>
-                            <li>
-                                <Link to={'/admin/reports'}>리포트 관리</Link>
-                            </li>
+                            {/*<li>*/}
+                            {/*    <Link to={'/admin/reports'}>리포트 관리</Link>*/}
+                            {/*</li>*/}
                             <li>
                                 {user.name} 관리자님
                             </li>

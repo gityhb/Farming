@@ -16,6 +16,10 @@ function Mypage_seller() {
     const [productApplyLists, setProductApplyLists] = useState([]);     // 상품 등록 신청 목록 상태 추가
     const [applications, setApplications] = useState([]); // 지원 완료 내역 상태 추가
     const [products, setProducts] = useState([]);   // 판매자가 판매 중인 상품
+    const [temperature, setTemperature] = useState(null);
+    const [humidity, setHumidity] = useState(null);
+    const [error, setError] = useState(null);
+    const [lastUpdated, setLastUpdated] = useState(null);
     const navigate = useNavigate();
 
     const handleViewResume = (application) => {
@@ -118,6 +122,33 @@ function Mypage_seller() {
         }
     }, [user]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/temperature-humidity');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch temperature and humidity data.');
+                }
+                const data = await response.json();
+
+                // 온도, 습도 상태 업데이트
+                setTemperature(data.temperature);
+                setHumidity(data.humidity);
+
+                // 데이터 수신 시각 저장
+                setLastUpdated(new Date().toLocaleString()); // 로컬 시간 형식으로 저장
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        // 데이터 처음 가져오기 및 이후 10초마다 업데이트
+        fetchData();
+        const interval = setInterval(fetchData, 10000);
+
+        return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 해제
+    }, []);
+
     const handleProductClick = (productId) => {
         navigate(`/product_apply_list_detail/${productId}`); // Navigate to the product detail page
     };
@@ -165,11 +196,15 @@ function Mypage_seller() {
                 </div>
                 <div className="product_list" style={{display: "block"}}>
                     <div>
-                        온도 : 26.4 'C
-                    </div>
-                    <br/>
-                    <div>
-                        습도 : 37.6 %
+                        {error ? (
+                            <p>{error}</p>
+                        ) : (
+                            <>
+                                <p>현재 온도: {temperature ? `${temperature}°C` : 'Loading...'}</p>
+                                <p>현재 습도: {humidity ? `${humidity}%` : 'Loading...'}</p>
+                                <span style={{color: '#828282', float: 'right', marginTop: '0px', fontSize: '15px'}}>(업데이트된 시각) {lastUpdated || 'Loading...'}</span>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

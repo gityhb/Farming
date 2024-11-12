@@ -33,6 +33,8 @@ function ProductApplyCheckDetail() {
                 return { text: '등록', color: '#55A630' };
             case 2:
                 return { text: '탈락', color: '#ff0000' };
+            case 3:
+                return {text: '등록 완료', color: '#55A630'}
             default:
                 return { text: '알 수 없음', color: '#fff' };
         }
@@ -209,6 +211,7 @@ function ProductApplyCheckDetail() {
                     <tr>
                         <td className="product_apply_check_detail_title">상태</td>
                         <td className="product_apply_check_detail_info" style={{display: 'table-cell'}}>
+                            {(product.productStatus == 0 || product.productStatus == 1 || product.productStatus == 2) && (
                             <select
                                 className="product_apply_check_detail_select"
                                 style={{color: pStatus.color}}
@@ -217,9 +220,10 @@ function ProductApplyCheckDetail() {
                                 <option value="0" style={{color: '#727272'}}>보류</option>
                                 <option value="1" style={{color: '#55A630'}}>등록</option>
                                 <option value="2" style={{color: '#ff0000'}}>탈락</option>
-                            </select>
-                            {(product.productStatus == 0 || product.productStatus == 1 || product.productStatus == 2) && (
-                                <button className={"product_pass_enroll_btn"} onClick={handleRegisterClick}>상품 등록</button>)}
+                            </select> )}
+                            {(product.productStatus == 3) && (
+                                <span style={{color: '#55A630'}}>상품 등록 완료</span>
+                            )}
                         </td>
                     </tr>
                     <tr>
