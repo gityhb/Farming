@@ -92,7 +92,7 @@ public class ProductRG {
         this.productInfoimgPath = productInfoimgPath;
         this.sellcount = sellcount != null ? sellcount : 0;
         this.astar = astar != null ? astar : 0f;
-        this.salenum = salenum != null ? salenum : 10;
+        this.salenum = salenum != null ? salenum : 0;
         this.productimgPath = productimgPath;
         this.product = product;
         this.productCreatedDate = new Timestamp(System.currentTimeMillis());
