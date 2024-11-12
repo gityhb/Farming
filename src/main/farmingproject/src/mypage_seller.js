@@ -16,6 +16,9 @@ function Mypage_seller() {
     const [productApplyLists, setProductApplyLists] = useState([]);     // 상품 등록 신청 목록 상태 추가
     const [applications, setApplications] = useState([]); // 지원 완료 내역 상태 추가
     const [products, setProducts] = useState([]);   // 판매자가 판매 중인 상품
+    const [temperature, setTemperature] = useState(null);
+    const [humidity, setHumidity] = useState(null);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const handleViewResume = (application) => {
@@ -118,6 +121,37 @@ function Mypage_seller() {
         }
     }, [user]);
 
+    useEffect(() => {
+        const fetchData = () => {
+            fetch('http://localhost:5000/temperature-humidity')
+                .then(response => response.json())
+                // .then(data => {
+                //     if (data.error) {
+                //         setError(data.error);
+                //     } else {
+                //         setTemperature(data.temperature);
+                //         setHumidity(data.humidity);
+                //         setError(null);
+                //     }
+                .then(data => {
+                        console.log(data);
+                        setTemperature(data.temperature);
+                        setHumidity(data.humidity);
+                        setError(null);
+                    })
+                        .catch(error => {
+                            console.error('Error:', error);
+                })
+                .catch(err => setError('Error fetching data'));
+        };
+
+        // 30초 간격으로 데이터 가져오기
+        const intervalId = setInterval(fetchData, 30000);
+        fetchData(); // 컴포넌트 초기 로드 시 데이터 가져오기
+
+        return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 인터벌 제거
+    }, []);
+
     const handleProductClick = (productId) => {
         navigate(`/product_apply_list_detail/${productId}`); // Navigate to the product detail page
     };
@@ -165,11 +199,14 @@ function Mypage_seller() {
                 </div>
                 <div className="product_list" style={{display: "block"}}>
                     <div>
-                        온도 : 26.4 'C
-                    </div>
-                    <br/>
-                    <div>
-                        습도 : 37.6 %
+                        {error ? (
+                            <p>{error}</p>
+                        ) : (
+                            <>
+                                <p>현재 온도: {temperature ? `${temperature}°C` : 'Loading...'}</p>
+                                <p>현재 습도: {humidity ? `${humidity}%` : 'Loading...'}</p>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
