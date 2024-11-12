@@ -264,7 +264,7 @@ function Farmer_market_info() {
                         quantity: quantity,
                         imgPath: product.productimgPath,
                         storeName: product.storeName,
-                        deliveryStatus: "배송준비"
+                        deliveryStatus: "결제완료"
                     }
                 ]
             }
@@ -687,7 +687,7 @@ function Farmer_market_info() {
                                                 ))
                                             ) : (
                                                 <tr>
-                                                    <td colSpan="5">No QNA available</td>
+                                                    <td colSpan="5"></td>
                                                 </tr>
                                             )}
                                             </tbody>

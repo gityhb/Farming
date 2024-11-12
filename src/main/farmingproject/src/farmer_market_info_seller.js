@@ -404,6 +404,7 @@ function Farmer_market_info_seller() {
                                                             value={order.orderItem.deliveryStatus}
                                                             onChange={(e) => updateDeliveryStatus(order.orderItem.orderItemId, e.target.value)}
                                                         >
+                                                            <option value="결제완료">결제완료</option>
                                                             <option value="배송준비">배송준비</option>
                                                             <option value="배송중">배송중</option>
                                                             <option value="배송완료">배송완료</option>
@@ -602,7 +603,7 @@ function Farmer_market_info_seller() {
                                                 ))
                                             ) : (
                                                 <tr>
-                                                    <td colSpan="5">No QNA available</td>
+                                                    <td colSpan="5"></td>
                                                 </tr>
                                             )}
                                             </tbody>

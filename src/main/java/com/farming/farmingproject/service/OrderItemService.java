@@ -36,8 +36,10 @@ public class OrderItemService {
 
         for (OrderItem item : orderItems) {
             String status = item.getDeliveryStatus();
-            if ("배송준비".equals(status)) {
+            if("결제완료".equals(status)) {
                 statusCount.put("결제완료", statusCount.get("결제완료") + 1);
+            } else if ("배송준비".equals(status)) {
+                statusCount.put("배송준비중", statusCount.get("배송준비중") + 1);
             } else if ("배송중".equals(status)) {
                 statusCount.put("배송중", statusCount.get("배송중") + 1);
             } else if ("배송완료".equals(status)) {

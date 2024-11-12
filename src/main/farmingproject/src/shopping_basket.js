@@ -126,7 +126,7 @@ function Shopping_Basket() {
             imgPath: item.productRG.productimgPath,
             name: item.productRG.productName,
             storeName: item.productRG.storeName,
-            deliveryStatus: "배송준비"
+            deliveryStatus: "결제완료"
         }));
 
         navigate('/payment', {
