@@ -1,9 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import './job_modal.css';
+import DaumPostcodeComponent from './DaumPostcodeComponent';
 
 function JobModal({ isOpen, closeJobModal, userId }) {
     const [jobPhoto, setJobPhoto] = useState(null);
-    const [previewUrl, setPreviewUrl] = useState(null); // 이미지 미리보기 URL 상태
+    const [previewUrl, setPreviewUrl] = useState(null);
+    const [jobDateStart, setJobDateStart] = useState("");
+    const [jobDateEnd, setJobDateEnd] = useState("");
+    const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+    const [address, setAddress] = useState({
+        zipcode: "",
+        roadAddress: "",
+        detailAddress: ""
+    });
+
+    useEffect(() => {
+        if (!isOpen) {
+            setIsAddressModalOpen(false);
+        }
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
@@ -11,10 +26,11 @@ function JobModal({ isOpen, closeJobModal, userId }) {
         const formData = new FormData();
         formData.append("userId", userId);
         formData.append("jobTitle", document.getElementById("job_title").value);
-        formData.append("jobDate", document.getElementById("job_date").value);
+        formData.append("jobDateStart", jobDateStart);
+        formData.append("jobDateEnd", jobDateEnd);
         formData.append("jobTime", document.getElementById("job_time").value);
         formData.append("jobSalary", document.getElementById("job_salary").value);
-        formData.append("jobLocation", document.getElementById("job_location").value);
+        formData.append("jobLocation", `${address.zipcode} ${address.roadAddress} ${address.detailAddress}`);
         formData.append("jobDescription", document.getElementById("job_description").value || "");
         if (jobPhoto) {
             formData.append("jobPhoto", jobPhoto);
@@ -34,14 +50,26 @@ function JobModal({ isOpen, closeJobModal, userId }) {
             });
     };
 
-    // 파일 선택시 상태 업데이트 및 미리보기 이미지 생성
     const handlePhotoChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setJobPhoto(file); // 선택된 파일을 상태에 저장
-            const previewUrl = URL.createObjectURL(file); // 파일의 URL 생성
-            setPreviewUrl(previewUrl); // 미리보기 URL 상태에 저장
+            setJobPhoto(file);
+            setPreviewUrl(URL.createObjectURL(file));
         }
+    };
+
+    const handlePhotoDelete = () => {
+        setJobPhoto(null);
+        setPreviewUrl(null);
+    };
+
+    const handleAddressComplete = (data) => {
+        setAddress({
+            ...address,
+            zipcode: data.zonecode,
+            roadAddress: data.roadAddress
+        });
+        setTimeout(() => setIsAddressModalOpen(false), 100);
     };
 
     return (
@@ -53,41 +81,107 @@ function JobModal({ isOpen, closeJobModal, userId }) {
                     <div className="job_form_group">
                         <div className="job_photo_upload">
                             <div className="file_input_container">
+                                {!previewUrl && (
+                                    <label htmlFor="job_photo" className="photo_upload_label">
+                                        대표 사진
+                                    </label>
+                                )}
                                 <input
                                     type="file"
                                     id="job_photo"
                                     name="job_photo"
-                                    accept="image/*" // 이미지만 선택 가능
-                                    onChange={handlePhotoChange} // 파일 선택시 호출
+                                    accept="image/*"
+                                    onChange={handlePhotoChange}
                                 />
-                                {/* 미리보기 이미지가 선택되었을 때만 보여줍니다 */}
                                 {previewUrl && (
-                                    <img src={previewUrl} alt="Job Preview" className="preview_image_inside_input" />
+                                    <div className="preview_container">
+                                        <img src={previewUrl} alt="Job Preview" className="preview_image_inside_input"/>
+                                        <button className="delete_photo_btn" onClick={handlePhotoDelete}>×</button>
+                                    </div>
                                 )}
                             </div>
-                            <label htmlFor="job_photo">대표 사진</label>
                         </div>
                     </div>
                     <div className="job_form_group">
                         <label htmlFor="job_title">공고 제목</label>
-                        <input type="text" id="job_title" name="job_title" />
+                        <input type="text" id="job_title" name="job_title"/>
                     </div>
                     <div className="job_form_group">
-                        <label htmlFor="job_date">날짜</label>
-                        <input type="date" id="job_date" name="job_date" />
+                        <label>날짜</label>
+                        <div className="date_range">
+                            <input
+                                type="date"
+                                id="job_date_start"
+                                name="job_date_start"
+                                value={jobDateStart}
+                                onChange={(e) => setJobDateStart(e.target.value)}
+                            />
+                            <span className="date_separator">~</span>
+                            <input
+                                type="date"
+                                id="job_date_end"
+                                name="job_date_end"
+                                value={jobDateEnd}
+                                onChange={(e) => setJobDateEnd(e.target.value)}
+                            />
+                        </div>
                     </div>
                     <div className="job_form_group">
                         <label htmlFor="job_time">시간</label>
-                        <input type="text" id="job_time" name="job_time" placeholder="예: 09:00 - 18:00" />
+                        <input type="text" id="job_time" name="job_time" placeholder="예: 09:00 - 18:00"/>
                     </div>
                     <div className="job_form_group">
                         <label htmlFor="job_salary">임금</label>
-                        <input type="text" id="job_salary" name="job_salary" placeholder="예: 80,000원" />
+                        <input type="text" id="job_salary" name="job_salary" placeholder="예: 80,000원"/>
                     </div>
+                    {/* Address Section */}
                     <div className="job_form_group">
-                        <label htmlFor="job_location">위치</label>
-                        <input type="text" id="job_location" name="job_location" />
+                        <label>농장 주소</label>
+                        <div className="address_list">
+                            <div className="address_input">
+                                <input
+                                    type="text"
+                                    value={address.zipcode}
+                                    name="zipcode"
+                                    readOnly
+                                    placeholder="우편번호"
+                                />
+                                <button
+                                    type="button"
+                                    className="find_zip_code_btn"
+                                    onClick={() => setIsAddressModalOpen(true)}
+                                >
+                                    우편번호 찾기
+                                </button>
+                            </div>
+                            <div className="address_input">
+                                <input
+                                    type="text"
+                                    value={address.roadAddress}
+                                    name="roadAddress"
+                                    readOnly
+                                    placeholder="도로명 주소"
+                                />
+                            </div>
+                            <div className="address_input">
+                                <input
+                                    type="text"
+                                    name="detailAddress"
+                                    value={address.detailAddress}
+                                    onChange={(e) => setAddress({ ...address, detailAddress: e.target.value })}
+                                    placeholder="상세주소"
+                                />
+                            </div>
+                        </div>
                     </div>
+
+                    {/* Display로 DaumPostcode 모달 숨기기 */}
+                    <div style={{ display: isAddressModalOpen ? "block" : "none" }}>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <DaumPostcodeComponent onComplete={handleAddressComplete} />
+                        </Suspense>
+                    </div>
+
                     <div className="job_form_group">
                         <label htmlFor="job_description">상세내역</label>
                         <textarea id="job_description" name="job_description"></textarea>

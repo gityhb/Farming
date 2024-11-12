@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -194,5 +199,30 @@ public class ProductRGController {
 
         return ResponseEntity.ok().body("상품 정보 수정에 성공했습니다.");
     }
+
+    // ProductRGController.java
+    @GetMapping("/timeSale")
+    public ResponseEntity<List<ProductRG>> getTimeSaleProducts() {
+        try {
+            List<ProductRG> allProducts = productRGService.getAllProductRGs();
+
+            // 5개의 랜덤 상품을 선택
+            Collections.shuffle(allProducts);
+            List<ProductRG> timeSaleProducts = allProducts.stream().limit(5).collect(Collectors.toList());
+
+            // 각 상품에 5% 추가 할인을 적용
+            timeSaleProducts.forEach(product -> {
+                double additionalDiscountedPrice = product.getProductPrice3() * 0.95; // 5% 추가 할인
+                product.setProductPrice3((int) additionalDiscountedPrice);
+            });
+
+            return ResponseEntity.ok(timeSaleProducts);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.emptyList());
+        }
+    }
+
+
 
 }

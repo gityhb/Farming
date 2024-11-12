@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-import java.sql.Time;
 
 @Entity
 @Table(name = "job")
@@ -29,8 +28,11 @@ public class Job {
     @Column(name = "job_title", nullable = false)
     private String jobTitle;
 
-    @Column(name = "job_date", nullable = false)
-    private Date jobDate;
+    @Column(name="job_date_start",nullable = false)
+    private Date jobDateStart;
+
+    @Column(name = "job_date_end", nullable = false) // 종료 날짜
+    private Date jobDateEnd;
 
     @Column(name = "job_time", nullable = false)
     private String jobTime;
@@ -48,10 +50,11 @@ public class Job {
     private String jobPhoto;
 
     @Builder
-    public Job(User user, String jobTitle, Date jobDate, String jobTime, String jobSalary, String jobLocation, String jobDescription, String jobPhoto) {
+    public Job(User user, String jobTitle, Date jobDateStart, Date jobDateEnd, String jobTime, String jobSalary, String jobLocation, String jobDescription, String jobPhoto) {
         this.user = user;
         this.jobTitle = jobTitle;
-        this.jobDate = jobDate;
+        this.jobDateStart = jobDateStart;
+        this.jobDateEnd = jobDateEnd;
         this.jobTime = jobTime;
         this.jobSalary = jobSalary;
         this.jobLocation = jobLocation;

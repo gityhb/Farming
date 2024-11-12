@@ -87,6 +87,10 @@ public class ProductRGService {
         return productRGRepository.findBySellerId(sellerId);
     }
 
+    public List<ProductRG> findRandomTimeSaleProducts() {
+        return productRGRepository.findRandomTimeSaleProducts();
+    }
+
     /*@Transactional
     public ProductRG saveProduct(AddProductRGRequest addProductRGRequest) {
         String productImagePath = null;

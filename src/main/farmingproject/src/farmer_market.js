@@ -9,6 +9,7 @@ function Farmer_market() {
     const [products, setProducts] = useState([]);
     const [selectedSort, setSelectedSort] = useState("newest"); // 현재 선택된 정렬 방식
 
+
     const handleInputChange = (e) => {
         setSearchQuery(e.target.value);
     };
@@ -49,35 +50,29 @@ function Farmer_market() {
         fetchProducts();
     }, []);
 
-    // 검색 버튼 클릭 시 실행되는 함수
-    // const handleSearch = async () => {
-    //     try {
-    //         const response = await axios.get(`/api/search?query=${searchQuery}`);
-    //         setProducts(response.data); // 서버에서 검색된 제품 리스트로 상태 업데이트
-    //     } catch (error) {
-    //         console.error("검색 중 에러 발생:", error);
-    //     }
-    // };
-    //
-    // useEffect(() => {
-    //     // 페이지 로드 시 모든 제품을 기본으로 로드
-    //     const fetchProducts = async () => {
-    //         try {
-    //             const response = await axios.get("/api/products");
-    //             setProducts(response.data);
-    //         } catch (error) {
-    //             console.error("제품 로드 중 에러 발생:", error);
-    //         }
-    //     };
-    //     fetchProducts();
-    // }, []);
+    const handleSearch=async()=>{
+        try{
+            const response = await fetch(`/api/productRG/search?name=${searchQuery}`);
+            if(response.ok){
+                const data = await response.json();
+                setProducts(data); //검색 결과를 products 상태로 설정
+            }else{
+                console.error("상품 검색 실패");
+            }
+        }catch(error){
+            console.error("상품 검색 중 오류 발생:".error);
+        }
+    };
+
     return (
         <div id={'body'}>
             <div id={'farmer_market_page'} className={'page'}>
                 <div id={'contents'}>
                     <div id={'search_box'}>
-                        <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
-                        <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/></button>
+                        <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'} value={searchQuery}
+                               onChange={(e) => setSearchQuery(e.target.value)}/>
+                        <button id={'search_btn'} onClick={handleSearch}><img src="img/etc/search.png"
+                                                                              alt={"search_btn"}/></button>
                     </div>
                     <div id={'align_box'}>
                         <div id={'category_box'}>

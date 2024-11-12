@@ -26,4 +26,8 @@ public interface ProductRGRepository extends JpaRepository<ProductRG, Long> {
 
     @Query("SELECT pl.productRG FROM ProductLike pl WHERE pl.user.userId = :userId")
     List<ProductRG> findLikedProductsByUser(@Param("userId") String userId);
+
+    @Query(value = "SELECT * FROM productrg ORDER BY RAND() LIMIT 5", nativeQuery = true)
+    List<ProductRG> findRandomTimeSaleProducts();
+
 }

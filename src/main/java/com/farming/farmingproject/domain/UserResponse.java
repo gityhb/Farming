@@ -4,15 +4,17 @@ public class UserResponse {
     private Long id;
     private String userId;
     private String name;
+    private String email;
     private String phoneNumber;
     private String storeName;
     private String address;
     private Integer authority;
 
-    public UserResponse(Long id, String userId, String name, String phoneNumber, String storeName, String address, Integer authority) {
+    public UserResponse(Long id, String userId, String name,String email, String phoneNumber, String storeName, String address, Integer authority) {
         this.id = id;
         this.userId = userId;
         this.name = name;
+        this.email = email;
         this.phoneNumber = phoneNumber;
         this.storeName = storeName;
         this.address = address;
@@ -41,6 +43,10 @@ public class UserResponse {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getEmail() {return email;}
+
+    public void setEmail(String email) {this.email = email;}
 
     public String getPhoneNumber() {return phoneNumber;}
 

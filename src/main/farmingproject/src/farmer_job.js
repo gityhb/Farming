@@ -3,9 +3,11 @@ import './farmer_job.css';
 import {Link} from 'react-router-dom';
 
 function FarmerJob() {
-    const[selectedCity,setSelectedCity]=useState('');
-    const[districts, setDistricts]=useState([]);
-    const [jobs,setJobs]=useState([]); //job 상태 추가
+    const [selectedCity, setSelectedCity] = useState('');
+    const [selectedDistrict, setSelectedDistrict] = useState(''); // 구 선택 상태 추가
+    const [districts, setDistricts] = useState([]);
+    const [jobs, setJobs] = useState([]); // 전체 일자리 데이터를 저장
+    const [filteredJobs, setFilteredJobs] = useState([]); // 필터링된 일자리 데이터를 저장
 
     const allDistricts={
         'seoul':['강남구','강동구','강북구','강서구','구로구','동작구','마포구','양천구','영등포구','용산구','종로구'],
@@ -27,16 +29,17 @@ function FarmerJob() {
     };
 
     //데이터베이스에서 일자리 정보를 가져오는 함수
-    const fetchJobs=async ()=>{
-        try{
-            const res=await fetch('api/job/all')//모든 일자리 백엔드 API 호출
-            if(!res.ok){
+    const fetchJobs = async () => {
+        try {
+            const res = await fetch('api/job/all');
+            if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
             const data = await res.json();
-            setJobs(data); //일자리 데이터 상태에 저장
-        }catch(error){
-            console.error('Error fetching jobs:',error);
+            setJobs(data); // 전체 일자리 데이터를 저장
+            setFilteredJobs(data); // 초기 필터링 데이터 설정
+        } catch (error) {
+            console.error('Error fetching jobs:', error);
         }
     };
 
@@ -44,28 +47,63 @@ function FarmerJob() {
         fetchJobs(); // 컴포넌트 마운트 시 일자리 정보 가져옴
     }, []); // 빈 배열을 두 번째 인자로 전달하여 최초 마운트 시에만 호출
 
-    useEffect(()=>{
-        if(selectedCity){
-            setDistricts(allDistricts[selectedCity]||[]);
-        }else{
+    useEffect(() => {
+        if (selectedCity) {
+            setDistricts(allDistricts[selectedCity] || []);
+            setSelectedDistrict(''); // 도시가 바뀔 때 구 초기화
+        } else {
             setDistricts([]);
         }
-    },[selectedCity]);
+    }, [selectedCity]);
+
+    useEffect(() => {
+        // 선택된 시와 구에 따라 필터링 로직 적용
+        let filtered = jobs;
+
+        // 도시를 한글로 변환하는 맵핑 객체 생성
+        const cityMapping = {
+            'seoul': '서울',
+            'gyeonggi': '경기',
+            'incheon': '인천',
+            'busan': '부산',
+            'daegu': '대구',
+            'ulsan': '울산',
+            'sejong': '세종',
+            'gangwon': '강원',
+            'gyeongnam': '경남',
+            'gyeonbuk': '경북',
+            'jeonbuk': '전북',
+            'jeonnam': '전남',
+            'chungnam': '충남',
+            'chungbuk': '충북',
+            'jeju': '제주'
+        };
+
+        const koreanCity = cityMapping[selectedCity] || selectedCity; // 선택된 도시의 한글 변환
+
+        if (selectedCity) {
+            filtered = filtered.filter(job => job.jobLocation.includes(koreanCity));
+        }
+        if (selectedDistrict) {
+            filtered = filtered.filter(job => job.jobLocation.includes(selectedDistrict));
+        }
+
+        setFilteredJobs(filtered);
+    }, [selectedCity, selectedDistrict, jobs]);
+
+
 
     return (
         <div id={'body'}>
             <div id={'farmer_job_page'} className={'page'}>
                 <div id={'contents'}>
                     <div id="farmergic_menu">
-                        <div id="farmergic_menu_text">
-                            쉽고 빠르게 일손 구하기
-                        </div>
+                        <div id="farmergic_menu_text">쉽고 빠르게 일손 구하기</div>
                         <div id="farmergic_menu_button">
                             <select className={'farmergic_menu_button_1'}
-                                    value={selectedCity} // selected 대신 value를 사용하여 선택된 값을 제어
+                                    value={selectedCity}
                                     onChange={(e) => setSelectedCity(e.target.value)}>
                                 <option value={''}>시</option>
-                                {/* selected 속성 제거 */}
                                 <option value={'seoul'}>서울</option>
                                 <option value={'gyeonggi'}>경기</option>
                                 <option value={'incheon'}>인천</option>
@@ -83,8 +121,10 @@ function FarmerJob() {
                                 <option value={'jeju'}>제주</option>
                             </select>
 
-                            <select className="farmergic_menu_button_2">
-                                <option>구</option>
+                            <select className="farmergic_menu_button_2"
+                                    value={selectedDistrict}
+                                    onChange={(e) => setSelectedDistrict(e.target.value)}>
+                                <option value={''}>구</option>
                                 {districts.map((district, index) => (
                                     <option key={index} value={district}>
                                         {district}
@@ -93,42 +133,41 @@ function FarmerJob() {
                             </select>
                         </div>
                     </div>
+
                     <div className="farmergic_main_container">
                         <div className="farmergic_main">
-                                {jobs.map((job) => (
-                                    <div key={job.jobId}><Link to={`/farmer_job_info/${job.jobId}`} key={job.jobId}>
+                            {filteredJobs.map((job) => (
+                                <div key={job.jobId}>
+                                    <Link to={`/farmer_job_info/${job.jobId}`}>
                                         <div className="farmergic_main_item">
                                             <div className="farmergic_main_item01">
                                                 <div className="farmergic_main_item_title">{job.jobTitle}</div>
                                                 <div className="farmergic_main_item_info">
                                                     <div className="farmergic_main_item_date_img">
-                                                        <img src="/img/clock.jpg" style={{width: '20px'}}/>
-                                                        <div className="farmergic_main_item_date">{job.jobDate}</div>
+                                                        <img src="/img/clock.jpg" style={{ width: '20px' }} />
+                                                        <div className="farmergic_main_item_date">
+                                                            {job.jobDateStart} ~ {job.jobDateEnd}
+                                                        </div>
                                                     </div>
                                                     <div className="farmergic_main_item_pay_img">
-                                                        <img src="/img/pay.jpg" style={{width: '20px'}}/>
+                                                        <img src="/img/pay.jpg" style={{ width: '20px' }} />
                                                         <div className="farmergic_main_item_pay">{job.jobSalary}</div>
                                                     </div>
                                                     <div className="farmergic_main_item_location_img">
-                                                        <img src="/img/location.jpg"
-                                                             style={{width: '20px'}}/>
-                                                        <div
-                                                            className="farmergic_main_item_location">{job.jobLocation}</div>
+                                                        <img src="/img/location.jpg" style={{ width: '20px' }} />
+                                                        <div className="farmergic_main_item_location">{job.jobLocation}</div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="farmergic_main_item02">
-                                            <div className="farmergic_main_item_image">
-                                                <img src={`http://localhost:8080${job.jobPhoto}`} alt="Job Image"
-                                                     style={{width: '230px', height: '160px'}}/>
-
-                                            </div>
+                                                <div className="farmergic_main_item_image">
+                                                    <img src={`http://localhost:8080${job.jobPhoto}`} alt="Job Image" style={{ width: '230px', height: '160px' }} />
+                                                </div>
                                             </div>
                                         </div>
-                                    </Link></div>
-                                ))}
-
-
+                                    </Link>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
