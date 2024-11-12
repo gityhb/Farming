@@ -33,6 +33,8 @@ function ProductApplyCheckDetail() {
                 return { text: '등록', color: '#55A630' };
             case 2:
                 return { text: '탈락', color: '#ff0000' };
+            case 3:
+                return {text: '등록 완료', color: '#55A630'}
             default:
                 return { text: '알 수 없음', color: '#fff' };
         }

@@ -30,6 +30,9 @@ function ProductApplyCheck() {
                 if (product.productStatus === 2) {
                     return { text: '탈락', color: '#ff0000' };
                 }
+                if (product.productStatus === 3) {
+                    return { text: '등록 완료', color: '#55A630' };
+                }
                 return { text: '알 수 없음', color: '#fff' };
             });
             setPStatus(statusArray); // 상태 배열 업데이트
@@ -141,7 +144,7 @@ function ProductApplyCheck() {
                             {selectedProducts.map((product, index) => (
                                 <div key={product.productId} className={'admin_product_apply_chk_inner'} onClick={() => handleProductClick(product.productId)}>
                                     <div className={'admin_product_apply_chk_inner_content'}>
-                                        <div className={'admin_product_apply_chk_inner_num'}>{product.productId}</div>
+                                        <div className={'admin_product_apply_chk_inner_num'}>{(currentPage - 1) * itemsPerPage + index + 1}</div>
                                         <div className={'admin_product_apply_chk_inner_title'}>{product.productName}</div>
                                         <div className={'admin_product_apply_chk_inner_seller'} >{product.sellerName}</div>
                                         <div className={'admin_product_apply_chk_inner_status'} style={{ color: pStatus[index]?.color }}>{pStatus[index]?.text}</div>

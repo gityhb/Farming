@@ -1,0 +1,25 @@
+#admin_user_page .admin_user_table table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#admin_user_page .admin_user_table th {
+    background-color: #FFEA8D;
+}
+
+#admin_user_page .admin_user_table {
+    /*display: flex;*/
+    /*justify-content: center;*/
+    text-align: center;
+    width: 1020px;
+    overflow-x: auto
+}
+
+.admin_user_table_title {
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+}
+.admin_user_table_title, .admin_user_table_inner {
+    padding: 5px 15px;
+}

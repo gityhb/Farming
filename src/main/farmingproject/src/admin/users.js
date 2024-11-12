@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import  './product_apply_check.css';
 import '../common/root.css';
+import './users.css';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
 
@@ -70,21 +71,6 @@ function Users() {
         return (<div id="body">
             <div id={'admin_product_apply_check_page'} className={'page'}>
                 <div id={'contents'}>
-                    <div className={'admin_product_apply_chk_Btn'}>
-                        <Link to={"/admin/product_apply_check"}>
-                            <div className={'product_apply_all_btn'} style={{backgroundColor: '#FFEA8D'}}>전체</div>
-                        </Link>
-                        <Link to={"/admin/product_apply_check_ing"}>
-                            <div className={'product_apply_ing_btn'} style={{backgroundColor: '#fff'}}>심사 보류</div>
-                        </Link>
-                        <Link to={"/admin/product_apply_check_pass"}>
-                            <div className={'product_apply_pass_btn'} style={{backgroundColor: '#fff'}}>상품 등록</div>
-                        </Link>
-                        <Link to={"/admin/product_apply_check_fail"}>
-                            <div className={'product_apply_fail_btn'} style={{backgroundColor: '#fff'}}>심사 탈락</div>
-                        </Link>
-                    </div>
-
                     <div className={'admin_product_apply_chk_div'}>
                         <div className={'admin_product_apply_chk_top'}>
                             <div className={'admin_product_apply_chk_num'}>No.</div>
@@ -107,40 +93,62 @@ function Users() {
 
     return (
         <div id="body">
-            <div id={'admin_product_apply_check_page'} className={'page'}>
+            <div id={'admin_user_page'} className={'page'}>
                 <div id={'contents'}>
                     <div className={'admin_product_apply_chk_Btn'}>
-                        <Link to={"/admin/product_apply_check"}><div className={'product_apply_all_btn'} style={{ backgroundColor: '#FFEA8D' }}>전체</div></Link>
-                        <Link to={"/admin/product_apply_check_ing"}><div className={'product_apply_ing_btn'} style={{ backgroundColor: '#fff' }}>심사 보류</div></Link>
-                        <Link to={"/admin/product_apply_check_pass"}><div className={'product_apply_pass_btn'} style={{ backgroundColor: '#fff' }}>상품 등록</div></Link>
-                        <Link to={"/admin/product_apply_check_fail"}><div className={'product_apply_fail_btn'} style={{ backgroundColor: '#fff' }}>심사 탈락</div></Link>
+                        <Link to={"/admin/users"}>
+                            <div className={'product_apply_all_btn'} style={{backgroundColor: '#FFEA8D'}}>전체</div>
+                        </Link>
+                        <Link to={"/admin/product_apply_check_ing"}>
+                            <div className={'product_apply_ing_btn'} style={{backgroundColor: '#fff'}}>심사 보류</div>
+                        </Link>
+                        <Link to={"/admin/product_apply_check_pass"}>
+                            <div className={'product_apply_pass_btn'} style={{backgroundColor: '#fff'}}>상품 등록</div>
+                        </Link>
+                        <Link to={"/admin/product_apply_check_fail"}>
+                            <div className={'product_apply_fail_btn'} style={{backgroundColor: '#fff'}}>심사 탈락</div>
+                        </Link>
                     </div>
-
-                    <div className={'admin_product_apply_chk_div'}>
-                        <div className={'admin_product_apply_chk_top'}>
-                            <div className={'admin_product_apply_chk_num'}>No.</div>
-                            <div className={'admin_product_apply_chk_title'}>상품명</div>
-                            <div className={'admin_product_apply_chk_seller'}>판매자</div>
-                            <div className={'admin_product_apply_chk_status'}>상태</div>
-                        </div>
-
-                        {selectedUsers.map((user, index) => (
-                            <div key={user.id} className={'admin_product_apply_chk_inner'} onClick={() => handleProductClick(user.id)}>
-                                <div className={'admin_product_apply_chk_inner_content'}>
-                                    <div className={'admin_product_apply_chk_inner_num'}>{index + 1}</div>
-                                    <div className={'admin_product_apply_chk_inner_title'}>{user.userId}</div>
-                                    <div className={'admin_product_apply_chk_inner_seller'} >{user.userName}</div>
-                                    <div className={'admin_product_apply_chk_inner_status'} >{user.phoneNumber}</div>
-                                </div>
-                            </div>
-                        ))}
+                    <div className={'admin_user_table'}>
+                        <table style={{tableLayout: 'fixed'}}>
+                            <tr>
+                                <th style={{width: '20px', minWidth: '20px', maxWidth: '20px'}}>No.</th>
+                                <th style={{width: '130px', minWidth: '130px', maxWidth: '130px'}}>아이디</th>
+                                <th style={{width: '20px', minWidth: '20px', maxWidth: '20px'}}>권한</th>
+                                <th style={{width: '100px', minWidth: '100px', maxWidth: '100px'}}>이름</th>
+                                <th style={{width: '120px', minWidth: '120px', maxWidth: '120px'}}>닉네임</th>
+                                <th style={{width: '290px', minWidth: '290px', maxWidth: '290px'}}>주소</th>
+                                <th style={{width: '120px', minWidth: '120px', maxWidth: '120px'}}>핸드폰번호</th>
+                                <th style={{width: '120px', minWidth: '120px', maxWidth: '120px'}}>가게번호</th>
+                                <th style={{width: '200px', minWidth: '200px', maxWidth: '200px'}}>이메일</th>
+                                <th style={{width: '120px', minWidth: '120px', maxWidth: '120px'}}>가게이름</th>
+                                <th style={{width: '200px', minWidth: '200px', maxWidth: '200px'}}>생성일</th>
+                            </tr>
+                            {selectedUsers.map((user, index) => (
+                                <tr key={user.id} className={''}>
+                                    <td className={'admin_user_table_inner'}>{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                                    <td className={'admin_user_table_inner'}>{user.userId}</td>
+                                    <td className={'admin_user_table_inner'}>{user.authority}</td>
+                                    <td className={'admin_user_table_inner'}>{user.name}</td>
+                                    <td className={'admin_user_table_inner'}>{user.nickname}</td>
+                                    <td className={'admin_user_table_inner'}>{user.address}</td>
+                                    <td className={'admin_user_table_inner'}>{user.phoneNumber}</td>
+                                    <td className={'admin_user_table_inner'}>{user.storePhoneNumber}</td>
+                                    <td className={'admin_user_table_inner'}>{user.email}</td>
+                                    <td className={'admin_user_table_inner'}>{user.storeName}</td>
+                                    <td className={'admin_user_table_inner'}>{new Date(user.createdDate).toISOString().split('T').join(' ').substring(0, 19)}</td>
+                                </tr>
+                            ))}
+                        </table>
                     </div>
 
                     {/* 페이지네이션 */}
                     <div className={'admin_product_apply_chk_pagenation'}>
                         {/* << 화살표, 페이지 그룹 이동 */}
                         {pageGroup > 1 && (
-                            <button className={'admin_product_apply_chk_pagenation_btn'} onClick={() => handleGroupChange('prev')}><img src={'/img/etc/arrowL.png'} style={{width: '10px'}}/></button>
+                            <button className={'admin_product_apply_chk_pagenation_btn'}
+                                    onClick={() => handleGroupChange('prev')}><img src={'/img/etc/arrowL.png'}
+                                                                                   style={{width: '10px'}}/></button>
                         )}
 
                         {/* 개별 페이지 번호 */}
@@ -158,7 +166,9 @@ function Users() {
 
                         {/* >> 화살표, 페이지 그룹 이동 */}
                         {endPage < totalPages && (
-                            <button className={'admin_product_apply_chk_pagenation_btn'} onClick={() => handleGroupChange('next')}><img src={'/img/etc/arrowR.png'} style={{width: '10px'}}/></button>
+                            <button className={'admin_product_apply_chk_pagenation_btn'}
+                                    onClick={() => handleGroupChange('next')}><img src={'/img/etc/arrowR.png'}
+                                                                                   style={{width: '10px'}}/></button>
                         )}
                     </div>
                 </div>
