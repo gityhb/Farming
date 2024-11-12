@@ -95,21 +95,21 @@ function Users() {
         <div id="body">
             <div id={'admin_user_page'} className={'page'}>
                 <div id={'contents'}>
-                    <div className={'admin_product_apply_chk_Btn'}>
-                        <Link to={"/admin/users"}>
-                            <div className={'product_apply_all_btn'} style={{backgroundColor: '#FFEA8D'}}>전체</div>
-                        </Link>
-                        <Link to={"/admin/product_apply_check_ing"}>
-                            <div className={'product_apply_ing_btn'} style={{backgroundColor: '#fff'}}>심사 보류</div>
-                        </Link>
-                        <Link to={"/admin/product_apply_check_pass"}>
-                            <div className={'product_apply_pass_btn'} style={{backgroundColor: '#fff'}}>상품 등록</div>
-                        </Link>
-                        <Link to={"/admin/product_apply_check_fail"}>
-                            <div className={'product_apply_fail_btn'} style={{backgroundColor: '#fff'}}>심사 탈락</div>
-                        </Link>
-                    </div>
-                    <div className={'admin_user_table'}>
+                    {/*<div className={'admin_product_apply_chk_Btn'}>*/}
+                    {/*    <Link to={"/admin/users"}>*/}
+                    {/*        <div className={'product_apply_all_btn'} style={{backgroundColor: '#FFEA8D'}}>전체</div>*/}
+                    {/*    </Link>*/}
+                    {/*    <Link to={"/admin/product_apply_check_ing"}>*/}
+                    {/*        <div className={'product_apply_ing_btn'} style={{backgroundColor: '#fff'}}>심사 보류</div>*/}
+                    {/*    </Link>*/}
+                    {/*    <Link to={"/admin/product_apply_check_pass"}>*/}
+                    {/*        <div className={'product_apply_pass_btn'} style={{backgroundColor: '#fff'}}>상품 등록</div>*/}
+                    {/*    </Link>*/}
+                    {/*    <Link to={"/admin/product_apply_check_fail"}>*/}
+                    {/*        <div className={'product_apply_fail_btn'} style={{backgroundColor: '#fff'}}>심사 탈락</div>*/}
+                    {/*    </Link>*/}
+                    {/*</div>*/}
+                    <div className={'admin_user_table'} style={{marginTop:'50px'}}>
                         <table style={{tableLayout: 'fixed'}}>
                             <tr>
                                 <th style={{width: '20px', minWidth: '20px', maxWidth: '20px'}}>No.</th>

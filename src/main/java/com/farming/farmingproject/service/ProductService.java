@@ -74,8 +74,8 @@ public class ProductService {
         productRepository.save(product);    // 상태 저장
     }
 
-    public List<Product> findProductsByStatus(int productStatus) {
-        return productRepository.findProductsByProductStatus(productStatus);
+    public List<Product> findProductsByStatus(List<Integer>  productStatus) {
+        return productRepository.findProductsByProductStatusIn(productStatus);
     }
 
     public List<Product> findProductApplyListsById(Long sellerId) {

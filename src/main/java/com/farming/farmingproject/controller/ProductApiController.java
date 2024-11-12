@@ -109,7 +109,7 @@ public class ProductApiController {
 
     // 상품 상태 별로 상품 가져오기
     @GetMapping("")
-    public ResponseEntity<List<Product>> getProductsByStatus(@RequestParam(value = "productStatus") int productStatus) {
+    public ResponseEntity<List<Product>> getProductsByStatus(@RequestParam(value = "productStatus") List<Integer> productStatus) {
         List<Product> products = productService.findProductsByStatus(productStatus);
         return ResponseEntity.ok(products);
     }

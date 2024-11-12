@@ -1,4 +1,4 @@
-#admin_user_page .admin_user_table table, th, td {
+#admin_user_page .admin_user_table table, #admin_user_page .admin_user_table th, #admin_user_page .admin_user_table td {
     border: 1px solid black;
     border-collapse: collapse;
 }
