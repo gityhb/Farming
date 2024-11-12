@@ -7,20 +7,45 @@ import './farmer_market.css';
 function Farmer_market() {
     const [searchQuery, setSearchQuery] = useState("");
     const [products, setProducts] = useState([]);
+    const [selectedSort, setSelectedSort] = useState("newest"); // 현재 선택된 정렬 방식
 
     const handleInputChange = (e) => {
         setSearchQuery(e.target.value);
     };
 
+    // 판매순 정렬 함수
+    const handleNewestSort = () => {
+        const sortedProducts = [...products].sort((a, b) => new Date(b.productCreatedDate) - new Date(a.productCreatedDate));
+        setProducts(sortedProducts);
+        setSelectedSort("newest");
+    };
+    // 구매 횟수를 기준으로 인기순 정렬
+    const handlePopularitySort = () => {
+        const sortedProducts = [...products].sort((a, b) => b.sellcount - a.sellcount);
+        setProducts(sortedProducts);
+        setSelectedSort("popularity");
+    };
+
+    // 가격순 정렬 함수
+    const handlePriceSort = () => {
+        const sortedProducts = [...products].sort((a, b) => a.productPrice3 - b.productPrice3);
+        setProducts(sortedProducts);
+        setSelectedSort("priceLowToHigh"); // 현재 정렬 상태를 저장 (낮은 가격순)
+    };
+
+
+
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get("/api/productRG/get_productRG");
+            setProducts(response.data.reverse());
+        } catch (error) {
+            console.error("제품 로드 중 에러 발생:", error);
+        }
+    };
+
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await axios.get("/api/productRG/get_productRG");
-                setProducts(response.data);
-            } catch (error) {
-                console.error("제품 로드 중 에러 발생:", error);
-            }
-        };
+
         fetchProducts();
     }, []);
 
@@ -62,11 +87,11 @@ function Farmer_market() {
                         </div>
                         <div id={'page_location'}>
                             <ul>
-                                <li>판매순</li>
+                                <li className={"set_list"} onClick={handleNewestSort} style={{ fontWeight: selectedSort === "newest" ? "bold" : "normal"}}>판매순</li>
                                 <li>|</li>
-                                <li>인기순</li>
+                                <li className={"set_list"} onClick={handlePopularitySort} style={{ fontWeight: selectedSort === "popularity" ? "bold" : "normal"}}>인기순</li>
                                 <li>|</li>
-                                <li>낮은 가격순</li>
+                                <li className={"set_list"} onClick={handlePriceSort} style={{ fontWeight: selectedSort === "priceLowToHigh" ? "bold" : "normal"}}>낮은 가격순</li>
                             </ul>
                         </div>
                     </div>

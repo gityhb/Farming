@@ -218,9 +218,8 @@ function ProductApplyCheckDetail() {
                                 <option value="1" style={{color: '#55A630'}}>등록</option>
                                 <option value="2" style={{color: '#ff0000'}}>탈락</option>
                             </select>
-                            {productStatus == "1" &&
-                                <button className={"product_pass_enroll_btn"} onClick={handleRegisterClick}>상품
-                                    등록</button>}
+                            {(product.productStatus == 0 || product.productStatus == 1 || product.productStatus == 2) && (
+                                <button className={"product_pass_enroll_btn"} onClick={handleRegisterClick}>상품 등록</button>)}
                         </td>
                     </tr>
                     <tr>

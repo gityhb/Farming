@@ -85,7 +85,7 @@ function Mypage_seller() {
             const response = await fetch(`api/product/${id}/applylist`)
             if(response.ok) {
                const data = await response.json();
-               setProductApplyLists(data);
+               setProductApplyLists(data.reverse());
             }
         } catch (error) {
             console.error('Error fetching productApplyLists : ', error);
@@ -130,7 +130,7 @@ function Mypage_seller() {
             <div className="seller_info">
                 <div className="seller_photo">
                     {/*<span>( 사진 등록 )</span>*/}
-                    <img src={"./img/osj.jpg"} alt={"판매자 사진"}/>
+                    <img src={"./img/etc/user.png"} alt={"판매자 사진"}/>
                 </div>
                 <div className="seller_details">
                     <p>이름 : {user.name}</p>
@@ -205,6 +205,7 @@ function Mypage_seller() {
                                     {products.productStatus === 0 && <span className={"pListsStatus"} style={{backgroundColor: '#D9D9D9'}}>보류</span>}
                                     {products.productStatus === 1 && <span className={"pListsStatus"} style={{backgroundColor: '#FFF0AD'}}>등록</span>}
                                     {products.productStatus === 2 && <span className={"pListsStatus"} style={{backgroundColor: '#FB5C5C'}}>탈락</span>}
+                                    {products.productStatus === 3 && <span className={"pListsStatus"} style={{backgroundColor: '#c3ea8b'}}>판매</span>}
                                     <a href="#"><strong>{products.productName}</strong></a>
                                 </li>
                             ))

@@ -65,6 +65,8 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("상품의 정보를 얻어올 수 없는 해당 상품 고유 번호: " + productId));
     }
 
+    //public void updateProduct(Long productId, int )
+
     public void updateProductStatus(Long productId, int productStatus) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("상품의 정보를 얻어올 수 없는 해당 상품 고유 번호: " + productId));

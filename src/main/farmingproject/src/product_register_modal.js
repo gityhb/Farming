@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import './admin/product_apply_check_detail.css';
 import './product_register_modal.css';
 import axios from "axios";
+import {useParams} from "react-router-dom";
 
-function ProductRegisterModal({ product, onClose }) {
+function ProductRegisterModal({ product, onClose, onStatusChange }) {
+    const { productId } = useParams();
     const [productDetails, setProductDetails] = useState({
         sellerId: product.sellerId,
         sellerName: product.sellerName,
@@ -67,6 +69,7 @@ function ProductRegisterModal({ product, onClose }) {
         }
 
         try {
+            const pdId = product.productId;
             const formData = new FormData();
 
             // 상품 정보 추가
@@ -84,6 +87,7 @@ function ProductRegisterModal({ product, onClose }) {
                 formData.append('productInfoimgPath', productImages.productInfoimgPath);
                 console.log('productInfoimgPath:', productImages.productInfoimgPath.name); // 파일 이름 출력
             }
+            formData.append('pdId', pdId);
 
             console.log('FormData 내용:');
             for (let [key, value] of formData.entries()) {
@@ -98,7 +102,10 @@ function ProductRegisterModal({ product, onClose }) {
             console.log('서버 응답:', response.data);
             console.log('상품 등록 성공:', response.data);
             alert("상품 등록에 성공하였습니다.");
-            onClose();
+            await  axios.put(`http://localhost:8080/api/product/${productId}/status`, {productStatus: 3});
+            // 서버에서 상태 업데이트가 성공했을 때
+            onStatusChange(3); // 상태를 3으로 변경
+            onClose(true);      // 모달을 닫고 버튼을 숨김
         } catch (error) {
             console.error('상품 등록 실패:', error);
             if (error.response) {
@@ -113,13 +120,17 @@ function ProductRegisterModal({ product, onClose }) {
             alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
         }
     };
+    
+    const handleCloseModal = () => {
+        onClose(false);     // 단순히 모달만 닫음
+    }
 
     return (
         <div className="apply_modal">
             <div className="apply_modal_content">
                 <div className="apply_header">
                     등록 상품 정보
-                    <span className="close" onClick={onClose}>&times;</span>
+                    <span className="close" onClick={handleCloseModal}>&times;</span>
                 </div>
                 <div className="apply_main">
                     <label>판매자 고유 ID</label>

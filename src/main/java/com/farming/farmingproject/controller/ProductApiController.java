@@ -100,6 +100,13 @@ public class ProductApiController {
         }
     }
 
+//    @PutMapping("/{productId}/update_product")
+//    public ResponseEntity<String> updateProduct(@PathVariable("productId") Long productId, @RequestBody UpdateProductRequest updateProductRequest) {
+//        try {
+//            productService.updateProduct(productId, updateProductRequest.getProduct)
+//        }
+//    }
+
     // 상품 상태 별로 상품 가져오기
     @GetMapping("")
     public ResponseEntity<List<Product>> getProductsByStatus(@RequestParam(value = "productStatus") int productStatus) {

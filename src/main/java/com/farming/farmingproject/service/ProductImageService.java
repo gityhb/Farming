@@ -32,7 +32,8 @@ public class ProductImageService {
         }
 
         // 파일 이름을 고유햐게 생성하기 위해 UUID 사용
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+//        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String fileName = file.getOriginalFilename();   // 파일 이름 그대로 저장
         // 파일 경로 설정
         File targetFile = new File(uploadDirectory + File.separator + fileName);
 

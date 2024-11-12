@@ -5,8 +5,10 @@ import com.farming.farmingproject.domain.ProductLike;
 import com.farming.farmingproject.domain.ProductRG;
 import com.farming.farmingproject.domain.User;
 import com.farming.farmingproject.dto.AddProductRGRequest;
+import com.farming.farmingproject.dto.AddProductRequest;
 import com.farming.farmingproject.repository.ProductLikeRepository;
 import com.farming.farmingproject.repository.ProductRGRepository;
+import com.farming.farmingproject.repository.ProductRepository;
 import com.farming.farmingproject.repository.ReviewRepository;
 import com.farming.farmingproject.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -32,6 +34,10 @@ public class ProductRGService {
     private final ReviewRepository reviewRepository;
     @Autowired
     private ProductLikeRepository productLikeRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -134,6 +140,9 @@ public class ProductRGService {
         String productImagePath = null;
         String productInfoImagePath = null;
 
+        Product pdt = productRepository.findById(addProductRGRequest.getPdId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
         if (addProductRGRequest.getProductimgPath() != null && !addProductRGRequest.getProductimgPath().isEmpty()) {
             productImagePath = saveFile(addProductRGRequest.getProductimgPath(), productImageDirectory);
         }
@@ -157,6 +166,7 @@ public class ProductRGService {
                 .sellcount(addProductRGRequest.getSellcount())
                 .astar(addProductRGRequest.getAstar())
                 .salenum(addProductRGRequest.getSalenum())
+                .product(pdt)
                 .build();
 
         return productRGRepository.save(product);
@@ -164,7 +174,9 @@ public class ProductRGService {
 
     private String saveFile(MultipartFile file, String directory) {
         try {
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            // 이름 중복을 막는 경우
+//            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            String fileName = file.getOriginalFilename();   // 파일 이름 그대로 저장
             Path uploadPath = Paths.get(directory);
 
             if (!Files.exists(uploadPath)) {
@@ -231,6 +243,20 @@ public class ProductRGService {
     // like_count가 높은 상품 5개를 가져오는 메서드
     public List<ProductRG> getTop5Products() {
         return productRGRepository.findTop5ProductsByLikeCount();
+    }
+
+    // 판매 상품 정보 수정
+    public void updateProductRG(Long productId, AddProductRGRequest dto) {
+        ProductRG productRG = productRGRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+
+        productRG.setProductPrice1(dto.getProductPrice1());
+        productRG.setProductPrice2(dto.getProductPrice2());
+        productRG.setProductPrice3(dto.getProductPrice3());
+        productRG.setProductDeliveryDate(dto.getProductDeliveryDate());
+        productRG.setSalenum(dto.getSalenum());
+
+        productRGRepository.save(productRG);
     }
 
 //    public List<ProductRG> getLikedProducts(Long userId) {

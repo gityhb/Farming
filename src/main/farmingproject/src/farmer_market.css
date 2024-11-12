@@ -20,6 +20,10 @@
     float: right;
 }
 
+#align_box #page_location ul .set_list {
+    cursor: pointer;
+}
+
 #product_list {
     display: inline-block;
 }

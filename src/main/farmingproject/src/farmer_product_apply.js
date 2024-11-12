@@ -220,7 +220,9 @@ function Farmer_product_apply() {
                                 {/*        </p>*/}
                                 {/*    ))}*/}
                                 {/*</div>*/}
+                                <div style={{margin: '20px 0', color: '#727272'}}>※상품 대표 이미지와 상품 상세 정보 이미지를 첨부하세요.</div>
                             </div>
+
 
                             <div className={'product_apply_img_btn'}>
                                 <label htmlFor={"choosefile"}>사진첨부</label>

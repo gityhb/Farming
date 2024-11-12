@@ -24,7 +24,7 @@ function Farmer_market_seller() {
             const response = await fetch(`/api/productRG/seller/${sellerId}`);
             if (response.ok) {
                 const data = await response.json();
-                setProducts(data);
+                setProducts(data.reverse());
             } else {
                 console.error('상품 정보 가져오기 실패');
             }
