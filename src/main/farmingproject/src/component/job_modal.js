@@ -1,6 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import './job_modal.css';
-import DaumPostcodeComponent from './DaumPostcodeComponent';
+import DaumPostcode from "react-daum-postcode";
+import Modal from "react-modal";
 
 function JobModal({ isOpen, closeJobModal, userId }) {
     const [jobPhoto, setJobPhoto] = useState(null);
@@ -14,9 +15,27 @@ function JobModal({ isOpen, closeJobModal, userId }) {
         detailAddress: ""
     });
 
+    // Modal 스타일 정의
+    const modalStyles = {
+        content: {
+            width: '600px', // 모달 창의 너비
+            height: '400px', // 모달 창의 높이
+            margin: 'auto', // 중앙 정렬
+        },
+        overlay: {
+            zIndex: '1000',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 검정색 배경
+        },
+    };
+
+    console.log("job_modal_userID: ",userId);
+    const new_addr = () => {
+        setIsAddressModalOpen(!isAddressModalOpen);
+    }
+
     useEffect(() => {
         if (!isOpen) {
-            setIsAddressModalOpen(false);
+            // setIsAddressModalOpen(false);
         }
     }, [isOpen]);
 
@@ -43,9 +62,11 @@ function JobModal({ isOpen, closeJobModal, userId }) {
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
+                alert("구인구직 공고가 성공적으로 추가되었습니다.");
                 closeJobModal();
             })
             .catch((error) => {
+                alert("구인구직 공고 추가에 오류가 발생했습니다.");
                 console.error('Error:', error);
             });
     };
@@ -149,7 +170,7 @@ function JobModal({ isOpen, closeJobModal, userId }) {
                                 <button
                                     type="button"
                                     className="find_zip_code_btn"
-                                    onClick={() => setIsAddressModalOpen(true)}
+                                    onClick={new_addr}
                                 >
                                     우편번호 찾기
                                 </button>
@@ -176,11 +197,15 @@ function JobModal({ isOpen, closeJobModal, userId }) {
                     </div>
 
                     {/* Display로 DaumPostcode 모달 숨기기 */}
-                    <div style={{ display: isAddressModalOpen ? "block" : "none" }}>
-                        <Suspense fallback={<div>Loading...</div>}>
-                            <DaumPostcodeComponent onComplete={handleAddressComplete} />
-                        </Suspense>
-                    </div>
+                    {/*<div style={{ display: isAddressModalOpen ? "block" : "none" }}>*/}
+                    {/*    <Suspense fallback={<div>Loading...</div>}>*/}
+                    {/*        <DaumPostcodeComponent onComplete={handleAddressComplete} />*/}
+                    {/*    </Suspense>*/}
+                    {/*</div>*/}
+                    <Modal isOpen={isAddressModalOpen} style={modalStyles} ariaHideApp={false}
+                           onRequestClose={() => setIsAddressModalOpen(false)}>
+                        <DaumPostcode onComplete={handleAddressComplete} height="100%"/>
+                    </Modal>
 
                     <div className="job_form_group">
                         <label htmlFor="job_description">상세내역</label>

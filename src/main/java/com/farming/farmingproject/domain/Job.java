@@ -21,8 +21,9 @@ public class Job {
     @Column(name = "job_id", updatable = false)
     private Long jobId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")  // 공고 작성자와의 관계
+//    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")  // 공고 작성자와의 관계
     private User user;
 
     @Column(name = "job_title", nullable = false)

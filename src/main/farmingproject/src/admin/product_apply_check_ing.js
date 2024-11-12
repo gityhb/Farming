@@ -17,7 +17,7 @@ function ProductApplyCheckIng() {
     const fetchProducts = async () => {
         try {
             const response = await axios.get('http://localhost:8080/api/product?productStatus=0');
-            setProducts(response.data);
+            setProducts(response.data.reverse());
 
             // 상태와 색상을 함께 설정
             const statusArray = response.data.map(product => {
@@ -150,7 +150,7 @@ function ProductApplyCheckIng() {
                                 <div key={product.productId} className={'admin_product_apply_chk_inner'}
                                      onClick={() => handleProductClick(product.productId)}>
                                     <div className={'admin_product_apply_chk_inner_content'}>
-                                        <div className={'admin_product_apply_chk_inner_num'}>{product.productId}</div>
+                                        <div className={'admin_product_apply_chk_inner_num'}>{index+1}</div>
                                         <div
                                             className={'admin_product_apply_chk_inner_title'}>{product.productName}</div>
                                         <div

@@ -10,7 +10,7 @@ function Mypage_seller() {
     const { user } = useUser();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isJobModalOpen, setIsJobModalOpen] = useState(false);
-    const [loggedInUserId,setLoggedInUserId]=useState(null);
+    // const [loggedInUserId,setLoggedInUserId]=useState(null);
     const [jobs,setJobs]=useState([]); //job 상태 추가
     const [selectedApplication, setSelectedApplication] = useState(null); // 선택된 지원자의 정보를 저장할 상태
     const [productApplyLists, setProductApplyLists] = useState([]);     // 상품 등록 신청 목록 상태 추가
@@ -37,17 +37,17 @@ function Mypage_seller() {
     };
 
     //사용자의 정보를 가져오는 useEffect
-    useEffect(()=>{
-        //서버에서 사용자의 정보를 불러오는 API 호출
-        fetch('/api/user')
-            .then(reponse=>reponse.json())
-            .then(data=>{
-                setLoggedInUserId(data.userId);
-            })
-            .catch(error=>{
-                console.error("Error fetching user info:",error);
-            });
-    },[]);
+    // useEffect(()=>{
+    //     //서버에서 사용자의 정보를 불러오는 API 호출
+    //     fetch('/api/user')
+    //         .then(reponse=>reponse.json())
+    //         .then(data=>{
+    //             setLoggedInUserId(data.userId);
+    //         })
+    //         .catch(error=>{
+    //             console.error("Error fetching user info:",error);
+    //         });
+    // },[]);
 
     // 판매자가 판매 중인 상품 가져오는 함수
     const fetchSellerProducts = async (sellerId) => {
@@ -65,14 +65,15 @@ function Mypage_seller() {
     };
 
     //데이터베이스에서 일자리 정보를 가져오는 함수 ( userId로 해당 사용자의 일자리 정보 가져옴 )
-    const fetchJobs=async (userId)=>{
+    const fetchJobs = async (userId)=>{
+        console.log("JobListUserId : ",userId);
         try{
             const res = await fetch(`api/job/user/${userId}`) //모든 일자리 백엔드 호출
             if(!res.ok){
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
             const data = await res.json();
-            setJobs(data); //일자리 데이터 상태에 저장
+            setJobs(data.reverse()); //일자리 데이터 상태에 저장
         }catch(error){
             console.error('Error fetching jobs:',error);
         }
@@ -94,9 +95,9 @@ function Mypage_seller() {
 
     // 지원 완료 내역을 가져오는 함수
     // 사용자가 올린 구인 공고에 대해 지원한 지원 내역을 가져오는 함수
-    const fetchApplications = async (userId) => {
+    const fetchApplications = async (id) => {
         try {
-            const res = await fetch(`/api/jobapply/user/${userId}/applications`); // 지원 내역을 가져오는 API 호출
+            const res = await fetch(`/api/jobapply/user/${id}/applications`); // 지원 내역을 가져오는 API 호출
             if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
@@ -107,15 +108,15 @@ function Mypage_seller() {
         }
     };
 
-    // loggedInUserId가 설정된 후 해당 사용자의 일자리 및 지원 내역 정보 가져오기
+    // user가 설정된 후 해당 사용자의 일자리 및 지원 내역 정보 가져오기
     useEffect(() => {
-        if (loggedInUserId) {
-            fetchJobs(loggedInUserId); // loggedInUserId로 fetchJobs 호출
-            fetchApplications(loggedInUserId); // loggedInUserId로 fetchApplications 호출
+        if (user && user.id) {
+            fetchJobs(user.id); // user.id로 fetchJobs 호출
+            fetchApplications(user.id); // user.id로 fetchApplications 호출
             fetchProductApplyLists(user.id);
             fetchSellerProducts(user.id);
         }
-    }, [loggedInUserId]);
+    }, [user]);
 
     const handleProductClick = (productId) => {
         navigate(`/product_apply_list_detail/${productId}`); // Navigate to the product detail page
@@ -132,11 +133,18 @@ function Mypage_seller() {
                     {/*<span>( 사진 등록 )</span>*/}
                     <img src={"./img/etc/user.png"} alt={"판매자 사진"}/>
                 </div>
-                <div className="seller_details">
-                    <p>이름 : {user.name}</p>
-                    <p>사업자 등록 번호 : 12345678</p>
-                    <p>위치 : {user.address}</p>
-                </div>
+                {user? (
+                    <div className="seller_details">
+                        <p>이름 : {user.name}</p>
+                        <p>사업자 등록 번호 : {user.businessNumber}</p>
+                        <p>위치 : {user.address}</p>
+                    </div>
+                    ) : (
+                    <div className="seller_details">
+                        <p>로그인 해주세요</p>
+                    </div>
+                    )}
+                
             </div>
             <div className="products_section">
                 <div className="section_header">
@@ -145,7 +153,7 @@ function Mypage_seller() {
                 </div>
                 <div className="product_list">
                     {products.map(product => (
-                    <div className="product_item">
+                    <div key={product.productId} className="product_item">
                         <Link to={`/farmer_market_info_seller/${product.productId}`}><img src={product.productimgPath} alt={product.productName}/></Link>
                     </div>
                     ))}
@@ -227,7 +235,7 @@ function Mypage_seller() {
                             jobs.map((job) => (
                                 <li key={job.jobId}>
                                     <Link to={`/farmer_job_info/${job.jobId}`}>
-                                        <strong>{job.jobTitle}</strong> - {job.jobDate}, 일당 {job.jobSalary}
+                                        <strong>{job.jobTitle}</strong> - {job.jobDateStart} ~ {job.jobDateEnd} / 일당 {job.jobSalary}
                                     </Link>
                                 </li>
                             ))
@@ -239,7 +247,7 @@ function Mypage_seller() {
                 </div>
             </div>
 
-            <JobModal isOpen={isJobModalOpen} closeJobModal={closeJobModal} userId={loggedInUserId}/>
+            <JobModal isOpen={isJobModalOpen} closeJobModal={closeJobModal} userId={user?.id}/>
 
             <div className="application_section">
                 <div className="application_summary">

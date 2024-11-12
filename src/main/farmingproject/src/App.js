@@ -105,6 +105,7 @@ import Product_apply_check_ing from "./admin/product_apply_check_ing";
 import Product_apply_check_pass from "./admin/product_apply_check_pass";
 import Product_apply_check_fail from "./admin/product_apply_check_fail";
 import Product_apply_list_detail from "./product_apply_list_detail";
+import Users from "./admin/users";
 
 function App() {
     const location = useLocation();
@@ -147,6 +148,7 @@ function App() {
                     <Route path="/admin/product_apply_check_ing" element={<Product_apply_check_ing/>}/>
                     <Route path="/admin/product_apply_check_pass" element={<Product_apply_check_pass/>}/>
                     <Route path="/admin/product_apply_check_fail" element={<Product_apply_check_fail/>}/>
+                    <Route path="/admin/users" element={<Users/>}/>
 
                     <Route path="/farmer_market_info/:productId" element={<Farmer_market_info/>}/>
                     <Route path="/farmer_market_info_seller/:productId" element={<Farmer_market_info_seller/>}/>

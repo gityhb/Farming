@@ -1,5 +1,6 @@
 package com.farming.farmingproject.controller;
 
+import com.farming.farmingproject.domain.Product;
 import com.farming.farmingproject.domain.User;
 import com.farming.farmingproject.domain.UserResponse;
 import com.farming.farmingproject.dto.AddUserRequest;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -120,7 +122,7 @@ public class UserApiController {
 
         // UserDetails에서 아이디를 추출하여 사용자 정보를 조회
         User user = userService.findByUserId(userDetails.getUsername());
-        UserResponse response = new UserResponse(user.getId(), user.getUserId(), user.getName(),user.getEmail(), user.getPhoneNumber(), user.getStoreName(), user.getAddress(), user.getAuthority());
+        UserResponse response = new UserResponse(user.getId(), user.getUserId(), user.getName(),user.getEmail(), user.getPhoneNumber(), user.getStoreName(), user.getAddress(), user.getAuthority(), user.getBusinessNumber());
         return ResponseEntity.ok(response);
 
     }
@@ -145,5 +147,11 @@ public class UserApiController {
         // 로그아웃 후 200 OK 응답을 반환합니다.
         return ResponseEntity.ok().build();
 
+    }
+    // 모든 사용자 불러오기
+    @GetMapping("/user/all")
+    public ResponseEntity<List<User>> getAllProducts() {
+        List<User> users = userService.findAllUsers();
+        return ResponseEntity.ok(users);
     }
 }

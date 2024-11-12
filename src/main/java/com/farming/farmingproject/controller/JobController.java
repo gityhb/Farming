@@ -4,6 +4,7 @@ import com.farming.farmingproject.domain.Job;
 import com.farming.farmingproject.dto.AddJobRequest;
 import com.farming.farmingproject.service.JobService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/job") //들어오는 요청 처리 기본 URL
-@CrossOrigin(origins = "http://localhost:3000") //프론트 도메인 허용
+//@CrossOrigin(origins = "http://localhost:3000") //프론트 도메인 허용
 
 public class JobController {
     private final JobService jobService;
@@ -51,8 +52,9 @@ public class JobController {
     }
 
     //userId로 Job 목록 조회
+    @Transactional
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Job>> getJobsByUserId(@PathVariable("userId") String userId){
+    public ResponseEntity<List<Job>> getJobsByUserId(@PathVariable("userId") Long userId){
         List<Job> jobs = jobService.findJobsByUserId(userId); //userId로 Job목록 조회
         return ResponseEntity.ok(jobs); //조회된 Job 목록을 응답으로 반환
     }

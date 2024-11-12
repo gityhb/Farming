@@ -11,7 +11,8 @@ import java.sql.Date;
 @Setter
 public class AddJobRequest {
     private Long jobId;
-    private String userId;
+    private Long userId;
+//    private String userId;
     private String jobTitle;
     private Date jobDateStart;
     private Date jobDateEnd;

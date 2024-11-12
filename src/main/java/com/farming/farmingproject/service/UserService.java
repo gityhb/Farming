@@ -1,5 +1,6 @@
 package com.farming.farmingproject.service;
 
+import com.farming.farmingproject.domain.Product;
 import com.farming.farmingproject.domain.User;
 import com.farming.farmingproject.dto.AddUserRequest;
 import com.farming.farmingproject.repository.UserRepository;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -47,5 +50,10 @@ public class UserService {
     // 닉네임 중복 여부를 확인하는 메서드
     public boolean checkUserNicknameDuplicate(String nickname) {
         return userRepository.findByNickname(nickname).isPresent();   // nickNmae 존재 여부 반환
+    }
+
+    // 모든 사용자 불러오기
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 }

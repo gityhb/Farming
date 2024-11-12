@@ -37,7 +37,7 @@ public class JobService {
             throw new IllegalArgumentException("User ID must not be null");
         }
         // UserRepository를 이용해 userID로 User 엔티티 조회
-        User user = userRepository.findByUserId(jobDTO.getUserId())
+        User user = userRepository.findById(jobDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         // 파일 업로드 처리
@@ -62,21 +62,28 @@ public class JobService {
     }
 
     // 특정 Job ID로 Job 조회
-    @Transactional(readOnly = true)
+    @Transactional
     public Optional<Job> findJobById(Long id) {
         return jobRepository.findById(id); // JobRepository의 findById 메서드 사용해 조회
     }
 
     //userId로 Job 목록 조회
+//    @Transactional(readOnly = true)
+//    public List<Job> findJobsByUserId(String userId) {
+//        User user = userRepository.findByUserId(userId) //userId로 사용자 조회
+//                .orElseThrow(()->new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+//
+//        return jobRepository.findByUser(user); //user로 Job 목록 조회
+//    }
+
+    // 사용자 고유 ID로 Job 조회
     @Transactional(readOnly = true)
-    public List<Job> findJobsByUserId(String userId) {
-        User user = userRepository.findByUserId(userId) //userId로 사용자 조회
-                .orElseThrow(()->new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        
-        return jobRepository.findByUser(user); //user로 Job 목록 조회
+    public List<Job> findJobsByUserId(Long userId) {
+        return jobRepository.findJobListsByUserId(userId); //user로 Job 목록 조회
     }
 
-    // 모든 Job 조회
+
+        // 모든 Job 조회
     @Transactional(readOnly = true)
     public List<Job> findAllJobs() {
         return jobRepository.findAll(); // 모든 Job 목록 조회
