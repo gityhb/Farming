@@ -10,7 +10,8 @@ function ProductRegisterModal({ product, onClose, onStatusChange }) {
         sellerId: product.sellerId,
         sellerName: product.sellerName,
         productName: product.productName,
-        storeName: product.storeName,
+        storeName:
+        product.storeName,
         productPrice1: product.productPrice1,
         productPrice2: product.productPrice2,
         productPrice3: product.productPrice3,
