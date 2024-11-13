@@ -538,7 +538,17 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    text-align: center; /* 테이블 전체에 중앙 정렬 적용 */
 }
+
+thead th {
+    margin-bottom: 15px;
+    padding: 12px;
+    text-align: center; /* 제목 부분 중앙 정렬 */
+    font-weight: normal;
+    border-bottom: 1px solid #BEBEBE;
+}
+
 
 thead {
     border: 1px solid #BEBEBE;
@@ -549,6 +559,14 @@ thead th {
     padding: 12px;
     text-align: center;
     font-weight: normal;
+}
+
+tbody td {
+    padding: 12px;
+    text-align: center; /* 내용 부분 중앙 정렬 */
+    cursor: pointer;
+    border-top: 1px solid #BEBEBE;
+    border-bottom: 1px solid #BEBEBE;
 }
 
 tbody {
@@ -562,6 +580,19 @@ tbody {
     border-top: 1px solid #BEBEBE;
 }
 
+/* 답변하기 버튼 스타일 */
+.table_consumer button {
+    background-color: #FFDC41;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.table_consumer button:hover {
+    background-color: #fbc927;
+}
 
 .modal {
     display: block;
