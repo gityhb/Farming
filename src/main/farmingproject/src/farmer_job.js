@@ -8,6 +8,37 @@ function FarmerJob() {
     const [districts, setDistricts] = useState([]);
     const [jobs, setJobs] = useState([]); // 전체 일자리 데이터를 저장
     const [filteredJobs, setFilteredJobs] = useState([]); // 필터링된 일자리 데이터를 저장
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+    const [pageGroup, setPageGroup] = useState(1); // 페이지 그룹
+    const itemsPerPage = 6; // 한 페이지에 보여줄 아이템 수
+    const pagesPerGroup = 10; // 한 그룹당 보여줄 페이지 수
+
+    // 페이지 변경 시 호출되는 함수
+    const handlePageChange = (pageNum) => {
+        setCurrentPage(pageNum);
+    };
+
+    // 페이지 그룹 이동 함수 (<<, >> 버튼 클릭 시)
+    const handleGroupChange = (direction) => {
+        if (direction === 'next') {
+            setPageGroup(pageGroup + 1);
+            setCurrentPage((pageGroup + 1) * pagesPerGroup - (pagesPerGroup - 1));
+        } else if (direction === 'prev') {
+            setPageGroup(pageGroup - 1);
+            setCurrentPage((pageGroup - 1) * pagesPerGroup - (pagesPerGroup - 1));
+        }
+    };
+
+    // 현재 페이지에 보여줄 상품 리스트 추출
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+    // 총 페이지 수 계산
+    const totalPages = Math.ceil(jobs.length / itemsPerPage);
+
+    // 현재 그룹에 해당하는 페이지 번호들 계산
+    const startPage = (pageGroup - 1) * pagesPerGroup + 1;
+    const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
 
     const allDistricts={
         'seoul':['강남구','강동구','강북구','강서구','구로구','동작구','마포구','양천구','영등포구','용산구','종로구'],
@@ -91,7 +122,61 @@ function FarmerJob() {
         setFilteredJobs(filtered);
     }, [selectedCity, selectedDistrict, jobs]);
 
+    if(!jobs || jobs.length === 0) {
+        return (
+            <div id={'body'}>
+                <div id={'farmer_job_page'} className={'page'}>
+                    <div id={'contents'}>
+                        <div id="farmergic_menu">
+                            <div id="farmergic_menu_text">쉽고 빠르게 일손 구하기</div>
+                            <div id="farmergic_menu_button">
+                                <select className={'farmergic_menu_button_1'}
+                                        value={selectedCity}
+                                        onChange={(e) => setSelectedCity(e.target.value)}>
+                                    <option value={''}>시</option>
+                                    <option value={'seoul'}>서울</option>
+                                    <option value={'gyeonggi'}>경기</option>
+                                    <option value={'incheon'}>인천</option>
+                                    <option value={'busan'}>부산</option>
+                                    <option value={'daegu'}>대구</option>
+                                    <option value={'ulsan'}>울산</option>
+                                    <option value={'sejong'}>세종</option>
+                                    <option value={'gangwon'}>강원</option>
+                                    <option value={'gyeongnam'}>경남</option>
+                                    <option value={'gyeonbuk'}>경북</option>
+                                    <option value={'jeonbuk'}>전북</option>
+                                    <option value={'jeonnam'}>전남</option>
+                                    <option value={'chungnam'}>충남</option>
+                                    <option value={'chungbuk'}>충북</option>
+                                    <option value={'jeju'}>제주</option>
+                                </select>
 
+                                <select className="farmergic_menu_button_2"
+                                        value={selectedDistrict}
+                                        onChange={(e) => setSelectedDistrict(e.target.value)}>
+                                    <option value={''}>구</option>
+                                    {districts.map((district, index) => (
+                                        <option key={index} value={district}>
+                                            {district}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="farmergic_main_container">
+                            <div className="farmergic_main">
+                                <div className={'product_none'}>아직 등록된 구인구직이 없습니다</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>);
+    }
+
+    // 현재 페이지에 해당하는 항목을 가져옴
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const selectedProducts = jobs.slice(startIndex, startIndex + itemsPerPage);
 
     return (
         <div id={'body'}>
@@ -168,6 +253,31 @@ function FarmerJob() {
                                     </Link>
                                 </div>
                             ))}
+                        </div>
+                        {/* 페이지네이션 */}
+                        <div className={'admin_product_apply_chk_pagenation'}>
+                            {/* << 화살표, 페이지 그룹 이동 */}
+                            {pageGroup > 1 && (
+                                <button className={'admin_product_apply_chk_pagenation_btn'} onClick={() => handleGroupChange('prev')}><img src={'/img/etc/arrowL.png'} style={{width: '10px'}}/></button>
+                            )}
+
+                            {/* 개별 페이지 번호 */}
+                            {[...Array(endPage - startPage + 1)].map((_, idx) => {
+                                const pageNum = startPage + idx;
+                                return (
+                                    <button
+                                        key={pageNum}
+                                        onClick={() => handlePageChange(pageNum)}
+                                        className={currentPage === pageNum ? 'admin_product_apply_chk_pagenation_btn_active admin_product_apply_chk_pagenation_btn' : 'admin_product_apply_chk_pagenation_btn'}>
+                                        {pageNum}
+                                    </button>
+                                );
+                            })}
+
+                            {/* >> 화살표, 페이지 그룹 이동 */}
+                            {endPage < totalPages && (
+                                <button className={'admin_product_apply_chk_pagenation_btn'} onClick={() => handleGroupChange('next')}><img src={'/img/etc/arrowR.png'} style={{width: '10px'}}/></button>
+                            )}
                         </div>
                     </div>
                 </div>

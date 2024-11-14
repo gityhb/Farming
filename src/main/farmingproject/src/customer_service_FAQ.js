@@ -103,8 +103,6 @@ function Customer_service_FAQ() {
                             </div>
                         ))}
                     </div>
-
-                    <div className={'pagenation'}>1</div>
                 </div>
             </div>
         </div>

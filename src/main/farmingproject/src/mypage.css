@@ -107,6 +107,7 @@
 
 .info_qna{
     display: flex;
+    margin-bottom: 40px;
 }
 
 .my_info_container{

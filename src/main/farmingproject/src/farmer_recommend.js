@@ -71,10 +71,10 @@ function Farmer_recommend() {
             <div id={'farmer_recommend_page'} className={'page'}>
                 <div id={'contents'}>
                     {/*검색창*/}
-                    <div id={'search_box'}>
-                        <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
-                        <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/></button>
-                    </div>
+                    {/*<div id={'search_box'}>*/}
+                    {/*    <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>*/}
+                    {/*    <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/></button>*/}
+                    {/*</div>*/}
                     {/*오늘의 추천 TOP 5*/}
                     <div id="today_recommend_5">
                         <div className={'sub_title'}>
