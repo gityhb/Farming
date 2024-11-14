@@ -71,17 +71,7 @@ function Users() {
         return (<div id="body">
             <div id={'admin_product_apply_check_page'} className={'page'}>
                 <div id={'contents'}>
-                    <div className={'admin_product_apply_chk_div'}>
-                        <div className={'admin_product_apply_chk_top'}>
-                            <div className={'admin_product_apply_chk_num'}>No.</div>
-                            <div className={'admin_product_apply_chk_title'}>상품명</div>
-                            <div className={'admin_product_apply_chk_seller'}>판매자</div>
-                            <div className={'admin_product_apply_chk_status'}>상태</div>
-                        </div>
-                    </div>
-
                     <div className={'product_none'}>아직 등록된 상품이 없습니다</div>
-
                 </div>
             </div>
         </div>);
@@ -136,7 +126,7 @@ function Users() {
                                     <td className={'admin_user_table_inner'}>{user.storePhoneNumber}</td>
                                     <td className={'admin_user_table_inner'}>{user.email}</td>
                                     <td className={'admin_user_table_inner'}>{user.storeName}</td>
-                                    <td className={'admin_user_table_inner'}>{new Date(user.createdDate).toISOString().split('T').join(' ').substring(0, 19)}</td>
+                                    <td className={'admin_user_table_inner'}>{user.createdDate}</td>
                                 </tr>
                             ))}
                         </table>
