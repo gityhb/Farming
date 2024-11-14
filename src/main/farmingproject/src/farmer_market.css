@@ -64,6 +64,7 @@
 
 #product_list .pd_list .pd_info .pd_price .pr_per {
     color: #FFAE00;
+    font-weight: bold;
 }
 
 

@@ -1,5 +1,6 @@
 package com.farming.farmingproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,7 @@ public class QNA {
     @Column(name = "qna_content", nullable = false)
     private String qnaContent;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Column(name = "qna_date", nullable = false)
     private Timestamp qnaAt;
 

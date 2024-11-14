@@ -22,6 +22,7 @@ function ProductApplyCheckDetail() {
         productPrice3: "",
         productDeliveryDate: "",
         salenum: "",
+        productSalePrice: "",
     });
 
     const handleUpdateChange = (e) => {
@@ -36,6 +37,11 @@ function ProductApplyCheckDetail() {
         setIsEditing(!isEditing);
     }
 
+    // 할인된 최종 금액을 계산하여 변수에 저장합니다.
+    const finalProductPrice = form.salenum === 0
+        ? form.productPrice3
+        : (form.productPrice3 * (1 - form.salenum / 100)).toFixed(0);
+
     // 판매 상품 정보 수정
     const submitUpdate = async () => {
         try {
@@ -46,6 +52,7 @@ function ProductApplyCheckDetail() {
                 productPrice3: form.productPrice3,
                 productDeliveryDate: form.productDeliveryDate,
                 salenum: form.salenum,
+                productSalePrice: finalProductPrice,
             };
 
             const productRGResponse = await axios.put(`/api/productRG/${productRG.productId}/update_product`, updatedProductRGData);
@@ -206,6 +213,7 @@ function ProductApplyCheckDetail() {
                 productPrice3: productRG.productPrice3,
                 productDeliveryDate: productRG.productDeliveryDate,
                 salenum: productRG.salenum,
+                productSalePrice: productRG.productSalePrice,
             });
         }
     }, [productRG]);  // productRG가 변경될 때마다 form 업데이트
@@ -221,12 +229,42 @@ function ProductApplyCheckDetail() {
 
     const pdStatus = getPStatusObject(pStatus);
 
+    // 할인율 수정
+    const handleUpdateSalenumChange = (e) => {
+        const { name, value } = e.target;
+
+        // 입력값이 비어있거나 유효하지 않으면 빈 문자열로 설정
+        if (value === "" || isNaN(parseInt(value, 10))) {
+            setForm({
+                ...form,
+                [name]: value // 빈 문자열로 설정
+            });
+        } else {
+            // 입력값이 숫자일 경우, 상태 업데이트
+            const numericValue = parseInt(value, 10);
+            if (numericValue >= 0 && numericValue <= 100) {
+                setForm({
+                    ...form,
+                    [name]: numericValue
+                });
+            } else {
+                // 유효하지 않은 값일 경우 경고
+                alert('할인율은 0%에서 100% 사이여야 합니다.');
+            }
+        }
+    };
+
     return (
     <div id="body">
         <div id={'prouct_apply_list_detail_page'} className={'page'}>
             <div id={'contents'}>
                 <div className="product_apply_list_title">
-                    <h1>상품 상세 정보</h1>
+                    {(pStatus === 0 || pStatus === 1 || pStatus === 2) ? (
+                        <h1>상품 상세 정보</h1>
+                    ) : (
+                        <h1>판매 상품 정보</h1>
+                    )}
+
                 </div>
                 <div className={'product_apply_list_img_box'}>
                     <div className={'product_img_show'} id={'product_img_show'}>
@@ -248,6 +286,7 @@ function ProductApplyCheckDetail() {
                     {/*    ))}*/}
                     {/*</div>*/}
                 </div>
+                {!(pStatus === 3) && (
                 <table className="product_apply_list_table">
                     <tbody>
                     <tr>
@@ -313,39 +352,39 @@ function ProductApplyCheckDetail() {
                     </tr>
                     </tbody>
                 </table>
+                )}
                 {showModal && <ProductRegisterModal product={product} onClose={handleCloseModal} onStatusChange={handleStatusChange}/>}
 
                 {/*상품 판매 등록 완료일 경우 판매 상품 정보 출력*/}
-                {pStatus === 3 && productRG && (
+                {pStatus === 3 && (
                     <div style={{marginBottom: '70px'}}>
-                        <div>상품 판매 정보</div>
                         <table className="product_apply_list_table" style={{marginBottom: '20px'}}>
                             <tbody>
                             <tr>
                                 <td className="product_apply_list_detail_title">판매번호</td>
                                 <td className="product_apply_list_detail_info">
-                                    {productRG.productId}
+                                    {productRG?.productId}
                                 </td>
                             </tr>
                             <tr>
                                 <td className="product_apply_list_detail_title">상품번호</td>
                                 <td className="product_apply_list_detail_info">
-                                    {productRG.product.productId}
+                                    {productRG?.product.productId}
                                 </td>
                             </tr>
                             <tr>
                                 <td className="product_apply_list_detail_title">상품명</td>
                                 <td className="product_apply_list_detail_info">
-                                    {productRG.productName}
+                                    {productRG?.productName}
                                 </td>
                             </tr>
                             <tr>
                                 <td className="product_apply_list_detail_title">판매자</td>
-                                <td className="product_apply_list_detail_info">{productRG.sellerName}</td>
+                                <td className="product_apply_list_detail_info">{productRG?.sellerName}</td>
                             </tr>
                             <tr>
                                 <td className="product_apply_list_detail_title">가게명</td>
-                                <td className="product_apply_list_detail_info">{productRG.storeName}</td>
+                                <td className="product_apply_list_detail_info">{productRG?.storeName}</td>
                             </tr>
                             <tr>
                                 <td className="product_apply_list_detail_title">상품가격</td>
@@ -385,7 +424,7 @@ function ProductApplyCheckDetail() {
                                             <span> 원</span>
                                         </div>
                                     ) : (
-                                        ` ${productRG.productPrice1}${getPPrice2(productRG.productPrice2)} / ${productRG.productPrice3}원`
+                                        ` ${productRG?.productPrice1}${getPPrice2(productRG?.productPrice2)} / ${productRG?.productPrice3}원`
                                     )}
 
                                 </td>
@@ -393,7 +432,7 @@ function ProductApplyCheckDetail() {
                             <tr>
                                 <td className="product_apply_list_detail_title">원산지</td>
                                 <td className="product_apply_list_detail_info">
-                                    {productRG.productOrigin}
+                                    {productRG?.productOrigin}
                                 </td>
                             </tr>
                             <tr>
@@ -409,7 +448,7 @@ function ProductApplyCheckDetail() {
                                             <option value={'etc'}>상시배송</option>
                                         </select>
                                     ) : (
-                                        `${getPDeliveryDate(productRG.productDeliveryDate)}`
+                                        `${getPDeliveryDate(productRG?.productDeliveryDate)}`
                                     )}
 
                                 </td>
@@ -419,13 +458,34 @@ function ProductApplyCheckDetail() {
                                 <td className="product_apply_list_detail_info">
                                     {isEditing ? (
                                         <div>
-                                            <input type={"number"} name={"salenum"} value={form.salenum} className={"edit_text"}
-                                                   onChange={handleUpdateChange}
-                                                    style={{width: '100px'}}/>
+                                            <input type={"number"} name={"salenum"} value={form.salenum} className={"edit_text"} min={0} max={100}
+                                                   onChange={handleUpdateSalenumChange}
+                                                   style={{width: '100px'}}/>
                                             <span> %</span>
                                         </div>
                                     ) : (
-                                        `${productRG.salenum}%`
+                                        `${productRG?.salenum}%`
+                                    )}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="product_apply_list_detail_title">최종 금액</td>
+                                {/*<td className="product_apply_list_detail_info">*/}
+                                {/*    {finalProductPrice3}원</td>*/}
+                                <td className="product_apply_list_detail_info">
+                                    {isEditing ? (
+                                        <div>
+                                            <input type={"number"}
+                                                   name={"productSalePrice"}
+                                                   onChange={handleUpdateChange}
+                                                   className={"edit_text"}
+                                                   style={{width: '100px'}}
+                                                   value={form.salenum === 0 ?
+                                                       form.productSalePrice : finalProductPrice} />
+                                            <span> 원</span>
+                                        </div>
+                                    ) : (
+                                        `${productRG?.productSalePrice}원`
                                     )}
                                 </td>
                             </tr>

@@ -14,6 +14,8 @@ import java.util.Optional;
 @Repository
 public interface ProductRGRepository extends JpaRepository<ProductRG, Long> {
     Optional<ProductRG> findByProductId(Long productId);
+    Optional<ProductRG> findByProduct_ProductId(Long prouctId);
+
     List<ProductRG> findBySellerId(String sellerId);
 
     // like_count가 높은 순으로 최대 5개 상품을 조회

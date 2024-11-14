@@ -88,7 +88,7 @@ function Farmer_recommend() {
                                     <div className="recommend_product_sale">
                                         <span className="recommend_product_sale_percent">{product.salenum}%</span>
 
-                                        <span className="recommend_product_sale_price">{product.productPrice3}원</span>
+                                        <span className="recommend_product_sale_price">{product.productSalePrice}원</span>
                                     </div>
                                     <Link to={`/farmer_market_info/${product.productId}`}>
                                         <button type="button" className="recommend_buy">
@@ -112,7 +112,7 @@ function Farmer_recommend() {
                                     <p className="recommend_product_name">{item.productName}</p>
                                     <div className="recommend_product_sale">
                                         <span className="recommend_product_sale_percent">{item.salenum+5}%</span>
-                                        <span className="recommend_product_sale_price">{item.productPrice3}원</span>
+                                        <span className="recommend_product_sale_price">{item.productSalePrice}원</span>
                                     </div>
                                     <button type="button" className="recommend_buy">구매하러 가기</button>
                                 </div>

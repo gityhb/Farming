@@ -62,6 +62,15 @@ public class ProductRGService {
         return productRGRepository.findAll();
     }
 
+    public ProductRG getProductByProduct(Long productId) {
+        Optional<ProductRG> product = productRGRepository.findByProduct_ProductId(productId);
+        if (product.isPresent()) {
+            return product.get();
+        } else {
+            throw new RuntimeException("Product not found with id: " + productId);
+        }
+    }
+
     public ProductRG getProductById(Long productId) {
         Optional<ProductRG> product = productRGRepository.findByProductId(productId);
         if (product.isPresent()) {
@@ -170,6 +179,7 @@ public class ProductRGService {
                 .sellcount(addProductRGRequest.getSellcount())
                 .astar(addProductRGRequest.getAstar())
                 .salenum(addProductRGRequest.getSalenum())
+                .productSalePrice(addProductRGRequest.getProductSalePrice())
                 .product(pdt)
                 .build();
 
@@ -259,6 +269,7 @@ public class ProductRGService {
         productRG.setProductPrice3(dto.getProductPrice3());
         productRG.setProductDeliveryDate(dto.getProductDeliveryDate());
         productRG.setSalenum(dto.getSalenum());
+        productRG.setProductSalePrice(dto.getProductSalePrice());
 
         productRGRepository.save(productRG);
     }
