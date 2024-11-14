@@ -150,7 +150,7 @@ function ProductApplyCheckIng() {
                                 <div key={product.productId} className={'admin_product_apply_chk_inner'}
                                      onClick={() => handleProductClick(product.productId)}>
                                     <div className={'admin_product_apply_chk_inner_content'}>
-                                        <div className={'admin_product_apply_chk_inner_num'}>{index+1}</div>
+                                        <div className={'admin_product_apply_chk_inner_num'}>{(currentPage - 1) * itemsPerPage + index + 1}</div>
                                         <div
                                             className={'admin_product_apply_chk_inner_title'}>{product.productName}</div>
                                         <div

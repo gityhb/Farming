@@ -17,7 +17,7 @@ function ProductApplyCheck() {
     const fetchProducts = async () => {
         try {
             const response = await axios.get('http://localhost:8080/api/product/all');
-            setProducts(response.data);
+            setProducts(response.data.reverse());
 
             // 상태와 색상을 함께 설정
             const statusArray = response.data.map(product => {

@@ -61,6 +61,10 @@ function ProductApplyCheckDetail() {
                 return 'kg';
             case 'ea' :
                 return '개';
+            case 'bunch' :
+                return '송이';
+            case 'bag' :
+                return '봉지';
             case 'pack' :
                 return '팩';
             case 'box' :
@@ -229,7 +233,7 @@ function ProductApplyCheckDetail() {
                     <tr>
                         <td className="product_apply_list_detail_title">등록일</td>
                         <td className="product_apply_list_detail_info">
-                            {new Date(product.productCreatedDate).toISOString().split('T').join(' ').substring(0, 19)}
+                            {product.productCreatedDate}
                         </td>
                     </tr>
                     </tbody>
