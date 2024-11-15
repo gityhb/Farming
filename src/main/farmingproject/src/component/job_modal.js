@@ -64,6 +64,7 @@ function JobModal({ isOpen, closeJobModal, userId }) {
                 console.log('Success:', data);
                 alert("구인구직 공고가 성공적으로 추가되었습니다.");
                 closeJobModal();
+                window.location.reload()
             })
             .catch((error) => {
                 alert("구인구직 공고 추가에 오류가 발생했습니다.");

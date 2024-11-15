@@ -91,8 +91,9 @@ public class JobService {
 
     // 파일 저장 로직
     private String saveFile(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
         // 파일 이름을 고유하게 생성하기 위해 UUID 사용
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+//        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
         // 파일 경로 설정
         File saveFile = new File(uploadDirectory + File.separator + fileName);
