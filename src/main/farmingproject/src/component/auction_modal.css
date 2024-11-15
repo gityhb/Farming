@@ -1,0 +1,165 @@
+/* 모달 스타일 */
+.modal {
+    display: flex;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal_content {
+    background-color: #fefefe;
+    border: 1px solid #888;
+    width: 700px;
+    max-height: 100%;
+    overflow-y: auto;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* 모달 제목 */
+.modal_title {
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 이미지 업로드 박스 */
+.image_upload_box {
+    width: 600px;
+    height: 300px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.image_upload_box input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* 업로드 버튼 및 미리보기 영역 */
+.photo_upload_label {
+    color: #a6a2a2;
+    font-weight: bold;
+    background-color: #f9f9f9;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.photo_upload_label:hover {
+    background-color: #e6e6e6;
+}
+
+/* 이미지 미리보기 */
+.preview_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* 삭제 버튼 스타일 */
+.delete_photo_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 입력 필드 그룹 */
+.form_group {
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.form_group label {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    margin-left: 45px;
+}
+
+.form_group input[type="text"],
+.form_group input[type="datetime-local"],
+.form_group input[type="number"],
+.form_group textarea {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 85%;
+    box-sizing: border-box;
+    margin-left: 45px;
+    margin-top: 10px;
+}
+
+/* 텍스트 영역 고정 */
+.form_group textarea {
+    resize: none;
+    height: 150px;
+}
+
+/* 공통 버튼 스타일 */
+.form_group .submit_btn,
+.form_group .close_btn {
+    width: 150px;
+    height: 40px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* 제출 버튼 */
+.form_group .submit_btn {
+    background-color: #FFF0AD;
+    color: #333;
+    margin-left: 150px;
+}
+
+.form_group .submit_btn:hover {
+    background-color: #e6d08f;
+    transform: scale(1.05);
+}
+
+/* 취소 버튼 */
+.form_group .close_btn {
+    background-color: rgba(166, 162, 162, 0.8);
+    margin-left: 100px;
+    margin-bottom: 50px;
+}
+
+.form_group .close_btn:hover {
+    background-color: #a6a2a2;
+    transform: scale(1.05);
+}

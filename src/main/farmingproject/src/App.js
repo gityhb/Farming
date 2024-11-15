@@ -99,6 +99,7 @@ import Customer_service_FAQ from "./customer_service_FAQ";
 import Customer_service_notice from "./customer_service_notice";
 import Product_apply_check from "./admin/product_apply_check";
 import Product_apply_check_detail from "./admin/product_apply_check_detail";
+import AuctionResult from "./auction_result";
 
 import JobModal from './component/job_modal';
 import Product_apply_check_ing from "./admin/product_apply_check_ing";
@@ -137,6 +138,7 @@ function App() {
                     <Route path="/mypage" element={<MyPage/>}/>
                     <Route path="/auction" element={<Auction/>}/>
                     <Route path="/auction_detail/:auctionId" element={<AuctionDetail/>}/>
+                    <Route path="/auction_result/:auctionId" element={<AuctionResult/>} />
                     <Route path="/farmer_market_seller" element={<Farmer_market_seller/>}/>
                     <Route path="/farmer_market_info_seller" element={<Farmer_market_info_seller/>}/>
                     <Route path="/customer_service_one" element={<Customer_service_one/>}/>
