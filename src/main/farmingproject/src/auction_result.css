@@ -1,0 +1,46 @@
+.auction_result_page {
+    padding: 20px;
+}
+
+.auction_result_details {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+}
+
+.auction_result_page h1{
+    text-align: center;
+}
+
+.auction_result_details h2 {
+    margin-bottom: 10px;
+}
+
+.auction_result_details img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.auction_description {
+    margin-top: 20px;
+}
+
+.top_bids {
+    margin-top: 20px;
+}
+
+.top_bids ul {
+    list-style: none;
+    padding: 0;
+}
+
+.top_bids li {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
