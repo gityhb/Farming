@@ -112,7 +112,7 @@ function Farmer_recommend() {
                                     <p className="recommend_product_name">{item.productName}</p>
                                     <div className="recommend_product_sale">
                                         <span className="recommend_product_sale_percent">{item.salenum+5}%</span>
-                                        <span className="recommend_product_sale_price">{item.productSalePrice}원</span>
+                                        <span className="recommend_product_sale_price">{item.productPrice3 * (1 - item.salenum / 100)}원</span>
                                     </div>
                                     <button type="button" className="recommend_buy">구매하러 가기</button>
                                 </div>

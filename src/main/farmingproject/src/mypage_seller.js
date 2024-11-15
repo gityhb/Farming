@@ -122,32 +122,33 @@ function Mypage_seller() {
         }
     }, [user]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/temperature-humidity');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch temperature and humidity data.');
-                }
+    const fetchData = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/temperature-humidity');
+            if (response.ok) {
                 const data = await response.json();
-
-                // 온도, 습도 상태 업데이트
                 setTemperature(data.temperature);
                 setHumidity(data.humidity);
-
-                // 데이터 수신 시각 저장
-                setLastUpdated(new Date().toLocaleString()); // 로컬 시간 형식으로 저장
-            } catch (error) {
-                setError(error.message);
+                setError(null); // 오류 상태 초기화
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        };
+        } catch (err) {
+            setError(err.message);
+            setTemperature(null);
+            setHumidity(null);
+        }
+    };
 
-        // 데이터 처음 가져오기 및 이후 10초마다 업데이트
+    useEffect(() => {
+        // 페이지가 로드되면 바로 fetchData 실행
         fetchData();
-        const interval = setInterval(fetchData, 10000);
 
-        return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 해제
+        // 일정 주기로 fetchData를 실행하여 상태 확인
+        const interval = setInterval(fetchData, 5000);  // 5초마다 요청
+        return () => clearInterval(interval);  // 컴포넌트 언마운트 시 interval 제거
     }, []);
+
 
     const handleProductClick = (productId) => {
         navigate(`/product_apply_list_detail/${productId}`); // Navigate to the product detail page

@@ -24,7 +24,7 @@ function Shopping_Basket() {
                 setItems(data.map(item => ({
                     ...item,
                     checked: true,
-                    totalAmount: item.productRG.productPrice3 * item.quantity
+                    totalAmount: item.productRG.productSalePrice * item.quantity
                 })));
             } else {
                 console.error('장바구니 아이템 가져오기 실패');
@@ -42,7 +42,7 @@ function Shopping_Basket() {
     const incrementQuantity = (id) => {
         setItems(items.map(item =>
             item.id === id
-                ? {...item, quantity: item.quantity + 1, totalAmount: item.totalAmount + item.productRG.productPrice3}
+                ? {...item, quantity: item.quantity + 1, totalAmount: item.totalAmount + item.productRG.productSalePrice}
                 : item
         ));
     };
@@ -50,7 +50,7 @@ function Shopping_Basket() {
     const decrementQuantity = (id) => {
         setItems(items.map(item =>
             item.id === id && item.quantity > 0
-                ? {...item, quantity: item.quantity - 1, totalAmount: item.totalAmount - item.productRG.productPrice3}
+                ? {...item, quantity: item.quantity - 1, totalAmount: item.totalAmount - item.productRG.productSalePrice}
                 : item
         ));
     };
@@ -121,7 +121,7 @@ function Shopping_Basket() {
 
         const orderItems = selectedItems.map(item => ({
             id: item.productRG.productId,
-            price: item.productRG.productPrice3,
+            price: item.productRG.productSalePrice,
             quantity: item.quantity,
             imgPath: item.productRG.productimgPath,
             name: item.productRG.productName,
@@ -135,7 +135,7 @@ function Shopping_Basket() {
                 product: selectedItems.map(item => ({
                     id: item.productRG.productId,
                     name: item.productRG.productName,
-                    price: item.productRG.productPrice3,
+                    price: item.productRG.productSalePrice,
                     quantity: item.quantity,
                     imgPath: item.productRG.productimgPath,
                     origin: item.productRG.productOrigin,

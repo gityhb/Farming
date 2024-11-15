@@ -71,6 +71,7 @@ function FarmerReviewModal({isReviewOpen, closeReviewModal, onReviewSubmitted, i
                 alert(initialReviewData ? "리뷰가 수정되었습니다!" : "리뷰 작성이 완료되었습니다!!");
                 closeReviewModal();
                 onReviewSubmitted();
+                window.location.reload();
             } else {
                 console.error('리뷰 제출 실패');
             }
