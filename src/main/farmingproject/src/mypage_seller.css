@@ -42,7 +42,7 @@ npm
 .product_list {
     display: flex;
     padding: 20px;
-    height: 100px;
+    height: 120px;
     background-color: #ECECEC;
     border-radius: 5px;
     margin-bottom: 30px;

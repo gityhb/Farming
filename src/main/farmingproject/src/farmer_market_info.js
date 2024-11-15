@@ -116,9 +116,6 @@ function Farmer_market_info() {
         }
     };
 
-
-
-
     useEffect(() => {
         fetchProductDetails();
         fetchReviews();
@@ -127,14 +124,6 @@ function Farmer_market_info() {
         fetchReviewStatistics();
         sortReviews();
         fetchQNAs();
-        const interval = setInterval(() => {
-            fetchReviewCounts();
-            fetchProductDetails(); // 평균 별점 업데이트를 위해 상품 정보도 주기적으로 가져옵니다
-            fetchReviewStatistics();
-            fetchQNAs();
-        }, 1000); // 1초마다 업데이트
-
-        return () => clearInterval(interval);
     }, [productId, user, sortBy]);
 
     /*상품정보 가져오기*/
@@ -147,7 +136,7 @@ function Farmer_market_info() {
                 const data = await response.json();
                 console.log('Received data:', data);
                 setProduct(data);
-                setTotalAmount(data.productPrice3);
+                setTotalAmount(data.productSalePrice);
                 // astar 값을 상태로 관리
                 setAverageStar(data.astar);
             } else {
@@ -249,7 +238,7 @@ function Farmer_market_info() {
                 product: {
                     id: product.productId,
                     name: product.productName,
-                    price: product.productPrice3,
+                    price: product.productSalePrice,
                     quantity: quantity,
                     imgPath: product.productimgPath,
                     origin: product.productOrigin,
@@ -260,7 +249,7 @@ function Farmer_market_info() {
                     {
                         id: product.productId,
                         name: product.productName,
-                        price: product.productPrice3,
+                        price: product.productSalePrice,
                         quantity: quantity,
                         imgPath: product.productimgPath,
                         storeName: product.storeName,
@@ -367,7 +356,7 @@ function Farmer_market_info() {
     const incrementQuantity = () => {
         setQuantity(prevQuantity => {
             const newQuantity = prevQuantity + 1;
-            setTotalAmount(newQuantity * product.productPrice3);  // 총 가격 업데이트
+            setTotalAmount(newQuantity * product.productSalePrice);  // 총 가격 업데이트
             return newQuantity;
         });
     };
@@ -377,7 +366,7 @@ function Farmer_market_info() {
         if (quantity > 1) {
             setQuantity(prevQuantity => {
                 const newQuantity = prevQuantity - 1;
-                setTotalAmount(newQuantity * product.productPrice3);  // 총 가격 업데이트
+                setTotalAmount(newQuantity * product.productSalePrice);  // 총 가격 업데이트
                 return newQuantity;
             });
         }
@@ -405,6 +394,7 @@ function Farmer_market_info() {
             const data = await response.json();
             console.log('QNA created:', data);
             closeModal();
+            window.location.reload();
         } catch (error) {
             console.error('Error creating QNA:', error);
         }
@@ -435,7 +425,7 @@ function Farmer_market_info() {
                                     </div>
                                 </div>
                                 <div className={'pd_value'}>
-                                    <span className={'pd_price'}>{product.productPrice3.toLocaleString()}</span>
+                                    <span className={'pd_price'}>{product.productSalePrice.toLocaleString()}</span>
                                     <span className={'pd_price'}>원 </span>
                                     <span className={'pd_rate'}>{product.salenum}</span>
                                     <span className={'pd_rate'}>%</span>
