@@ -55,7 +55,7 @@ function FarmerJobInfo() {
                     사업자 정보
                 </div>
                 <div className="farmergic_info_seller_contents">
-                    <img src="/img/osj.jpg" alt="딸기" />
+                    <img src="/img/etc/user.png" alt="판매자 이미지" />
                     <div className="farmergic_info_seller_text">
                         <div className="seller_name">
                             이름 : {jobInfo.user?.name} {/* user의 이름 */}

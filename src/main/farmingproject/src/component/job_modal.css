@@ -147,13 +147,13 @@
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
     margin-left: 10px; /* 인접 요소와 간격 */
-    width: 150px;
+    width: 125px;
 }
 
-.find_zip_code_btn:hover {
-    background-color: #8e8b8b; /* 호버 배경색 */
-    transform: scale(1.05); /* 약간 확대 효과 */
-}
+/*.find_zip_code_btn:hover {*/
+/*    background-color: #8e8b8b; !* 호버 배경색 *!*/
+/*    transform: scale(1.05); !* 약간 확대 효과 *!*/
+/*}*/
 
 /* address_input 내부 요소 간격 조정 */
 .address_input {

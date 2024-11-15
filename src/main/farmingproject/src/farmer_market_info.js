@@ -141,7 +141,7 @@ function Farmer_market_info() {
     const fetchProductDetails = async () => {
         try {
             console.log(`Fetching product details for ID: ${productId}`);
-            const response = await fetch(`/api/productRG/${productId}`);
+            const response = await fetch(`/api/productRG/info/${productId}`);
             console.log('Response status:', response.status);
             if (response.ok) {
                 const data = await response.json();

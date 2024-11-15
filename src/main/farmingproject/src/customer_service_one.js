@@ -85,7 +85,7 @@ function Customer_service_one() {
         // 취소 버튼 클릭 시 값 초기화
         setForm({
             inquiriesTitle: "",
-            inquiriesType: "",
+            inquiriesType: "delivery & order",
             inquiriesContent: "",
         })
         setIsModalOpen(false);
@@ -312,7 +312,7 @@ function Customer_service_one() {
                                 </div>
                                 {openIndex === index && (
                                     <div className="answer_text" style={{lineHeight: '1'}}>
-                                        <p>문의자 | {user.name}</p>
+                                        <p>문의자 | {inquiries.userName}</p>
                                         <p>문의 종류 | {inquiryType(inquiries.inquiriesType)}</p>
                                         <br/>
                                         <p>문의 내용 |</p>

@@ -185,7 +185,7 @@ function Farmer_market() {
                                         </Link>
                                         <p className='pd_price'>
                                             <span className='pr_per'>{product.salenum}% </span>
-                                            <span className='pr_num'>{product.productPrice3.toLocaleString()}</span>원
+                                            <span className='pr_num'>{product.productSalePrice.toLocaleString()}</span>원
                                         </p>
                                     </div>
                                 </li>
