@@ -1,5 +1,6 @@
 package com.farming.farmingproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,6 +45,7 @@ public class Review {
     @Column(name = "seller_comment", nullable = true)
     private String sellerComment;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Column(name = "review_date", nullable = true)
     private Timestamp reviewAt;
 

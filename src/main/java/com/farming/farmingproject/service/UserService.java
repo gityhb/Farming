@@ -4,11 +4,13 @@ import com.farming.farmingproject.domain.Product;
 import com.farming.farmingproject.domain.User;
 import com.farming.farmingproject.dto.AddUserRequest;
 import com.farming.farmingproject.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -34,6 +36,28 @@ public class UserService {
                 .address(dto.getAddress())
                 .authority(dto.getAuthority())
                 .build()).getId();
+    }
+
+    // 관리자 계정 생성
+    @PostConstruct
+    public void initAdminUser() {
+        String adminUserId = "admin";
+        String adminPassword = "1234";
+
+        // Admin 계정이 이미 존재하는지 확인
+        if(userRepository.findByUserId(adminUserId).isEmpty()) {
+            User adminUser = User.builder()
+                    .userId(adminUserId)
+                    .password(bCryptPasswordEncoder.encode(adminPassword))
+                    .name("관리자")
+                    .phoneNumber("01012345678")
+                    .email("admin@gmail.com")
+                    .address("(08221) 서울 구로구 경인로 445 3호관")
+                    .authority(3)
+                    .build();
+
+            userRepository.save(adminUser);
+        }
     }
 
     // 아이디를 통해 사용자 정보를 찾는 메서드

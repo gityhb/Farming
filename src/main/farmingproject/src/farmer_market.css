@@ -64,11 +64,9 @@
 
 #product_list .pd_list .pd_info .pd_price .pr_per {
     color: #FFAE00;
+    font-weight: bold;
 }
 
-.align {
-    border-bottom: 6px solid #D9D9D9;
-}
 
 #page_list {
     padding: 40px 0;

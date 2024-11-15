@@ -22,5 +22,6 @@ public class AddProductRGRequest {
     private Integer sellcount;
     private Float astar;
     private Integer salenum;
+    private Integer productSalePrice;
     private long pdId;
 }

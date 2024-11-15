@@ -1,5 +1,6 @@
 package com.farming.farmingproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -51,9 +52,11 @@ public class Product {
     @Column(name = "product_status", nullable = false)
     private int productStatus;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Column(name = "product_created_date", nullable = false)
     private Timestamp productCreatedDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Column(name = "product_modified_date", nullable = false)
     private Timestamp productModifiedDate;
 

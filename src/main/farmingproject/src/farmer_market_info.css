@@ -27,6 +27,7 @@
 /*좋아요버튼*/
 .right_area .pd_like {
     margin-left: auto;
+    cursor: pointer;
 }
 
 .right_area .pd_like img {
@@ -561,13 +562,13 @@ thead th {
     font-weight: normal;
 }
 
-tbody td {
-    padding: 12px;
-    text-align: center; /* 내용 부분 중앙 정렬 */
-    cursor: pointer;
-    border-top: 1px solid #BEBEBE;
-    border-bottom: 1px solid #BEBEBE;
-}
+/*tbody td {*/
+/*    padding: 12px;*/
+/*    text-align: center; !* 내용 부분 중앙 정렬 *!*/
+/*    cursor: pointer;*/
+/*    border-top: 1px solid #BEBEBE;*/
+/*    border-bottom: 1px solid #BEBEBE;*/
+/*}*/
 
 tbody {
     border: 1px solid #BEBEBE;
@@ -796,7 +797,7 @@ h2 {
     font-weight: 500;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    /*transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;*/
 }
 
 .reply_save_btn:hover {

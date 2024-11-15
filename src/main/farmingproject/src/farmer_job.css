@@ -30,10 +30,10 @@
     text-align: center;
 }
 
-.farmergic_main_container {
-    display: flex;
-    justify-content: center; /* 수평 가운데 정렬 */
-}
+/*.farmergic_main_container {*/
+/*    display: flex;*/
+/*    justify-content: center; !* 수평 가운데 정렬 *!*/
+/*}*/
 .farmergic_main_container a{
     text-decoration: none;
     color: black;

@@ -1,5 +1,6 @@
 package com.farming.farmingproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -59,9 +60,11 @@ public class User implements UserDetails {  // UserDetails를 상속받아 인�
     @Column(name = "authority", nullable = false)
     private int authority;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Column(name = "created_date", nullable = false)
     private Timestamp createdDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Column(name = "modified_date", nullable = false)
     private Timestamp modifiedDate;
 

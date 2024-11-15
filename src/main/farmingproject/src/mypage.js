@@ -158,14 +158,14 @@ function MyPage(){
                         </div>
                     </div>
                     <div className="like_separator_1"></div>
-                    <div className="qna_content">
-                        <div className="answer_new">new</div>
-                        <div>Q. 지금 시키면 언제와요 ?</div>
-                    </div>
-                    <div className="qna_content">
-                        <div className="answer_new">new</div>
-                        <div className="answer_qna">Q. 한포대에 몇개씩 들어있습니까?</div>
-                    </div>
+                    {/*<div className="qna_content">*/}
+                    {/*    <div className="answer_new">new</div>*/}
+                    {/*    <div>Q. 지금 시키면 언제와요 ?</div>*/}
+                    {/*</div>*/}
+                    {/*<div className="qna_content">*/}
+                    {/*    <div className="answer_new">new</div>*/}
+                    {/*    <div className="answer_qna">Q. 한포대에 몇개씩 들어있습니까?</div>*/}
+                    {/*</div>*/}
                     <div className="personal_qna">
                         <div className="personal_qna_title_content">
                             <div className="personal_qna_title">
@@ -176,30 +176,30 @@ function MyPage(){
                             </div>
                         </div>
                         <div className="like_separator_1"></div>
-                        <div className="qna_content">
-                            <div className="answer_wait">
-                                답변대기
-                            </div>
-                            <div className="answer_qna">
-                                Q. 아니 상추에서 달팽이가;;;
-                            </div>
-                        </div>
-                        <div className="qna_content">
-                            <div className="answer_done">
-                                답변완료
-                            </div>
-                            <div className="answer_qna">
-                                Q. 맛이 없어요 환불부탁
-                            </div>
-                        </div>
-                        <div className="qna_content">
-                            <div className="answer_done">
-                                답변완료
-                            </div>
-                            <div className="answer_qna">
-                                Q. 이 곳 주인장 전화번호 뭔가요. 물어볼게 있소.
-                            </div>
-                        </div>
+                        {/*<div className="qna_content">*/}
+                        {/*    <div className="answer_wait">*/}
+                        {/*        답변대기*/}
+                        {/*    </div>*/}
+                        {/*    <div className="answer_qna">*/}
+                        {/*        Q. 아니 상추에서 달팽이가;;;*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        {/*<div className="qna_content">*/}
+                        {/*    <div className="answer_done">*/}
+                        {/*        답변완료*/}
+                        {/*    </div>*/}
+                        {/*    <div className="answer_qna">*/}
+                        {/*        Q. 맛이 없어요 환불부탁*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        {/*<div className="qna_content">*/}
+                        {/*    <div className="answer_done">*/}
+                        {/*        답변완료*/}
+                        {/*    </div>*/}
+                        {/*    <div className="answer_qna">*/}
+                        {/*        Q. 이 곳 주인장 전화번호 뭔가요. 물어볼게 있소.*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
                 {/*qna_container*/}

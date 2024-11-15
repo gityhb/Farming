@@ -166,6 +166,7 @@ function JobModal({ isOpen, closeJobModal, userId }) {
                                     name="zipcode"
                                     readOnly
                                     placeholder="우편번호"
+                                    style={{width: '65%'}}
                                 />
                                 <button
                                     type="button"

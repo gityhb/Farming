@@ -220,7 +220,7 @@ function Farmer_product_apply() {
                                 {/*        </p>*/}
                                 {/*    ))}*/}
                                 {/*</div>*/}
-                                <div style={{margin: '20px 0', color: '#727272'}}>※상품 대표 이미지와 상품 상세 정보 이미지를 첨부하세요.</div>
+                                <div style={{margin: '20px 0', color: '#727272'}}>※상품 대표 이미지와 상품 상세 정보 이미지를 함께 첨부하세요.</div>
                             </div>
 
 
@@ -286,6 +286,8 @@ function Farmer_product_apply() {
                                     <option value={'g'}>g</option>
                                     <option value={'kg'}>kg</option>
                                     <option value={'ea'}>개</option>
+                                    <option value={'bunch'}>송이</option>
+                                    <option value={'bag'}>봉지</option>
                                     <option value={'pack'}>팩</option>
                                     <option value={'box'}>박스</option>
                                 </select>

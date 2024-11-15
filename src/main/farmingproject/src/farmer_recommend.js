@@ -71,10 +71,10 @@ function Farmer_recommend() {
             <div id={'farmer_recommend_page'} className={'page'}>
                 <div id={'contents'}>
                     {/*검색창*/}
-                    <div id={'search_box'}>
-                        <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
-                        <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/></button>
-                    </div>
+                    {/*<div id={'search_box'}>*/}
+                    {/*    <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>*/}
+                    {/*    <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/></button>*/}
+                    {/*</div>*/}
                     {/*오늘의 추천 TOP 5*/}
                     <div id="today_recommend_5">
                         <div className={'sub_title'}>
@@ -88,7 +88,7 @@ function Farmer_recommend() {
                                     <div className="recommend_product_sale">
                                         <span className="recommend_product_sale_percent">{product.salenum}%</span>
 
-                                        <span className="recommend_product_sale_price">{product.productPrice3}원</span>
+                                        <span className="recommend_product_sale_price">{product.productSalePrice}원</span>
                                     </div>
                                     <Link to={`/farmer_market_info/${product.productId}`}>
                                         <button type="button" className="recommend_buy">
@@ -112,7 +112,7 @@ function Farmer_recommend() {
                                     <p className="recommend_product_name">{item.productName}</p>
                                     <div className="recommend_product_sale">
                                         <span className="recommend_product_sale_percent">{item.salenum+5}%</span>
-                                        <span className="recommend_product_sale_price">{item.productPrice3}원</span>
+                                        <span className="recommend_product_sale_price">{item.productSalePrice}원</span>
                                     </div>
                                     <button type="button" className="recommend_buy">구매하러 가기</button>
                                 </div>

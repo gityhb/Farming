@@ -8,18 +8,18 @@ import {Link} from "react-router-dom";
 function Customer_service_notice() {
     const [nitems, setnItems] = useState([
         {
-            nnum:3,
-            ntitle:"1공지사항 테스트3",
-            ndate:"08.02"
+            nnum:1,
+            ntitle:"페이지 정기 점검 관련 안내",
+            ndate:"11.10"
         },
         {
             nnum:2,
-            ntitle:"공지사항 테스트3",
-            ndate:"08.04"
+            ntitle:"카드사 무이자 할부 관련 안내",
+            ndate:"10.30"
         },
         {
-            nnum:1,
-            ntitle:"공지사항 테스트3",
+            nnum:3,
+            ntitle:"사이트 오픈 이벤트",
             ndate:"08.08"
         }
     ]);

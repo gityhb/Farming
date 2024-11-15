@@ -1,5 +1,6 @@
 package com.farming.farmingproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,7 +37,8 @@ public class CustomerInquiries {
     
     @Column(name = "inquiries_status", nullable = false)
     private int inquiriesStatus;
-    
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Column(name = "inquiries_created_date", nullable = false)
     private Timestamp inquiriesCreatedDate;
 

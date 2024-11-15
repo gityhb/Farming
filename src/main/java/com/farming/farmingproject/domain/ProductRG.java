@@ -1,6 +1,7 @@
 package com.farming.farmingproject.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -59,6 +60,9 @@ public class ProductRG {
     @Column(name = "product_salenum", nullable = true)
     private Integer salenum = 0;
 
+    @Column(name = "product_sale_price", nullable = false)
+    private int productSalePrice;
+
     @Column(name = "like_count")
     private Integer likeCount = 0;
 
@@ -79,7 +83,7 @@ public class ProductRG {
 
     @Builder
     public ProductRG(String sellerId, String sellerName, String productName, String storeName, Integer productPrice1, String productPrice2, Integer productPrice3, String productOrigin, String productDeliveryDate,
-                     String productInfoimgPath, Integer sellcount, Float astar, Integer salenum, String productimgPath, Product product) {
+                     String productInfoimgPath, Integer sellcount, Float astar, Integer salenum, Integer productSalePrice, String productimgPath, Product product) {
         this.sellerId = sellerId;
         this.sellerName = sellerName;
         this.productName = productName;
@@ -93,6 +97,7 @@ public class ProductRG {
         this.sellcount = sellcount != null ? sellcount : 0;
         this.astar = astar != null ? astar : 0f;
         this.salenum = salenum != null ? salenum : 0;
+        this.productSalePrice = productSalePrice;
         this.productimgPath = productimgPath;
         this.product = product;
         this.productCreatedDate = new Timestamp(System.currentTimeMillis());

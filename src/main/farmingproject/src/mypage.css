@@ -75,6 +75,7 @@
 .like_content{
     width:140px;
     height: 140px;
+    object-fit: cover;
     margin: 20px;
     background-color:white;
     border-radius: 10px;
@@ -83,6 +84,8 @@
 .like_content img{
     width:140px;
     height: 140px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .like_separator {
@@ -107,6 +110,7 @@
 
 .info_qna{
     display: flex;
+    margin-bottom: 40px;
 }
 
 .my_info_container{

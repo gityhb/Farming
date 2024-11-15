@@ -90,7 +90,7 @@ function Farmer_market_info_seller() {
     const fetchProductDetails = async () => {
         try {
             console.log(`Fetching product details for ID: ${productId}`);
-            const response = await fetch(`/api/productRG/${productId}`);
+            const response = await fetch(`/api/productRG/info/${productId}`);
             console.log('Response status:', response.status);
             if (response.ok) {
                 const data = await response.json();
@@ -320,12 +320,12 @@ function Farmer_market_info_seller() {
                                     <div className={'pd_name'}>
                                         <p>{product.productName}</p>
                                     </div>
-                                    <div className={'pd_like'}>
-                                        <img src={'/img/etc/like_blank.png'}/>
-                                    </div>
+                                    {/*<div className={'pd_like'}>*/}
+                                    {/*    <img src={'/img/etc/like_blank.png'}/>*/}
+                                    {/*</div>*/}
                                 </div>
                                 <div className={'pd_value'}>
-                                    <span className={'pd_price'}>{product.productPrice3.toLocaleString()}</span>
+                                    <span className={'pd_price'}>{product.productSalePrice.toLocaleString()}</span>
                                     <span className={'pd_price'}>원 </span>
                                     <span className={'pd_rate'}>{product.salenum}</span>
                                     <span className={'pd_rate'}>%</span>

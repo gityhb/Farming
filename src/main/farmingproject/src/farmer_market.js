@@ -3,11 +3,16 @@ import {Link, Route} from 'react-router-dom';
 import axios from "axios";
 import './common/root.css';
 import './farmer_market.css';
+import {portalClassName} from "react-modal/lib/components/Modal";
 
 function Farmer_market() {
     const [searchQuery, setSearchQuery] = useState("");
     const [products, setProducts] = useState([]);
     const [selectedSort, setSelectedSort] = useState("newest"); // 현재 선택된 정렬 방식
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+    const [pageGroup, setPageGroup] = useState(1); // 페이지 그룹
+    const itemsPerPage = 20; // 한 페이지에 보여줄 아이템 수
+    const pagesPerGroup = 10; // 한 그룹당 보여줄 페이지 수
 
 
     const handleInputChange = (e) => {
@@ -64,6 +69,77 @@ function Farmer_market() {
         }
     };
 
+    // 페이지 변경 시 호출되는 함수
+    const handlePageChange = (pageNum) => {
+        setCurrentPage(pageNum);
+    };
+
+    // 페이지 그룹 이동 함수 (<<, >> 버튼 클릭 시)
+    const handleGroupChange = (direction) => {
+        if (direction === 'next') {
+            setPageGroup(pageGroup + 1);
+            setCurrentPage((pageGroup + 1) * pagesPerGroup - (pagesPerGroup - 1));
+        } else if (direction === 'prev') {
+            setPageGroup(pageGroup - 1);
+            setCurrentPage((pageGroup - 1) * pagesPerGroup - (pagesPerGroup - 1));
+        }
+    };
+
+    // 현재 페이지에 보여줄 상품 리스트 추출
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+    // 총 페이지 수 계산
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+
+    // 현재 그룹에 해당하는 페이지 번호들 계산
+    const startPage = (pageGroup - 1) * pagesPerGroup + 1;
+    const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+
+    // 현재 페이지에 해당하는 항목을 가져옴
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const selectedProducts = products.slice(startIndex, startIndex + itemsPerPage);
+
+    // 등록된 판매 상품이 없는 경우
+    if(!products || products.length === 0) {
+        return (<div id="body">
+            <div id={'farmer_market_page'} className={'page'}>
+                <div id={'contents'}>
+                    <div id={'search_box'}>
+                        <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'} value={searchQuery}
+                               onChange={(e) => setSearchQuery(e.target.value)}/>
+                        <button id={'search_btn'} onClick={handleSearch}><img src="img/etc/search.png"
+                                                                              alt={"search_btn"}/></button>
+                    </div>
+                    <div id={'align_box'}>
+                        <div id={'category_box'}>
+                            <ul>
+                                <li>일반마켓</li>
+                            </ul>
+                        </div>
+                        <div id={'page_location'}>
+                            <ul>
+                                <li className={"set_list"} onClick={handleNewestSort}
+                                    style={{fontWeight: selectedSort === "newest" ? "bold" : "normal"}}>판매순
+                                </li>
+                                <li>|</li>
+                                <li className={"set_list"} onClick={handlePopularitySort}
+                                    style={{fontWeight: selectedSort === "popularity" ? "bold" : "normal"}}>인기순
+                                </li>
+                                <li>|</li>
+                                <li className={"set_list"} onClick={handlePriceSort}
+                                    style={{fontWeight: selectedSort === "priceLowToHigh" ? "bold" : "normal"}}>낮은 가격순
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className={'product_none'}>아직 등록된 상품이 없습니다</div>
+                    <div className={'align'}></div>
+                </div>
+            </div>
+        </div>);
+    }
+
     return (
         <div id={'body'}>
             <div id={'farmer_market_page'} className={'page'}>
@@ -82,9 +158,13 @@ function Farmer_market() {
                         </div>
                         <div id={'page_location'}>
                             <ul>
-                                <li className={"set_list"} onClick={handleNewestSort} style={{ fontWeight: selectedSort === "newest" ? "bold" : "normal"}}>판매순</li>
+                                <li className={"set_list"} onClick={handleNewestSort}
+                                    style={{fontWeight: selectedSort === "newest" ? "bold" : "normal"}}>판매순
+                                </li>
                                 <li>|</li>
-                                <li className={"set_list"} onClick={handlePopularitySort} style={{ fontWeight: selectedSort === "popularity" ? "bold" : "normal"}}>인기순</li>
+                                <li className={"set_list"} onClick={handlePopularitySort}
+                                    style={{fontWeight: selectedSort === "popularity" ? "bold" : "normal"}}>인기순
+                                </li>
                                 <li>|</li>
                                 <li className={"set_list"} onClick={handlePriceSort} style={{ fontWeight: selectedSort === "priceLowToHigh" ? "bold" : "normal"}}>낮은 가격순</li>
                             </ul>
@@ -93,7 +173,7 @@ function Farmer_market() {
                     <div id='product_list'>
                         {/* useState로 관리되는 상품 목록을 맵핑하여 렌더링 */}
                         <ul className='pd_list'>
-                            {products.map((product) => (
+                            {selectedProducts.map((product) => (
                                 <li key={product.productId}>
                                     <div className='pd_info'>
                                         <Link to={`/farmer_market_info/${product.productId}`}>
@@ -105,7 +185,7 @@ function Farmer_market() {
                                         </Link>
                                         <p className='pd_price'>
                                             <span className='pr_per'>{product.salenum}% </span>
-                                            <span className='pr_num'>{product.productPrice3.toLocaleString()}</span>원
+                                            <span className='pr_num'>{product.productSalePrice.toLocaleString()}</span>원
                                         </p>
                                     </div>
                                 </li>
@@ -113,8 +193,30 @@ function Farmer_market() {
                         </ul>
                     </div>
                     <div className={'align'}></div>
-                    <div id={'page_list'}>
-                        <span className={'page_num'}><a>1</a></span>
+                    {/* 페이지네이션 */}
+                    <div className={'admin_product_apply_chk_pagenation'}>
+                        {/* << 화살표, 페이지 그룹 이동 */}
+                        {pageGroup > 1 && (
+                            <button className={'admin_product_apply_chk_pagenation_btn'} onClick={() => handleGroupChange('prev')}><img src={'/img/etc/arrowL.png'} style={{width: '10px'}}/></button>
+                        )}
+
+                        {/* 개별 페이지 번호 */}
+                        {[...Array(endPage - startPage + 1)].map((_, idx) => {
+                            const pageNum = startPage + idx;
+                            return (
+                                <button
+                                    key={pageNum}
+                                    onClick={() => handlePageChange(pageNum)}
+                                    className={currentPage === pageNum ? 'admin_product_apply_chk_pagenation_btn_active admin_product_apply_chk_pagenation_btn' : 'admin_product_apply_chk_pagenation_btn'}>
+                                    {pageNum}
+                                </button>
+                            );
+                        })}
+
+                        {/* >> 화살표, 페이지 그룹 이동 */}
+                        {endPage < totalPages && (
+                            <button className={'admin_product_apply_chk_pagenation_btn'} onClick={() => handleGroupChange('next')}><img src={'/img/etc/arrowR.png'} style={{width: '10px'}}/></button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -123,461 +225,3 @@ function Farmer_market() {
 }
 
 export default Farmer_market;
-
-// import {useState, useEffect} from "react";
-// import {Link, Route} from 'react-router-dom';
-// import './common/root.css';
-// import './farmer_market.css';
-//
-// function Farmer_market() {
-//
-//     return (
-//         <div id={'body'}>
-//             <div id={'farmer_market_page'} className={'page'}>
-//                 <div id={'contents'}>
-//                     <div id={'search_box'}>
-//                         <input type={'text'} id={'search_query'} placeholder={'검색 내용을 입력하세요'}/>
-//                         <button id={'search_btn'}><img src="img/etc/search.png" alt={"search_btn"}/> </button>
-//                     </div>
-//                     <div id={'align_box'}>
-//                         <div id={'category_box'}>
-//                             <ul>
-//                                 <li>일반마켓</li>
-//                             </ul>
-//                         </div>
-//                         <div id={'page_location'}>
-//                             <ul>
-//                                 <li>판매순</li>
-//                                 <li>|</li>
-//                                 <li>인기순</li>
-//                                 <li>|</li>
-//                                 <li>낮은 가격순</li>
-//                             </ul>
-//                         </div>
-//                     </div>
-//                     <div id={'product_list'}>
-//                         {/*첫번째 줄*/}
-//                         <ul className={'pd_list'}>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <Link to={"/farmer_market_info"}>
-//                                         <img src={'img/watermelon.png'} style={{width: '190px', height: '190px'}}/>
-//                                         <p className={'pd_name'}>
-//                                             프리미엄 고당도 수박 1통
-//                                         </p>
-//                                     </Link>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>27% </span>
-//                                         <span className={'pr_num'}>18,900</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/apple_2.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             충주 부사 사과 4개
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>5% </span>
-//                                         <span className={'pr_num'}>15,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/pumpkin.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             미니 단호박 10개
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>20% </span>
-//                                         <span className={'pr_num'}>10,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/bell_pepper.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             노란 파프리카 1BOX
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>10% </span>
-//                                         <span className={'pr_num'}>18,900</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                         </ul>
-//                         {/*두번째 줄*/}
-//                         <ul className={'pd_list'}>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/zucchini_2.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             애호박 1BOX
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>10% </span>
-//                                         <span className={'pr_num'}>30,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/onion.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             양파 1망
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>15% </span>
-//                                         <span className={'pr_num'}>18,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/napa_cabbage.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             해남 배추 1망(3개입)
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>23% </span>
-//                                         <span className={'pr_num'}>20,500</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/grape.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             김천 샤인머스캣 1BOX
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>50% </span>
-//                                         <span className={'pr_num'}>8,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                         </ul>
-//                         {/*세번째 줄*/}
-//                         <ul className={'pd_list'}>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/aralia.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             순창 두릅 1팩
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>10% </span>
-//                                         <span className={'pr_num'}>5,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/shishito_pepper.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             꽈리고추 1BOX
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>10% </span>
-//                                         <span className={'pr_num'}>15,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/snow_white_strawberry.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             백설향 딸기 2팩
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>20% </span>
-//                                         <span className={'pr_num'}>10,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/strawberry_3.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             프리미엄 딸기 3팩
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>45% </span>
-//                                         <span className={'pr_num'}>4,500</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                         </ul>
-//                         {/*네번째 줄*/}
-//                         <ul className={'pd_list'}>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/soft_persimmon.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             프리미엄 고당도 수박
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>27% </span>
-//                                         <span className={'pr_num'}>18,900</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/carrot_2.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             프리미엄 고당도 수박
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>27% </span>
-//                                         <span className={'pr_num'}>18,900</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/cucumber.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             프리미엄 고당도 수박
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>27% </span>
-//                                         <span className={'pr_num'}>18,900</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/peach_1.jpg'}/>
-//                                         <p className={'pd_name'}>
-//                                             프리미엄 고당도 수박
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>27% </span>
-//                                         <span className={'pr_num'}>18,900</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                         </ul>
-//                         {/*다섯번째 줄*/}
-//                         <ul className={'pd_list'}>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/cucumber.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             오이지오이 10kg
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>15% </span>
-//                                         <span className={'pr_num'}>12,900</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/cucumber.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             오이지오이 10kg
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>15% </span>
-//                                         <span className={'pr_num'}>12,900</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/cucumber.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             오이지오이 10kg
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>15% </span>
-//                                         <span className={'pr_num'}>12,900</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/cucumber.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             오이지오이 10kg
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>15% </span>
-//                                         <span className={'pr_num'}>12,900</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                         </ul>
-//                         {/*여섯번째 줄*/}
-//                         <ul className={'pd_list'}>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/snow_white_strawberry.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             백설향 딸기
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>40% </span>
-//                                         <span className={'pr_num'}>5,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/snow_white_strawberry.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             백설향 딸기
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>40% </span>
-//                                         <span className={'pr_num'}>5,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/snow_white_strawberry.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             백설향 딸기
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>40% </span>
-//                                         <span className={'pr_num'}>5,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/snow_white_strawberry.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             백설향 딸기
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>40% </span>
-//                                         <span className={'pr_num'}>5,000</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                         </ul>
-//                         {/*일곱번째 줄*/}
-//                         <ul className={'pd_list'}>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/zucchini_2.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             국내산 애호박 5개
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>10% </span>
-//                                         <span className={'pr_num'}>4,500</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/zucchini_2.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             국내산 애호박 5개
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>10% </span>
-//                                         <span className={'pr_num'}>4,500</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/zucchini_2.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             국내산 애호박 5개
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>10% </span>
-//                                         <span className={'pr_num'}>4,500</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//                             <li>
-//                                 <div className={'pd_info'}>
-//                                     <a href={'/'}>
-//                                         <img src={'img/zucchini_2.png'}/>
-//                                         <p className={'pd_name'}>
-//                                             국내산 애호박 5개
-//                                         </p>
-//                                     </a>
-//                                     <p className={'pd_price'}>
-//                                         <span className={'pr_per'}>10% </span>
-//                                         <span className={'pr_num'}>4,500</span>원
-//                                     </p>
-//                                 </div>
-//                             </li>
-//
-//                         </ul>
-//                     </div>
-//                     <div id={'page_list'}>
-//                         <span className={'page_num'}><a>1</a></span>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-//
-// export default Farmer_market;

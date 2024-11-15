@@ -45,6 +45,16 @@ public class ProductRGController {
     }
 
     @GetMapping("/{productId}")
+    public ResponseEntity<ProductRG> getProductByPdId(@PathVariable("productId") Long productId) {
+        try {
+            ProductRG product = productRGService.getProductByProduct(productId);
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/info/{productId}")
     public ResponseEntity<ProductRG> getProductById(@PathVariable("productId") Long productId) {
         try {
             ProductRG product = productRGService.getProductById(productId);

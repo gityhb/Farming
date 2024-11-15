@@ -85,7 +85,7 @@ function Customer_service_one() {
         // 취소 버튼 클릭 시 값 초기화
         setForm({
             inquiriesTitle: "",
-            inquiriesType: "",
+            inquiriesType: "delivery & order",
             inquiriesContent: "",
         })
         setIsModalOpen(false);
@@ -177,126 +177,231 @@ function Customer_service_one() {
         }
     };
 
-    return (
-        <div id="body">
-            <div id={'payment_success_page'} className={'page'}>
-                <div id={'contents'}>
-                    <div className={'Customer_service_Btn'}>
-                        <Link to={"/customer_service_FAQ"}><div className={'FAQ_Btn'} style={{ backgroundColor: '#fff' }}>FAQ</div></Link>
-                        <Link to={"/customer_service_one"}><div className={'inquiry_Btn'} style={{ backgroundColor: '#FFEA8D' }}>1:1 문의</div></Link>
-                        <Link to={"/customer_service_notice"}><div className={'notice_Btn'} style={{ backgroundColor: '#fff' }}>공지사항</div></Link>
-                    </div>
+    if(!inquiries || inquiries.length === 0) {
+        return (
+            <div id="body">
+                <div id={'payment_success_page'} className={'page'}>
+                    <div id={'contents'}>
+                        <div className={'Customer_service_Btn'}>
+                            <Link to={"/customer_service_FAQ"}>
+                                <div className={'FAQ_Btn'} style={{backgroundColor: '#fff'}}>FAQ</div>
+                            </Link>
+                            <Link to={"/customer_service_one"}>
+                                <div className={'inquiry_Btn'} style={{backgroundColor: '#FFEA8D'}}>1:1 문의</div>
+                            </Link>
+                            <Link to={"/customer_service_notice"}>
+                                <div className={'notice_Btn'} style={{backgroundColor: '#fff'}}>공지사항</div>
+                            </Link>
+                        </div>
 
-                    <div className={'admin_product_apply_chk_div'}>
+                        <div className={'admin_product_apply_chk_div'}>
                             <div className={'admin_product_apply_chk_top'}>
                                 <div className={'admin_product_apply_chk_num'}>No.</div>
                                 <div className={'admin_product_apply_chk_title'} style={{flexGrow: '10'}}>제목</div>
                                 <div className={'admin_product_apply_chk_seller'}>등록일</div>
                                 <div className={'admin_product_apply_chk_status'}>답변여부</div>
                             </div>
-
-                        {inquiries?.map((inquiries, index) => {
-                            const date = new Date(inquiries.inquiriesCreatedDate); // timestamp를 Date 객체로 변환
-                            const month = date.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더합니다.
-                            const day = date.getDate();
-
-                            return (
-                                <div key={inquiries.id} className={'admin_product_apply_chk_inner'} onClick={() => toggleAnswer(index)}>
-                                    <div className={'admin_product_apply_chk_inner_content'}>
-                                        <div className={'admin_product_apply_chk_inner_num'}>{index + 1}</div>
-                                        <div className={'admin_product_apply_chk_inner_title'} style={{flexBasis: '670px'}}>{inquiries.inquiriesTitle}</div>
-                                        <div className={'admin_product_apply_chk_inner_seller'}>{month}.{day}</div>
-                                        <div className={'admin_product_apply_chk_inner_status'} style={{flexBasis: '110px', color: iStatus[index]?.color}}>
-                                            {iStatus[index]?.text}
-                                        </div>
-                                        <div className={`arrow_icon ${openIndex === index ? 'open' : ''}`}></div>
-                                    </div>
-                                    {openIndex === index && (
-                                        <div className="answer_text" style={{lineHeight: '1'}}>
-                                            <p>문의 종류 | {inquiryType(inquiries.inquiriesType)}</p>
-                                            <br/>
-                                            <p>문의 내용 |</p>
-                                            <p>{inquiries.inquiriesContent}</p>
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
-
-                    <div className={'one_add_Btn'} onClick={() => setIsModalOpen(true)}>1:1 문의하기</div>
-                    {/* 페이지네이션 */}
-                    <div className={'admin_product_apply_chk_pagenation'} style={{marginTop: "110px"}}>
-                        {/* << 화살표, 페이지 그룹 이동 */}
-                        {pageGroup > 1 && (
-                            <button className={'admin_product_apply_chk_pagenation_btn'} onClick={() => handleGroupChange('prev')}><img src={'/img/etc/arrowL.png'} style={{width: '10px'}}/></button>
-                        )}
-
-                        {/* 개별 페이지 번호 */}
-                        {[...Array(endPage - startPage + 1)].map((_, idx) => {
-                            const pageNum = startPage + idx;
-                            return (
-                                <button
-                                    key={pageNum}
-                                    onClick={() => handlePageChange(pageNum)}
-                                    className={currentPage === pageNum ? 'admin_product_apply_chk_pagenation_btn_active admin_product_apply_chk_pagenation_btn' : 'admin_product_apply_chk_pagenation_btn'}>
-                                    {pageNum}
-                                </button>
-                            );
-                        })}
-
-                        {/* >> 화살표, 페이지 그룹 이동 */}
-                        {endPage < totalPages && (
-                            <button className={'admin_product_apply_chk_pagenation_btn'} onClick={() => handleGroupChange('next')}><img src={'/img/etc/arrowR.png'} style={{width: '10px'}}/></button>
-                        )}
-                    </div>
-                    {isModalOpen && (
-                        <div className="one_modal">
-                            <div className="one_modal_content">
-                                <form onSubmit={handleSubmit}>
-                                    <h3>문의하기</h3>
-                                    <label>
-                                        제목
-                                        <input
-                                            type="text"
-                                            value={form.inquiriesTitle}
-                                            name={"inquiriesTitle"}
-                                            onChange={handleInputChange}
-                                        />
-                                    </label>
-                                    <label>
-                                        문의 종류
-                                        <select
-                                            value={form.inquiriesType}
-                                            onChange={handleInputChange}
-                                            name={"inquiriesType"}
-                                        >
-                                            <option disabled hidden value="문의 종류">문의 종류</option>
-                                            <option value="delivery & order">배송 및 주문 문의</option>
-                                            <option value="product">상품 관련 문의</option>
-                                            <option value="payment">결제 문의</option>
-                                            <option value="etc">기타 문의</option>
-                                        </select>
-                                    </label>
-                                    <label>
-                                        문의 내용
-                                        <textarea
-                                            value={form.inquiriesContent}
-                                            onChange={handleInputChange}
-                                            name={"inquiriesContent"}
-                                        />
-                                    </label>
-                                    <div className={"on_modal_btn"}>
-                                        <button type={"submit"}>제출</button>
-                                        <button onClick={handleCancel}>취소</button>
-                                    </div>
-                                </form>
-                            </div>
+                            <div className={'product_none'} style={{marginBottom: '20px'}}>아직 등록된 문의가 없습니다</div>
+                            <div className={'none_one_add_Btn'} onClick={() => setIsModalOpen(true)}>1:1 문의하기</div>
                         </div>
-                    )}
+                        <div className={'align'}></div>
+
+                        {isModalOpen && (
+                            <div className="one_modal">
+                                <div className="one_modal_content">
+                                    <form onSubmit={handleSubmit}>
+                                        <h3>문의하기</h3>
+                                        <label>
+                                            제목
+                                            <input
+                                                type="text"
+                                                value={form.inquiriesTitle}
+                                                name={"inquiriesTitle"}
+                                                onChange={handleInputChange}
+                                            />
+                                        </label>
+                                        <label>
+                                            문의 종류
+                                            <select
+                                                value={form.inquiriesType}
+                                                onChange={handleInputChange}
+                                                name={"inquiriesType"}
+                                            >
+                                                <option disabled hidden value="문의 종류">문의 종류</option>
+                                                <option value="delivery & order">배송 및 주문 문의</option>
+                                                <option value="product">상품 관련 문의</option>
+                                                <option value="payment">결제 문의</option>
+                                                <option value="etc">기타 문의</option>
+                                            </select>
+                                        </label>
+                                        <label>
+                                            문의 내용
+                                            <textarea
+                                                value={form.inquiriesContent}
+                                                onChange={handleInputChange}
+                                                name={"inquiriesContent"}
+                                            />
+                                        </label>
+                                        <div className={"on_modal_btn"}>
+                                            <button type={"submit"}>제출</button>
+                                            <button onClick={handleCancel}>취소</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
+        );
+    }
+
+    return (
+        <div id="body">
+        <div id={'payment_success_page'} className={'page'}>
+            <div id={'contents'}>
+                <div className={'Customer_service_Btn'}>
+                    <Link to={"/customer_service_FAQ"}>
+                        <div className={'FAQ_Btn'} style={{backgroundColor: '#fff'}}>FAQ</div>
+                    </Link>
+                    <Link to={"/customer_service_one"}>
+                        <div className={'inquiry_Btn'} style={{backgroundColor: '#FFEA8D'}}>1:1
+                            문의
+                        </div>
+                    </Link>
+                    <Link to={"/customer_service_notice"}>
+                        <div className={'notice_Btn'} style={{backgroundColor: '#fff'}}>공지사항
+                        </div>
+                    </Link>
+                </div>
+
+                <div className={'admin_product_apply_chk_div'}>
+                    <div className={'admin_product_apply_chk_top'}>
+                        <div className={'admin_product_apply_chk_num'}>No.</div>
+                        <div className={'admin_product_apply_chk_title'}
+                             style={{flexGrow: '10'}}>제목
+                        </div>
+                        <div className={'admin_product_apply_chk_seller'}>등록일</div>
+                        <div className={'admin_product_apply_chk_status'}>답변여부</div>
+                    </div>
+
+                    {inquiries?.map((inquiries, index) => {
+                        const date = new Date(inquiries.inquiriesCreatedDate); // timestamp를 Date 객체로 변환
+                        const month = date.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더합니다.
+                        const day = date.getDate();
+
+                        return (
+                            <div key={inquiries.id} className={'admin_product_apply_chk_inner'}
+                                 onClick={() => toggleAnswer(index)}>
+                                <div className={'admin_product_apply_chk_inner_content'}>
+                                    <div
+                                        className={'admin_product_apply_chk_inner_num'}>{(currentPage - 1) * itemsPerPage + index + 1}</div>
+                                    <div className={'admin_product_apply_chk_inner_title'}
+                                         style={{flexBasis: '670px'}}>{inquiries.inquiriesTitle}</div>
+                                    <div
+                                        className={'admin_product_apply_chk_inner_seller'}>{month}.{day}</div>
+                                    <div className={'admin_product_apply_chk_inner_status'}
+                                         style={{
+                                             flexBasis: '110px',
+                                             color: iStatus[index]?.color
+                                         }}>
+                                        {iStatus[index]?.text}
+                                    </div>
+                                    <div
+                                        className={`arrow_icon ${openIndex === index ? 'open' : ''}`}></div>
+                                </div>
+                                {openIndex === index && (
+                                    <div className="answer_text" style={{lineHeight: '1'}}>
+                                        <p>문의자 | {inquiries.userName}</p>
+                                        <p>문의 종류 | {inquiryType(inquiries.inquiriesType)}</p>
+                                        <br/>
+                                        <p>문의 내용 |</p>
+                                        <p>{inquiries.inquiriesContent}</p>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <div className={'one_add_Btn'} onClick={() => setIsModalOpen(true)}>1:1 문의하기</div>
+                {/* 페이지네이션 */}
+                <div className={'admin_product_apply_chk_pagenation'}
+                     style={{marginTop: "110px"}}>
+                    {/* << 화살표, 페이지 그룹 이동 */}
+                    {pageGroup > 1 && (
+                        <button className={'admin_product_apply_chk_pagenation_btn'}
+                                onClick={() => handleGroupChange('prev')}><img
+                            src={'/img/etc/arrowL.png'} style={{width: '10px'}}/></button>
+                    )}
+
+                    {/* 개별 페이지 번호 */}
+                    {[...Array(endPage - startPage + 1)].map((_, idx) => {
+                        const pageNum = startPage + idx;
+                        return (
+                            <button
+                                key={pageNum}
+                                onClick={() => handlePageChange(pageNum)}
+                                className={currentPage === pageNum ? 'admin_product_apply_chk_pagenation_btn_active admin_product_apply_chk_pagenation_btn' : 'admin_product_apply_chk_pagenation_btn'}>
+                                {pageNum}
+                            </button>
+                        );
+                    })}
+
+                    {/* >> 화살표, 페이지 그룹 이동 */}
+                    {endPage < totalPages && (
+                        <button className={'admin_product_apply_chk_pagenation_btn'}
+                                onClick={() => handleGroupChange('next')}><img
+                            src={'/img/etc/arrowR.png'} style={{width: '10px'}}/></button>
+                    )}
+                </div>
+                {isModalOpen && (
+                    <div className="one_modal">
+                        <div className="one_modal_content">
+                            <form onSubmit={handleSubmit}>
+                                <h3>문의하기</h3>
+                                <label>
+                                    제목
+                                    <input
+                                        type="text"
+                                        value={form.inquiriesTitle}
+                                        name={"inquiriesTitle"}
+                                        onChange={handleInputChange}
+                                    />
+                                </label>
+                                <label>
+                                    문의 종류
+                                    <select
+                                        value={form.inquiriesType}
+                                        onChange={handleInputChange}
+                                        name={"inquiriesType"}
+                                    >
+                                        <option disabled hidden value="문의 종류">문의 종류</option>
+                                        <option value="delivery & order">배송 및 주문 문의</option>
+                                        <option value="product">상품 관련 문의</option>
+                                        <option value="payment">결제 문의</option>
+                                        <option value="etc">기타 문의</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    문의 내용
+                                    <textarea
+                                        value={form.inquiriesContent}
+                                        onChange={handleInputChange}
+                                        name={"inquiriesContent"}
+                                    />
+                                </label>
+                                <div className={"on_modal_btn"}>
+                                    <button type={"submit"}>제출</button>
+                                    <button onClick={handleCancel}>취소</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
+    </div>
     );
 }
 

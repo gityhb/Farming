@@ -53,40 +53,40 @@ function Header() {
                     user.authority === 1 ? (
                     // 소비자 권한
                     <ul id="nav_links">
-                        <li onMouseEnter={handleCategoryMouseEnter} onMouseLeave={handleCategoryMouseLeave}>
-                            <ul><Link to={"/..."}>카테고리</Link></ul>
-                            {isCategoryDropdownOpen && (
-                                <ul className="dropdown">
-                                    <div className="category_group">
-                                        <li><a href="/category/vegetables">채소</a></li>
-                                        <li><a href="/category/vegetables/1">배추/무/파</a></li>
-                                        <li><a href="/category/vegetables/2">고추/마늘/양파/생강</a></li>
-                                        <li><a href="/category/vegetables/3">고구마/감자/밥/옥수수</a></li>
-                                        <li><a href="/category/vegetables/4">쌈채소/깻잎</a></li>
-                                        <li><a href="/category/vegetables/5">나물</a></li>
-                                        <li><a href="/category/vegetables/6">기타</a></li>
-                                    </div>
-                                    <div className="category_group">
-                                        <li><a href="/category/fruits">과일</a></li>
-                                        <li><a href="/category/fruits/1">사과/배/감</a></li>
-                                        <li><a href="/category/fruits/2">딸기/포도/블루베리</a></li>
-                                        <li><a href="/category/fruits/3">오렌지/자몽/레몬</a></li>
-                                        <li><a href="/category/fruits/4">참외/복숭아</a></li>
-                                        <li><a href="/category/fruits/5">기타</a></li>
-                                    </div>
-                                </ul>
-                            )}
-                        </li>
+                        {/*<li onMouseEnter={handleCategoryMouseEnter} onMouseLeave={handleCategoryMouseLeave}>*/}
+                        {/*    <ul><Link to={"/..."}>카테고리</Link></ul>*/}
+                        {/*    {isCategoryDropdownOpen && (*/}
+                        {/*        <ul className="dropdown">*/}
+                        {/*            <div className="category_group">*/}
+                        {/*                <li><a href="/category/vegetables">채소</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/1">배추/무/파</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/2">고추/마늘/양파/생강</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/3">고구마/감자/밥/옥수수</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/4">쌈채소/깻잎</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/5">나물</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/6">기타</a></li>*/}
+                        {/*            </div>*/}
+                        {/*            <div className="category_group">*/}
+                        {/*                <li><a href="/category/fruits">과일</a></li>*/}
+                        {/*                <li><a href="/category/fruits/1">사과/배/감</a></li>*/}
+                        {/*                <li><a href="/category/fruits/2">딸기/포도/블루베리</a></li>*/}
+                        {/*                <li><a href="/category/fruits/3">오렌지/자몽/레몬</a></li>*/}
+                        {/*                <li><a href="/category/fruits/4">참외/복숭아</a></li>*/}
+                        {/*                <li><a href="/category/fruits/5">기타</a></li>*/}
+                        {/*            </div>*/}
+                        {/*        </ul>*/}
+                        {/*    )}*/}
+                        {/*</li>*/}
                         <li onMouseEnter={handleMarketMouseEnter} onMouseLeave={handleMarketMouseLeave}>
                             <Link to={"/farmer_market"}>농부마켓</Link>
-                            {isMarketDropdownOpen && (
-                                <ul className="dropdown">
-                                    <div className="farmer_market_group">
-                                        <li><Link to={"/farmer_market"}>1인 가구 마켓</Link></li>
-                                        <li><Link to={"/farmer_market"}>일반 마켓</Link></li>
-                                    </div>
-                                </ul>
-                            )}
+                            {/*{isMarketDropdownOpen && (*/}
+                            {/*    <ul className="dropdown">*/}
+                            {/*        <div className="farmer_market_group">*/}
+                            {/*            <li><Link to={"/farmer_market"}>1인 가구 마켓</Link></li>*/}
+                            {/*            <li><Link to={"/farmer_market"}>일반 마켓</Link></li>*/}
+                            {/*        </div>*/}
+                            {/*    </ul>*/}
+                            {/*)}*/}
                         </li>
                         <li><Link to={"/farmer_recommend"}>농부추천</Link></li>
                         <li><Link to={"/auction"}>청과경매</Link></li>
@@ -100,40 +100,40 @@ function Header() {
                 ) : user.authority === 2 ? (
                     // 판매자 권한
                         <ul id="nav_links">
-                            <li onMouseEnter={handleCategoryMouseEnter} onMouseLeave={handleCategoryMouseLeave}>
-                                <ul><Link to={"/..."}>카테고리</Link></ul>
-                                {isCategoryDropdownOpen && (
-                                    <ul className="dropdown">
-                                        <div className="category_group">
-                                            <li><a href="/category/vegetables">채소</a></li>
-                                            <li><a href="/category/vegetables/1">배추/무/파</a></li>
-                                            <li><a href="/category/vegetables/2">고추/마늘/양파/생강</a></li>
-                                            <li><a href="/category/vegetables/3">고구마/감자/밥/옥수수</a></li>
-                                            <li><a href="/category/vegetables/4">쌈채소/깻잎</a></li>
-                                            <li><a href="/category/vegetables/5">나물</a></li>
-                                            <li><a href="/category/vegetables/6">기타</a></li>
-                                        </div>
-                                        <div className="category_group">
-                                            <li><a href="/category/fruits">과일</a></li>
-                                            <li><a href="/category/fruits/1">사과/배/감</a></li>
-                                            <li><a href="/category/fruits/2">딸기/포도/블루베리</a></li>
-                                            <li><a href="/category/fruits/3">오렌지/자몽/레몬</a></li>
-                                            <li><a href="/category/fruits/4">참외/복숭아</a></li>
-                                            <li><a href="/category/fruits/5">기타</a></li>
-                                        </div>
-                                    </ul>
-                                )}
-                            </li>
+                            {/*<li onMouseEnter={handleCategoryMouseEnter} onMouseLeave={handleCategoryMouseLeave}>*/}
+                            {/*    <ul><Link to={"/..."}>카테고리</Link></ul>*/}
+                            {/*    {isCategoryDropdownOpen && (*/}
+                            {/*        <ul className="dropdown">*/}
+                            {/*            <div className="category_group">*/}
+                            {/*                <li><a href="/category/vegetables">채소</a></li>*/}
+                            {/*                <li><a href="/category/vegetables/1">배추/무/파</a></li>*/}
+                            {/*                <li><a href="/category/vegetables/2">고추/마늘/양파/생강</a></li>*/}
+                            {/*                <li><a href="/category/vegetables/3">고구마/감자/밥/옥수수</a></li>*/}
+                            {/*                <li><a href="/category/vegetables/4">쌈채소/깻잎</a></li>*/}
+                            {/*                <li><a href="/category/vegetables/5">나물</a></li>*/}
+                            {/*                <li><a href="/category/vegetables/6">기타</a></li>*/}
+                            {/*            </div>*/}
+                            {/*            <div className="category_group">*/}
+                            {/*                <li><a href="/category/fruits">과일</a></li>*/}
+                            {/*                <li><a href="/category/fruits/1">사과/배/감</a></li>*/}
+                            {/*                <li><a href="/category/fruits/2">딸기/포도/블루베리</a></li>*/}
+                            {/*                <li><a href="/category/fruits/3">오렌지/자몽/레몬</a></li>*/}
+                            {/*                <li><a href="/category/fruits/4">참외/복숭아</a></li>*/}
+                            {/*                <li><a href="/category/fruits/5">기타</a></li>*/}
+                            {/*            </div>*/}
+                            {/*        </ul>*/}
+                            {/*    )}*/}
+                            {/*</li>*/}
                             <li onMouseEnter={handleMarketMouseEnter} onMouseLeave={handleMarketMouseLeave}>
                                 <Link to={"/farmer_market_seller"}>농부마켓</Link>
-                                {isMarketDropdownOpen && (
-                                    <ul className="dropdown">
-                                        <div className="farmer_market_group">
-                                            <li><Link to={"/farmer_market_seller"}>1인 가구 마켓</Link></li>
-                                            <li><Link to={"/farmer_market_seller"}>일반 마켓</Link></li>
-                                        </div>
-                                    </ul>
-                                )}
+                                {/*{isMarketDropdownOpen && (*/}
+                                {/*    <ul className="dropdown">*/}
+                                {/*        <div className="farmer_market_group">*/}
+                                {/*            <li><Link to={"/farmer_market_seller"}>1인 가구 마켓</Link></li>*/}
+                                {/*            <li><Link to={"/farmer_market_seller"}>일반 마켓</Link></li>*/}
+                                {/*        </div>*/}
+                                {/*    </ul>*/}
+                                {/*)}*/}
                             </li>
                             <li><Link to={"/farmer_recommend"}>농부추천</Link></li>
                             <li><Link to={"/auction"}>청과경매</Link></li>
@@ -157,7 +157,7 @@ function Header() {
                             {/*    <Link to={'/admin/reports'}>리포트 관리</Link>*/}
                             {/*</li>*/}
                             <li>
-                                {user.name} 관리자님
+                                {user.name}님
                             </li>
                             <li>
                                 <Link to={'/'} onClick={handleClick}>
@@ -169,48 +169,47 @@ function Header() {
                 ) : (
                     // 로그인되지 않은 경우
                     <ul id="nav_links">
-                        <li onMouseEnter={handleCategoryMouseEnter} onMouseLeave={handleCategoryMouseLeave}>
-                            <ul><Link to={"/..."}>카테고리</Link></ul>
-                            {isCategoryDropdownOpen && (
-                                <ul className="dropdown">
-                                    <div className="category_group">
-                                        <li><a href="/category/vegetables">채소</a></li>
-                                        <li><a href="/category/vegetables/1">배추/무/파</a></li>
-                                        <li><a href="/category/vegetables/2">고추/마늘/양파/생강</a></li>
-                                        <li><a href="/category/vegetables/3">고구마/감자/밥/옥수수</a></li>
-                                        <li><a href="/category/vegetables/4">쌈채소/깻잎</a></li>
-                                        <li><a href="/category/vegetables/5">나물</a></li>
-                                        <li><a href="/category/vegetables/6">기타</a></li>
-                                    </div>
-                                    <div className="category_group">
-                                        <li><a href="/category/fruits">과일</a></li>
-                                        <li><a href="/category/fruits/1">사과/배/감</a></li>
-                                        <li><a href="/category/fruits/2">딸기/포도/블루베리</a></li>
-                                        <li><a href="/category/fruits/3">오렌지/자몽/레몬</a></li>
-                                        <li><a href="/category/fruits/4">참외/복숭아</a></li>
-                                        <li><a href="/category/fruits/5">기타</a></li>
-                                    </div>
-                                </ul>
-                            )}
-                        </li>
+                        {/*<li onMouseEnter={handleCategoryMouseEnter} onMouseLeave={handleCategoryMouseLeave}>*/}
+                        {/*    <ul><Link to={"/..."}>카테고리</Link></ul>*/}
+                        {/*    {isCategoryDropdownOpen && (*/}
+                        {/*        <ul className="dropdown">*/}
+                        {/*            <div className="category_group">*/}
+                        {/*                <li><a href="/category/vegetables">채소</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/1">배추/무/파</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/2">고추/마늘/양파/생강</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/3">고구마/감자/밥/옥수수</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/4">쌈채소/깻잎</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/5">나물</a></li>*/}
+                        {/*                <li><a href="/category/vegetables/6">기타</a></li>*/}
+                        {/*            </div>*/}
+                        {/*            <div className="category_group">*/}
+                        {/*                <li><a href="/category/fruits">과일</a></li>*/}
+                        {/*                <li><a href="/category/fruits/1">사과/배/감</a></li>*/}
+                        {/*                <li><a href="/category/fruits/2">딸기/포도/블루베리</a></li>*/}
+                        {/*                <li><a href="/category/fruits/3">오렌지/자몽/레몬</a></li>*/}
+                        {/*                <li><a href="/category/fruits/4">참외/복숭아</a></li>*/}
+                        {/*                <li><a href="/category/fruits/5">기타</a></li>*/}
+                        {/*            </div>*/}
+                        {/*        </ul>*/}
+                        {/*    )}*/}
+                        {/*</li>*/}
                         <li onMouseEnter={handleMarketMouseEnter} onMouseLeave={handleMarketMouseLeave}>
                             <Link to={"/farmer_market"}>농부마켓</Link>
-                            {isMarketDropdownOpen && (
-                                <ul className="dropdown">
-                                    <div className="farmer_market_group">
-                                        <li><Link to={"/farmer_market"}>1인 가구 마켓</Link></li>
-                                        <li><Link to={"/farmer_market"}>일반 마켓</Link></li>
-                                    </div>
-                                </ul>
-                            )}
+                            {/*{isMarketDropdownOpen && (*/}
+                            {/*    <ul className="dropdown">*/}
+                            {/*        <div className="farmer_market_group">*/}
+                            {/*            <li><Link to={"/farmer_market"}>1인 가구 마켓</Link></li>*/}
+                            {/*            <li><Link to={"/farmer_market"}>일반 마켓</Link></li>*/}
+                            {/*        </div>*/}
+                            {/*    </ul>*/}
+                            {/*)}*/}
                         </li>
                         <li><Link to={"/farmer_recommend"}>농부추천</Link></li>
-                        <li><Link to={"/..."}>청과경매</Link></li>
+                        <li><Link to={"/auction"}>청과경매</Link></li>
                         <li><Link to={"/farmer_job"}>파머직</Link></li>
-                        <li><Link to={"/..."}>고객센터</Link></li>
-                        <li><Link to={"/shopping_basket"}>장바구니</Link></li>
-                        <li><Link to={"/..."}>마이페이지</Link></li>
+                        <li><Link to={"/customer_service_FAQ"}>고객센터</Link></li>
                         <li><Link to={"/login"}>로그인</Link></li>
+                        <li><Link to={"/join"}>회원가입</Link></li>
                     </ul>
                 )}
 

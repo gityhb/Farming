@@ -10,8 +10,7 @@ function ProductRegisterModal({ product, onClose, onStatusChange }) {
         sellerId: product.sellerId,
         sellerName: product.sellerName,
         productName: product.productName,
-        storeName:
-        product.storeName,
+        storeName: product.storeName,
         productPrice1: product.productPrice1,
         productPrice2: product.productPrice2,
         productPrice3: product.productPrice3,
@@ -89,6 +88,7 @@ function ProductRegisterModal({ product, onClose, onStatusChange }) {
                 console.log('productInfoimgPath:', productImages.productInfoimgPath.name); // 파일 이름 출력
             }
             formData.append('pdId', pdId);
+            formData.append('productSalePrice', productDetails.productPrice3);
 
             console.log('FormData 내용:');
             for (let [key, value] of formData.entries()) {
