@@ -12,12 +12,24 @@ function Header() {
     const handleClick = async () => {
         try {
             // 서버에 로그아웃 요청을 보냄
-            await axios.post('http://localhost:8080/api/logout', {}, { withCredentials: true });
+            const response = await fetch('/api/logout', {
+                method: 'POST',
+                credentials: 'include', // 쿠키를 포함하여 요청
+                headers: {
+                    'Content-Type': 'application/json', // 요청 본문이 JSON 형식임을 명시
+                },
+                body: JSON.stringify({}), // 빈 객체 전송
+            });
+
+            // 응답 상태 코드 확인
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
             // 세션 쿠키 삭제
             document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
 
-            // 서버에서 처리된 리디렉션을 반영하기 위해 페이지 새로 고침
+            // 페이지 새로 고침
             window.location.reload();
         } catch (error) {
             console.error("There was an error logging out!", error);

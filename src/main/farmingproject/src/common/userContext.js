@@ -11,14 +11,24 @@ export const UserProvider = ({ children }) => {
     // 사용자 정보를 가져오는 함수
     const fetchUser = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/user', { withCredentials: true });
-            setUser(response.data);
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                setUser(null);
+            const response = await fetch('/api/user', {
+                method: 'GET',
+                credentials: 'include', // `withCredentials: true` 대신 사용
+            });
+
+            // HTTP 상태 코드 확인
+            if (!response.ok) {
+                if (response.status === 401) {
+                    setUser(null);
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
             } else {
-                console.error("There was an error fetching the user data!", error);
+                const data = await response.json(); // 응답을 JSON으로 변환
+                setUser(data);
             }
+        } catch (error) {
+            console.error("There was an error fetching the user data!", error);
         }
     };
 

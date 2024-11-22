@@ -4,12 +4,15 @@ import './common/root.css';
 import JobModal from './component/job_modal';
 import {Link, useNavigate} from "react-router-dom";
 import {useUser} from "./common/userContext";
+import Auction from "./auction";
+import AuctionModal from "./component/auction_modal";
 
 function Mypage_seller() {
 
     const { user } = useUser();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isJobModalOpen, setIsJobModalOpen] = useState(false);
+    const [isAuctionModalOpen, setIsAuctionModalOpen] = useState(false);
     // const [loggedInUserId,setLoggedInUserId]=useState(null);
     const [jobs,setJobs]=useState([]); //job 상태 추가
     const [selectedApplication, setSelectedApplication] = useState(null); // 선택된 지원자의 정보를 저장할 상태
@@ -38,6 +41,14 @@ function Mypage_seller() {
 
     const closeJobModal = () => {
         setIsJobModalOpen(false); // Close job modal
+    };
+
+    const handleAddAuction = () => {
+        setIsAuctionModalOpen(true); // Open auction modal
+    };
+
+    const closeAuctionModal = () => {
+        setIsAuctionModalOpen(false); // Close auction modal
     };
 
     //사용자의 정보를 가져오는 useEffect
@@ -130,6 +141,8 @@ function Mypage_seller() {
                 setTemperature(data.temperature);
                 setHumidity(data.humidity);
                 setError(null); // 오류 상태 초기화
+                // 데이터 수신 시각 저장
+                setLastUpdated(new Date().toLocaleString()); // 로컬 시간 형식으로 저장
             } else {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -284,6 +297,7 @@ function Mypage_seller() {
             </div>
 
             <JobModal isOpen={isJobModalOpen} closeJobModal={closeJobModal} userId={user?.id}/>
+            <AuctionModal isOpen={isAuctionModalOpen} closeAuctionModal={closeAuctionModal} userId={user?.id} />
 
             <div className="application_section">
                 <div className="application_summary">
@@ -358,25 +372,46 @@ function Mypage_seller() {
 
                 <div className="application_inquiry_summary">
                     <div className="section_header">
-                        <h2>지원 문의 내역</h2>
+                        <h2>청과 경매</h2>
                         <a href="#" className="more_link">더보기 &gt;</a>
                     </div>
-                    <ul className="application_inquiry_list">
-                        <li><span className="status new">New</span><a href="#"> Q. 근무 시간은 어떻게 되나요?</a></li>
-                        <li><span className="status answered">답변대기</span><a href="#"> Q. 점심은 제공되나요?</a></li>
-                        <li><span className="status completed">답변완료</span><a href="#">Q. 교통비는 지급되나요?</a></li>
+                    <ul className="application_list">
+                        <li>등록된 경매가 없습니다.</li>
+                        <button className="add_job_button" onClick={handleAddAuction}>새 경매 추가</button>
                     </ul>
 
+
                     <div className="account_section">
-                        <div className="section_header">
-                            <h2>내 정보</h2>
+                    <div className="section_header">
+                                <h2>내 정보</h2>
+                            </div>
+                            <ul className="account_list">
+                                <li><a href="#">개인정보 수정</a></li>
+                                <li><a href="#">회원탈퇴</a></li>
+                            </ul>
                         </div>
-                        <ul className="account_list">
-                            <li><a href="#">개인정보 수정</a></li>
-                            <li><a href="#">회원탈퇴</a></li>
-                        </ul>
-                    </div>
                 </div>
+                {/*<div className="application_inquiry_summary">*/}
+                {/*    <div className="section_header">*/}
+                {/*        <h2>지원 문의 내역</h2>*/}
+                {/*        <a href="#" className="more_link">더보기 &gt;</a>*/}
+                {/*    </div>*/}
+                {/*    <ul className="application_inquiry_list">*/}
+                {/*        <li><span className="status new">New</span><a href="#"> Q. 근무 시간은 어떻게 되나요?</a></li>*/}
+                {/*        <li><span className="status answered">답변대기</span><a href="#"> Q. 점심은 제공되나요?</a></li>*/}
+                {/*        <li><span className="status completed">답변완료</span><a href="#">Q. 교통비는 지급되나요?</a></li>*/}
+                {/*    </ul>*/}
+
+                {/*    <div className="account_section">*/}
+                {/*        <div className="section_header">*/}
+                {/*            <h2>내 정보</h2>*/}
+                {/*        </div>*/}
+                {/*        <ul className="account_list">*/}
+                {/*            <li><a href="#">개인정보 수정</a></li>*/}
+                {/*            <li><a href="#">회원탈퇴</a></li>*/}
+                {/*        </ul>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
         </div>
     );

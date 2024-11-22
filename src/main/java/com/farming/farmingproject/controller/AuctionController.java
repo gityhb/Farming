@@ -1,10 +1,12 @@
 package com.farming.farmingproject.controller;
 
 import com.farming.farmingproject.domain.Auction;
+import com.farming.farmingproject.dto.AddAuctionRequest;
 import com.farming.farmingproject.service.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,9 +21,10 @@ public class AuctionController {
 
     // 경매 상품 추가
     @PostMapping("/items")
-    public ResponseEntity<Auction> createAuction(@RequestBody Auction auction) {
-        Auction savedAuction = auctionService.saveAuction(auction);
-        return ResponseEntity.ok(savedAuction);
+    public ResponseEntity<Auction> createAuction(@ModelAttribute AddAuctionRequest request, @RequestParam("auctionImage")MultipartFile auctionImage) {
+        request.setAuctionImage(auctionImage);
+        Auction auction = auctionService.saveAuction(request);
+        return ResponseEntity.ok(auction);
     }
 
     // 모든 경매 상품 조회

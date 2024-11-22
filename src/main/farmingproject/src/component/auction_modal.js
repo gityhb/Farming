@@ -43,8 +43,10 @@ function AuctionModal({ isOpen, closeAuctionModal, userId }) {
             }
             const data = await response.json();
             console.log('Auction created:', data);
+            alert("경매가 성공적으로 추가되었습니다.");
             closeAuctionModal(); // 모달 닫기
         } catch (error) {
+            alert("경매 추가에 오류가 발생했습니다.");
             console.error('Error submitting auction:', error);
         }
     };

@@ -5,7 +5,7 @@ import time
 
 app = Flask(__name__)
 
-# 아두이노 시리얼 포트 설정 (예: COM3, baudrate는 아두이노와 동일하게 설정)
+# 아두이노 시리얼 포트 설정 (예: COM번호, baudrate는 아두이노와 동일하게 설정)
 arduino_serial = serial.Serial('COM15', 115200)
 time.sleep(5)  # 시리얼 연결 안정화 대기
 

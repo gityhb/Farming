@@ -55,7 +55,7 @@ function Auction() {
 
                                             <div className={'item_sec_2'}>
                                                 <img
-                                                    src={`http://localhost:8080/uploads/auction_images/${auction.auctionImage}`}
+                                                    src={`${auction.auctionImage}`}
                                                     alt="상품 사진"
                                                 />
                                                 <div className={'item_name'}>{auction.auctionTitle}</div>
