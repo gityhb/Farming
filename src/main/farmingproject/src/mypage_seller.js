@@ -135,7 +135,7 @@ function Mypage_seller() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch('http://localhost:5000/temperature-humidity');
+            const response = await fetch('http://172.20.10.3:5000/temperature-humidity');
             if (response.ok) {
                 const data = await response.json();
                 setTemperature(data.temperature);

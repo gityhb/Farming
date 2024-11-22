@@ -39,4 +39,6 @@ def get_temperature_humidity():
     return jsonify({"error": "No data received"}), 404
     # return {'temperature': 25.0, 'humidity': 60.0}
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(host='172.20.10.3', port=5000)
+    # app.run(port=5000)
+    # app.run(host='0.0.0.0', port=5000)
