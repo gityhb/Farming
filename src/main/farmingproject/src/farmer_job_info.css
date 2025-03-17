@@ -1,0 +1,130 @@
+.farmergic_info_main_img img {
+    width: 1020px;
+    height: 580px;
+    object-fit: cover;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.farmergic_info_main{
+    width: 1020px;
+    background-color: #ffffff;
+    margin: 0 auto;
+
+}
+
+.farmergic_info_title{
+    font-size: 36px;
+    font-weight: bold;
+    padding: 20px;
+    margin: 20px 0;
+    color: #2c3e50;
+    text-align: center;
+
+}
+.farmergic_info_seller {
+    align-items: center; /* 세로 중앙 정렬 */
+    height: fit-content;
+    background-color: #FFF0AD;
+    margin-bottom: 40px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.farmergic_info_seller .farmergic_info_seller_title {
+    margin-bottom: 15px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.farmergic_info_seller .farmergic_info_seller_contents {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.farmergic_info_detail{
+    background-color: rgba(229, 229, 229, 0.31);
+    height: auto; /* 높이를 콘텐츠에 맞춤 */
+    display: flex;
+    padding: 20px;
+    margin-bottom: 40px;
+    border-radius: 10px;
+}
+
+.farmergic_info_detail .farmergic_info_detail_list {
+    display: flex;
+    flex-direction: column;
+}
+
+.farmergic_info_map {
+    height: 320px;
+    margin-bottom: 40px;
+    border-radius: 10px;
+    overflow: hidden; /* 모서리 둥글게 처리 시 맵이 넘치지 않도록 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 맵 섹션에 그림자 추가 */
+}
+
+.farmer_info_btn{
+    background-color: #FFEA8D;
+    width: 100%;
+    height: 85px;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size:32px;
+    margin-bottom: 30px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+.farmer_info_btn:hover {
+    background-color: #f1c40f;
+}
+
+.farmer_info_btn_text{
+    padding-top: 20px;
+}
+
+.farmergic_info_seller img{
+    border-radius: 90px;
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+
+}
+
+.farmergic_info_seller_text{
+    font-size:25px;
+}
+
+.farmergic_info_seller_text div {
+    padding: 5px 0;
+}
+
+.farmergic_info_detail_item{
+    margin-left: 10px;
+}
+
+.farmergic_info_detail_item_1{
+    font-weight: bold;
+    font-size: 36px;
+    margin-left: 30px;
+    margin-top:20px ;
+}
+
+.farmergic_info_detail_item{
+    display: flex;
+}
+
+
+.farmergic_info_detail_title{
+    font-size: 25px;
+    font-weight: bold;
+    color: #898989 ;
+    margin: 20px 20px;
+    width: 95px;
+}
+.farmergic_info_detail_text{
+    font-size: 25px;
+    margin: 20px 20px;
+}
