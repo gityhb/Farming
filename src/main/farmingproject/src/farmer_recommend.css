@@ -1,0 +1,107 @@
+.recommend_list {
+    padding: 20px 0;
+    display: flex; /* Flexbox 사용 */
+    justify-content: center; /* 가로 정중앙 배치 */
+    align-items: center; /* 세로 정중앙 배치 (필요 시) */
+    width: 1020px;
+    height: fit-content;
+    background: #FFF0AD;
+    border-radius: 10px;
+    flex-wrap : wrap;
+}
+
+.recommend_product {
+    padding: 15px 0;
+    width: 180px;
+    height: fit-content;
+    background: white;
+    border-radius: 20px;
+    margin: 0 8px;
+    text-align: center;
+}
+
+.recommend_product img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+}
+
+.recommend_product_name {
+    font-weight: 800;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.recommend_product_sale {
+    margin-right: 15px;
+    float: right;
+}
+
+.recommend_product_sale_percent {
+    color: #FFA200;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.recommend_product_sale_price {
+    font-size: 20px;
+    font-weight: 800;
+    margin-left: 8px;
+}
+
+.recommend_buy {
+    font-size: 13px;
+    border: none;
+    background: none;
+    margin-top: 6px;
+    cursor: pointer;
+    float: right;
+    margin-right: 15px;
+}
+
+.recommend_buy:hover {
+    background: #FFA200;
+    color: white;
+    border-radius: 5px;
+}
+
+/*오늘의 추천 TOP 5*/
+#today_recommend_5 {
+    display: inline-block;
+}
+
+/*오늘의 특가 타임 세일*/
+#today_time_sale{
+    margin-top: 100px;
+}
+
+.recommend_title_sale h1 {
+    position: relative;
+    top: 35px;
+}
+
+#today_time_sale #recommend_today_date {
+    padding-right: 10px;
+    font-size: 27px;
+    float: right;
+    color: #4d4d4d;
+}
+
+#today_time_sale #today_time_sale_list #today_time_sale_countdown{
+    margin: 0 285px 30px 285px;
+    padding: 30px 0;
+    width: 450px;
+    height:160px;
+    background: #FFF9E4;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#today_time_sale #today_time_sale_list #today_time_sale_countdown #sale_countdown_text1{
+    font-size: 25px;
+}
+
+#today_time_sale #today_time_sale_list #today_time_sale_countdown #sale_countdown_text2{
+    font-size: 40px;
+}
+

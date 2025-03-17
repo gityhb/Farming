@@ -1,0 +1,405 @@
+.mypage_seller {
+    width: 1020px;
+    margin: 0 auto;
+}
+
+.mypage_seller h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.seller_info {
+    display: flex;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+.seller_photo {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    font-size: 14px;
+    color: #888;
+}
+
+.seller_photo img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+npm
+.seller_details p {
+    margin: 5px 0;
+}
+
+.products_section h2 {
+    margin-top: 20px;
+}
+
+.product_list {
+    display: flex;
+    padding: 20px;
+    height: 120px;
+    background-color: #ECECEC;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.product_item {
+    margin-right: 20px;
+}
+
+.product_item img {
+    width: 120px;
+    height: 120px;
+    border-radius: 5px;
+}
+
+.order_inquiry_section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.order_summary, .inquiry_summary {
+    width: 48%;
+    margin-top: 10px;
+}
+
+.order_summary h2, .inquiry_summary h2 {
+    margin-bottom: 10px;
+}
+
+.inquiry_summary a{
+    text-decoration: none;
+    color: #000;
+}
+
+.order_summary ul, .inquiry_summary ul {
+    list-style: none;
+    padding: 10px;
+    background-color: #ECECEC;
+    height: 150px;
+    border-radius: 5px;
+}
+
+.order_summary li {
+    color: #636363;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 0;
+    margin-right: 20px;
+}
+
+
+.order_summary .count {
+    color:#000000;
+}
+
+.order_summary li, .inquiry_summary li {
+    margin-bottom: 5px;
+}
+
+.order_summary li span, .inquiry_summary li span {
+    margin-right: 5px;
+}
+
+.status {
+    width: 55px;
+    height: 17px;
+    text-align: center;
+    display: inline-block;
+    padding: 2px 5px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #000000;
+}
+
+.status.new {
+    background-color: #FB5C5C;
+}
+
+.status.answered {
+    background-color: #D9D9D9;
+}
+
+.status.completed {
+    background-color: #FFF0AD;
+}
+
+.farmer_jobs {
+    margin-top: 30px;
+}
+
+.job_management {
+    background-color: #ECECEC;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.job_management p {
+    margin: 10px 0;
+}
+
+.job_list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.job_list a{
+    text-decoration: none;
+    color: #000;
+}
+
+.job_list li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+}
+
+.pListsStatus {
+    margin-right: 10px;
+    width: 50px;
+    height: 17px;
+    text-align: center;
+    display: inline-block;
+    padding: 4px 5px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.add_job_button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #6c757d; /* 기존 페이지와 어울리도록 파란색 사용 */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.add_job_button:hover {
+    background-color: #555659;
+}
+
+.section_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+.section_header h2 {
+    margin: 0;
+    padding-bottom: 2px;
+    font-size: 20px;
+}
+
+.section_header .more_link {
+    font-size: 14px;
+    color: #999999;
+    text-decoration: none;
+    position: relative;
+    top: 2px;
+}
+.application_section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.application_summary, .application_inquiry_summary {
+    width: 48%;
+    margin-top:20px;
+}
+
+.application_list, .application_inquiry_list {
+    list-style: none;
+    padding: 0;
+    background-color: #ECECEC;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.application_list li{
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 5px;
+}
+.application_inquiry_list li{
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+.application_inquiry_list a{
+    text-decoration: none;
+    color: #000;
+}
+
+
+.application_details {
+    max-width: 70%;
+}
+
+.btn{
+    width: 85px;
+    height: 25px;
+    background-color: #D9D9D9;
+    border-radius: 20px;
+    border: none;
+    font-size: 11px;
+}
+
+.btn a{
+    text-decoration: none;
+    color: #000;
+}
+
+.application_details p {
+    margin: 5px 0;
+}
+
+.status.applied {
+    background-color: #D9D9D9;
+}
+
+.section_header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #818181;
+}
+
+.account_section {
+    margin-top: 30px;
+}
+
+.account_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #FFFFFF;
+}
+
+.account_list li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+
+.account_list a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+}
+
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal_content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 700px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form_container {
+    width: 80%;
+    margin: 0 auto;
+    border: 1px solid #000;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.form_title {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.form_table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.form_row {
+    display: table-row;
+}
+
+.form_cell {
+    display: table-cell;
+    padding: 2px;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+}
+
+.label {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.input table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.input table th,
+.input table td {
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.photo img{
+    width: 120px;
+    height: 150px;
+    vertical-align: middle;
+}
+
+.confirmation {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9em;
+}
+

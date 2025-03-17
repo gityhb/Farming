@@ -1,0 +1,193 @@
+#basket_title h1{
+    font-size: 35px;
+}
+
+#basket_process{
+    margin-bottom: 10px;
+}
+#basket_process img{
+    width: 500px;
+    margin-left: 480px;
+}
+
+/*장바구니 테이블*/
+#basket_table {
+    min-height: 400px;
+    margin: 0 auto;
+}
+
+#basket_table #basket_table_list {
+    min-width: 1020px; /* 고정된 최소 너비 */
+    background: #fff;
+    min-height: 250px;
+    table-layout: fixed; /* 테이블 너비를 고정 */
+}
+
+#basket_table #basket_table_list td:nth-child(1){
+    width: 100px;
+}
+
+
+/*테이블 테두리*/
+#basket_table #basket_table_list thead tr th{
+    border-top: 1px solid black;
+    border-bottom: 2px solid black;
+    font-size: 18px;
+}
+
+#basket_table #basket_table_list tbody tr td{
+    border-bottom: 1px solid #BEBEBE;
+}
+
+#basket_table #basket_table_list td:nth-child(2),
+#basket_table #basket_table_list td:nth-child(3),
+#basket_table #basket_table_list td:nth-child(4){
+    border-right: 1px solid #BEBEBE;
+}
+
+/*전체적인 부분*/
+#basket_table #basket_table_list thead tr th, #basket_table #basket_table_list tbody tr td {
+    padding: 10px;
+    text-align: center;
+    overflow: hidden; /* 내용이 넘칠 때 숨기기 */
+}
+
+#basket_table #basket_table_list thead tr th #all_check, #basket_table #basket_table_list tbody tr td #basket_check_btn{
+    border: none;
+    background: none;
+}
+
+/*상품정보*/
+#basket_table #basket_table_list tbody tr #basket_list_td {
+    width: 400px;
+}
+
+#basket_list_td #basket_list {
+    display: flex;
+    align-items: center;
+}
+
+#basket_list_td #basket_list #basket_list_img {
+    margin-right: 10px;
+}
+
+#basket_list_td #basket_list #basket_list_img img{
+    width:80px;
+}
+
+#basket_list_td #basket_list #basket_list_name {
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#basket_list_td #basket_list #basket_list_name #basket_list_market_name{
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/*수량*/
+#basket_table #basket_table_list tbody tr #basket_list_quantity_td{
+    width:100px; /* 너비 조정 */
+}
+
+#basket_list_quantity_td #basket_list_quantity {
+    width: 90px; /* 너비 조정 */
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 수평 중앙 정렬 */
+    font-size: 20px;
+    border: 1px solid #000;
+    margin:0 auto;
+}
+
+#basket_delete_Btn_td{
+    width: 60px;
+}
+
+#basket_list_quantity_td #basket_list_quantity button {
+    margin: 0 5px;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    background-color: white;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    line-height: 12px;
+}
+
+#basket_list_quantity_td #basket_list_quantity span {
+    padding: 0 5px;
+    border: none;
+}
+
+/*가격*/
+#basket_table #basket_table_list tbody tr #quantity_total_price_td{
+    width: 150px;
+    font-size: 22px;
+}
+
+/*총 결제금액*/
+
+#total_sum_price{
+    display: flex;
+}
+
+#basket_table #total_sum_price {
+    height: 150px;
+    background-color: #ebebeb;
+    position: relative;
+    padding-right: 40px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 150px;
+}
+
+#total_sum_price #sum_title {
+    width: 180px;
+    position: absolute;
+    right: 1px;
+    font-weight: bold;
+    margin-right: 200px;
+}
+
+#total_sum_price #sum_txt {
+    position: absolute;
+    right: 40px;
+}
+
+/*상품 삭제 버튼*/
+#basket_deleteBtn {
+    margin: 8px;
+    text-align: center;
+    line-height: 40px;
+    width: 120px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    background: #FFEA8D;
+    cursor: pointer;
+  }
+
+/*주문버튼*/
+#order_button {
+    text-align: center;
+}
+#order_button button{
+    margin: 30px;
+    width: 230px;
+    height: 60px;
+    border-radius: 10px;
+    font-size: 23px;
+    font-weight: bold;
+    border: none;
+    background: #FFEA8D;
+    cursor: pointer;
+}
+
