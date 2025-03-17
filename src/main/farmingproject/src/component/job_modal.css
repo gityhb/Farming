@@ -1,0 +1,253 @@
+.job_modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.job_modal_content {
+    background-color: #fefefe;
+    margin: auto;
+    border: 1px solid #888;
+    width: 700px;
+    max-height: 100%;
+    overflow-y: auto; /* 모달 내부에 스크롤 생성 */
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.job_form_title{
+    height:80px;
+    line-height: 80px;
+    text-align: center;
+}
+
+.job_photo_upload {
+    width: 600px;
+    height: 300px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    position: relative;
+    background-color: #f9f9f9;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.job_photo_upload input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.job_photo_upload label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-90%, -50%);
+    background-color: #a6a2a2;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 5px;
+}
+
+.job_photo_upload label:hover {
+    background-color: #8e8b8b;
+}
+
+/* 이미지 미리보기 관련 CSS */
+.preview_image_inside_input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    pointer-events: none; /* 이미지를 클릭할 수 없도록 설정 */
+}
+
+/* 삭제 버튼 스타일 */
+.delete_photo_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.job_form_group {
+    margin-bottom: 20px;
+    flex-direction: column;
+    padding: 5px;
+
+}
+
+.job_form_group label {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    margin-left: 45px;
+}
+
+.job_form_group input[type="text"],
+.job_form_group input[type="date"],
+.job_form_group textarea {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 85%;
+    box-sizing: border-box;
+    margin-left: 45px;
+    margin-top: 10px;
+}
+
+/* 상세내역 텍스트 영역 고정 스타일 */
+.job_form_group textarea#job_description {
+    resize: none; /* 크기 조절 불가능 */
+}
+
+
+.job_form_group input[type="text"]:hover,
+.job_form_group input[type="date"]:hover,
+.job_form_group textarea:hover,
+.job_form_group input[type="text"]:focus,
+.job_form_group input[type="date"]:focus,
+.job_form_group textarea:focus {
+    border-color: #a6a2a2;
+    outline: none;
+}
+
+/* 우편번호 찾기 버튼 스타일 */
+.find_zip_code_btn {
+    background-color: #FFF0AD; /* 기본 배경색 */
+    border: none;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-left: 10px; /* 인접 요소와 간격 */
+    width: 125px;
+}
+
+/*.find_zip_code_btn:hover {*/
+/*    background-color: #8e8b8b; !* 호버 배경색 *!*/
+/*    transform: scale(1.05); !* 약간 확대 효과 *!*/
+/*}*/
+
+/* address_input 내부 요소 간격 조정 */
+.address_input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+
+.job_form_group textarea {
+    resize: vertical; /* 수직으로만 크기 조절 가능 */
+    height: 150px;
+    margin-bottom:20px;
+}
+
+/* 공통 버튼 스타일 */
+.job_form_group .add_btn,
+.job_form_group .close_btn {
+    width: 150px;
+    height: 40px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* 추가 버튼 스타일 */
+.job_form_group .add_btn {
+    background-color: #FFF0AD; /* 기본 배경색: 밝은 노란색 */
+    color: #333; /* 텍스트 색상: 어두운 회색 */
+    margin-left: 150px;
+}
+
+.job_form_group .add_btn:hover {
+    background-color: #e6d08f;
+    transform: scale(1.05);
+}
+
+/* 취소 버튼 스타일 */
+.job_form_group .close_btn {
+    background-color: rgba(166, 162, 162, 0.8);
+    margin-left: 100px;
+    margin-bottom: 50px;
+}
+
+.job_form_group .close_btn:hover {
+    background-color: #a6a2a2;
+    transform: scale(1.05);
+}ect
+
+.file_input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 2;
+    cursor: pointer;
+}
+
+/* 파일 입력 영역 스타일 */
+.file_input_container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* 날짜 범위 입력 스타일 */
+.date_range {
+    display: flex;
+    align-items: center;
+    width: 92%; /* 다른 입력 필드와 동일한 너비 */
+    justify-content: space-between;
+    position: relative; /* 날짜 구분자를 중앙에 배치하기 위한 상대 위치 설정 */
+}
+
+.date_range input[type="date"] {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 45%; /* 각 날짜 입력 필드의 너비 조정 */
+    box-sizing: border-box;
+}
+
+/* 날짜 구분자(~) 스타일 */
+.date_separator {
+    font-size: 18px;
+    color: #333;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(150%, -50%); /* 중앙으로 위치 */
+}

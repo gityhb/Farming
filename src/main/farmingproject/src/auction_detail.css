@@ -1,0 +1,361 @@
+.auction_detail_text{
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.auction_detail_container{
+    display: flex;
+}
+
+.auction_detail_container img{
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+    margin-right: 60px;
+    border-radius: 10px;
+}
+
+.auction_detail_item .item_title{
+    font-size:35px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.auction_detail_item .item_origin, .item_delivery{
+    font-size: 20px;
+    padding: 10px;
+}
+
+.auction_detail_item .item_minbid{
+    display: flex;
+    margin-left: 299px;
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+.auction_detail_item .item_minbid .minbid_title{
+    font-size: 24px;
+    margin-top: 10px;
+
+}
+
+.auction_detail_item .item_minbid .minbid_amount{
+    font-size: 35px;
+    font-weight: bold;
+    margin-left:20px;
+}
+
+.auction_detail_separator {
+    height: 1px;
+    background-color: #717171;
+    margin: 20px 0;
+}
+
+.auction_amount{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 15px;
+}
+
+.auction_amount .auction_amount_input{
+    width: 365px;
+    height: 130px;
+    border: 2px solid #808080;
+    border-radius: 3px;
+
+}
+
+.remaining_time {
+    padding: 10px 0;
+    background-color: #FFF0AD;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    color: #ff0000;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/*.auction_amount .auction_amount_input .auction_time{*/
+/*    background-color:#FFF0AD;*/
+/*    border-top-left-radius: 3px;*/
+/*    border-top-right-radius: 3px;*/
+/*    color:#FF0000;*/
+/*    font-size: 36px;*/
+/*    font-weight: bold;*/
+/*    text-align: center;*/
+/*}*/
+
+.auction_amount .auction_amount_input .auction_amount_text{
+    font-size:24px;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top:30px;
+}
+
+.auction_amount .auction_amount_btn{
+    width:170px;
+    height:75px;
+    background-color:#FFD000;
+    color: white;
+    font-size: 27px;
+    text-align: center;
+    line-height: 75px;
+    border-radius: 10px;
+    margin-left: 50px;
+    margin-top: 55px;
+}
+
+.auction_input_container{
+    display: flex;
+}
+
+.auction_amount_input_field{
+    margin-top: 10px;
+    margin-left: 30px;
+    width: 250px;
+    border:none;
+}
+
+.auction_amount .auction_amount_input .auction_amount_input_field::placeholder {
+    text-align: center;
+}
+
+
+.auction_graphs_container {
+    display: flex;
+    justify-content: center; /* 두 그래프가 가운데로 오도록 설정 */
+    gap: 50px; /* 그래프 사이의 간격 */
+    margin-top: 50px;
+}
+
+.graph_section {
+    text-align: center;
+    width: 45%; /* 각 그래프 섹션이 화면의 45%를 차지하도록 설정 */
+}
+
+.graph_title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.bar_value {
+    position: absolute;
+    top: -30px; /* 값을 막대의 상단에 위치시킴 */
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    white-space: nowrap; /* 값이 막대 너비에 맞게 내려오지 않도록 방지 */
+}
+
+.graph {
+    display: flex;
+    justify-content: center; /* 그래프 막대들이 가운데로 올 수 있게 조정 */
+    align-items: flex-end;
+    gap: 20px;
+    border: 1px solid #919191;
+    width: 100%; /* 그래프 너비를 100%로 설정 */
+    height: 340px;
+}
+
+.bar {
+    width: 35px;
+    background-color: #FFD700;
+    text-align: center;
+    position: relative;
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* 값이 막대 상단에 위치하도록 조정 */
+}
+
+
+/* 막대별 높이 설정 */
+.bar1 {
+    height: 250px; /* 첫 번째 막대 */
+    background-color: #FF4500; /* 색상 강조 */
+}
+
+.bar2 {
+    height: 200px; /* 두 번째 막대 */
+    background-color: #FFA500;
+}
+
+.bar3 {
+    height: 160px; /* 세 번째 막대 */
+    background-color: #FFD700;
+}
+
+.bar4 {
+    height: 120px; /* 네 번째 막대 */
+    background-color: #F0E68C;
+}
+
+.bar5 {
+    height: 80px; /* 다섯 번째 막대 */
+    background-color: #E6E6FA;
+}
+
+
+
+.auction_complete_input{
+    width: 365px;
+    height: 130px;
+    border: 2px solid #808080;
+    border-radius: 3px;
+    position: relative;
+}
+
+.auction_complete_input::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(127, 127, 127, 0.5);
+    z-index: 1;
+}
+
+.auction_complete_box{
+    width: 365px;
+    height: 50px;
+    background-color: #FFF0AD;
+
+}
+
+.auction_complete_text {
+    margin-left: 100px;
+    font-size: 40px;
+    font-weight: bold;
+    color: red;
+}
+
+
+
+/*채팅*/
+.chat_container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.chat_box {
+    border: 1px solid #ddd;
+    height: 390px;
+    width: 100%;
+    max-width: 850px;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #F4F4F4;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chat_message_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.my_message_wrapper {
+    align-items: flex-end;
+}
+
+.chat_message {
+    max-width: 70%;
+    padding: 12px;
+    border-radius: 20px;
+    font-size: 16px;
+    position: relative;
+    line-height: 1.4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+    word-wrap: break-word; /* 긴 단어가 있으면 자동 줄바꿈 */
+}
+
+.my_message {
+    background-color: #FFD700; /* 경매에서 사용된 노란색 */
+    color: black;
+    align-self: flex-end;
+    border-top-right-radius: 0;
+}
+
+.other_message {
+    background-color: #E6E6E6; /* 밝은 회색 */
+    color: black;
+    align-self: flex-start;
+    border-top-left-radius: 0;
+}
+
+.chat_time {
+    font-size: 12px;
+    color: #888888; /* 중간 회색 */
+    margin-top: 5px;
+    text-align: right;
+    font-style: italic;
+}
+
+.chat_input_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 850px;
+}
+
+.chat_input {
+    width: 85%;
+    padding: 12px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    background-color: #E6E6E6; /* 경매창에 어울리는 연한 회색 */
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat_input:focus {
+    outline: none;
+}
+
+.chat_send_btn {
+    width: 10%;
+    background-color: #FFD700; /* 경매에서 사용된 노란색 */
+    border: none;
+    color: black;
+    font-size: 14px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat_send_btn:hover {
+    background-color: #FFB700; /* 좀 더 진한 노란색 hover */
+}
+
+.chat_username {
+    font-weight: bold;
+    color: #888888; /* 중간 회색 */
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+.product_detail_title h1 {
+    font-size: 35px;
+}
+
+.product_apply_check_detail_title {
+    background-color: #FFEA8D;
+    width: 115px;
+    padding: 18px;
+    font-weight: 600;
+}
+.product_apply_check_detail_info {
+    background-color: white;
+    padding: 18px;
+    min-height: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.product_apply_check_detail_select {
+    width: 100px;
+    padding: 8px;
+    font-size: 17px;
+    border-radius: 5px;
+}
+
+
+.product_pass_enroll_btn {
+    margin-left: 20px;
+    width: 80px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #FFEA8D;
+    border: none;
+    cursor: pointer;
+}

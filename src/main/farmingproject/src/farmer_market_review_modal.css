@@ -1,0 +1,47 @@
+.review_select_div{
+    display: flex;
+}
+
+.review_select_title{
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 40px;
+    margin-left: 30px;
+    width:85px;
+}
+
+.review_select_Btn{
+    width: 90px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    border: 1px solid grey;
+    border-radius: 6px;
+    font-size: 18px;
+    margin: 0 8px;
+}
+
+.review-textarea{
+    resize: none;
+    margin: 20px auto 0 auto;
+}
+
+.review_select_Btn.selected {
+    background-color: #FFEA8D;
+}
+
+.review_select_Btn:hover {
+    cursor: pointer;
+    background-color: #FFEA8D;
+}
+
+.star {
+    margin-left: 10px;
+    font-size: 30px;
+    color: #ddd;
+    cursor: pointer;
+}
+
+.star.selected {
+    color: #ffd700;
+}
