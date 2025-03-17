@@ -52,8 +52,7 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin   // 4)폼 기반 로그인 설정
                         .loginPage("/login")
-//                        .defaultSuccessUrl("http://localhost:3000/", true)
-                        .defaultSuccessUrl("http://172.20.10.3:3000/", true)
+                        .defaultSuccessUrl("http://localhost:3000/", true)
                         .failureUrl("/login?error=true")
                 )
                 .logout(logout -> logout    // 5)로그아웃 설정
